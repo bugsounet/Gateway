@@ -8,7 +8,12 @@ logGW = (...args) => { /* do nothing */ }
 
 Module.register("Gateway", {
   defaults: {
-    debug: false
+    debug: true,
+    useApp: true,
+    port: 8081,
+    username: "admin",
+    password: "admin",
+    testingMode: true
   },
 
   start: async function () {
@@ -30,7 +35,6 @@ Module.register("Gateway", {
       "EXT-Pir",
       "EXT-RadioPlayer",
       "EXT-Raspotify",
-      "EXT-Setup", // not coded
       "EXT-Screen",
       "EXT-ScreenManager",
       "EXT-ScreenTouch",
@@ -120,6 +124,9 @@ Module.register("Gateway", {
     }
   },
 
+  socketNotificationReceived: function(noti,payload) {
+    if (noti== "MMConfig") this.sendSocketNotification("MMConfig", { MM: config, DB: this.ExtDB } )
+  },
   /***********************/
   /** GA Status Gateway **/
   /***********************/
