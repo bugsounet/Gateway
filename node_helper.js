@@ -172,6 +172,21 @@ module.exports = NodeHelper.create({
      }
     )
 
+    this.app.get('/AllEXT', (req, res) => {
+      if(req.user) res.send(this.EXT)
+      else res.status(403).sendFile(__dirname+ "/admin/403.html")
+    })
+
+    this.app.get('/InstalledEXT', (req, res) => {
+      if(req.user) res.send(this.EXTInstalled)
+      else res.status(403).sendFile(__dirname+ "/admin/403.html")
+    })
+
+    this.app.get('/ConfiguredEXT', (req, res) => {
+      if(req.user) res.send(this.EXTConfigured)
+      else res.status(403).sendFile(__dirname+ "/admin/403.html")
+    })
+
     this.app.use(function(req, res) {
       console.log("[GATEWAY] Error! Don't find:", req.url)
       res.status(404).sendFile(__dirname+ "/admin/404.html")
