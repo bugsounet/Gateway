@@ -84,21 +84,27 @@ module.exports = NodeHelper.create({
       })
       return Configured.sort()
     } catch (e) {
-      console.log("Error! " + e)
+      console.log("[GATEWAY] Error! " + e)
       return Configured.sort()
     }
   },
 
+  /** search installed EXT **/
   searchInstalled: function () {
     var Installed = []
     this.EXT.find(m => {
-      if(fs.existsSync(path.resolve(__dirname + "/../" + m + "/package.json"))) Installed.push(m)
+      if (fs.existsSync(path.resolve(__dirname + "/../" + m + "/package.json"))) {
+        let name = require((path.resolve(__dirname + "/../" + m + "/package.json"))).name
+        if (name == m) Installed.push(m)
+        else console.warn("[GATEWAY] Found:", m, "but in package.json name is not the same:", name)
+      }
     })
     return Installed.sort()
   },
 
   /** http server **/
   Setup: async function () {
+    log("Create all needed routes...")
     this.app.use(session({
       secret: 'some-secret',
       saveUninitialized: false,
@@ -142,10 +148,7 @@ module.exports = NodeHelper.create({
 
     this.app.get('/login', (req, res) => {
       let error = req.flash('error')
-      if (error.length) {
-        console.log("error:", error)
-        res.redirect("/login?err=" + error)
-      }
+      if (error.length) res.redirect("/login?err=" + error)
       else res.sendFile(__dirname+ "/admin/login.html")
     })
 
@@ -163,7 +166,6 @@ module.exports = NodeHelper.create({
     )
 
     this.EXT.forEach( module => {
-      log("Create route for", module)
       this.app.get("/"+ module, (req,res) => {
         res.sendFile( __dirname+ "/admin/modules/" + module + "/index.html")
       })
@@ -171,7 +173,7 @@ module.exports = NodeHelper.create({
     )
 
     this.app.use(function(req, res) {
-      console.log("Error! Don't find:", req.url)
+      console.log("[GATEWAY] Error! Don't find:", req.url)
       res.status(404).sendFile(__dirname+ "/admin/404.html")
     })
 
@@ -180,7 +182,7 @@ module.exports = NodeHelper.create({
     var server = this.app.listen(this.config.port, this.config.listening, () => {
       var port = server.address().port
       var host = server.address().address
-      console.log("[GATEWAY] listening on http://"+ host + ":" + port)
+      console.log("[GATEWAY] Start listening on http://"+ host + ":" + port)
     })
   },
 
