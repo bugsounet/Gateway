@@ -70,7 +70,7 @@
                                             <td class="text-nowrap fs-6 text-start">dummy</td>
                                             <td>dummy testing</td>
                                             <td><button class="btn btn-primary btn-sm" type="button">Install</button></td>
-                                            <td><button class="btn btn-warning btn-sm" type="button">Configure</button></td>
+                                            <td><button class="btn btn-secondary btn-sm" type="button">Configure</button></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -169,8 +169,10 @@ async function createTr() {
         if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
         else Content += '<td><button class="btn btn-warning btn-sm" type="button">Configure</button></td>'
     }
-    else Content += '<td><button class="btn btn-success btn-sm" type="button">Configure</button></td>'
-    
+    else {
+        if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td><button class="btn btn-secondary btn-sm" type="button">Configure</button></td>'
+        else Content += '<td><button class="btn btn-success btn-sm" type="button">Configure</button></td>'
+    }
     plugins.innerHTML = Content
     /*`
                                           <td class="text-nowrap fs-6 text-start">${pluginsName}</td>
