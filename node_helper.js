@@ -19,6 +19,7 @@ module.exports = NodeHelper.create({
     this.config= null
     this.MMConfig= null
     this.EXT= null // EXT plugins list
+    this.EXTDescription = {}
     this.EXTConfigured = [] // configured EXT in config
     this.EXTInstalled= [] // installed EXT in MM
     this.user = {
@@ -42,6 +43,7 @@ module.exports = NodeHelper.create({
         this.MMConfig = payload.MM
         //log("MMConfig:", this.MMConfig)
         this.EXT = payload.DB.sort()
+        this.EXTDescription = payload.Description
         this.initialize()
         break
     }
@@ -174,6 +176,11 @@ module.exports = NodeHelper.create({
 
     this.app.get('/AllEXT', (req, res) => {
       if(req.user) res.send(this.EXT)
+      else res.status(403).sendFile(__dirname+ "/admin/403.html")
+    })
+
+    this.app.get('/DescriptionEXT', (req, res) => {
+      if(req.user) res.send(this.EXTDescription)
       else res.status(403).sendFile(__dirname+ "/admin/403.html")
     })
 

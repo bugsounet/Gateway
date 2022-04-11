@@ -47,6 +47,35 @@ Module.register("Gateway", {
       "EXT-YouTubeVLC"
     ]
 
+    this.EXTDescription = {
+      "EXT-Alert": "Display any warning, information or error on your screen.",
+      "EXT-Background": "Change the default Google Assistant background to your own or with animated gifs for each status of the assistant.",
+      "EXT-Bring": "Show your current shopping list of Bring!",
+      "EXT-Browser": "Display any internet web page like a real browser in fullscreen",
+      "EXT-Detector": "Multi-keyword listener for MMM-GoogleAssistant v4",
+      "EXT-FreeboxTV": "Display Channel from French Internet Provider: Free",
+      "EXT-GooglePhotos": "Display your album directory with Google photos API in background or in MagicMirror position",
+      "EXT-Governor": "CPU governor enables the operating system to scale the CPU frequency up or down in order to save power or improve performance.",
+      "EXT-Internet": "Check your internet connexion, display ping.",
+      "EXT-Led": "Not yet coded!", // not coded
+      "EXT-Librespot": "Allow to play Spotify music on your mirror with Librespot.",
+      "EXT-MusicPlayer": "Play any music found on a USB Key or in defined local directory.",
+      "EXT-Photos": "Displaying any photos discover by assistant in fullscreen",
+      "EXT-Pir": "Control your screen with a PIR Sensor.",
+      "EXT-RadioPlayer": "Play radio station on MagicMirror.",
+      "EXT-Raspotify": "Play Spotify music on your mirror with Raspotify.",
+      "EXT-Screen": "After a configurated time without any user interaction the display will turn off and hide all modules for economy mode.",
+      "EXT-ScreenManager": "Automaticaly turn ON and Turn OFF your screen with defined hours.",
+      "EXT-ScreenTouch": "Allow to turn on/off your screen with touch screen.",
+      "EXT-Spotify": "This plugin show current spotify playback of any devices.",
+      "EXT-UpdateNotification": "This plugin allow to notify and auto-update if an update is detected.",
+      "EXT-Volume": "Control the sound volume level of your mirror.",
+      "EXT-Welcome": "Allow to send a welcome on start of MagicMirror.",
+      "EXT-YouTube": "This plugins allow to play YouTube video (reserved to donator).",
+      "EXT-YouTubeCast": "Allow to cast a YouTube video on MagicMirror.",
+      "EXT-YouTubeVLC": "Allow to display YouTube video in fullscreen on MagicMirror with VLC media player."
+    }
+
     this.GW = {
       ready: false
     }
@@ -125,7 +154,7 @@ Module.register("Gateway", {
   },
 
   socketNotificationReceived: function(noti,payload) {
-    if (noti== "MMConfig") this.sendSocketNotification("MMConfig", { MM: config, DB: this.ExtDB } )
+    if (noti== "MMConfig") this.sendSocketNotification("MMConfig", { MM: config, DB: this.ExtDB, Description: this.EXTDescription } )
   },
   /***********************/
   /** GA Status Gateway **/
