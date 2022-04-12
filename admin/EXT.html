@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 </head>
 
@@ -62,15 +63,15 @@
                                             <th>EXT Name</th>
                                             <th>Description</th>
                                             <th>Actions</th>
-                                            <th>Configure</th>
+                                            <th>Configuration</th>
                                         </tr>
                                     </thead>
                                     <tbody id="EXT">
                                         <tr>
-                                            <td class="text-nowrap fs-6 text-start">dummy</td>
-                                            <td>dummy testing</td>
+                                            <td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" data-bss-tooltip="" style="cursor: pointer" data-href="https://wiki.bugsounet.fr" title="Will open the wiki page of EXT-Alert">dummy</td>
+                                            <td class="click" data-href="https://www.google.fr" style="cursor: pointer;">dummy testing</td>
                                             <td><button class="btn btn-primary btn-sm" type="button">Install</button></td>
-                                            <td><button class="btn btn-secondary btn-sm" type="button">Configure</button></td>
+                                            <td><button class="btn btn-success btn-sm pulse animated infinite" type="button">Configure</button></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -104,7 +105,7 @@
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div><script src="assets/js/jquery.min.js"></script><script type="text/javascript">
+    </div><script type="text/javascript">
 function loadDataAllEXT() {
   return new Promise(resolve => {
     $.getJSON("/allEXT" , (all) => {
@@ -137,54 +138,47 @@ function loadDataDescriptionEXT() {
     })
   })
 }
-function loadDataDescriptionEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/DescriptionEXT" , (desEXT) => {
-      console.log("DescriptionEXT", desEXT)
-      resolve(desEXT)
-    })
-  })
-}
-function EXTInstalled(plugin) {
-  
-}
+
 async function createTr() {
   var AllEXT = await loadDataAllEXT()
   var DescEXT = await loadDataDescriptionEXT()
   var InstEXT = await loadDataInstalledEXT()
   var ConfigEXT = await loadDataConfiguredEXT()
-  var EXT= document.getElementById("EXT")
+  var Content = ""
   AllEXT.forEach(pluginsName => {
-    
-    var plugins = document.createElement("tr")
-    plugins.id = pluginsName
-    var Content = `
-                                          <td class="text-nowrap fs-6 text-start">${pluginsName}</td>
-                                          <td>${DescEXT[pluginsName]}</td>
-`
+    /*
+    <td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr" title="Will open the wiki page of EXT-Alert">dummy</td>
+    */
+    Content += `<tr id=${pluginsName}><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="Open the wiki page of ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
+
     if (InstEXT.indexOf(pluginsName) == -1) Content += '<td><button class="btn btn-primary btn-sm" type="button">Install</button></td>'
     else Content += '<td><button class="btn btn-danger btn-sm" type="button">Delete</button></td>'
     
     if (InstEXT.indexOf(pluginsName) == -1) {
         if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
-        else Content += '<td><button class="btn btn-warning btn-sm" type="button">Configure</button></td>'
+        else Content += '<td><button class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" type="button">Delete</button></td>'
+    } else {
+        if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td><button class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" type="button">Configure</button></td>'
+        else Content += '<td><button class="btn btn-success btn-sm" type="button" data-bs-toggle="tooltip" title="Modify the configuration">Modify</button></td>'
     }
-    else {
-        if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td><button class="btn btn-secondary btn-sm" type="button">Configure</button></td>'
-        else Content += '<td><button class="btn btn-success btn-sm" type="button">Configure</button></td>'
-    }
-    plugins.innerHTML = Content
-    /*`
-                                          <td class="text-nowrap fs-6 text-start">${pluginsName}</td>
-                                          <td>${DescEXT[pluginsName]}</td>
-                                          <td><button class="btn btn-primary btn-sm" type="button">Install</button></td>
-                                          <td><button class="btn btn-warning btn-sm" type="button">Configure</button></td>
-`*/
-  EXT.appendChild(plugins)
+    Content += '</tr>'
   })
+  $("#EXT").append(Content)
+  $('td[class*="click"').click(function() {
+    var win = window.open($(this).data("href"), '_blank');
+    if (win) {
+      win.focus();
+    } else {
+      //Browser has blocked it
+      alert('Please allow popups for this website');
+    }
+  });
 }
 </script><script type="text/javascript">
-createTr()
+  window.addEventListener("load", (event) => {
+    console.log("Toutes les ressources sont chargées !");
+    createTr()
+  });
 </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
