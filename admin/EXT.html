@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="assets/css/Article-Clean.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="assets/css/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 </head>
 
 <body id="page-top">
@@ -39,65 +41,8 @@
                 </nav>
                 <div class="container-fluid">
                     <h3 class="text-dark mb-4">EXT Plugins Explorer</h3>
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Select what do you want to do</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                            </select>&nbsp;</label></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-                                </div>
-                            </div>
-                            <div class="table-responsive text-start table mt-2" data-aos="zoom-in" id="dataTable" role="grid" aria-describedby="dataTable_info" style="padding: 1px;">
-                                <table class="table my-0 table-hover" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>EXT Name</th>
-                                            <th>Description</th>
-                                            <th>Actions</th>
-                                            <th>Configuration</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="EXT">
-                                        <tr>
-                                            <td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" data-bss-tooltip="" style="cursor: pointer" data-href="https://wiki.bugsounet.fr" title="Will open the wiki page of EXT-Alert">dummy</td>
-                                            <td class="click" data-href="https://www.google.fr" style="cursor: pointer;">dummy testing</td>
-                                            <td><button class="btn btn-primary btn-sm" type="button">Install</button></td>
-                                            <td><button class="btn btn-success btn-sm pulse animated infinite" type="button">Configure</button></td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr></tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 26</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                <div class="container" id="EXTable"></div>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
@@ -105,85 +50,18 @@
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div><script type="text/javascript">
-function loadDataAllEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/allEXT" , (all) => {
-      console.log("allEXT", all)
-      resolve(all)
-    })
-  })
-}
-function loadDataConfiguredEXT() {
-  return new Promise(resolve => {  
-    $.getJSON("/ConfiguredEXT" , (confEXT) => {
-      console.log("ConfiguredEXT", confEXT)
-      resolve(confEXT)
-    })
-  })
-}
-function loadDataInstalledEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/InstalledEXT" , (instEXT) => {
-      console.log("InstalledEXT", instEXT)
-      resolve(instEXT)
-    })
-  })
-}
-function loadDataDescriptionEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/DescriptionEXT" , (desEXT) => {
-      console.log("DescriptionEXT", desEXT)
-      resolve(desEXT)
-    })
-  })
-}
-
-async function createTr() {
-  var AllEXT = await loadDataAllEXT()
-  var DescEXT = await loadDataDescriptionEXT()
-  var InstEXT = await loadDataInstalledEXT()
-  var ConfigEXT = await loadDataConfiguredEXT()
-  var Content = ""
-  AllEXT.forEach(pluginsName => {
-    /*
-    <td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr" title="Will open the wiki page of EXT-Alert">dummy</td>
-    */
-    Content += `<tr id=${pluginsName}><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="Open the wiki page of ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
-
-    if (InstEXT.indexOf(pluginsName) == -1) Content += '<td><button class="btn btn-primary btn-sm" type="button">Install</button></td>'
-    else Content += '<td><button class="btn btn-danger btn-sm" type="button">Delete</button></td>'
-    
-    if (InstEXT.indexOf(pluginsName) == -1) {
-        if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
-        else Content += '<td><button class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" type="button">Delete</button></td>'
-    } else {
-        if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td><button class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" type="button">Configure</button></td>'
-        else Content += '<td><button class="btn btn-success btn-sm" type="button" data-bs-toggle="tooltip" title="Modify the configuration">Modify</button></td>'
-    }
-    Content += '</tr>'
-  })
-  $("#EXT").append(Content)
-  $('td[class*="click"').click(function() {
-    var win = window.open($(this).data("href"), '_blank');
-    if (win) {
-      win.focus();
-    } else {
-      //Browser has blocked it
-      alert('Please allow popups for this website');
-    }
-  });
-}
-</script><script type="text/javascript">
-  window.addEventListener("load", (event) => {
-    console.log("Toutes les ressources sont chargées !");
-    createTr()
-  });
-</script>
+    </div><script type="text/javascript">window.addEventListener("load",event=>createTr())</script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="assets/js/EXT_Tools.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
 
