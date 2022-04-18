@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Gateway</title>
+    <title>Terminal - Gateway</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
@@ -29,7 +29,7 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link active" href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/EXT"><i class="fa fa-plug"></i><span>EXT Plugins</span></a><a class="nav-link" href="/Terminal"><i class="fa fa-terminal"></i><span>Terminal Output</span></a><a class="nav-link" href="/logout"><i class="fa fa-sign-out"></i><span>Logout</span></a></li>
                     <li class="nav-item"></li>
                 </ul>
@@ -41,22 +41,10 @@
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
                 </nav>
-                <section class="article-clean">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
-                                <div class="intro">
-                                    <h1 class="text-center">Welcome to Gateway website</h1><img class="img-fluid" src="assets/img/desk.jpg">
-                                </div>
-                                <div class="text">
-                                    <p>Sed lobortis mi. Suspendisse vel placerat ligula. <span style="text-decoration: underline;">Vivamus</span> ac sem lac. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
-                                    <p>Sed lobortis mi. Suspendisse vel placerat ligula. <span style="text-decoration: underline;">Vivamus</span> ac sem lac. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
-                                    <p>Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac lacus. <strong>Ut vehicula rhoncus</strong> elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit <em>pulvinar dict</em> vel in justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <div class="container-fluid">
+                    <div id="hyperwatch"></div>
+                    <div class="d-flex d-xl-flex justify-content-xl-center"></div>
+                </div>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
@@ -64,7 +52,7 @@
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div>
+    </div><script type="text/javascript" src="bundle.js"></script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

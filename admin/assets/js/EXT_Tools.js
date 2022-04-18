@@ -38,6 +38,41 @@ function loadDataDescriptionEXT() {
   })
 }
 
+function LaunchInstall() {
+  if (window.location.search) {
+    var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
+    $('#messageText').text("Installing in progress...")
+    $('#boutons').attr('style' , 'display: none !important')
+    return new Promise (resolve => {
+      $.getJSON("/EXTInstall?EXT="+EXT , res => {
+        if (!res.error) $('#messageText').text("Installation complete!")
+        else $('#messageText').text("Warn: Some errors detected")
+        resolve()
+      })
+    })
+  } else {
+    $('#EXT-Name').text("Error!")
+  }
+}
+
+function LaunchDelete() {
+  if (window.location.search) {
+    var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
+    $('#messageText').text("Delete in progress...")
+    $('#boutons').attr('style' , 'display: none !important')
+    return new Promise (resolve => {
+      $.getJSON("/EXTDelete?EXT="+EXT , res => {
+        if (!res.error) $('#messageText').text("Delete complete!")
+        else $('#messageText').text("Warn: Some errors detected")
+        resolve()
+      })
+    })
+  } else {
+    $('#EXT-Name').text("Error!")
+  }
+}
+
+
 async function createTr() {
   var AllEXT = await loadDataAllEXT()
   var DescEXT = await loadDataDescriptionEXT()
@@ -50,8 +85,8 @@ async function createTr() {
   AllEXT.forEach(pluginsName => {
     Content += `<tr><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="Open the wiki page of ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
 
-    if (InstEXT.indexOf(pluginsName) == -1) Content += '<td align="center"><button class="btn btn-primary btn-sm" type="button">Install</button></td>'
-    else Content += '<td align="center"><button class="btn btn-danger btn-sm" type="button">Delete</button></td>'
+    if (InstEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-primary btn-sm" role="button" href="/install?ext=${pluginsName}">Install</a></td>`
+    else Content += `<td align="center"><a class="btn btn-danger btn-sm" role="button" href="/delete?ext=${pluginsName}">Delete</a></td>`
     
     if (InstEXT.indexOf(pluginsName) == -1) {
       if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'

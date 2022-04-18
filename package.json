@@ -27,8 +27,13 @@
   },
   "homepage": "https://wiki.bugsounet.fr/en/Gateway",
   "dependencies": {
+    "browserify": "~2.13.2",
     "connect-flash": "^0.1.1",
+    "domready": "~0.2.11",
     "express-session": "^1.17.2",
+    "hyperwatch": "^0.5.4",
+    "mold-source-map": "~0.2.0",
+    "npmlog": "0.0.2",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "systeminformation": "^5.11.9"

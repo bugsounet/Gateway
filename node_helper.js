@@ -7,12 +7,15 @@ var cors = require("cors")
 const fs = require("fs")
 const path = require("path")
 const tools = require("./tools/tools.js")
+var build =  require('./build')
 
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
 var flash = require('connect-flash')
 var bodyParser = require('body-parser')
+var hyperwatch =  require('hyperwatch')
+var exec = require("child_process").exec
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -28,15 +31,18 @@ module.exports = NodeHelper.create({
       email: 'admin@bugsounet.fr',
       password: 'admin'
     }
+    this.app = null
+    this.server= null
   },
 
   socketNotificationReceived: function (noti, payload) {
     switch (noti) {
       case "INIT":
         console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
+        if (this.server) return
         this.config = payload
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
-        log("Config:", this.config)
+        //log("Config:", this.config)
         if (this.config.useApp) this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
@@ -135,37 +141,135 @@ module.exports = NodeHelper.create({
       }
     }
 
-    this.app.use(cors({ origin: '*' }))
-    this.app.use('/assets', express.static(__dirname + '/admin/assets', options))
-
-    this.app.get('/', (req, res) => {
-      if(req.user) res.sendFile(__dirname+ "/admin/index.html")
-      else res.redirect('/login')
-    })
-
-    this.app.get('/EXT', (req, res) => {
-      if(req.user) res.sendFile(__dirname+ "/admin/EXT.html")
-      else res.redirect('/login')
-    })
-
-    this.app.get('/login', (req, res) => {
-      let error = req.flash('error')
-      if (error.length) res.redirect("/login?err=" + error)
-      else res.sendFile(__dirname+ "/admin/login.html")
-    })
-
-    this.app.get('/logout', (req, res) => {
-      req.logout()
-      res.redirect('/')
-    })
-
-    this.app.post('/login',
-      passport.authenticate('login', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
+    this.app
+      .use(cors({ origin: '*' }))
+      .use('/assets', express.static(__dirname + '/admin/assets', options))
+      .get('/', (req, res) => {
+        if(req.user) res.sendFile(__dirname+ "/admin/index.html")
+        else res.redirect('/login')
       })
-    )
+
+      .get('/EXT', (req, res) => {
+        if(req.user) res.sendFile(__dirname+ "/admin/EXT.html")
+        else res.redirect('/login')
+      })
+
+      .get('/login', (req, res) => {
+        let error = req.flash('error')
+        if (error.length) res.redirect("/login?err=" + error)
+        else res.sendFile(__dirname+ "/admin/login.html")
+      })
+
+      .post('/login', passport.authenticate('login', {
+          successRedirect: '/',
+          failureRedirect: '/login',
+          failureFlash: true
+        })
+      )
+
+      .get('/logout', (req, res) => {
+        req.logout()
+        res.redirect('/')
+      })
+
+      .get('/AllEXT', (req, res) => {
+        if(req.user) res.send(this.EXT)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get('/DescriptionEXT', (req, res) => {
+        if(req.user) res.send(this.EXTDescription)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get('/InstalledEXT', (req, res) => {
+        if(req.user) res.send(this.EXTInstalled)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get('/ConfiguredEXT', (req, res) => {
+        if(req.user) res.send(this.EXTConfigured)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .use("/Terminal" , (req,res) => {
+        if(req.user) res.sendFile( __dirname+ "/admin/terminal.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .use("/install" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
+          res.sendFile( __dirname+ "/admin/install.html")
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .use("/EXTInstall" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
+          console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
+          var result = {
+            error: false
+          }
+          var modulePath = path.normalize(__dirname + "/../")
+          var Command= 'cd ' + __dirname + '/../ && pwd && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
+
+          var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
+            if (error) {
+              result.error = true
+              console.error(`[GATEWAY][FATAL] exec error: ${error}`)
+            } else {
+              this.EXTInstalled= this.searchInstalled()
+              console.log("[GATEWAY][DONE]", req.query.EXT)
+            }
+            res.json(result)
+          })
+          child.stdout.pipe(process.stdout)
+          child.stderr.pipe(process.stdout)
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .use("/delete" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
+          res.sendFile( __dirname+ "/admin/delete.html")
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+      
+      .use("/EXTDelete" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
+          console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
+          var result = {
+            error: false
+          }
+          var modulePath = path.normalize(__dirname + "/../")
+          var Command= 'cd ' + __dirname + '/../ && pwd && rm -rf ' + req.query.EXT
+          var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
+            if (error) {
+              result.error = true
+              console.error(`[GATEWAY][FATAL] exec error: ${error}`)
+            } else {
+              this.EXTInstalled= this.searchInstalled()
+              console.log("[GATEWAY][DONE]", req.query.EXT)
+            }
+            res.json(result)
+          })
+          child.stdout.pipe(process.stdout)
+          child.stderr.pipe(process.stdout)
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .get('/bundle.js', function (req, res) {
+        res.setHeader('Content-Type', 'application/javascript');
+        build().pipe(res);
+       })
 
     this.EXT.forEach( module => {
       this.app.get("/"+ module, (req,res) => {
@@ -174,38 +278,18 @@ module.exports = NodeHelper.create({
      }
     )
 
-    this.app.get('/AllEXT', (req, res) => {
-      if(req.user) res.send(this.EXT)
-      else res.status(403).sendFile(__dirname+ "/admin/403.html")
-    })
-
-    this.app.get('/DescriptionEXT', (req, res) => {
-      if(req.user) res.send(this.EXTDescription)
-      else res.status(403).sendFile(__dirname+ "/admin/403.html")
-    })
-
-    this.app.get('/InstalledEXT', (req, res) => {
-      if(req.user) res.send(this.EXTInstalled)
-      else res.status(403).sendFile(__dirname+ "/admin/403.html")
-    })
-
-    this.app.get('/ConfiguredEXT', (req, res) => {
-      if(req.user) res.send(this.EXTConfigured)
-      else res.status(403).sendFile(__dirname+ "/admin/403.html")
-    })
-
     this.app.use(function(req, res) {
-      console.log("[GATEWAY] Error! Don't find:", req.url)
+      var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+      console.log("[GATEWAY][" + ip +"] Error! Don't find:", req.url)
       res.status(404).sendFile(__dirname+ "/admin/404.html")
     })
+          
 
     /** Create Server **/
     this.config.listening = await this.purposeIP()
-    var server = this.app.listen(this.config.port, this.config.listening, () => {
-      var port = server.address().port
-      var host = server.address().address
-      console.log("[GATEWAY] Start listening on http://"+ host + ":" + port)
-    })
+    this.server = hyperwatch(this.app.listen(this.config.port, this.config.listening, () => {
+      console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
+    }))
   },
 
   /** search and purpose and ip address **/
@@ -229,7 +313,9 @@ module.exports = NodeHelper.create({
     // Register a login strategy
     passport.use('login', new LocalStrategy(
       (username, password, done) => {
-        if (username === this.user.username && password === this.user.password) return done(null, this.user)
+        if (username === this.user.username && password === this.user.password) {
+          return done(null, this.user)
+        }
         else done(null, false, { message: 'Invalid username and password.' })
       }
     ))
