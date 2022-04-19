@@ -332,5 +332,4 @@ module.exports = NodeHelper.create({
       done(null, this.user)
     })
   },
-
 })

@@ -307,3 +307,11 @@ function enableSearchAndSort() {
     }
   });
 }
+
+// make navbar active
+window.addEventListener("load", event => {
+  $('li.active').removeClass('active');
+  var path=location.pathname
+  if ((path == "/install") || (path == "/delete")) path = "/EXT"
+  $('a[href="' + path + '"]').closest('a').addClass('active');
+})
