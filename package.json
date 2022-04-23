@@ -32,6 +32,7 @@
     "domready": "~0.2.11",
     "express-session": "^1.17.2",
     "hyperwatch": "^0.5.4",
+    "jsoneditor": "^9.7.4",
     "mold-source-map": "~0.2.0",
     "npmlog": "0.0.2",
     "passport": "^0.5.2",

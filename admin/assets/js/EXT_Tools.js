@@ -310,8 +310,38 @@ function enableSearchAndSort() {
 
 // make navbar active
 window.addEventListener("load", event => {
+  //location.reload(true)
   $('li.active').removeClass('active');
   var path=location.pathname
   if ((path == "/install") || (path == "/delete")) path = "/EXT"
   $('a[href="' + path + '"]').closest('a').addClass('active');
 })
+
+function loadModulesConfig() {
+  return new Promise(resolve => {  
+    $.getJSON("/ModulesConfig" , (modules) => {
+      console.log("ModulesConfig", modules)
+      resolve(modules)
+    })
+  })
+}
+
+//make viewJSEditor
+async function viewJSEditor() {
+  var modules = await loadModulesConfig()
+  const container = document.getElementById('jsoneditor')
+
+  const options = {
+    mode: 'code',
+    mainMenuBar: false,
+    onEditable: function (node) {
+      if (!node.path) {
+        // In modes code and text, node is empty: no path, field, or value
+        // returning false makes the text area read-only
+        return false;
+      }
+    }
+  }
+
+  const editor = new JSONEditor(container, options, modules)
+}

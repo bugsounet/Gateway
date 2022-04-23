@@ -192,6 +192,11 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .get('/ModulesConfig', (req, res) => {
+        if(req.user) res.send(this.MMConfig.modules)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
       .use("/Terminal" , (req,res) => {
         if(req.user) res.sendFile( __dirname+ "/admin/terminal.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
@@ -271,6 +276,13 @@ module.exports = NodeHelper.create({
         build().pipe(res);
        })
 
+      .use("/MMConfig" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        res.sendFile( __dirname+ "/admin/mmconfig.html")
+      })
+
+      .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
+
     this.EXT.forEach( module => {
       this.app.get("/"+ module, (req,res) => {
         res.sendFile( __dirname+ "/admin/modules/" + module + "/index.html")
@@ -279,8 +291,6 @@ module.exports = NodeHelper.create({
     )
 
     this.app.use(function(req, res) {
-      var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-      console.log("[GATEWAY][" + ip +"] Error! Don't find:", req.url)
       res.status(404).sendFile(__dirname+ "/admin/404.html")
     })
           
