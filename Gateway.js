@@ -470,7 +470,7 @@ Module.register("Gateway", {
         this.sendNotification("EXT_YOUTUBE-PLAY", YouTube[3])
       }
       else if (this.GW["EXT-YouTubeVLC"].hello) {
-        this.sendNotification("EXT_YOUTUBEVLC-PLAY", YouTube[3])
+        this.sendNotification("EXT_YOUTUBEVLC-PLAY", firstURL)
       }
       return
     }
