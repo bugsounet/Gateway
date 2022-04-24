@@ -79,7 +79,7 @@ module.exports = NodeHelper.create({
     this.EXTConfigured= this.searchConfigured()
     this.EXTInstalled= this.searchInstalled()
     log("Find", this.EXTConfigured.length, "configured plugins in config file")
-    log("Find", this.EXTInstalled.length , "Installed plugins in MagicMirror")
+    log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
     this.Setup()
   },
 
@@ -197,12 +197,12 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
-      .use("/Terminal" , (req,res) => {
+      .get("/Terminal" , (req,res) => {
         if(req.user) res.sendFile( __dirname+ "/admin/terminal.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
-      .use("/install" , (req,res) => {
+      .get("/install" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
           res.sendFile( __dirname+ "/admin/install.html")
@@ -210,7 +210,7 @@ module.exports = NodeHelper.create({
         else res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
 
-      .use("/EXTInstall" , (req,res) => {
+      .get("/EXTInstall" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
@@ -276,20 +276,44 @@ module.exports = NodeHelper.create({
         build().pipe(res);
        })
 
-      .use("/MMConfig" , (req,res) => {
+      .get("/MMConfig" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         res.sendFile( __dirname+ "/admin/mmconfig.html")
       })
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 
+      .get("/EXTConfig" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        if (req.query.ext && 
+          this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+          this.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
+        ) {
+          res.sendFile( __dirname+ "/admin/EXTConfig.html")
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .get("/EXTGetDefaultConfig" , (req,res) => {
+        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        let data = require("./config/"+req.query.ext+"/config.js")
+        res.send(data.default)
+      })
+
+      .get("/EXTGetDefaultTemplate" , (req,res) => {
+        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        let data = require("./config/"+req.query.ext+"/config.js")
+        res.send(data.schema)
+      })
+/*
     this.EXT.forEach( module => {
       this.app.get("/"+ module, (req,res) => {
         res.sendFile( __dirname+ "/admin/modules/" + module + "/index.html")
       })
      }
     )
-
+*/
     this.app.use(function(req, res) {
       res.status(404).sendFile(__dirname+ "/admin/404.html")
     })

@@ -83,16 +83,22 @@ async function createTr() {
   Content +=`<table id="ipi-table" class="table table tablesorter"><thead class="thead-dark"><tr><th>Plugins Name</th><th class="sorter-false">Description</th><th class="filter-false">Actions</th><th class="filter-false">Configuration</th></tr></thead><tbody id="EXT">`
   
   AllEXT.forEach(pluginsName => {
+    // wiki page link
     Content += `<tr><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="Open the wiki page of ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
 
+    // EXT install link
     if (InstEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-primary btn-sm" role="button" href="/install?ext=${pluginsName}">Install</a></td>`
+    // EXT delete link
     else Content += `<td align="center"><a class="btn btn-danger btn-sm" role="button" href="/delete?ext=${pluginsName}">Delete</a></td>`
     
     if (InstEXT.indexOf(pluginsName) == -1) {
       if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
+      // config delete link
       else Content += '<td align="center"><button class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" type="button">Delete</button></td>'
     } else {
-      if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td align="center"><button class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" type="button">Configure</button></td>'
+      // configure link
+      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" role="button" href="/EXTConfig?ext=${pluginsName}">Configure</a></td>`
+      // modify link
       else Content += '<td align="center"><button class="btn btn-success btn-sm" type="button" data-bs-toggle="tooltip" title="Modify the configuration">Modify</button></td>'
     }
     Content += '</tr>'
@@ -342,6 +348,58 @@ async function viewJSEditor() {
       }
     }
   }
-
   const editor = new JSONEditor(container, options, modules)
+}
+
+function loadPluginConfig(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetDefaultConfig?ext="+plugin , (defaultConfig) => {
+      console.log("defaultConfig", defaultConfig)
+      resolve(defaultConfig)
+    })
+  })
+}
+
+function loadPluginTemplate(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
+      console.log("defaultTemplate", defaultTemplate)
+      resolve(defaultTemplate)
+    })
+  })
+}
+
+async function EXTConfigJSEditor() {
+  var EXT = undefined
+  if (window.location.search) {
+    EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
+  }
+  $('#EXTName').text(EXT)
+  var plugin = await loadPluginConfig(EXT)
+  var template= await loadPluginTemplate(EXT)
+  const container = document.getElementById('jsoneditor')
+
+  const options = {
+    schema: template,
+    mode: 'tree',
+    modes: ['code', 'tree'],
+    enableTransform: false,
+    enableSort: false,
+    onValidate: (json) => {
+      var errors = []
+      if (json && json.module && json.module != EXT) {
+        errors.push({
+          path: ['module'],
+          message: 'module name error: must be ' + EXT
+        })
+        return errors
+      }
+    },
+    onValidationError: (errors) => {
+      if (errors.length) $('#save').css("display", "none")
+      else $('#save').css("display", "block")
+    }
+  }
+  const editor = new JSONEditor(container, options, plugin)
+  editor.expandAll()
 }
