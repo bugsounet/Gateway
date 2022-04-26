@@ -19,8 +19,7 @@ var exec = require("child_process").exec
 
 module.exports = NodeHelper.create({
   start: function () {
-    this.config= null
-    this.MMConfig= null
+    this.MMConfig= null // real config file (config.js)
     this.EXT= null // EXT plugins list
     this.EXTDescription = {}
     this.EXTConfigured = [] // configured EXT in config
@@ -46,8 +45,8 @@ module.exports = NodeHelper.create({
         if (this.config.useApp) this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
-        this.MMConfig = payload.MM
-        //log("MMConfig:", this.MMConfig)
+        this.MMConfig = tools.readConfig()
+        if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
         this.initialize()
@@ -121,7 +120,7 @@ module.exports = NodeHelper.create({
 
     // For parsing post request's data/body
     this.app.use(bodyParser.json())
-    this.app.use(bodyParser.urlencoded({ extended: false }))
+    this.app.use(bodyParser.urlencoded({ extended: true }))
 
     // Tells app to use password session
     this.app.use(passport.initialize())
@@ -193,7 +192,7 @@ module.exports = NodeHelper.create({
       })
 
       .get('/ModulesConfig', (req, res) => {
-        if(req.user) res.send(this.MMConfig.modules)
+        if(req.user) res.send(this.MMConfig)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
@@ -305,13 +304,27 @@ module.exports = NodeHelper.create({
         res.send(data.schema)
       })
 
+      .get("/EXTSaveConfig" , (req,res) => {
+        if(!req.user || !req.query.config) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        let data = req.query.config
+        console.log(data)
+        res.send(data)
+      })
+      
+      .post("/writeEXT", (req,res) => {
+        console.log("[Gateway] Receiving EXT data ...")
+        let data = req.body
+        console.log(data)
+        res.status(200)
+        console.log("[GATEWAY] Todo: add this config to MM config and make callback when done")
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 
       .use(function(req, res) {
         res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
           
-
     /** Create Server **/
     this.config.listening = await tools.purposeIP()
     this.server = hyperwatch(this.app.listen(this.config.port, this.config.listening, () => {

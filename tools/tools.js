@@ -5,7 +5,7 @@ const si = require('systeminformation')
 
 function readConfig() {
   var MMConfig = undefined
-  let file = path.resolve(__dirname, "../../config/config.js")
+  let file = path.resolve(__dirname, "../../../config/config.js")
   if (fs.existsSync(file)) MMConfig = require(file)
   return MMConfig
 }
@@ -14,7 +14,7 @@ function saveConfig(MMConfig) {
   /** Part of MMM-Remote-control module (simplified) **/
   var log = (...args) => { /* do nothing */ }
   var backupHistorySize = 20
-  var configPath = path.resolve("../../config/config.js")
+  var configPath = path.resolve("../../../config/config.js")
   var best = -1
   var bestTime = null
   for (var i = backupHistorySize - 1; i > 0; i--) {

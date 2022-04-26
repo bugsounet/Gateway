@@ -402,4 +402,15 @@ async function EXTConfigJSEditor() {
   }
   const editor = new JSONEditor(container, options, plugin)
   editor.expandAll()
+  document.getElementById('save').onclick = function () {
+    let data = editor.get()
+    console.log("editor", data)
+    $.ajax({
+      type: "POST",
+      url: "/writeEXT",
+      data: data,
+      success: "done"
+      //dataType: dataType
+    });
+  }
 }

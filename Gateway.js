@@ -154,7 +154,7 @@ Module.register("Gateway", {
   },
 
   socketNotificationReceived: function(noti,payload) {
-    if (noti== "MMConfig") this.sendSocketNotification("MMConfig", { MM: config, DB: this.ExtDB, Description: this.EXTDescription } )
+    if (noti== "MMConfig") this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: this.EXTDescription } )
   },
   /***********************/
   /** GA Status Gateway **/
