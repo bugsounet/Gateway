@@ -7,7 +7,7 @@ var cors = require("cors")
 const fs = require("fs")
 const path = require("path")
 const tools = require("./tools/tools.js")
-var build =  require('./build')
+var build =  require('./tools/build.js')
 
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
@@ -219,7 +219,7 @@ module.exports = NodeHelper.create({
             error: false
           }
           var modulePath = path.normalize(__dirname + "/../")
-          var Command= 'cd ' + __dirname + '/../ && pwd && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
+          var Command= 'cd ' + modulePath + ' && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
 
           var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
             if (error) {
@@ -237,7 +237,7 @@ module.exports = NodeHelper.create({
         else res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
 
-      .use("/delete" , (req,res) => {
+      .get("/delete" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
           res.sendFile( __dirname+ "/admin/delete.html")
@@ -245,7 +245,7 @@ module.exports = NodeHelper.create({
         else res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
       
-      .use("/EXTDelete" , (req,res) => {
+      .get("/EXTDelete" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
@@ -254,7 +254,7 @@ module.exports = NodeHelper.create({
             error: false
           }
           var modulePath = path.normalize(__dirname + "/../")
-          var Command= 'cd ' + __dirname + '/../ && pwd && rm -rf ' + req.query.EXT
+          var Command= 'cd ' + modulePath + ' && rm -rf ' + req.query.EXT
           var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
             if (error) {
               result.error = true
@@ -281,8 +281,6 @@ module.exports = NodeHelper.create({
         res.sendFile( __dirname+ "/admin/mmconfig.html")
       })
 
-      .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
-
       .get("/EXTConfig" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         if (req.query.ext && 
@@ -306,40 +304,19 @@ module.exports = NodeHelper.create({
         let data = require("./config/"+req.query.ext+"/config.js")
         res.send(data.schema)
       })
-/*
-    this.EXT.forEach( module => {
-      this.app.get("/"+ module, (req,res) => {
-        res.sendFile( __dirname+ "/admin/modules/" + module + "/index.html")
+
+      .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
+
+      .use(function(req, res) {
+        res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
-     }
-    )
-*/
-    this.app.use(function(req, res) {
-      res.status(404).sendFile(__dirname+ "/admin/404.html")
-    })
           
 
     /** Create Server **/
-    this.config.listening = await this.purposeIP()
+    this.config.listening = await tools.purposeIP()
     this.server = hyperwatch(this.app.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
     }))
-  },
-
-  /** search and purpose and ip address **/
-  purposeIP: async function() {
-    var IP = await tools.getIP()
-    var found = 0
-    return new Promise(resolve => {
-      IP.forEach(network => {
-        if (network.default) {
-          resolve(network.ip)
-          found = 1
-          return
-        }
-      })
-      if (!found) resolve("127.0.0.1")
-    })
   },
 
   /** passport local strategy with username/password defined on config **/
