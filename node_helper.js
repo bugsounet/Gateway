@@ -16,12 +16,14 @@ var flash = require('connect-flash')
 var bodyParser = require('body-parser')
 var hyperwatch =  require('hyperwatch')
 var exec = require("child_process").exec
+var spawn = require('child_process').spawn
+const pm2 = require('pm2')
 
 module.exports = NodeHelper.create({
   start: function () {
     this.MMConfig= null // real config file (config.js)
     this.EXT= null // EXT plugins list
-    this.EXTDescription = {}
+    this.EXTDescription = {} // description of EXT
     this.EXTConfigured = [] // configured EXT in config
     this.EXTInstalled= [] // installed EXT in MM
     this.user = {
@@ -57,7 +59,6 @@ module.exports = NodeHelper.create({
   /** init function **/
   initialize: function () {
     console.log("[GATEWAY] Start app...")
-    if (this.config.testingMode) console.log("[GATEWAY] TestingMode is activated, don't worry.. no change will be apply!")
     log("EXT plugins in database:", this.EXT.length)
     if (!this.config.username && !this.config.password) {
       console.error("[GATEWAY] Your have not defined user/password in config!")
@@ -311,12 +312,30 @@ module.exports = NodeHelper.create({
         res.send(data)
       })
       
-      .post("/writeEXT", (req,res) => {
+      .post("/writeEXT", async (req,res) => {
         console.log("[Gateway] Receiving EXT data ...")
         let data = req.body
-        console.log(data)
-        res.status(200)
-        console.log("[GATEWAY] Todo: add this config to MM config and make callback when done")
+        var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
+        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = tools.readConfig()
+          this.EXTConfigured= this.searchConfigured()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+      .get("/Restart" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        res.sendFile(__dirname+ "/admin/restarting.html")
+        setTimeout(() => this.restartMM() , 1000)         
+      })
+
+      .get("/Die" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        res.sendFile(__dirname+ "/admin/die.html")
+        setTimeout(() => this.doClose(), 3000)
       })
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
@@ -356,4 +375,42 @@ module.exports = NodeHelper.create({
       done(null, this.user)
     })
   },
+
+  /* Part of EXT-UpdateNotification */
+  /** MagicMirror restart and stop **/
+  restartMM: function() {
+    if (this.config.usePM2) {
+      pm2.restart(this.config.PM2Id, (err, proc) => {
+        if (err) {
+          console.log("[GATEWAY] " + err)
+        }
+      })
+    }
+    else this.doRestart()
+  },
+
+  doRestart: function() {
+    /** if don't use PM2 and launched with mpn start **/
+    /** but no control of it **/
+    /** I add stopMM command on telegram to stop process **/
+    /** @Saljoke is happy it's sooOOooOO Good ! **/
+    console.log("Restarting MagicMirror...")
+    var MMdir = path.normalize(__dirname + "/../../")
+    const out = process.stdout
+    const err = process.stderr
+    const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+    subprocess.unref()
+    process.exit()
+  },
+
+  doClose: function() {
+    if (!this.config.usePM2) process.abort()
+    else {
+      pm2.stop(this.config.PM2Id, (err, proc) => {
+        if (err) {
+          console.log("[GATEWAY] " + err)
+        }
+      })
+    }
+  }
 })

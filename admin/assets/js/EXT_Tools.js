@@ -370,6 +370,10 @@ function loadPluginTemplate(plugin) {
 }
 
 async function EXTConfigJSEditor() {
+  $('#wait').css("display", "none")
+  $('#done').css("display", "none")
+  $('#error').css("display", "none")
+  $('#buttonGrp').removeClass('invisible')
   var EXT = undefined
   if (window.location.search) {
     EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
@@ -405,12 +409,19 @@ async function EXTConfigJSEditor() {
   document.getElementById('save').onclick = function () {
     let data = editor.get()
     console.log("editor", data)
-    $.ajax({
-      type: "POST",
-      url: "/writeEXT",
-      data: data,
-      success: "done"
-      //dataType: dataType
-    });
+    $('#save').css("display", "none")
+    $('#wait').css("display", "block")
+    $.post( "/writeEXT", data)
+      .done(function( back ) {
+        if (back.error) {
+          $('#wait').css("display", "none")
+          $('#error').css("display", "block")
+          alert(back.error)
+        } else { 
+          $('#wait').css("display", "none")
+          $('#done').css("display", "block")
+          alert("Please restart MagicMirror to apply new configuration!")
+        }
+      });
   }
 }

@@ -13,7 +13,8 @@ Module.register("Gateway", {
     port: 8081,
     username: "admin",
     password: "admin",
-    testingMode: true
+    usePM2: false,
+    PM2Id: 0
   },
 
   start: async function () {
