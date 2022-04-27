@@ -281,16 +281,50 @@ module.exports = NodeHelper.create({
         res.sendFile( __dirname+ "/admin/mmconfig.html")
       })
 
-      .get("/EXTConfig" , (req,res) => {
+      .get("/EXTCreateConfig" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext && 
+        if (req.query.ext &&
           this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
           this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
           this.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
         ) {
-          res.sendFile( __dirname+ "/admin/EXTConfig.html")
+          res.sendFile( __dirname+ "/admin/EXTCreateConfig.html")
         }
         else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .get("/EXTModifyConfig" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        if (req.query.ext &&
+          this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+          this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+        ) {
+          res.sendFile( __dirname+ "/admin/EXTModifyConfig.html")
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .get("/EXTDeleteConfig" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        if (req.query.ext &&
+          this.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
+          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+          this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+        ) {
+          res.sendFile( __dirname+ "/admin/EXTDeleteConfig.html")
+        }
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      })
+
+      .get("/EXTGetCurrentConfig" , (req,res) => {
+        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        var index = this.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
+        if (index > -1) {
+          let data = this.MMConfig.modules[index]
+          return res.send(data)
+        }
+        res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
 
       .get("/EXTGetDefaultConfig" , (req,res) => {
@@ -313,14 +347,27 @@ module.exports = NodeHelper.create({
       })
       
       .post("/writeEXT", async (req,res) => {
-        console.log("[Gateway] Receiving EXT data ...")
-        let data = req.body
+        console.log("[Gateway] Receiving EXT data ...", req.body)
+        let data = JSON.parse(req.body.data)
         var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
         var resultSaveConfig = await tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
           this.MMConfig = tools.readConfig()
+          this.EXTConfigured= this.searchConfigured()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+      .post("/deleteEXT", async (req,res) => {
+        console.log("[Gateway] Receiving EXT data ...", req.body)
+        let EXTName = req.body.data
+        var NewConfig = await tools.configDelete(EXTName, this.MMConfig)
+        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
           this.EXTConfigured= this.searchConfigured()
           console.log("[GATEWAY] Reload config")
         }

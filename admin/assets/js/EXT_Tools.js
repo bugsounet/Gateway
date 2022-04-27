@@ -94,12 +94,12 @@ async function createTr() {
     if (InstEXT.indexOf(pluginsName) == -1) {
       if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
       // config delete link
-      else Content += '<td align="center"><button class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" type="button">Delete</button></td>'
+      else Content += `<td align="center"><a class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" role="button" href="/EXTDeleteConfig?ext=${pluginsName}">Delete</a></td>`
     } else {
       // configure link
-      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" role="button" href="/EXTConfig?ext=${pluginsName}">Configure</a></td>`
+      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" role="button" href="/EXTCreateConfig?ext=${pluginsName}">Configure</a></td>`
       // modify link
-      else Content += '<td align="center"><button class="btn btn-success btn-sm" type="button" data-bs-toggle="tooltip" title="Modify the configuration">Modify</button></td>'
+      else Content += `<td align="center"><a class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="Modify the configuration" role="button" href="/EXTModifyConfig?ext=${pluginsName}">Modify</a></td>`
     }
     Content += '</tr>'
   })
@@ -316,7 +316,6 @@ function enableSearchAndSort() {
 
 // make navbar active
 window.addEventListener("load", event => {
-  //location.reload(true)
   $('li.active').removeClass('active');
   var path=location.pathname
   if ((path == "/install") || (path == "/delete")) path = "/EXT"
@@ -374,10 +373,7 @@ async function EXTConfigJSEditor() {
   $('#done').css("display", "none")
   $('#error').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
-  var EXT = undefined
-  if (window.location.search) {
-    EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
-  }
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
   $('#EXTName').text(EXT)
   var plugin = await loadPluginConfig(EXT)
   var template= await loadPluginTemplate(EXT)
@@ -407,11 +403,11 @@ async function EXTConfigJSEditor() {
   const editor = new JSONEditor(container, options, plugin)
   editor.expandAll()
   document.getElementById('save').onclick = function () {
-    let data = editor.get()
-    console.log("editor", data)
+    let data = editor.getText()
+    console.log("editor", JSON.parse(data))
     $('#save').css("display", "none")
     $('#wait').css("display", "block")
-    $.post( "/writeEXT", data)
+    $.post( "/writeEXT", { data: data })
       .done(function( back ) {
         if (back.error) {
           $('#wait').css("display", "none")
@@ -421,6 +417,112 @@ async function EXTConfigJSEditor() {
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
           alert("Please restart MagicMirror to apply new configuration!")
+        }
+      });
+  }
+}
+
+function loadPluginCurrentConfig(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetCurrentConfig?ext="+plugin , (currentConfig) => {
+      console.log("CurrentConfig", currentConfig)
+      resolve(currentConfig)
+    })
+  })
+}
+
+async function EXTModifyConfigJSEditor() {
+  $('#wait').css("display", "none")
+  $('#done').css("display", "none")
+  $('#error').css("display", "none")
+  $('#buttonGrp').removeClass('invisible')
+  var EXT = undefined
+  if (window.location.search) {
+    EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
+  }
+  $('#EXTName').text(EXT)
+  var plugin = await loadPluginCurrentConfig(EXT)
+  var template= await loadPluginTemplate(EXT)
+  const container = document.getElementById('jsoneditor')
+
+  const options = {
+    schema: template,
+    mode: 'tree',
+    modes: ['code', 'tree'],
+    enableTransform: false,
+    enableSort: false,
+    onValidate: (json) => {
+      var errors = []
+      if (json && json.module && json.module != EXT) {
+        errors.push({
+          path: ['module'],
+          message: 'module name error: must be ' + EXT
+        })
+        return errors
+      }
+    },
+    onValidationError: (errors) => {
+      if (errors.length) $('#save').css("display", "none")
+      else $('#save').css("display", "block")
+    }
+  }
+  const editor = new JSONEditor(container, options, plugin)
+  editor.expandAll()
+  document.getElementById('save').onclick = function () {
+    let data = editor.getText()
+    console.log("editor", JSON.parse(data))
+    $('#save').css("display", "none")
+    $('#wait').css("display", "block")
+    $.post( "/writeEXT", { data: data })
+      .done(function( back ) {
+        if (back.error) {
+          $('#wait').css("display", "none")
+          $('#error').css("display", "block")
+          alert(back.error)
+        } else { 
+          $('#wait').css("display", "none")
+          $('#done').css("display", "block")
+          alert("Please restart MagicMirror to apply new configuration!")
+        }
+      });
+  }
+}
+
+async function EXTDeleteConfigJSEditor() {
+  $('#wait').css("display", "none")
+  $('#done').css("display", "none")
+  $('#error').css("display", "none")
+  $('#buttonGrp').removeClass('invisible')
+  $('#confirm').css("display", "block")
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
+  $('#EXTName').text(EXT)
+  var plugin = await loadPluginCurrentConfig(EXT)
+  const container = document.getElementById('jsoneditor')
+
+  const options = {
+    mode: 'code',
+    mainMenuBar: false,
+    onEditable: function (node) {
+      if (!node.path) {
+        // In modes code and text, node is empty: no path, field, or value
+        // returning false makes the text area read-only
+        return false;
+      }
+    }
+  }
+  const editor = new JSONEditor(container, options, plugin)
+  document.getElementById('confirm').onclick = function () {
+    $('#confirm').css("display", "none")
+    $('#wait').css("display", "block")
+    $.post( "/deleteEXT", { data: EXT })
+      .done(function( back ) {
+        if (back.error) {
+          $('#wait').css("display", "none")
+          $('#error').css("display", "block")
+          alert(back.error)
+        } else { 
+          $('#wait').css("display", "none")
+          $('#done').css("display", "block")
         }
       });
   }

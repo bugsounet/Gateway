@@ -80,6 +80,15 @@ function configAddOrModify(EXTConfig, MMConfig) {
   })
 }
 
+function configDelete(EXT, MMConfig) {
+  return new Promise(resolve => {
+    modules = MMConfig.modules
+    index = modules.map(e => { return e.module }).indexOf(EXT)
+    modules.splice(index, 1) // delete modules
+    resolve(MMConfig)
+  })
+}
+
 function getIP () {
   return new Promise((resolve) => {
     si.networkInterfaceDefault()
@@ -136,7 +145,8 @@ async function purposeIP() {
   })
 }
 
+exports.purposeIP = purposeIP
 exports.readConfig = readConfig
 exports.saveConfig = saveConfig
-exports.purposeIP = purposeIP
 exports.configAddOrModify = configAddOrModify
+exports.configDelete = configDelete
