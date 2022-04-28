@@ -12,7 +12,6 @@ var build =  require('./tools/build.js')
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
-var flash = require('connect-flash')
 var bodyParser = require('body-parser')
 var hyperwatch =  require('hyperwatch')
 var exec = require("child_process").exec
@@ -43,7 +42,6 @@ module.exports = NodeHelper.create({
         if (this.server) return
         this.config = payload
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
-        //log("Config:", this.config)
         if (this.config.useApp) this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
@@ -127,8 +125,6 @@ module.exports = NodeHelper.create({
     this.app.use(passport.initialize())
     this.app.use(passport.session())
 
-    this.app.use(flash())
-
     var options = {
       dotfiles: 'ignore',
       etag: false,
@@ -155,17 +151,31 @@ module.exports = NodeHelper.create({
       })
 
       .get('/login', (req, res) => {
-        let error = req.flash('error')
-        if (error.length) res.redirect("/login?err=" + error)
-        else res.sendFile(__dirname+ "/admin/login.html")
+        if (req.user) res.redirect('/')
+        res.sendFile(__dirname+ "/admin/login.html")
       })
 
-      .post('/login', passport.authenticate('login', {
-          successRedirect: '/',
-          failureRedirect: '/login',
-          failureFlash: true
-        })
-      )
+      .post('/auth', (req, res, next) => {
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        passport.authenticate('login', (err, user, info) => {
+          if (err) {
+            console.log("[GATEWAY][" + ip + "] Error", err)
+            return next(err)
+          }
+          if (!user) {
+            console.log("[GATEWAY][" + ip + "] Bad Login", info)
+            return res.send({ err: info })
+          }
+          req.logIn(user, err => {
+            if (err) {
+              console.log("[GATEWAY][" + ip + "] Login error:", err)
+              return res.send({ err: err })
+            }
+            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you! (and don't be so lazy...)")
+            return res.send({ login: true })
+          })
+        })(req, res, next)
+      })
 
       .get('/logout', (req, res) => {
         req.logout()
@@ -423,8 +433,8 @@ module.exports = NodeHelper.create({
     })
   },
 
-  /* Part of EXT-UpdateNotification */
-  /** MagicMirror restart and stop **/
+  /** Part of EXT-UpdateNotification **/
+  // MagicMirror restart and stop
   restartMM: function() {
     if (this.config.usePM2) {
       pm2.restart(this.config.PM2Id, (err, proc) => {
@@ -437,10 +447,6 @@ module.exports = NodeHelper.create({
   },
 
   doRestart: function() {
-    /** if don't use PM2 and launched with mpn start **/
-    /** but no control of it **/
-    /** I add stopMM command on telegram to stop process **/
-    /** @Saljoke is happy it's sooOOooOO Good ! **/
     console.log("Restarting MagicMirror...")
     var MMdir = path.normalize(__dirname + "/../../")
     const out = process.stdout

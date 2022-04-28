@@ -38,12 +38,9 @@
                                     <div class="text-center">
                                         <h4 class="text-dark mb-4">Welcome to Gateway!</h4>
                                     </div>
-                                    <form class="user" action="/login" method="POST">
+                                    <form id="login" class="user">
                                         <div class="mb-3"><input class="form-control form-control-user" type="username" id="exampleInputEmail" placeholder="Enter your username..." name="username"></div>
-                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
-                                        <div class="mb-3">
-                                            <div class="custom-control custom-checkbox small"></div>
-                                        </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
                                         <hr>
                                     </form><span id="flashErr" style="color: var(--bs-red);font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span>
                                 </div>
@@ -58,7 +55,21 @@
                 </div>
             </div>
         </div>
-    </div><script>if (window.location.search) {var errValue = decodeURIComponent(window.location.search.match(/(\?|&)err\=([^&]*)/)[2]);document.getElementById("flashErr").innerHTML = "Error: " + errValue;}</script>
+    </div>
+<script>
+  window.addEventListener("load", event => {
+    $(document).ready(function() {
+      $("#login").submit(function(event) {
+        event.preventDefault()
+        $.post( "/auth", $(this).serialize())
+          .done(back => {
+            if (back.err) document.getElementById("flashErr").innerHTML = "Error: " + back.err.message
+            else $(location).attr('href',"/")
+          })
+      })
+    })
+  })
+</script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
