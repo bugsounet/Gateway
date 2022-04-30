@@ -383,6 +383,11 @@ module.exports = NodeHelper.create({
         }
       })
 
+      .get("/Tools" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        res.sendFile(__dirname+ "/admin/tools.html")
+      })
+
       .get("/Restart" , (req,res) => {
         if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
         res.sendFile(__dirname+ "/admin/restarting.html")
