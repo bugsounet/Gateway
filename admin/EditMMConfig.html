@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Die - Gateway</title>
+    <title>MagicMirror Configuration - Gateway</title>
     <link rel="icon" type="image/png" sizes="42x42" href="assets/img/Gaterway.png">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -48,17 +48,19 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div class="container">
+                            <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
+                        </div>
+                    </div>
                 </nav>
-                <div class="container-fluid"><div class="caption v-middle text-center">
-  <h1 class="cd-headline clip">
-    <span class="cd-words-wrapper">
-		  <b class="is-visible">See you soon!</b>
-			<b>For a better use...</b>
-      <b>And be more lazy !</b>
-		</span>
-	</h1>
-</div></div>
+                <div class="container-fluid">
+                    <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true">MagicMirror configuration editor</h3><select id="backup" style="margin-bottom: 10px;" onchange="location = &quot;/EditMMConfig?config=&quot;+this.value;">
+                        <option value="default" selected="">Actual Configuration</option>
+                    </select>
+                    <div id="jsoneditor" style="height: 65vh"></div>
+                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px"><button class="btn btn-success" id="save" type="button" style="padding: 6px 12px;border-radius: 5.6px;">Save</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="done" style="margin: 0px;border-radius: 5.6px;" href="/Tools">Done</a><a class="btn btn-danger flash animated" role="button" id="error" style="margin: 0px;border-radius: 5.6px;" href="/Terminal">Error</a><button class="btn btn-success" id="load" type="button" style="padding: 6px 12px;border-radius: 5.6px;">Load</button></div>
+                </div>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
@@ -66,7 +68,8 @@
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div>
+    </div><script src="jsoneditor/dist/jsoneditor.min.js"></script>
+<script type="text/javascript">window.addEventListener("load",event=>EditMMConfigJSEditor())</script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

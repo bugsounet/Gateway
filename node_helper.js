@@ -35,7 +35,7 @@ module.exports = NodeHelper.create({
     this.server= null
   },
 
-  socketNotificationReceived: function (noti, payload) {
+  socketNotificationReceived: async function (noti, payload) {
     switch (noti) {
       case "INIT":
         console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
@@ -45,7 +45,7 @@ module.exports = NodeHelper.create({
         if (this.config.useApp) this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
-        this.MMConfig = tools.readConfig()
+        this.MMConfig = await tools.readConfig()
         if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
@@ -71,41 +71,11 @@ module.exports = NodeHelper.create({
     }
     this.passportConfig()
     this.app = express()
-    this.wantedConfigModule = null
-    this.moduleFile = null
-    this.moduleToInstall= null
-    this.EXTConfigured= this.searchConfigured()
-    this.EXTInstalled= this.searchInstalled()
-    log("Find", this.EXTConfigured.length, "configured plugins in config file")
+    this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
+    this.EXTInstalled= tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
+    log("Find", this.EXTConfigured.length, "configured plugins in config file")
     this.Setup()
-  },
-
-  /** search installed EXT from DB**/
-  searchConfigured: function () {
-    try {
-      var Configured = []
-      this.MMConfig.modules.find(m => {
-        if (this.EXT.includes(m.module)) Configured.push(m.module)
-      })
-      return Configured.sort()
-    } catch (e) {
-      console.log("[GATEWAY] Error! " + e)
-      return Configured.sort()
-    }
-  },
-
-  /** search installed EXT **/
-  searchInstalled: function () {
-    var Installed = []
-    this.EXT.find(m => {
-      if (fs.existsSync(path.resolve(__dirname + "/../" + m + "/package.json"))) {
-        let name = require((path.resolve(__dirname + "/../" + m + "/package.json"))).name
-        if (name == m) Installed.push(m)
-        else console.warn("[GATEWAY] Found:", m, "but in package.json name is not the same:", name)
-      }
-    })
-    return Installed.sort()
   },
 
   /** http server **/
@@ -202,7 +172,7 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
-      .get('/ModulesConfig', (req, res) => {
+      .get('/GetMMConfig', (req, res) => {
         if(req.user) res.send(this.MMConfig)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -236,7 +206,7 @@ module.exports = NodeHelper.create({
               result.error = true
               console.error(`[GATEWAY][FATAL] exec error: ${error}`)
             } else {
-              this.EXTInstalled= this.searchInstalled()
+              this.EXTInstalled= tools.searchInstalled(this.EXT)
               console.log("[GATEWAY][DONE]", req.query.EXT)
             }
             res.json(result)
@@ -270,7 +240,7 @@ module.exports = NodeHelper.create({
               result.error = true
               console.error(`[GATEWAY][FATAL] exec error: ${error}`)
             } else {
-              this.EXTInstalled= this.searchInstalled()
+              this.EXTInstalled= tools.searchInstalled(this.EXT)
               console.log("[GATEWAY][DONE]", req.query.EXT)
             }
             res.json(result)
@@ -365,7 +335,7 @@ module.exports = NodeHelper.create({
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
           this.MMConfig = tools.readConfig()
-          this.EXTConfigured= this.searchConfigured()
+          this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -378,7 +348,8 @@ module.exports = NodeHelper.create({
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.EXTConfigured= this.searchConfigured()
+          this.MMConfig = tools.readConfig()
+          this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -400,9 +371,54 @@ module.exports = NodeHelper.create({
         setTimeout(() => this.doClose(), 3000)
       })
 
+      .get("/EditMMConfig" , (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        res.sendFile(__dirname+ "/admin/EditMMConfig.html")
+      })
+
+      .get("/GetBackupName" , async (req,res) => {
+        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        var names = await tools.loadBackupNames()
+        res.send(names)
+      })
+
+      .get("/GetBackupFile" , async (req,res) => {
+        if(!req.user || !req.query.config) return res.status(403).sendFile(__dirname+ "/admin/403.html")
+        let data = req.query.config
+        var file = await tools.loadBackupFile(data)
+        res.send(file)
+      })
+
+      .post("/loadBackup", async (req,res) => {
+        console.log("[Gateway] Receiving backup data ...")
+        let file = req.body.data
+        var loadFile = await tools.loadBackupFile(file)
+        var resultSaveConfig = await tools.saveConfig(loadFile)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+      .post("/writeConfig", async (req,res) => {
+        console.log("[Gateway] Receiving config data ...")
+        let data = JSON.parse(req.body.data)
+        var resultSaveConfig = await tools.saveConfig(data)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 
       .use(function(req, res) {
+        console.warn("[GATEWAY] Don't find:", req.url)
         res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
           
@@ -415,7 +431,6 @@ module.exports = NodeHelper.create({
 
   /** passport local strategy with username/password defined on config **/
   passportConfig: function() {
-    // Register a login strategy
     passport.use('login', new LocalStrategy(
       (username, password, done) => {
         if (username === this.user.username && password === this.user.password) {
@@ -425,15 +440,11 @@ module.exports = NodeHelper.create({
       }
     ))
 
-    // Required for storing user info into session
     passport.serializeUser((user, done) => {
       done(null, user._id)
     })
 
-    // Required for retrieving user from session
     passport.deserializeUser((id, done) => {
-      // The user should be queried against db
-      // using the id
       done(null, this.user)
     })
   },

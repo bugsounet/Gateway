@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
     <link rel="stylesheet" href="assets/css/Animated-Type-Heading.css">
     <link rel="stylesheet" href="assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="assets/css/Countries-Select-Menu.css">
     <link rel="stylesheet" href="assets/css/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-    <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
     <link rel="stylesheet" href="assets/css/Navbar-With-Button.css">
     <link rel="stylesheet" href="assets/css/Pricing-Tables.css">
 </head>
@@ -59,7 +59,30 @@
 	</h1>
 </div>
 <script>
+  // callback to receive the 200 response
+  function handle200 (response) {
+    window.location.href = "/"
+  }
+
+  function checkPage(callback) {
+    const xhr = new XMLHttpRequest(),
+    method = "GET",
+    url = "/";
+    xhr.open(method, url, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
+      if (xhr.status === 200) {
+        return callback(xhr.status);
+      }
+      xhr.open(method, url, true);
+      xhr.send();
+    }
+    xhr.send();
+  }
+
   setTimeout(() => {
+    checkPage(handle200);
+    /*
     $.ajax({
       type: "GET",
       url: '/login',
@@ -68,6 +91,7 @@
         window.location.href = "/"
       }
     });
+    */
   }, 5000)
 </script>
                     <div class="text-center mt-5"><span class="spinner-border textprimary text-primary" role="status"></span></div>

@@ -4,40 +4,60 @@ const util = require("util")
 const si = require('systeminformation')
 
 function readConfig() {
-  var MMConfig = undefined
-  let file = path.resolve(__dirname, "../../../config/config.js")
-  if (fs.existsSync(file)) MMConfig = require(file)
-  return MMConfig
+  return new Promise(resolve => {
+    var MMConfig = undefined
+    let file = path.resolve(__dirname, "../../../config/config.js")
+    if (fs.existsSync(file)) MMConfig = require(file)
+    resolve(MMConfig)
+  })
+}
+
+/** search installed EXT from DB**/
+function searchConfigured (config,ext) {
+  try {
+    var Configured = []
+    config.modules.find(m => {
+      if (ext.includes(m.module)) Configured.push(m.module)
+    })
+    return Configured.sort()
+  } catch (e) {
+    console.log("[GATEWAY] Error! " + e)
+    return Configured.sort()
+  }
+}
+
+/** search installed EXT **/
+function searchInstalled (ext) {
+  var Installed = []
+  ext.find(m => {
+    if (fs.existsSync(path.resolve(__dirname + "/../../" + m + "/package.json"))) {
+      let name = require((path.resolve(__dirname + "/../../" + m + "/package.json"))).name
+      if (name == m) Installed.push(m)
+      else console.warn("[GATEWAY] Found:", m, "but in package.json name is not the same:", name)
+    }
+  })
+  return Installed.sort()
+}
+
+function timeStamp() {
+  var now = new Date()
+  var date = [ now.getFullYear(), now.getMonth() + 1, now.getDate() ]
+  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ]
+  for (var i = 1; i < 3; i++ ) {
+    if (time[i] < 10) {
+      time[i] = "0" + time[i]
+    }
+    if (date[i] < 10) {
+      date[i] = "0" + date[i]
+    }
+  }
+  return date.join("") + "-" +time.join(":")
 }
 
 function saveConfig(MMConfig) {
   return new Promise(resolve => {
-    var log = (...args) => { /* do nothing */ }
-    var backupHistorySize = 20
     var configPath = path.resolve(__dirname, "../../../config/config.js")
-    var best = -1
-    var bestTime = null
-    for (var i = backupHistorySize - 1; i > 0; i--) {
-      let backupPath = path.resolve(__dirname ,"../backup/config.js.backup" + i)
-      try {
-        var stats = fs.statSync(backupPath)
-        if (best === -1 || stats.mtime < bestTime) {
-          best = i
-          bestTime = stats.mtime
-        }
-      } catch (e) {
-        if (e.code === "ENOENT") {
-          best = i
-          bestTime = "0000-00-00T00:00:00Z"
-        }
-      }
-    }
-
-    if (best === -1) {
-      resolve({error: "Error! Backing up config failed, not saving!" })
-      return console.log("[GATEWAY] Error! Backing up config failed, not saving!")
-    }
-    let backupPath = path.resolve(__dirname, "../backup/config.js.backup" + best)
+    let backupPath = path.resolve(__dirname, "../backup/config.js.GW." + timeStamp())
     var source = fs.createReadStream(configPath)
     var destination = fs.createWriteStream(backupPath)
 
@@ -86,6 +106,28 @@ function configDelete(EXT, MMConfig) {
     index = modules.map(e => { return e.module }).indexOf(EXT)
     modules.splice(index, 1) // delete modules
     resolve(MMConfig)
+  })
+}
+
+function loadBackupNames() {
+  return new Promise(resolve => {
+    const regex = "config.js.GW"
+    var List = []
+    var FileList = fs.readdirSync(path.resolve(__dirname, "../backup/"))
+    FileList.forEach((file) => {
+      const testFile = file.match(regex)
+      if (testFile) List.push(file)
+    })
+    resolve(List)
+  })
+}
+
+function loadBackupFile(file) {
+  return new Promise(resolve => {
+    var BackupConfig = {}
+    let filePath = path.resolve(__dirname, "../backup/" + file)
+    if (fs.existsSync(filePath)) BackupConfig = require(filePath)
+    resolve(BackupConfig)
   })
 }
 
@@ -150,3 +192,7 @@ exports.readConfig = readConfig
 exports.saveConfig = saveConfig
 exports.configAddOrModify = configAddOrModify
 exports.configDelete = configDelete
+exports.searchConfigured = searchConfigured
+exports.searchInstalled = searchInstalled
+exports.loadBackupNames = loadBackupNames
+exports.loadBackupFile = loadBackupFile
