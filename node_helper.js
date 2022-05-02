@@ -334,7 +334,7 @@ module.exports = NodeHelper.create({
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = tools.readConfig()
+          this.MMConfig = await tools.readConfig()
           this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
           console.log("[GATEWAY] Reload config")
         }
@@ -348,7 +348,7 @@ module.exports = NodeHelper.create({
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = tools.readConfig()
+          this.MMConfig = await tools.readConfig()
           this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
           console.log("[GATEWAY] Reload config")
         }
