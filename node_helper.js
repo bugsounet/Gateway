@@ -33,6 +33,7 @@ module.exports = NodeHelper.create({
     }
     this.app = null
     this.server= null
+    this.noLogin = false
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -41,6 +42,7 @@ module.exports = NodeHelper.create({
         console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
         if (this.server) return
         this.config = payload
+        this.noLogin = this.config.noLogin
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
         if (this.config.useApp) this.sendSocketNotification("MMConfig")
         break
@@ -111,17 +113,17 @@ module.exports = NodeHelper.create({
       .use(cors({ origin: '*' }))
       .use('/assets', express.static(__dirname + '/admin/assets', options))
       .get('/', (req, res) => {
-        if(req.user) res.sendFile(__dirname+ "/admin/index.html")
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/index.html")
         else res.redirect('/login')
       })
 
       .get('/EXT', (req, res) => {
-        if(req.user) res.sendFile(__dirname+ "/admin/EXT.html")
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EXT.html")
         else res.redirect('/login')
       })
 
       .get('/login', (req, res) => {
-        if (req.user) res.redirect('/')
+        if (req.user || this.noLogin) res.redirect('/')
         res.sendFile(__dirname+ "/admin/login.html")
       })
 
@@ -153,102 +155,110 @@ module.exports = NodeHelper.create({
       })
 
       .get('/AllEXT', (req, res) => {
-        if(req.user) res.send(this.EXT)
+        if(req.user || this.noLogin) res.send(this.EXT)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/DescriptionEXT', (req, res) => {
-        if(req.user) res.send(this.EXTDescription)
+        if(req.user || this.noLogin) res.send(this.EXTDescription)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/InstalledEXT', (req, res) => {
-        if(req.user) res.send(this.EXTInstalled)
+        if(req.user || this.noLogin) res.send(this.EXTInstalled)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/ConfiguredEXT', (req, res) => {
-        if(req.user) res.send(this.EXTConfigured)
+        if(req.user || this.noLogin) res.send(this.EXTConfigured)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/GetMMConfig', (req, res) => {
-        if(req.user) res.send(this.MMConfig)
+        if(req.user || this.noLogin) res.send(this.MMConfig)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/Terminal" , (req,res) => {
-        if(req.user) res.sendFile( __dirname+ "/admin/terminal.html")
+        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/terminal.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/install" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
-          res.sendFile( __dirname+ "/admin/install.html")
+        if(req.user || this.noLogin) {
+          if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
+            res.sendFile( __dirname+ "/admin/install.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTInstall" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
-          console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
-          var result = {
-            error: false
-          }
-          var modulePath = path.normalize(__dirname + "/../")
-          var Command= 'cd ' + modulePath + ' && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
-
-          var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
-            if (error) {
-              result.error = true
-              console.error(`[GATEWAY][FATAL] exec error: ${error}`)
-            } else {
-              this.EXTInstalled= tools.searchInstalled(this.EXT)
-              console.log("[GATEWAY][DONE]", req.query.EXT)
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
+            console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
+            var result = {
+              error: false
             }
-            res.json(result)
-          })
-          child.stdout.pipe(process.stdout)
-          child.stderr.pipe(process.stdout)
+            var modulePath = path.normalize(__dirname + "/../")
+            var Command= 'cd ' + modulePath + ' && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
+
+            var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
+              if (error) {
+                result.error = true
+                console.error(`[GATEWAY][FATAL] exec error: ${error}`)
+              } else {
+                this.EXTInstalled= tools.searchInstalled(this.EXT)
+                console.log("[GATEWAY][DONE]", req.query.EXT)
+              }
+              res.json(result)
+            })
+            child.stdout.pipe(process.stdout)
+            child.stderr.pipe(process.stdout)
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/delete" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
-          res.sendFile( __dirname+ "/admin/delete.html")
+        if(req.user || this.noLogin) {
+          if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
+            res.sendFile( __dirname+ "/admin/delete.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
       
       .get("/EXTDelete" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
-          console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
-          var result = {
-            error: false
-          }
-          var modulePath = path.normalize(__dirname + "/../")
-          var Command= 'cd ' + modulePath + ' && rm -rf ' + req.query.EXT
-          var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
-            if (error) {
-              result.error = true
-              console.error(`[GATEWAY][FATAL] exec error: ${error}`)
-            } else {
-              this.EXTInstalled= tools.searchInstalled(this.EXT)
-              console.log("[GATEWAY][DONE]", req.query.EXT)
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
+            console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
+            var result = {
+              error: false
             }
-            res.json(result)
-          })
-          child.stdout.pipe(process.stdout)
-          child.stderr.pipe(process.stdout)
+            var modulePath = path.normalize(__dirname + "/../")
+            var Command= 'cd ' + modulePath + ' && rm -rf ' + req.query.EXT
+            var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
+              if (error) {
+                result.error = true
+                console.error(`[GATEWAY][FATAL] exec error: ${error}`)
+              } else {
+                this.EXTInstalled= tools.searchInstalled(this.EXT)
+                console.log("[GATEWAY][DONE]", req.query.EXT)
+              }
+              res.json(result)
+            })
+            child.stdout.pipe(process.stdout)
+            child.stderr.pipe(process.stdout)
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/bundle.js', function (req, res) {
@@ -257,73 +267,90 @@ module.exports = NodeHelper.create({
        })
 
       .get("/MMConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        res.sendFile( __dirname+ "/admin/mmconfig.html")
+        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/mmconfig.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTCreateConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext &&
-          this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
-          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          this.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
-        ) {
-          res.sendFile( __dirname+ "/admin/EXTCreateConfig.html")
+        if(req.user || this.noLogin) {
+          if (req.query.ext &&
+            this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+            this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+            this.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
+          ) {
+            res.sendFile( __dirname+ "/admin/EXTCreateConfig.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTModifyConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext &&
-          this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
-          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
-        ) {
-          res.sendFile( __dirname+ "/admin/EXTModifyConfig.html")
+        if(req.user || this.noLogin) {
+          if (req.query.ext &&
+            this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+            this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+            this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+          ) {
+            res.sendFile( __dirname+ "/admin/EXTModifyConfig.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTDeleteConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext &&
-          this.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
-          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
-        ) {
-          res.sendFile( __dirname+ "/admin/EXTDeleteConfig.html")
+        if(req.user || this.noLogin) {
+          if (req.query.ext &&
+            this.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
+            this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+            this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+          ) {
+            res.sendFile( __dirname+ "/admin/EXTDeleteConfig.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTGetCurrentConfig" , (req,res) => {
-        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        var index = this.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
-        if (index > -1) {
-          let data = this.MMConfig.modules[index]
-          return res.send(data)
+        if(req.user || this.noLogin) {
+          if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          var index = this.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
+          if (index > -1) {
+            let data = this.MMConfig.modules[index]
+            return res.send(data)
+          }
+          res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTGetDefaultConfig" , (req,res) => {
-        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        let data = require("./config/"+req.query.ext+"/config.js")
-        res.send(data.default)
+        if(req.user || this.noLogin) {
+          if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          let data = require("./config/"+req.query.ext+"/config.js")
+          res.send(data.default)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTGetDefaultTemplate" , (req,res) => {
-        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        let data = require("./config/"+req.query.ext+"/config.js")
-        res.send(data.schema)
+        if(req.user || this.noLogin) {
+          if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          let data = require("./config/"+req.query.ext+"/config.js")
+          res.send(data.schema)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTSaveConfig" , (req,res) => {
-        if(!req.user || !req.query.config) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        let data = req.query.config
-        console.log(data)
-        res.send(data)
+        if(req.user || this.noLogin) {
+          if(!req.query.config) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          let data = req.query.config
+          res.send(data)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
       
       .post("/writeEXT", async (req,res) => {
@@ -355,38 +382,46 @@ module.exports = NodeHelper.create({
       })
 
       .get("/Tools" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        res.sendFile(__dirname+ "/admin/tools.html")
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/tools.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/Restart" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        res.sendFile(__dirname+ "/admin/restarting.html")
-        setTimeout(() => this.restartMM() , 1000)         
+        if(req.user || this.noLogin) {
+          res.sendFile(__dirname+ "/admin/restarting.html")
+          setTimeout(() => this.restartMM() , 1000)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/Die" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        res.sendFile(__dirname+ "/admin/die.html")
-        setTimeout(() => this.doClose(), 3000)
+        if(req.user || this.noLogin) {
+          res.sendFile(__dirname+ "/admin/die.html")
+          setTimeout(() => this.doClose(), 3000)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EditMMConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        res.sendFile(__dirname+ "/admin/EditMMConfig.html")
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EditMMConfig.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/GetBackupName" , async (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        var names = await tools.loadBackupNames()
-        res.send(names)
+        if(req.user || this.noLogin) {
+          var names = await tools.loadBackupNames()
+          res.send(names)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/GetBackupFile" , async (req,res) => {
-        if(!req.user || !req.query.config) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        let data = req.query.config
-        var file = await tools.loadBackupFile(data)
-        res.send(file)
+        if(req.user || this.noLogin) {
+          let data = req.query.config
+          var file = await tools.loadBackupFile(data)
+          res.send(file)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .post("/loadBackup", async (req,res) => {
@@ -413,7 +448,6 @@ module.exports = NodeHelper.create({
           console.log("[GATEWAY] Reload config")
         }
       })
-
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 

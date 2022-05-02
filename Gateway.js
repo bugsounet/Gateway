@@ -13,6 +13,7 @@ Module.register("Gateway", {
     port: 8081,
     username: "admin",
     password: "admin",
+    noLogin: false,
     usePM2: false,
     PM2Id: 0
   },

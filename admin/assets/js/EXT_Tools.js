@@ -306,6 +306,9 @@ async function EditMMConfigJSEditor() {
         if (back.error) {
           $('#wait').css("display", "none")
           $('#error').css("display", "block")
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
           $('#messageText').text(back.error)
         } else { 
           $('#wait').css("display", "none")
@@ -328,7 +331,6 @@ async function EditMMConfigJSEditor() {
           $('#alert').removeClass('alert-success')
           $('#alert').addClass('alert-danger')
           $('#messageText').text(back.error)
-          alert(back.error)
         } else { 
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
@@ -400,11 +402,15 @@ async function EXTConfigJSEditor() {
         if (back.error) {
           $('#wait').css("display", "none")
           $('#error').css("display", "block")
-          alert(back.error)
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
         } else { 
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
-          alert("Please restart MagicMirror to apply new configuration!")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text("Please restart MagicMirror to apply new configuration!")
         }
       });
   }
@@ -466,11 +472,15 @@ async function EXTModifyConfigJSEditor() {
         if (back.error) {
           $('#wait').css("display", "none")
           $('#error').css("display", "block")
-          alert(back.error)
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
         } else { 
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
-          alert("Please restart MagicMirror to apply new configuration!")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text("Please restart MagicMirror to apply new configuration!")
         }
       });
   }
@@ -507,10 +517,15 @@ async function EXTDeleteConfigJSEditor() {
         if (back.error) {
           $('#wait').css("display", "none")
           $('#error').css("display", "block")
-          alert(back.error)
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
         } else { 
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text("Configuration deleted!")
         }
       });
   }
