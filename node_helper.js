@@ -60,18 +60,21 @@ module.exports = NodeHelper.create({
   initialize: function () {
     console.log("[GATEWAY] Start app...")
     log("EXT plugins in database:", this.EXT.length)
-    if (!this.config.username && !this.config.password) {
-      console.error("[GATEWAY] Your have not defined user/password in config!")
-      console.error("[GATEWAY] Using default creadentials")
-    } else {
-      if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
-        console.warn("[GATEWAY] WARN: You are using default username or default password")
-        console.warn("[GATEWAY] WARN: Don't forget to change it!")
+    if (this.noLogin) console.warn("[GATEWAY] WARN: You use noLogin feature (no login/password used)")
+    else {
+      if (!this.config.username && !this.config.password) {
+        console.error("[GATEWAY] Your have not defined user/password in config!")
+        console.error("[GATEWAY] Using default creadentials")
+      } else {
+        if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
+          console.warn("[GATEWAY] WARN: You are using default username or default password")
+          console.warn("[GATEWAY] WARN: Don't forget to change it!")
+        }
+        this.user.username = this.config.username
+        this.user.password = this.config.password
       }
-      this.user.username = this.config.username
-      this.user.password = this.config.password
+      this.passportConfig()
     }
-    this.passportConfig()
     this.app = express()
     this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
     this.EXTInstalled= tools.searchInstalled(this.EXT)
@@ -94,8 +97,10 @@ module.exports = NodeHelper.create({
     this.app.use(bodyParser.urlencoded({ extended: true }))
 
     // Tells app to use password session
-    this.app.use(passport.initialize())
-    this.app.use(passport.session())
+    if (!this.noLogin) {
+      this.app.use(passport.initialize())
+      this.app.use(passport.session())
+    }
 
     var options = {
       dotfiles: 'ignore',
@@ -150,7 +155,7 @@ module.exports = NodeHelper.create({
       })
 
       .get('/logout', (req, res) => {
-        req.logout()
+        if (!this.noLogin) req.logout()
         res.redirect('/')
       })
 
@@ -383,6 +388,11 @@ module.exports = NodeHelper.create({
 
       .get("/Tools" , (req,res) => {
         if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/tools.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/Setting" , (req,res) => {
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/setting.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
