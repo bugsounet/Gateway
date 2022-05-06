@@ -28,7 +28,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, black, var(--bs-blue) 70%);">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-google"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
@@ -49,7 +49,11 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div class="container">
+                            <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
+                        </div>
+                    </div>
                 </nav>
                 <div class="container">
                     <h3 class="text-center bounce animated">Gateway Setting</h3>
@@ -76,67 +80,71 @@
                         </div>
                         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                             <div class="card h-100">
-                                <div class="card-body">
-                                    <div class="row gutters">
-                                        <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"><input class="d-flex d-xl-flex" type="checkbox" data-bs-toggle="tooltip" data-bss-tooltip="" data-bs-placement="right" checked="" title="Enable / Disable Login">
-                                            <h6 class="d-xl-flex mb-2 text-primary" style="padding: 5px;"><strong>Personal Credentials</strong></h6>
-                                        </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-12">
-                                            <div class="form-group"><label class="form-label" for="fullName">Username</label><input type="text" id="fullName" class="form-control" placeholder="Enter username"></div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group"><label class="form-label" for="phone">Password</label><input type="password" id="phone" class="form-control" placeholder="Enter your password"></div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group"><label class="form-label" for="website">Confirm Password</label><input type="password" id="website" class="form-control" placeholder="Confirm your password"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row gutters">
-                                        <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"><input class="d-flex d-xl-flex" type="checkbox" data-bs-toggle="tooltip" data-bss-tooltip="" data-bs-placement="right" checked="" title="Enable / Disable Gateway Server">
-                                            <h6 class="d-xl-flex mt-3 mb-2 text-primary" style="padding: 5px;"><strong>Gateway Server</strong><br></h6>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Debug mode</label></div>
+                                <form id="GatewaySetting">
+                                    <div class="card-body">
+                                        <div class="row gutters">
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="login" name="login"><label class="form-check-label fw-bold mb-2 text-primary" for="login">Personal credentials</label></div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-12">
+                                                <div class="form-group"><label class="form-label">Username</label><input class="form-control grplogin" type="text" id="username" placeholder="Enter username" name="username"></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"><label class="form-label">Password</label><input class="form-control grplogin" type="password" id="password" placeholder="Enter your password" name="password"></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"><label class="form-label">Confirm Password</label><input class="form-control grplogin" type="password" placeholder="Confirm your password" name="confirmpwd"></div>
                                             </div>
                                         </div>
-                                        <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group"><label class="form-label text-nowrap d-xl-flex" for="port">Listening Port</label><select class="form-control">
-                                                    <option value="3000">3000</option>
-                                                    <option value="8081" selected="">8081</option>
-                                                    <option value="8082">8082</option>
-                                                    <option value="8083">8083</option>
-                                                    <option value="8085">8084</option>
-                                                    <option value="8085">8085</option>
-                                                </select></div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" checked=""><label class="form-check-label" for="formCheck-3">Use PM2 app</label></div>
+                                        <div class="row gutters">
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h6 class="d-xl-flex mt-3 mb-2 text-primary" style="padding: 5px;"><strong>Gateway Server</strong><br></h6>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="debug" name="debug"><label class="form-check-label" for="debug">Debug mode</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"><label class="form-label text-nowrap d-xl-flex" for="port">Listening Port</label><select class="form-select form-control" id="port" name="port">
+                                                        <option value="3000">3000</option>
+                                                        <option value="8081">8081</option>
+                                                        <option value="8082">8082</option>
+                                                        <option value="8083">8083</option>
+                                                        <option value="8085">8084</option>
+                                                        <option value="8085">8085</option>
+                                                    </select></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="pm2" name="pm2"><label class="form-check-label" for="pm2">Use PM2 app</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"><label class="form-label text-nowrap d-xl-flex" for="port">PM2 Process Number</label><select class="form-select form-control grppm2" id="pm2id" name="id" disabled="">
+                                                        <option value="0" selected="">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                    </select></div>
                                             </div>
                                         </div>
-                                        <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group"><label class="form-label text-nowrap d-xl-flex" for="port">PM2 Process Number</label><select class="form-control">
-                                                    <option value="0" selected="">0</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
-                                                </select></div>
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="text-right" style="padding: 5px;">
+                                                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px"><button class="btn btn-primary" id="update" type="submit" style="padding: 6px 12px;border-radius: 5.6px;" name="submit">Update</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="restart" style="margin: 0px;border-radius: 5.6px;" href="/Restart">Restart</a></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row gutters">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="text-right" style="padding: 5px;"><button class="btn btn-primary" id="submit" type="button" name="submit" style="margin: 5px;">Update</button></div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -149,8 +157,7 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div><script type="text/javascript">
-  // to add check modules installed and display proper section
-  //window.addEventListener("load",event=>createTr())
+  window.addEventListener("load",event=>GatewaySetting())
 </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -164,6 +171,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/pleaserotate.min.js"></script>
     <script src="assets/js/Pricing-Tables.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>

@@ -1,6 +1,15 @@
 /** EXT tools
 * @bugsounet
 **/
+
+PleaseRotateOptions = {
+    forcePortrait: false,
+    message: "Please Rotate Your Device",
+    subMessage: "for continue",
+    allowClickBypass: false,
+    onlyMobile: true
+};
+
 function loadDataAllEXT() {
   return new Promise(resolve => {
     $.getJSON("/allEXT" , (all) => {
@@ -529,4 +538,137 @@ async function EXTDeleteConfigJSEditor() {
         }
       });
   }
+}
+function getGatewaySetting() {
+  return new Promise(resolve => {  
+    $.getJSON("/getSetting" , (confGW) => {
+      console.log("SettingGW", confGW)
+      resolve(confGW)
+    })
+  })
+}
+
+async function GatewaySetting() {
+  var actualSetting = await getGatewaySetting()
+  $('#restart').css("display", "none")
+  $('#wait').css("display", "none")
+  $('#buttonGrp').removeClass('invisible')
+  $('#update').css("display", "block")
+  console.log(actualSetting)
+  
+  $("#login").prop("checked", !actualSetting.noLogin)
+  $("input.grplogin").prop("disabled", actualSetting.noLogin)
+  $("#username").val(actualSetting.username)
+  $("#password").val(actualSetting.password)
+  
+  $("#debug").prop("checked", actualSetting.debug)
+  $("#pm2").prop("checked", actualSetting.usePM2)
+  $("select.grppm2").prop("disabled", !actualSetting.usePM2)
+  $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
+  $("#port option[value='" + actualSetting.port + "']").prop('selected', true)
+  
+  document.getElementById('login').onclick = function () {
+    $("input.grplogin").prop("disabled", !this.checked)
+  }
+
+  document.getElementById('pm2').onclick = function () {
+    $("select.grppm2").prop("disabled", !this.checked)
+  }
+  
+  $("#GatewaySetting").submit(function(event) {
+    var newGatewayConfig= {
+      module: "Gateway",
+      config: {
+        debug: true,
+        port: 8081,
+        username: "admin",
+        password: "admin",
+        noLogin: false,
+        usePM2: false,
+        PM2Id: 0
+      }
+    }
+    event.preventDefault()
+    var login = $( "input[type=checkbox][name=login]:checked" ).val()
+    if (login) {
+      newGatewayConfig.config.noLogin= false
+      console.log("login", login)
+      var username = $( "input[type=text][name=username]").val()
+      var password = $( "input[type=password][name=password]" ).val()
+      var confirm = $( "input[type=password][name=confirmpwd]" ).val()
+      if (!username) {
+        console.log("username null!")
+        $('#alert').removeClass('invisible')
+        $('#alert').removeClass('alert-success')
+        $('#alert').addClass('alert-danger')
+        $('#messageText').text("Please enter Username!")
+        return
+      }
+      if (!password) {
+        console.log("pwd null!")
+        $('#alert').removeClass('invisible')
+        $('#alert').removeClass('alert-success')
+        $('#alert').addClass('alert-danger')
+        $('#messageText').text("Please enter Password!")
+        return
+      }
+      if (password != confirm) {
+        console.log("pwd confirm error!")
+        $('#alert').removeClass('invisible')
+        $('#alert').removeClass('alert-success')
+        $('#alert').addClass('alert-danger')
+        $('#messageText').text("Password is not confirmed!")
+        return
+      }
+    } else {
+      newGatewayConfig.config.noLogin = true
+      newGatewayConfig.config.username = "admin"
+      newGatewayConfig.config.password = "admin"
+    }
+    var debug = $( "input[type=checkbox][name=debug]:checked" ).val()
+    if (debug) newGatewayConfig.config.debug = true
+    else newGatewayConfig.config.debug = false
+    var port = Number($( "select#port" ).val())
+    newGatewayConfig.config.port = port
+    var pm2 = $( "input[type=checkbox][name=pm2]:checked" ).val()
+    var pm2id = Number($( "select#pm2id" ).val())
+    if (pm2) {
+      newGatewayConfig.config.usePM2 = true
+      newGatewayConfig.config.PM2Id = pm2id
+    }
+    else {
+      newGatewayConfig.config.usePM2 = false
+      newGatewayConfig.config.PM2Id = 0
+    }
+    $('#alert').removeClass('invisible')
+    $('#alert').removeClass('alert-danger')
+    $('#alert').addClass('alert-success')
+    $('#messageText').text("Update in progress...")
+    $('#restart').css("display", "none")
+    $('#update').css("display", "none")
+    $('#wait').css("display", "block")
+    
+    console.log(newGatewayConfig)
+    
+    $.post( "/saveSetting", { data: JSON.stringify(newGatewayConfig) })
+      .done(function( back ) {
+        if (back.error) {
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
+          $('#restart').css("display", "none")
+          $('#wait').css("display", "none")
+          $('#update').css("display", "block")
+        } else { 
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-danger')
+          $('#alert').addClass('alert-success')
+          $('#messageText').text("Please restart MagicMirror to apply new configuration!")
+          $('#wait').css("display", "none")
+          $('#update').css("display", "none")
+          $('#restart').css("display", "block")
+        }
+      })
+  })
 }

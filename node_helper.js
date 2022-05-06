@@ -44,7 +44,7 @@ module.exports = NodeHelper.create({
         this.config = payload
         this.noLogin = this.config.noLogin
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
-        if (this.config.useApp) this.sendSocketNotification("MMConfig")
+        this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
         this.MMConfig = await tools.readConfig()
@@ -85,6 +85,7 @@ module.exports = NodeHelper.create({
 
   /** http server **/
   Setup: async function () {
+    var urlencodedParser = bodyParser.urlencoded({ extended: true })
     log("Create all needed routes...")
     this.app.use(session({
       secret: 'some-secret',
@@ -359,7 +360,7 @@ module.exports = NodeHelper.create({
       })
       
       .post("/writeEXT", async (req,res) => {
-        console.log("[Gateway] Receiving EXT data ...", req.body)
+        console.log("[Gateway] Receiving EXT data ...")
         let data = JSON.parse(req.body.data)
         var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
         var resultSaveConfig = await tools.saveConfig(NewConfig)
@@ -395,7 +396,12 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/setting.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
-
+      
+      .get("/getSetting", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.config)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+      
       .get("/Restart" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/restarting.html")
@@ -452,6 +458,20 @@ module.exports = NodeHelper.create({
         let data = JSON.parse(req.body.data)
         var resultSaveConfig = await tools.saveConfig(data)
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+      
+      .post("/saveSetting", urlencodedParser, async (req,res) => {
+        console.log("[Gateway] Receiving new Setting")
+        let data = JSON.parse(req.body.data)
+        console.log(data)
+        var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
+        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
           this.MMConfig = await tools.readConfig()

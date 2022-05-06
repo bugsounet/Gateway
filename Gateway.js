@@ -9,7 +9,6 @@ logGW = (...args) => { /* do nothing */ }
 Module.register("Gateway", {
   defaults: {
     debug: true,
-    useApp: true,
     port: 8081,
     username: "admin",
     password: "admin",
