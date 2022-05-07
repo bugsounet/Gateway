@@ -13,6 +13,15 @@ PleaseRotateOptions = {
 // Load rules
 window.addEventListener("load", async event => {
   var actualSetting = await getGatewaySetting()
+  var translation = await loadTranslation()
+  $('#Home').text(translation.Home)
+  $('#Plugins').text(translation.Plugins)
+  $('#Terminal').text(translation.Terminal)
+  $('#Configuration').text(translation.Configuration)
+  $('#Tools').text(translation.Tools)
+  $('#Setting').text(translation.Setting)
+  $('#Logout').text(translation.Logout)
+  
   if (actualSetting.noLogin) $('#logout').css("display", "none")
   $('#accordionSidebar').removeClass("invisible")
   $('li.active').removeClass('active')
@@ -20,6 +29,15 @@ window.addEventListener("load", async event => {
   if ((path == "/install") || (path == "/delete")) path = "/EXT"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
+
+function loadTranslation() {
+  return new Promise(resolve => {
+    $.getJSON("/translation" , (tr) => {
+      console.log("Translation", tr)
+      resolve(tr)
+    })
+  })
+}
 
 function loadDataAllEXT() {
   return new Promise(resolve => {
@@ -93,6 +111,8 @@ function LaunchDelete() {
 
 
 async function createTr() {
+  var translation = await loadTranslation()
+  $('#Plugins_Welcome').text(translation.Plugins_Welcome)
   var AllEXT = await loadDataAllEXT()
   var DescEXT = await loadDataDescriptionEXT()
   var InstEXT = await loadDataInstalledEXT()
@@ -106,19 +126,19 @@ async function createTr() {
     Content += `<tr><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="Open the wiki page of ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
 
     // EXT install link
-    if (InstEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-primary btn-sm" role="button" href="/install?ext=${pluginsName}">Install</a></td>`
+    if (InstEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-primary btn-sm" role="button" href="/install?ext=${pluginsName}">${translation.Install}</a></td>`
     // EXT delete link
-    else Content += `<td align="center"><a class="btn btn-danger btn-sm" role="button" href="/delete?ext=${pluginsName}">Delete</a></td>`
+    else Content += `<td align="center"><a class="btn btn-danger btn-sm" role="button" href="/delete?ext=${pluginsName}">${translation.Delete}</a></td>`
     
     if (InstEXT.indexOf(pluginsName) == -1) {
       if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
       // config delete link
-      else Content += `<td align="center"><a class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" role="button" href="/EXTDeleteConfig?ext=${pluginsName}">Delete</a></td>`
+      else Content += `<td align="center"><a class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" role="button" href="/EXTDeleteConfig?ext=${pluginsName}">${translation.Delete}</a></td>`
     } else {
       // configure link
-      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" role="button" href="/EXTCreateConfig?ext=${pluginsName}">Configure</a></td>`
+      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" role="button" href="/EXTCreateConfig?ext=${pluginsName}">${translation.Configure}</a></td>`
       // modify link
-      else Content += `<td align="center"><a class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="Modify the configuration" role="button" href="/EXTModifyConfig?ext=${pluginsName}">Modify</a></td>`
+      else Content += `<td align="center"><a class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="Modify the configuration" role="button" href="/EXTModifyConfig?ext=${pluginsName}">${translation.Modify}</a></td>`
     }
     Content += '</tr>'
   })
