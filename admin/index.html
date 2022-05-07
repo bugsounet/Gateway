@@ -34,14 +34,14 @@
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
+                <ul class="navbar-nav text-light invisible" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link active" href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/EXT"><i class="fa fa-plug"></i><span>EXT Plugins</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/Terminal"><i class="fa fa-terminal"></i><span>Terminal Output</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/MMConfig"><i class="fa fa-code"></i><span>MagicMirror Configuration</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/Tools"><i class="fas fa-tools"></i><span>Tools</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/Setting"><i class="fa fa-cogs"></i><span>Setting</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/logout"><i class="fa fa-sign-out"></i><span>Logout</span></a></li>
+                    <li class="nav-item"><a class="nav-link" id="logout" href="/logout"><i class="fa fa-sign-out"></i><span>Logout</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -63,6 +63,7 @@
                                     <p>Thanks for using this Beta version !</p>
                                     <p>What works?<br><br> * EXT Explorer: install / delete / configure / modify<br>&nbsp; Missing: schema of config verification (coming soon!)<br> * Terminal Output: works on real live !<br>&nbsp; Know bug displaying: missing sometime first letter<br> * MagicMirror configuration: full works with backup (load and consult it)<br> * Tools: Restart / stop<br>&nbsp; Under coding: recipe and others (not displayed)<br>* Setting: read actual Gateway config / modify and save it<br><br>Don't forget to FORCE refresh browser to load all scripts on each update!<br>(uppercase and F5 keybord keys) [will be fixed soon]</p>
                                     <p>Change Log (from 22/05/05)</p>
+                                    <p>2022/05/07: <br> * Display version of GW in setting<br> * Don't show logout in navbar when noLogin feature is used<br></p>
                                     <p>2022/05/06: <br> * Add Please rotate (for mobile)<br> * Fonctional setting section<br>* Change color of left navbar</p>
                                     <p>2022/05/05:<br>* Add begin coding design of Setting section</p>
                                 </div>

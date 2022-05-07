@@ -8,7 +8,18 @@ PleaseRotateOptions = {
     subMessage: "for continue",
     allowClickBypass: false,
     onlyMobile: true
-};
+}
+
+// Load rules
+window.addEventListener("load", async event => {
+  var actualSetting = await getGatewaySetting()
+  if (actualSetting.noLogin) $('#logout').css("display", "none")
+  $('#accordionSidebar').removeClass("invisible")
+  $('li.active').removeClass('active')
+  var path=location.pathname
+  if ((path == "/install") || (path == "/delete")) path = "/EXT"
+  $('a[href="' + path + '"]').closest('a').addClass('active')
+})
 
 function loadDataAllEXT() {
   return new Promise(resolve => {
@@ -201,14 +212,6 @@ function enableSearchAndSort() {
     }
   });
 }
-
-// make navbar active
-window.addEventListener("load", event => {
-  $('li.active').removeClass('active')
-  var path=location.pathname
-  if ((path == "/install") || (path == "/delete")) path = "/EXT"
-  $('a[href="' + path + '"]').closest('a').addClass('active')
-})
 
 function loadMMConfig() {
   return new Promise(resolve => {  
@@ -548,13 +551,25 @@ function getGatewaySetting() {
   })
 }
 
+function getGatewayVersion() {
+  return new Promise(resolve => {  
+    $.getJSON("/version" , (versionGW) => {
+      console.log("Version", versionGW)
+      resolve(versionGW)
+    })
+  })
+}
+
 async function GatewaySetting() {
+  var versionGW = await getGatewayVersion()
+  $('#version').text(versionGW.v)
+  $('#rev').text(versionGW.rev)
+  
   var actualSetting = await getGatewaySetting()
   $('#restart').css("display", "none")
   $('#wait').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
   $('#update').css("display", "block")
-  console.log(actualSetting)
   
   $("#login").prop("checked", !actualSetting.noLogin)
   $("input.grplogin").prop("disabled", actualSetting.noLogin)

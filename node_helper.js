@@ -123,6 +123,10 @@ module.exports = NodeHelper.create({
         else res.redirect('/login')
       })
 
+      .get("/version" , (req,res) => {
+          res.send({ v: require('./package.json').version, rev: require('./package.json').rev })
+      })
+
       .get('/EXT', (req, res) => {
         if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EXT.html")
         else res.redirect('/login')
