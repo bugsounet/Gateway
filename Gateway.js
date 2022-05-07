@@ -157,6 +157,8 @@ Module.register("Gateway", {
 
       Tr.Setting = this.translate("GW_Setting")
 
+      Tr.Logout = this.translate("GW_Logout")
+
       Tr.Delete = this.translate("GW_Delete"),
       Tr.Install = this.translate("GW_Install"),
       Tr.Configure = this.translate("GW_Configure"),
