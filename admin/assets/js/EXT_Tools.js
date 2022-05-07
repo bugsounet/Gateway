@@ -20,9 +20,10 @@ window.addEventListener("load", async event => {
   $('#Configuration').text(translation.Configuration)
   $('#Tools').text(translation.Tools)
   $('#Setting').text(translation.Setting)
-  $('#Logout').text(translation.Logout)
-  
+    
   if (actualSetting.noLogin) $('#logout').css("display", "none")
+  else $('#Logout').text(translation.Logout)
+  
   $('#accordionSidebar').removeClass("invisible")
   $('li.active').removeClass('active')
   var path=location.pathname
