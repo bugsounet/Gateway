@@ -1,13 +1,13 @@
 jQuery(document).ready(function($) {
-    var animationDelay = 2500,
-        barAnimationDelay = 3800,
+    var animationDelay = 100,
+        barAnimationDelay = 2000,
         barWaiting = barAnimationDelay - 3e3,
         lettersDelay = 50,
         typeLettersDelay = 150,
         selectionDuration = 500,
         typeAnimationDelay = selectionDuration + 800,
         revealDuration = 600,
-        revealAnimationDelay = 1500;
+        revealAnimationDelay = 1000;
     initHeadline();
     function initHeadline() {
         singleLetters($(".cd-headline.letters").find("b"));

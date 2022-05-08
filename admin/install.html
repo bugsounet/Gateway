@@ -54,7 +54,7 @@
                 <div class="container-fluid">
                     <div class="accordion" role="tablist" id="accordion-1">
                         <div class="accordion-item">
-                            <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1">MagicMirror Terminal</button></h2>
+                            <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1" id="TerminalHeader">MagicMirror Terminal</button></h2>
                             <div class="accordion-collapse collapse item-1 show" role="tabpanel" data-bs-parent="#accordion-1">
                                 <div class="accordion-body">
                                     <div id="hyperwatch"></div>
@@ -70,9 +70,9 @@
                             <div class="row h-100">
                                 <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
                                     <div>
-                                        <h1 class="text-uppercase fw-bold text-white rubberBand animated mb-3" id="messageText">Ready to install this plug-in?</h1>
+                                        <h1 class="text-uppercase fw-bold text-white rubberBand animated mb-3" id="messageText">&nbsp;</h1>
                                         <p id="EXT-Name">EXT-Sample</p>
-                                        <div class="btn-group btn-group-lg d-inline-block order-2" role="group" id="boutons"><button class="btn btn-success btn-lg" type="button" onclick="LaunchInstall()">Install</button><a class="btn btn-warning btn-lg" role="button" href="/EXT">Cancel</a></div>
+                                        <div class="btn-group btn-group-lg d-inline-block order-2" role="group" id="boutons"><button class="btn btn-success btn-lg" id="install" type="button" onclick="LaunchInstall()">&nbsp; &nbsp; &nbsp;&nbsp;</button><a class="btn btn-warning btn-lg" role="button" id="cancel" href="/EXT">&nbsp; &nbsp; &nbsp;&nbsp;</a></div>
                                     </div>
                                 </div>
                             </div>

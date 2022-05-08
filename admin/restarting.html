@@ -54,47 +54,12 @@
                 <div class="container-fluid"><div class="caption v-middle text-center">
   <h1 class="cd-headline clip">
     <span class="cd-words-wrapper">
-		  <b class="is-visible">Please wait...</b>
-			<b>Restarting</b>
+      <b class="is-visible"></b>
+		  <b id="text1"></b>
+			<b id="text2"></b>
 		</span>
 	</h1>
 </div>
-<script>
-  // callback to receive the 200 response
-  function handle200 (response) {
-    window.location.href = "/"
-  }
-
-  function checkPage(callback) {
-    const xhr = new XMLHttpRequest(),
-    method = "GET",
-    url = "/";
-    xhr.open(method, url, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
-      if (xhr.status === 200) {
-        return callback(xhr.status);
-      }
-      xhr.open(method, url, true);
-      xhr.send();
-    }
-    xhr.send();
-  }
-
-  setTimeout(() => {
-    checkPage(handle200);
-    /*
-    $.ajax({
-      type: "GET",
-      url: '/login',
-      async: false,
-      success: function(data) {
-        window.location.href = "/"
-      }
-    });
-    */
-  }, 5000)
-</script>
                     <div class="text-center mt-5"><span class="spinner-border textprimary text-primary" role="status"></span></div>
                 </div>
             </div>
