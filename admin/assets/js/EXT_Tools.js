@@ -2,6 +2,7 @@
 * @bugsounet
 **/
 
+// rotate rules
 PleaseRotateOptions = {
     forcePortrait: false,
     message: "Please Rotate Your Device",
@@ -10,10 +11,19 @@ PleaseRotateOptions = {
     onlyMobile: true
 }
 
+// define all vars
+var translation= {}
+var actualSetting = {}
+var AllEXT = []
+var DescEXT = {}
+var InstEXT = []
+var ConfigEXT = []
+
 // Load rules
 window.addEventListener("load", async event => {
-  var actualSetting = await getGatewaySetting()
-  var translation = await loadTranslation()
+  if (window.location.pathname == "/login") return
+  if (!Object.keys(translation).length) translation = await loadTranslation()
+  if (!Object.keys(actualSetting).length) actualSetting = await getGatewaySetting()
   $('#Home').text(translation.Home)
   $('#Plugins').text(translation.Plugins)
   $('#Terminal').text(translation.Terminal)
@@ -110,36 +120,50 @@ function LaunchDelete() {
   }
 }
 
+async function doLogin() {
+  if (!Object.keys(translation).length) translation = await loadTranslation()
+  $('#Welcome').text(translation.Login_Welcome)
+  $('#username').attr("placeholder", translation.Login_Username)
+  $('#password').attr("placeholder", translation.Login_Password)
+  $("#login").submit(function(event) {
+    event.preventDefault()
+    $.post( "/auth", $(this).serialize())
+      .done(back => {
+        if (back.err) document.getElementById("flashErr").innerHTML = "Error: " + back.err.message
+        else $(location).attr('href',"/")
+      })
+    })
+}
 
 async function createTr() {
-  var translation = await loadTranslation()
+  if (!Object.keys(translation).length) translation = await loadTranslation()
   $('#Plugins_Welcome').text(translation.Plugins_Welcome)
-  var AllEXT = await loadDataAllEXT()
-  var DescEXT = await loadDataDescriptionEXT()
-  var InstEXT = await loadDataInstalledEXT()
-  var ConfigEXT = await loadDataConfiguredEXT()
-  var Content = `<div id="TableSorterCard" class="card" id="TableSorterCard"><div class="row table-topper align-items-center"><div class="col-4 text-start" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="padding: 5px;margin: 2px;">Reset Filters</button></div><div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;"><h6 id="counter" style="margin: 0px;">Showing: <strong id="rowCount">ALL</strong> Plugin(s)</h6></div></div><div class="row"><div class="col-12"><div>`
+  if (!AllEXT.length) AllEXT = await loadDataAllEXT()
+  if (!Object.keys(DescEXT).length) DescEXT = await loadDataDescriptionEXT()
+  if (!InstEXT.length) InstEXT = await loadDataInstalledEXT()
+  if (!ConfigEXT.length) ConfigEXT = await loadDataConfiguredEXT()
+  var Content = `<div id="TableSorterCard" class="card" id="TableSorterCard"><div class="row table-topper align-items-center"><div class="col-4 text-start" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="padding: 5px;margin: 2px;">${translation.Plugins_Table_Reset}</button></div><div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;"><h6 id="counter" style="margin: 0px;">${translation.Plugins_Table_Showing}<strong id="rowCount">${translation.Plugins_Table_ALL}</strong>${translation.Plugins_Table_Plugins}</h6></div></div><div class="row"><div class="col-12"><div>`
   
-  Content +=`<table id="ipi-table" class="table table tablesorter"><thead class="thead-dark"><tr><th>Plugins Name</th><th class="sorter-false">Description</th><th class="filter-false">Actions</th><th class="filter-false">Configuration</th></tr></thead><tbody id="EXT">`
+  Content +=`<table id="ipi-table" class="table table tablesorter"><thead class="thead-dark"><tr><th>${translation.Plugins_Table_Name}</th><th class="sorter-false">${translation.Plugins_Table_Description}</th><th class="filter-false">${translation.Plugins_Table_Actions}</th><th class="filter-false">${translation.Plugins_Table_Configuration}</th></tr></thead><tbody id="EXT">`
   
   AllEXT.forEach(pluginsName => {
     // wiki page link
-    Content += `<tr><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="Open the wiki page of ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
+    Content += `<tr><td class="text-nowrap fs-6 text-start click" data-bs-toggle="tooltip" style="cursor: pointer;" data-href="https://wiki.bugsounet.fr/${pluginsName}" title="${translation.Plugins_Table_Wiki} ${pluginsName}">${pluginsName}</td><td>${DescEXT[pluginsName]}</td>`
 
     // EXT install link
-    if (InstEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-primary btn-sm" role="button" href="/install?ext=${pluginsName}">${translation.Install}</a></td>`
+    if (InstEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-primary btn-sm" role="button" data-bs-toggle="tooltip" title="${translation.Plugins_Table_Install} ${pluginsName}" href="/install?ext=${pluginsName}">${translation.Install}</a></td>`
     // EXT delete link
-    else Content += `<td align="center"><a class="btn btn-danger btn-sm" role="button" href="/delete?ext=${pluginsName}">${translation.Delete}</a></td>`
+    else Content += `<td align="center"><a class="btn btn-danger btn-sm" role="button" data-bs-toggle="tooltip" title="${translation.Plugins_Table_Delete} ${pluginsName}" href="/delete?ext=${pluginsName}">${translation.Delete}</a></td>`
     
     if (InstEXT.indexOf(pluginsName) == -1) {
       if (ConfigEXT.indexOf(pluginsName) == -1) Content += '<td></td>'
       // config delete link
-      else Content += `<td align="center"><a class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Delete the configuration" role="button" href="/EXTDeleteConfig?ext=${pluginsName}">${translation.Delete}</a></td>`
+      else Content += `<td align="center"><a class="btn btn-danger btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="${translation.Plugins_Table_DeleteConfig}" role="button" href="/EXTDeleteConfig?ext=${pluginsName}">${translation.Delete}</a></td>`
     } else {
       // configure link
-      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="Ready to be configured" role="button" href="/EXTCreateConfig?ext=${pluginsName}">${translation.Configure}</a></td>`
+      if (ConfigEXT.indexOf(pluginsName) == -1) Content += `<td align="center"><a class="btn btn-warning btn-sm pulse animated infinite" data-bs-toggle="tooltip" title="${translation.Plugins_Table_Configure}" role="button" href="/EXTCreateConfig?ext=${pluginsName}">${translation.Configure}</a></td>`
       // modify link
-      else Content += `<td align="center"><a class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="Modify the configuration" role="button" href="/EXTModifyConfig?ext=${pluginsName}">${translation.Modify}</a></td>`
+      else Content += `<td align="center"><a class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="${translation.Plugins_Table_Modify}" role="button" href="/EXTModifyConfig?ext=${pluginsName}">${translation.Modify}</a></td>`
     }
     Content += '</tr>'
   })
@@ -158,7 +182,8 @@ async function createTr() {
   enableSearchAndSort()
 }
 
-function enableSearchAndSort() {
+async function enableSearchAndSort() {
+  if (!Object.keys(translation).length) translation = await loadTranslation()
   $("#ipi-table").tablesorter({
     theme: 'bootstrap',
     widthFixed : true,
@@ -187,7 +212,7 @@ function enableSearchAndSort() {
       filter_liveSearch : true,
       filter_matchType : { 'input': 'exact', 'select': 'exact' },
       filter_onlyAvail : 'filter-onlyAvail',
-      filter_placeholder : { search : 'Search...', select : '' },
+      filter_placeholder : { search : translation.Plugins_Table_Search, select : '' },
       filter_reset : 'button.reset',
       filter_resetOnEsc : true,
       filter_saveFilters : true,
@@ -497,7 +522,6 @@ async function EXTModifyConfigJSEditor() {
   editor.expandAll()
   document.getElementById('save').onclick = function () {
     let data = editor.getText()
-    console.log("editor", JSON.parse(data))
     $('#save').css("display", "none")
     $('#wait').css("display", "block")
     $.post( "/writeEXT", { data: data })
@@ -683,9 +707,7 @@ async function GatewaySetting() {
     $('#restart').css("display", "none")
     $('#update').css("display", "none")
     $('#wait').css("display", "block")
-    
-    console.log(newGatewayConfig)
-    
+  
     $.post( "/saveSetting", { data: JSON.stringify(newGatewayConfig) })
       .done(function( back ) {
         if (back.error) {

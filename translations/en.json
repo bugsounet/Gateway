@@ -10,7 +10,23 @@
 
   "GW_Plugins": "Plugin Manager",
   "GW_Plugins_Welcome": "EXT Plugin Manager",
+  "GW_Plugins_Table_Reset": "Reset Filters",
+  "GW_Plugins_Table_Showing": "Showing ",
+  "GW_Plugins_Table_ALL": "ALL",
+  "GW_Plugins_Table_Plugins": " Plugin(s)",
+  "GW_Plugins_Table_Name": "Plugins Name",
+  "GW_Plugins_Table_Description": "Descriptions",
+  "GW_Plugins_Table_Actions": "Actions",
+  "GW_Plugins_Table_Configuration": "Configuration",
+  "GW_Plugins_Table_Search": "Search...",
+  "GW_Plugins_Table_Wiki": "Open the wiki page of",
+  "GW_Plugins_Table_Install": "Install",
+  "GW_Plugins_Table_Delete": "Delete",
+  "GW_Plugins_Table_DeleteConfig": "Delete the configuration",
+  "GW_Plugins_Table_Configure": "Ready to be configured!",
+  "GW_Plugins_Table_Modify": "Modify the configuration",
 
+  
   "GW_Terminal": "Terminal Output",
 
   "GW_Configuration": "MagicMirror Configuration",

@@ -10,6 +10,21 @@
 
   "GW_Plugins": "Gestionnaire de plugins",
   "GW_Plugins_Welcome": "Gestionnaire de plugins EXT",
+  "GW_Plugins_Table_Reset": "Reinitialiser les filtres",
+  "GW_Plugins_Table_Showing": "Affiche ",
+  "GW_Plugins_Table_ALL": "Tous les",
+  "GW_Plugins_Table_Plugins": " Plugin(s)",
+  "GW_Plugins_Table_Name": "Noms des plugins",
+  "GW_Plugins_Table_Description": "Descriptions",
+  "GW_Plugins_Table_Actions": "Actions",
+  "GW_Plugins_Table_Configuration": "Configuration",
+  "GW_Plugins_Table_Search": "Rechercher...",
+  "GW_Plugins_Table_Wiki": "Ouvrir le wiki de",
+  "GW_Plugins_Table_Install": "Installer",
+  "GW_Plugins_Table_Delete": "Désinstaller",
+  "GW_Plugins_Table_DeleteConfig": "Supprimer la configuration",
+  "GW_Plugins_Table_Configure": "Prêt à être configuré!",
+  "GW_Plugins_Table_Modify": "Modifier la configuration",
 
   "GW_Terminal": "Visionner le Terminal",
 

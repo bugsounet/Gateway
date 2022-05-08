@@ -148,6 +148,21 @@ Module.register("Gateway", {
 
       Tr.Plugins = this.translate("GW_Plugins")
       Tr.Plugins_Welcome = this.translate("GW_Plugins_Welcome")
+      Tr.Plugins_Table_Reset= this.translate("GW_Plugins_Table_Reset")
+      Tr.Plugins_Table_Showing= this.translate("GW_Plugins_Table_Showing")
+      Tr.Plugins_Table_ALL= this.translate("GW_Plugins_Table_ALL")
+      Tr.Plugins_Table_Plugins= this.translate("GW_Plugins_Table_Plugins")
+      Tr.Plugins_Table_Name= this.translate("GW_Plugins_Table_Name")
+      Tr.Plugins_Table_Description= this.translate("GW_Plugins_Table_Description")
+      Tr.Plugins_Table_Actions= this.translate("GW_Plugins_Table_Actions")
+      Tr.Plugins_Table_Configuration= this.translate("GW_Plugins_Table_Configuration")
+      Tr.Plugins_Table_Search= this.translate("GW_Plugins_Table_Search")
+      Tr.Plugins_Table_Wiki = this.translate("GW_Plugins_Table_Wiki")
+      Tr.Plugins_Table_Install = this.translate("GW_Plugins_Table_Install")
+      Tr.Plugins_Table_Delete = this.translate("GW_Plugins_Table_Delete")
+      Tr.Plugins_Table_DeleteConfig = this.translate("GW_Plugins_Table_DeleteConfig")
+      Tr.Plugins_Table_Configure = this.translate("GW_Plugins_Table_Configure")
+      Tr.Plugins_Table_Modify = this.translate("GW_Plugins_Table_Modify")
 
       Tr.Terminal = this.translate("GW_Terminal")
 

@@ -60,22 +60,7 @@
         </div>
     </div>
 <script>
-  window.addEventListener("load", async event => {
-    var translation = await loadTranslation()
-    $('#Welcome').text(translation.Login_Welcome)
-    $('#username').attr("placeholder", translation.Login_Username);
-    $('#password').attr("placeholder", translation.Login_Password);
-    $(document).ready(function() {
-      $("#login").submit(function(event) {
-        event.preventDefault()
-        $.post( "/auth", $(this).serialize())
-          .done(back => {
-            if (back.err) document.getElementById("flashErr").innerHTML = "Error: " + back.err.message
-            else $(location).attr('href',"/")
-          })
-      })
-    })
-  })
+  window.addEventListener("load", event => doLogin())
 </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
