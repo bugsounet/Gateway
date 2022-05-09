@@ -794,13 +794,10 @@ function GatewaySetting() {
     event.preventDefault()
     var login = $( "input[type=checkbox][name=login]:checked" ).val()
     if (login) {
-      newGatewayConfig.config.noLogin= false
-      console.log("login", login)
       var username = $( "input[type=text][name=username]").val()
       var password = $( "input[type=password][name=password]" ).val()
       var confirm = $( "input[type=password][name=confirmpwd]" ).val()
       if (!username) {
-        console.log("username null!")
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
@@ -808,7 +805,6 @@ function GatewaySetting() {
         return
       }
       if (!password) {
-        console.log("pwd null!")
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
@@ -816,13 +812,15 @@ function GatewaySetting() {
         return
       }
       if (password != confirm) {
-        console.log("pwd confirm error!")
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
         $('#messageText').text("Password is not confirmed!")
         return
       }
+      newGatewayConfig.config.noLogin = false
+      newGatewayConfig.config.username = username
+      newGatewayConfig.config.password = password
     } else {
       newGatewayConfig.config.noLogin = true
       newGatewayConfig.config.username = "admin"
