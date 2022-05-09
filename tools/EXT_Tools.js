@@ -246,7 +246,7 @@ function doDie() {
 }
 
 function doTerminal() {
-  $('#title').text(translation.Tools_Welcome)
+  $('#TerminalHeader').text(translation.Terminal)
 }
 
 function doTools() {
