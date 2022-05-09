@@ -25,12 +25,12 @@ var schema = {
       },
       "config": {
         "type": "object",
-        "title": "configuration",
+        "title": "Configuration",
         "properties": {
           "welcome": {
             "type": "string",
             "title": "Your assistant welcome",
-            "default": "brief Today",
+            "default": "brief Today"
           }
         },
         "required": ["welcome"]

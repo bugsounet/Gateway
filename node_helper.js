@@ -545,7 +545,7 @@ module.exports = NodeHelper.create({
   },
 
   doRestart: function() {
-    console.log("Restarting MagicMirror...")
+    console.log("[GATEWAY] Restarting MagicMirror...")
     var MMdir = path.normalize(__dirname + "/../../")
     const out = process.stdout
     const err = process.stderr
@@ -555,7 +555,8 @@ module.exports = NodeHelper.create({
   },
 
   doClose: function() {
-    if (!this.config.usePM2) process.abort()
+    console.log("[GATEWAY] Closing MagicMirror...")
+    if (!this.config.usePM2) process.exit()
     else {
       pm2.stop(this.config.PM2Id, (err, proc) => {
         if (err) {

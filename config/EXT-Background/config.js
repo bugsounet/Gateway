@@ -24,7 +24,7 @@ var schema = {
     },
     "config": {
       "type": "object",
-      "title": "configuration",
+      "title": "Configuration",
       "properties": {
         "model": {
           "type": "string",
@@ -35,7 +35,7 @@ var schema = {
         "myImage": {
           "type": ["string", "null"],
           "title": "Choose your personal image, if don't don't want model",
-          "default": null,
+          "default": null
         },
       },
       "required": ["model"]

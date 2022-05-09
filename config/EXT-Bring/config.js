@@ -54,12 +54,12 @@ var schema = {
     },
     "config": {
       "type": "object",
-      "title": "configuration",
+      "title": "Configuration",
       "properties": {
         "debug": {
           "type": "boolean",
           "title": "Enable debug mode",
-          "default": "false"
+          "default": false
         },
         "listName": {
           "type": "string",
@@ -111,17 +111,17 @@ var schema = {
         "showBackground": {
           "type": "boolean",
           "title": "Display a Background around item place",
-          "default": "true",
+          "default": true
         },
         "showBox": {
           "type": "boolean",
           "title": "Display a Box around items",
-          "default": "true",
+          "default": true
         },
         "showHeader": {
           "type": "boolean",
           "title": "Display the name of the shopping list in header of the plugin",
-          "default": "true",
+          "default": true
         }
       },
       "required": ["email","password"]

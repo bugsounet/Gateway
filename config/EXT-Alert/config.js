@@ -24,22 +24,22 @@ var schema = {
     },
     "config": {
       "type": "object",
-      "title": "configuration",
+      "title": "Configuration",
       "properties": {
         "debug": {
           "type": "boolean",
           "title": "Enable debug mode",
-          "default": "false",
+          "default": false
         },
         "ignore": {
           "type": "array",
           "title": "Plugin list to ignore notifications",
-          "default": [],
+          "default": []
         },
       }
     }
   },
-  "required": ["config","module"]
+  "required": ["module"]
 }
 
 exports.default = defaultConfig
