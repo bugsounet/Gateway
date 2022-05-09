@@ -118,7 +118,9 @@ module.exports = NodeHelper.create({
     }
 
     this.app
+      .use(this.logRequest)
       .use(cors({ origin: '*' }))
+      .use('/EXT_Tools.js', express.static(__dirname + '/tools/EXT_Tools.js'))
       .use('/assets', express.static(__dirname + '/admin/assets', options))
       .get('/', (req, res) => {
         if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/index.html")
@@ -521,6 +523,12 @@ module.exports = NodeHelper.create({
     passport.deserializeUser((id, done) => {
       done(null, this.user)
     })
+  },
+
+  logRequest: function(req, res, next) {
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    log("[" + ip + "][" + req.method + "] " + req.url)
+    next()
   },
 
   /** Part of EXT-UpdateNotification **/

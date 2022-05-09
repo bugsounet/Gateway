@@ -56,8 +56,8 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true">MagicMirror configuration editor</h3><select id="backup" style="margin-bottom: 10px;" onchange="location = &quot;/EditMMConfig?config=&quot;+this.value;">
-                        <option value="default" selected="">Actual Configuration</option>
+                    <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true" id="MMConfigHeader">MagicMirror configuration editor</h3><select id="backup" style="margin-bottom: 10px;" onchange="location = &quot;/EditMMConfig?config=&quot;+this.value;">
+                        <option value="default" selected="">Loading</option>
                     </select>
                     <div id="jsoneditor" style="height: 65vh"></div>
                     <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px"><button class="btn btn-success" id="save" type="button" style="padding: 6px 12px;border-radius: 5.6px;">Save</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="done" style="margin: 0px;border-radius: 5.6px;" href="/Tools">Done</a><a class="btn btn-danger flash animated" role="button" id="error" style="margin: 0px;border-radius: 5.6px;" href="/Terminal">Error</a><button class="btn btn-success" id="load" type="button" style="padding: 6px 12px;border-radius: 5.6px;">Load</button></div>
@@ -70,13 +70,12 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div><script src="jsoneditor/dist/jsoneditor.min.js"></script>
-<script type="text/javascript">window.addEventListener("load",event=>EditMMConfigJSEditor())</script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/EXT_Tools.js" crossorigin="anonymous"></script>
     <script src="assets/js/Animated-Type-Heading.js"></script>
-    <script src="assets/js/EXT_Tools.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>

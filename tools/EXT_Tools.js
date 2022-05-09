@@ -15,11 +15,13 @@ var AllEXT = []
 var DescEXT = {}
 var InstEXT = []
 var ConfigEXT = []
+var versionGW = {}
 
 // Load rules
 window.addEventListener("load", async event => {
-  if (!Object.keys(translation).length) translation = await loadTranslation()
-  if (!Object.keys(actualSetting).length && window.location.pathname != "/login") actualSetting = await getGatewaySetting()
+  versionGW = await getGatewayVersion()
+  translation = await loadTranslation()
+  if (window.location.pathname != "/login") actualSetting = await getGatewaySetting()
 
   switch (window.location.pathname) {
     case "/":
@@ -51,6 +53,21 @@ window.addEventListener("load", async event => {
       break
     case "/Die":
       doDie()
+      break
+    case "/Terminal":
+      doTerminal()
+      break
+    case "/MMConfig":
+      viewJSEditor()
+      break
+    case "/EditMMConfig":
+      EditMMConfigJSEditor()
+      break
+    case "/Tools":
+      doTools()
+      break
+    case "/Setting":
+      GatewaySetting()
       break
   }
 
@@ -134,8 +151,8 @@ function LaunchInstall() {
     $('#boutons').attr('style' , 'display: none !important')
     return new Promise (resolve => {
       $.getJSON("/EXTInstall?EXT="+EXT , res => {
-        if (!res.error) $('#messageText').text(translation.Plugins_Install_Confirm)
-        else $('#messageText').text(translation.Plugins_Install_Error)
+        if (!res.error) $('#messageText').text(translation.Plugins_Install_Confirmed)
+        else $('#messageText').text(translation.Warn_Error)
         resolve()
       })
     })
@@ -151,8 +168,8 @@ function LaunchDelete() {
     $('#boutons').attr('style' , 'display: none !important')
     return new Promise (resolve => {
       $.getJSON("/EXTDelete?EXT="+EXT , res => {
-        if (!res.error) $('#messageText').text(translation.Plugins_Delete_Confirm)
-        else $('#messageText').text(translation.Plugins_Delete_Error)
+        if (!res.error) $('#messageText').text(translation.Plugins_Delete_Confirmed)
+        else $('#messageText').text(translation.Warn_Error)
         resolve()
       })
     })
@@ -161,7 +178,7 @@ function LaunchDelete() {
   }
 }
 
-async function doLogin() {
+function doLogin() {
   $('#Welcome').text(translation.Login_Welcome)
   $('#username').attr("placeholder", translation.Login_Username)
   $('#password').attr("placeholder", translation.Login_Password)
@@ -175,22 +192,22 @@ async function doLogin() {
     })
 }
 
-async function doIndex() {
+function doIndex() {
   $('#welcome').text(translation.Home_Welcome)
 }
 
-async function doDelete() {
+function doDelete() {
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
   $('#messageText').text(translation.Plugins_Delete_Message)
-  $('#delete').text(translation.Plugins_Delete_Delete)
-  $('#cancel').text(translation.Plugins_Delete_Cancel)
+  $('#delete').text(translation.Delete2)
+  $('#cancel').text(translation.Cancel)
 }
 
-async function doInstall() {
+function doInstall() {
   $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
   $('#messageText').text(translation.Plugins_Install_Message)
-  $('#install').text(translation.Plugins_Install_Install)
-  $('#cancel').text(translation.Plugins_Install_Cancel)
+  $('#install').text(translation.Install)
+  $('#cancel').text(translation.Cancel)
 }
 
 function doRestart() {
@@ -226,6 +243,19 @@ function doDie() {
   $('#text1').text(translation.Tools_Die_Text1)
   $('#text2').text(translation.Tools_Die_Text2)
   $('#text3').text(translation.Tools_Die_Text3)
+}
+
+function doTerminal() {
+  $('#title').text(translation.Tools_Welcome)
+}
+
+function doTools() {
+  $('#title').text(translation.Tools_Welcome)
+  $('#subtitle').text(translation.Tools_subTitle)
+  $('#stop').text(translation.Tools_Die)
+  $('#restart').text(translation.Tools_Restart)
+  $('#Die').text(translation.Confirm)
+  $('#Restart').text(translation.Confirm)
 }
 
 async function createTr() {
@@ -274,7 +304,7 @@ async function createTr() {
   enableSearchAndSort()
 }
 
-async function enableSearchAndSort() {
+function enableSearchAndSort() {
   $("#ipi-table").tablesorter({
     theme: 'bootstrap',
     widthFixed : true,
@@ -361,6 +391,8 @@ function loadMMConfig() {
 
 //make viewJSEditor
 async function viewJSEditor() {
+  $('#MMConfigHeader').text(translation.Configuration_Welcome)
+  $('#EditLoadButton').text(translation.Configuration_EditLoad)
   var modules = await loadMMConfig()
   const container = document.getElementById('jsoneditor')
 
@@ -397,12 +429,19 @@ function loadBackupNames() {
 }
 
 async function EditMMConfigJSEditor() {
+  $('#MMConfigHeader').text(translation.Configuration_Edit_Title)
+  $('#wait').text(translation.Wait)
+  $('#done').text(translation.Done)
+  $('#error').text(translation.Error)
+  $('#save').text(translation.Save)
+  $('#load').text(translation.Load)
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
   $('#load').css("display", "none")
   $('#save').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
+  $('select option:contains("Loading")').text(translation.Configuration_Edit_AcualConfig)
   var allBackup = await loadBackupNames()
   var config = {}
   var conf = null
@@ -463,7 +502,7 @@ async function EditMMConfigJSEditor() {
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
           $('#alert').removeClass('invisible')
-          $('#messageText').text("Please restart MagicMirror to apply new configuration!")
+          $('#messageText').text(translation.Restart)
         }
       });
   }
@@ -484,7 +523,7 @@ async function EditMMConfigJSEditor() {
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
           $('#alert').removeClass('invisible')
-          $('#messageText').text("Please restart MagicMirror to apply new configuration!")
+          $('#messageText').text(translation.Restart)
         }
       });
   }
@@ -510,10 +549,10 @@ function loadPluginTemplate(plugin) {
 
 async function EXTConfigJSEditor() {
   $('#title').text(translation.Plugins_Initial_Title)
-  $('#wait').text(translation.Plugins_Initial_Wait)
-  $('#done').text(translation.Plugins_Initial_Done)
-  $('#error').text(translation.Plugins_Initial_Error)
-  $('#save').text(translation.Plugins_Initial_Save)
+  $('#wait').text(translation.Wait)
+  $('#done').text(translation.Done)
+  $('#error').text(translation.Error)
+  $('#save').text(translation.Save)
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
@@ -535,7 +574,7 @@ async function EXTConfigJSEditor() {
       if (json && json.module && json.module != EXT) {
         errors.push({
           path: ['module'],
-          message: translation.Plugins_Initial_ErrModule + " " + EXT
+          message: translation.ErrModule + " " + EXT
         })
         return errors
       }
@@ -564,7 +603,7 @@ async function EXTConfigJSEditor() {
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
           $('#alert').removeClass('invisible')
-          $('#messageText').text(translation.Plugins_Initial_Restart)
+          $('#messageText').text(translation.Restart)
         }
       });
   }
@@ -581,10 +620,10 @@ function loadPluginCurrentConfig(plugin) {
 
 async function EXTModifyConfigJSEditor() {
   $('#title').text(translation.Plugins_Modify_Title)
-  $('#wait').text(translation.Plugins_Modify_Wait)
-  $('#done').text(translation.Plugins_Modify_Done)
-  $('#error').text(translation.Plugins_Modify_Error)
-  $('#save').text(translation.Plugins_Modify_Save)
+  $('#wait').text(translation.Wait)
+  $('#done').text(translation.Done)
+  $('#error').text(translation.Error)
+  $('#save').text(translation.Save)
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
@@ -609,7 +648,7 @@ async function EXTModifyConfigJSEditor() {
       if (json && json.module && json.module != EXT) {
         errors.push({
           path: ['module'],
-          message: translation.Plugins_Modify_ErrModule + " " + EXT
+          message: translation.ErrModule + " " + EXT
         })
         return errors
       }
@@ -638,7 +677,7 @@ async function EXTModifyConfigJSEditor() {
           $('#wait').css("display", "none")
           $('#done').css("display", "block")
           $('#alert').removeClass('invisible')
-          $('#messageText').text(translation.Plugins_Modify_Restart)
+          $('#messageText').text(translation.Restart)
         }
       });
   }
@@ -646,10 +685,10 @@ async function EXTModifyConfigJSEditor() {
 
 async function EXTDeleteConfigJSEditor() {
   $('#title').text(translation.Plugins_DeleteConfig_Title)
-  $('#wait').text(translation.Plugins_DeleteConfig_Wait)
-  $('#done').text(translation.Plugins_DeleteConfig_Done)
-  $('#error').text(translation.Plugins_DeleteConfig_Error)
-  $('#confirm').text(translation.Plugins_DeleteConfig_Confirm)
+  $('#wait').text(translation.Wait)
+  $('#done').text(translation.Done)
+  $('#error').text(translation.Error)
+  $('#confirm').text(translation.Confirm)
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
@@ -711,12 +750,10 @@ function getGatewayVersion() {
   })
 }
 
-async function GatewaySetting() {
-  var versionGW = await getGatewayVersion()
+function GatewaySetting() {
   $('#version').text(versionGW.v)
   $('#rev').text(versionGW.rev)
-  
-  var actualSetting = await getGatewaySetting()
+
   $('#restart').css("display", "none")
   $('#wait').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
@@ -828,7 +865,7 @@ async function GatewaySetting() {
           $('#alert').removeClass('invisible')
           $('#alert').removeClass('alert-danger')
           $('#alert').addClass('alert-success')
-          $('#messageText').text("Please restart MagicMirror to apply new configuration!")
+          $('#messageText').text(translation.Restart)
           $('#wait').css("display", "none")
           $('#update').css("display", "none")
           $('#restart').css("display", "block")

@@ -52,9 +52,9 @@
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true">MagicMirror configuration (Read Only)</h3>
+                    <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true" id="MMConfigHeader">&nbsp;Loading...</h3>
                     <div id="jsoneditor" style="height: 65vh"></div>
-                    <div class="btn-group" role="group" style="padding: 10px 0px"><a class="btn btn-warning" role="button" href="/EditMMConfig">Edit or Load backup</a></div>
+                    <div class="btn-group" role="group" style="padding: 10px 0px"><a class="btn btn-warning" role="button" id="EditLoadButton" href="/EditMMConfig">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</a></div>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
@@ -64,13 +64,12 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div><script src="jsoneditor/dist/jsoneditor.min.js"></script>
-<script type="text/javascript">window.addEventListener("load",event=>viewJSEditor())</script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/EXT_Tools.js" crossorigin="anonymous"></script>
     <script src="assets/js/Animated-Type-Heading.js"></script>
-    <script src="assets/js/EXT_Tools.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
