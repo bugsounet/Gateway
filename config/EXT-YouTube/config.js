@@ -89,12 +89,12 @@ var schema = {
           "default": true
         },
         "username": {
-          "type": [ "string", "null" ]
+          "type": [ "string", "null" ],
           "title": "username of the @bugsounet's support forum",
           "default": null
         },
         "token": {
-          "type": [ "string", "null" ]
+          "type": [ "string", "null" ],
           "title": "The token associated to your usernane (sended by @bugsounet)",
           "default": null
         }
