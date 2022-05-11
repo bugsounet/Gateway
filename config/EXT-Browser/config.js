@@ -66,5 +66,41 @@ var schema = {
   "required": ["module"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-Browser",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "displayDelay": {
+          "title": "Délai avant la fermeture automatique du navigateur en ms. Si vous souhaitez désactiver ce délai, réglez-le sur 0 (par défaut: 60 secs)"
+        },
+        "scrollActivate": {
+          "title": "Activer ou non le défilement automatique"
+        },
+        "scrollStep": {
+          "title": "Pas de défilement en px pour le défilement vers le bas"
+        },
+        "scrollInterval": {
+          "title": "Intervalle de défilement pour le prochain scrollStep"
+        },
+        "scrollStart": {
+          "title": "Délai avant le défilement vers le bas en ms (après le chargement de l'url)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

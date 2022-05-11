@@ -130,5 +130,59 @@ var schema = {
   "required": ["config","module", "position"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-Bring",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "listName": {
+          "title": "Quel est le nom de votre liste de courses dans Bring !"
+        },
+        "email": {
+          "title": "Votre email de votre compte Bring!"
+        },
+        "password": {
+          "title": "Votre mot de passe de votre compte Bring!"
+        },
+        "lang": {
+          "title": "Choisissez votre numéro de langue"
+        },
+        "columns": {
+          "title": "Le nombre de colonnes dans le tableau"
+        },
+        "maxRows": {
+          "title": "Nombre maximum de lignes à afficher dans le tableau"
+        },
+        "updateInterval": {
+          "title": "Fréquence de mise à jour en millisecondes.(1000ms = 1sec)"
+        },
+        "showBackground": {
+          "title": "Afficher un arrière-plan autour de l'emplacement de l'élément"
+        },
+        "showBox": {
+          "title": "Affiche une boîte autour des éléments"
+        },
+        "showHeader": {
+          "title": "Afficher le nom de la liste de courses dans l'en-tête du plugin"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

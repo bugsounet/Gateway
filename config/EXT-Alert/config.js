@@ -35,12 +35,36 @@ var schema = {
           "type": "array",
           "title": "Plugin list to ignore notifications",
           "default": []
-        },
+        }
       }
     }
   },
   "required": ["module"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-Alert",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin",
+    },
+    "disabled": {
+      "title": "Désactiver le plugin",
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug",
+        },
+        "ignore": {
+          "title": "Liste les plugins/modules à ignorer pour ne pas afficher leurs notifications",
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

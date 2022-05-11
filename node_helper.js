@@ -35,6 +35,7 @@ module.exports = NodeHelper.create({
     this.server= null
     this.noLogin = false
     this.translation = null
+    this.language = null
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -50,6 +51,7 @@ module.exports = NodeHelper.create({
       case "MMConfig":
         this.MMConfig = await tools.readConfig()
         if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
+        this.language = this.MMConfig.language
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
         this.translation = payload.Translate
@@ -357,6 +359,10 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = require("./config/"+req.query.ext+"/config.js")
+          if (data[this.language]) {
+            data.schema = tools.configMerge({}, data.schema, data[this.language])
+            console.log(data.schema)
+          }
           res.send(data.schema)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")

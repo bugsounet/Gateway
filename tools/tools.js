@@ -189,6 +189,30 @@ async function purposeIP() {
   })
 }
 
+/** config merge **/
+function configMerge(result) {
+  var stack = Array.prototype.slice.call(arguments, 1)
+  var item
+  var key
+  while (stack.length) {
+    item = stack.shift()
+    for (key in item) {
+      if (item.hasOwnProperty(key)) {
+        if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
+          if (typeof item[key] === "object" && item[key] !== null) {
+            result[key] = configMerge({}, result[key], item[key])
+          } else {
+            result[key] = item[key]
+          }
+        } else {
+          result[key] = item[key]
+        }
+      }
+    }
+  }
+  return result
+}
+
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
 exports.saveConfig = saveConfig
@@ -198,3 +222,4 @@ exports.searchConfigured = searchConfigured
 exports.searchInstalled = searchInstalled
 exports.loadBackupNames = loadBackupNames
 exports.loadBackupFile = loadBackupFile
+exports.configMerge = configMerge
