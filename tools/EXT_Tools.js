@@ -632,6 +632,7 @@ async function EXTModifyConfigJSEditor() {
   $('#title').text(translation.Plugins_Modify_Title)
   $('#loadDefault').text(translation.LoadDefault)
   $('#mergeDefault').text(translation.MergeDefault)
+  $('#configError').text(translation.Error)
   $('#buttonGrp2').removeClass('invisible')
   var EXT = undefined
   if (window.location.search) {
