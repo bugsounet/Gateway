@@ -52,5 +52,32 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-Pir",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "gpio": {
+          "title": "Numéro BCM de la broche du capteur"
+        },
+        "reverseValue": {
+          "title": "Le capteur envoie des valeurs inversées"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

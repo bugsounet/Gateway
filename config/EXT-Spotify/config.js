@@ -87,5 +87,44 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-Spotify",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "updateInterval": {
+          "title": "Intervalle de mise à jour lors de la lecture (rafraîchissement) en ms"
+        },
+        "idleInterval": {
+          "title": "Intervalle de mise à jour en cas d'inactivité (vérification si Spotify est utilisé) en ms"
+        },
+        "useBottomBar": {
+          "title": "Activer le visuel de la lecture en cours dans la barre inférieure"
+        },
+        "CLIENT_ID": {
+          "title": "ID client de votre compte Spotify"
+        },
+        "CLIENT_SECRET": {
+          "title": "Clé secrète client de votre compte Spotify"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

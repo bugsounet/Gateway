@@ -50,5 +50,32 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-Photos",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "displayDelay": {
+          "title": "Délai avant changement automatique de photo en ms. (la valeur par défaut est de 20 secondes)"
+        },
+        "loop": {
+          "title": "Faire une boucle sur toutes les photos"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

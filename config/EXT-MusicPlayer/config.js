@@ -97,5 +97,47 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-MusicPlayer",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "useUSB": {
+          "title": "Active La lecture/recherche de fichiers à partir d'une clé USB"
+        },
+        "musicPath": {
+          "title": "Chemin de vos fichiers de vos fichiers locaux"
+        },
+        "checkSubDirectory": {
+          "title": "Ce plugin doit-il inspecter le sous-répertoire pour créer une liste de musique ?"
+        },
+        "autoStart": {
+          "title": "Démarrage automatique de la clé USB Musique au démarrage de MagicMirror ou lorsque la clé USB est branchée"
+        },
+        "minVolume": {
+          "title": "Volume à régler lorsque l'assistant parle (en %)"
+        },
+        "maxVolume": {
+          "title": "Volume à régler lors de la lecture de la musique (en %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

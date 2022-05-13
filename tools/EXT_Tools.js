@@ -31,7 +31,7 @@ window.addEventListener("load", async event => {
       doLogin()
       break
     case "/EXT":
-      createTr()
+      createEXTTable()
       break
     case "/delete":
       doDelete()
@@ -258,7 +258,7 @@ function doTools() {
   $('#Restart').text(translation.Confirm)
 }
 
-async function createTr() {
+async function createEXTTable() {
   $('#Plugins_Welcome').text(translation.Plugins_Welcome)
   if (!AllEXT.length) AllEXT = await loadDataAllEXT()
   if (!Object.keys(DescEXT).length) DescEXT = await loadDataDescriptionEXT()
@@ -627,7 +627,12 @@ async function EXTModifyConfigJSEditor() {
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
+  $('#configError').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
+  $('#title').text(translation.Plugins_Modify_Title)
+  $('#loadDefault').text(translation.LoadDefault)
+  $('#mergeDefault').text(translation.MergeDefault)
+  $('#buttonGrp2').removeClass('invisible')
   var EXT = undefined
   if (window.location.search) {
     EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
@@ -635,6 +640,7 @@ async function EXTModifyConfigJSEditor() {
   $('#EXTName').text(EXT)
   var plugin = await loadPluginCurrentConfig(EXT)
   var template= await loadPluginTemplate(EXT)
+  var defaultConfig = await loadPluginConfig(EXT)
   const container = document.getElementById('jsoneditor')
 
   const options = {
@@ -654,8 +660,15 @@ async function EXTModifyConfigJSEditor() {
       }
     },
     onValidationError: (errors) => {
-      if (errors.length) $('#save').css("display", "none")
-      else $('#save').css("display", "block")
+      if (errors.length) {
+        $('#save').css("display", "none")
+        $('#mergeDefault').css("display", "none")
+        $('#configError').css("display", "block")
+      } else {
+        $('#configError').css("display", "none")
+        $('#save').css("display", "block")
+        $('#mergeDefault').css("display", "block")
+      }
     }
   }
   const editor = new JSONEditor(container, options, plugin)
@@ -680,6 +693,17 @@ async function EXTModifyConfigJSEditor() {
           $('#messageText').text(translation.Restart)
         }
       });
+  }
+  document.getElementById('loadDefault').onclick = async function () {
+    editor.set(defaultConfig)
+    editor.expandAll()
+  }
+
+  document.getElementById('mergeDefault').onclick = async function () {
+    var actualConfig= editor.get()
+    actualConfig= configMerge({}, defaultConfig, actualConfig)
+    editor.set(actualConfig)
+    editor.expandAll()
   }
 }
 
@@ -870,4 +894,28 @@ function GatewaySetting() {
         }
       })
   })
+}
+
+/** config merge **/
+function configMerge(result) {
+  var stack = Array.prototype.slice.call(arguments, 1)
+  var item
+  var key
+  while (stack.length) {
+    item = stack.shift()
+    for (key in item) {
+      if (item.hasOwnProperty(key)) {
+        if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
+          if (typeof item[key] === "object" && item[key] !== null) {
+            result[key] = configMerge({}, result[key], item[key])
+          } else {
+            result[key] = item[key]
+          }
+        } else {
+          result[key] = item[key]
+        }
+      }
+    }
+  }
+  return result
 }

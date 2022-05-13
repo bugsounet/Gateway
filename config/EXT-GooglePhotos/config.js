@@ -64,7 +64,7 @@ var schema = {
           "type": "number",
           "title": "How displaying Google Photos? (0: in Fullscreen, 1: in MagicMirror position)",
           "default": 0,
-          "enum": [ 0 , 1 ]
+          "enum": [ 0 , 1 ],
           "minimum": 0,
           "maximum": 1
         },
@@ -83,7 +83,7 @@ var schema = {
           "title": "Album Folders names of Google Photos to display",
           "default": [],
           "minItems": 1,
-          "uniqueItems": true
+          "uniqueItems": true,
           "items": {
             "type": "string"
           }
@@ -101,7 +101,7 @@ var schema = {
         },
         "timeFormat": {
           "type": "string",
-          "title": "Sort received google photos new, old, random",
+          "title": "Time/date Format",
           "default": "DD/MM/YYYY HH:mm",
           "enum": [ "DD/MM/YYYY HH:mm", "DD/MM/YYYY" , "YYYY/DD/MM HH:mm" , "YYYY/DD/MM"  ]
         },
@@ -122,5 +122,56 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-GooglePhotos",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "displayType": {
+          "title": "Comment afficher Google Photos ? (0: en plein écran, 1: en utilisant la position du plugin)"
+        },
+        "displayDelay": {
+          "title": "Délai avant l'affichage de la photo suivante dans l'iframe (la valeur par défaut est de 10 secondes)"
+        },
+        "displayInfos": {
+          "title": "Displaying name of the album and photo time"
+        },
+        "albums": {
+          "title": "Affichage du nom de l'album et de l'heure de la photo"
+        },
+        "sort": {
+          "title": "Trier les photos google reçues (new: nouvelles, old: anciennes, random: aléatoires"
+        },
+        "hiResolution": {
+          "title": "Affichage des photos en haute résolution"
+        },
+        "timeFormat": {
+          "title": "Format heure/date"
+        },
+        "moduleHeight": {
+          "title": "Hauteur du module en px"
+        },
+        "moduleWidth": {
+          "title": "Largeur du module en px"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

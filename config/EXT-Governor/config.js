@@ -50,5 +50,32 @@ var schema = {
   "required": ["module"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-Governor",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin",
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "sleeping": {
+          "title": "Nom du gouverneur lorsque l'écran est en état de veille"
+        },
+        "working": {
+          "title": "Nom du gouverneur lorsque l'écran est allumé"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

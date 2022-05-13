@@ -73,5 +73,35 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-RadioPlayer",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "minVolume": {
+          "title": "Volume à régler lorsque l'assistant parle (en %)"
+        },
+        "maxVolume": {
+          "title": "Volume à régler lors de l'écoute de la radio (en %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

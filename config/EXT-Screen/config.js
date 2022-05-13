@@ -156,5 +156,74 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-Screen",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "animateBody": {
+          "title": "Animer MagicMirror pour allumer/éteindre l'écran"
+        },
+        "delay": {
+          "title": "Temps avant que le plugin n'éteigne l'affichage si aucune activité de l'utilisateur n'est détectée. (en ms)"
+        },
+        "turnOffDisplay": {
+          "title": "L'affichage doit-il s'éteindre après le délai d'attente ?"
+        },
+        "mode": {
+          "title": "Mode pour allumer/éteindre votre écran (voir wiki)"
+        },
+        "ecoMode": {
+          "title": "Le plugin doit-il masquer tous les modules après le délai d'attente ?"
+        },
+        "displayCounter": {
+          "title": "Le compte à rebours doit-il s'afficher à l'écran ?"
+        },
+        "displayBar": {
+          "title": "La barre de comptage doit-elle s'afficher à l'écran ?"
+        },
+        "displayStyle": {
+          "title": "Style du compteur"
+        },
+        "displayLastPresence": {
+          "title": "Afficher la date de la dernière présence de l'utilisateur"
+        },
+        "lastPresenceTimeFormat": {
+          "title": "Changer le format de date (format de moment.js) de la dernière présence"
+        },
+        "detectorSleeping": {
+          "title": "Activer UNIQUEMENT EXT-Detector uniquement lorsque l'affichage est allumé"
+        },
+        "autoHide": {
+          "title": "Masquer automatiquement ce plugin lorsque la fonction de verrouillage est activée"
+        },
+        "delayed": {
+          "title": "Temps d'activation différé de l'écran en ms (uniquement si votre écran est éteint)."
+        },
+        "gpio": {
+          "title": "Numéro GPIO pour contrôler le relais (mode 6 uniquement)"
+        },
+        "clearGpioValue": {
+          "title": "Réinitialiser le script de valeur GPIO du relais (mode 6 uniquement)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

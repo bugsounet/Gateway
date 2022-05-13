@@ -218,7 +218,9 @@ Module.register("Gateway", {
       Tr.Restart = this.translate("GW_Restart")
       Tr.ErrModule = this.translate("GW_ErrModule")
       Tr.Warn_Error = this.translate("GW_Warn_Error")
-
+      Tr.LoadDefault = this.translate("GW_LoadDefault"),
+      Tr.MergeDefault = this.translate("GW_MergeDefault"),
+  
       resolve(Tr)
     })
   },

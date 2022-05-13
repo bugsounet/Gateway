@@ -80,6 +80,8 @@
   "GW_Restart": "Veuillez redémarrer MagicMirror pour appliquer la nouvelle configuration !",
   "GW_ErrModule": "Nom du module: doit être",
   "GW_Warn_Error": "Attention: Des erreurs ont été détectées",
+  "GW_LoadDefault": "Recharger la Config. par défaut",
+  "GW_MergeDefault": "Fusionner avec les valeurs par défaut",
 
   "EXT-Alert": "Affichez tout avertissement, information ou erreur sur votre écran.",
   "EXT-Background": "Modifiez l'arrière-plan par défaut de l'assistant Google par le vôtre ou avec des gifs animés pour chaque statut de l'assistant.",

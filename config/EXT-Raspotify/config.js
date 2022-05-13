@@ -78,5 +78,44 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var schema = {
+  "description": "Propriété du plugin EXT-Raspotify",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "email": {
+          "title": "Votre e-mail spotify"
+        },
+        "password": {
+          "title": "Votre mot de passe Spotify"
+        },
+        "deviceName": {
+          "title": "Définir votre nom de l'appareil Spotify"
+        },
+        "deviceCard": {
+          "title": "Définissez la carte de l'appareil de lecture (voir la page wiki)"
+        },
+        "minVolume": {
+          "title": "Volume à régler lorsque l'assistant parle (en %)"
+        },
+        "maxVolume": {
+          "title": "Volume maximum lors de la lecture de Spotify (en %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

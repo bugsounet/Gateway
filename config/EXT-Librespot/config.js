@@ -72,5 +72,41 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété du plugin EXT-Librespot",
+  "properties": {
+    "module": {
+      "title": "Nom du Plugin"
+    },
+    "disabled": {
+      "title": "Désactive le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Active le mode debug"
+        },
+        "email": {
+          "title": "Votre e-mail spotify"
+        },
+        "password": {
+          "title": "Votre mot de passe Spotify"
+        },
+        "deviceName": {
+          "title": "Définir votre nom de l'appareil Spotify"
+        },
+        "minVolume": {
+          "title": "Volume à régler lorsque l'assistant parle (en %)"
+        },
+        "maxVolume": {
+          "title": "Volume maximum lors de la lecture de Spotify (en %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

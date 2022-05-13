@@ -361,7 +361,6 @@ module.exports = NodeHelper.create({
           let data = require("./config/"+req.query.ext+"/config.js")
           if (data[this.language]) {
             data.schema = tools.configMerge({}, data.schema, data[this.language])
-            console.log(data.schema)
           }
           res.send(data.schema)
         }
