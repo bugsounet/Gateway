@@ -83,12 +83,12 @@ var schema = {
         },
         "startDelay": {
           "type": "number",
-          "title": "Sometimes, loading MagicMirror can be a real horse race... and the result of the first update check can be no value (ping timeout). To prevent this set a delay before starting first scan (default : 60 secs)",
+          "title": "Delay before starting first scan (default : 60 secs)",
           "default": 60000
         },
         "ignoreModules": {
           "type": "array",
-          "title": "Array of ignored modules",
+          "title": "Array of ignored modules names",
           "default": [],
           "item": {
             "type": "string"
@@ -96,17 +96,40 @@ var schema = {
         },
         "updateCommands": {
           "type": "array",
-          "title": "You can define individual update commands for each module with an array",
+          "title": "Update commands for each module with an array of module/command object",
           "default": [],
-          "item": {
-            "type": "string"
+          "minItems": 0,
+          "items": {
+            "properties": {
+              "module" : {
+                "type": "string",
+                "title": "Name of the module."
+              },
+              "command": {
+                "type": "string",
+                "title": "Update command for this module"
+              }
+            },
+            "minProperties": 2,
+            "maxProperties": 2,
+            "additionalProperties": false
+          },
+          "additionalItems": {
+            "properties": {
+              "module" : {
+                "type": "string"
+              },
+              "command": {
+                "type": "string"
+              }
+            }
           }
         },
         "notification": {
           "type": "object",
           "title": "How can this plugin can notify",
           "properties": {
-            "useTelegram" : {
+            "useTelegramBot" : {
               "type": "boolean",
               "title": "Do you use MMM-TelegramBot?",
               "default": true
@@ -192,54 +215,64 @@ var fr = {
           "title": "Active le mode debug"
         },
         "updateInterval": {
-          "title": "Interval for update checking in ms. (default: 10 mins)"
+          "title": "Intervalle de vérification des mises à jour en ms. (par défaut: 10 minutes)"
         },
         "startDelay": {
-          "title": "Sometimes, loading MagicMirror can be a real horse race... and the result of the first update check can be no value (ping timeout). To prevent this set a delay before starting first scan (default : 60 secs)"
+          "title": "Délai avant le début de la premiere recherche de mise à jour (par défaut: 60 secondes)"
         },
         "ignoreModules": {
-          "title": "Array of ignored modules"
+          "title": "Tableau de modules ignorés"
         },
         "updateCommands": {
-          "title": "You can define individual update commands for each module with an array"
+          "title": "Mise à jour automatique avec des commandes défini pour chaque module dans un tableau d'objet module/command",
+          "items": {
+            "properties": {
+              "module" : {
+                "title": "Nom du module"
+              },
+              "command": {
+                "title": "Commande de mise à jour pour ce module"
+              }
+            }
+          }
         },
         "notification": {
-          "title": "How can this plugin can notify",
+          "title": "Comment ce plugin peut-il notifier ?",
           "properties": {
-            "useTelegram" : {
-              "title": "Do you use MMM-TelegramBot?"
+            "useTelegramBot" : {
+              "title": "Utilisez-vous MMM-TelegramBot ?"
             },
             "sendReady": {
-              "title": "Send a welcome and initialized confirmation on start"
+              "title": "Envoyer un message de bienvenue et une confirmation d'initialisation au démarrage"
             },
             "useScreen": {
-              "title": "Display update on the screen?"
+              "title": "Afficher la mise à jour à l'écran ?"
             },
             "useCallback": {
-              "title": "Send any callback process to telegramBot?"
+              "title": "Envoyer le resultat de la mise à jour sur MMM-TelegramBot ?"
             }
           }
         },
         "update": {
-          "title": "How can this plugin can update modules and plugin",
+          "title": "Paramètres de mise à jour",
           "properties" : {
             "autoUpdate" : {
-              "title": "If you want an automated update process, just activate it!"
+              "title": "Activation de la mise à jour automatique"
             },
             "autoRestart": {
-              "title": "Restart MagicMirror after update automatically."
+              "title": "Redémarrer automatiquement MagicMirror après la mise à jour."
             },
             "PM2Name": {
-              "title": "Name or ID of the MagicMirror process in PM2"
+              "title": "Nom ou ID du processus MagicMirror dans PM2"
             },
             "defaultCommand": {
-              "title": "Define your default update command. It is being used if there is no individual command for the module in the updateCommands array."
+              "title": "Définissez votre commande de mise à jour par défaut. Elle sera utilisé s'il n'y a pas de commande individuelle pour le module dans le tableau updateCommands."
             },
             "logToConsole": {
-              "title": "This feature is needed for user who don't use PM2 ! Log process and result in console"
+              "title": "Journaliser le processus de mise à jour et le résultat dans la console"
             },
             "timeout": {
-              "title": "Maximum execution time of an update in ms (default: 2 mins)"
+              "title": "Temps d'exécution maximal d'une mise à jour en ms (par défaut : 2 min)"
             }
           }
         }

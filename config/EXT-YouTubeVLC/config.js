@@ -53,7 +53,7 @@ var schema = {
         },
         "maxVolume": {
           "type": "number",
-          "title": "Max volume when spotify playing (in %)",
+          "title": "Max volume when YouTube playing (in %)",
           "default": 100,
           "minimum": 1,
           "maximum": 100
@@ -64,5 +64,38 @@ var schema = {
   "required": ["module"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-YouTubeVLC",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "useSearch": {
+          "title": "Activer la fonctionnalité de recherche YouTube"
+        },
+        "displayHeader": {
+          "title": "Afficher quelques secondes (en popup) le titre trouvé de la vidéo (nécessite EXT-Alert)"
+        },
+        "minVolume": {
+          "title": "Volume à régler lorsque l'assistant parle (en %)"
+        },
+        "maxVolume": {
+          "title": "Volume max lors de la lecture de YouTube (en %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

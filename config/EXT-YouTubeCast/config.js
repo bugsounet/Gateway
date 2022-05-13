@@ -91,8 +91,50 @@ var schema = {
       "required": ["castName", "port"]
     }
   },
-  "required": ["module", "config"]
+  "required": ["module", "config", "position"]
+}
+
+var fr = {
+  "description": "Propriété pour le plugin EXT-YouTubeCast",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "fullscreen": {
+          "title": "Activer la vidéo en plein écran (par défaut dans une fenêtre)"
+        },
+        "width": {
+          "title": "Largeur de la fenêtre de votre YouTube (peut également être une valeur px)"
+        },
+        "height": {
+          "title": "Hauteur de votre fenêtre YouTube (peut également être une valeur px)"
+        },
+        "alwaysDisplayed": {
+          "title": "La fenêtre YouTube doivent-elles toujours être affichée lorsqu'une vidéo n'est pas en cours de lecture ?"
+        },
+        "castName": {
+          "title": "Nom de l'appareil MagicMirror cast"
+        },
+        "port": {
+          "title": "Port de diffusion sur MagicMirror"
+        }
+      }
+    }
+  }
 }
 
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

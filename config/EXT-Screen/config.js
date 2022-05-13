@@ -153,7 +153,7 @@ var schema = {
       "required": ["mode", "delay"]
     }
   },
-  "required": ["module", "config"]
+  "required": ["module", "config", "position"]
 }
 
 var fr = {

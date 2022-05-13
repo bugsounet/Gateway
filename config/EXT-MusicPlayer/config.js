@@ -94,7 +94,7 @@ var schema = {
       }
     }
   },
-  "required": ["module", "config"]
+  "required": ["module", "config", "position"]
 }
 
 var fr = {

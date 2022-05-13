@@ -39,4 +39,26 @@ var schema = {
     "required": ["config","module"]
 }
 
+var fr = {
+    "description": "Propriété pour le plugin EXT-Welcome",
+    "properties": {
+      "module": {
+        "title": "Nom du plugin"
+      },
+      "disabled": {
+        "title": "Désactiver le plugin"
+      },
+      "config": {
+        "title": "Configuration",
+        "properties": {
+          "welcome": {
+            "title": "Votre demande de bienvenue"
+          }
+        }
+      }
+    }
+}
+
+exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

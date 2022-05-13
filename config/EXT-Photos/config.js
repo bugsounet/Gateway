@@ -47,7 +47,7 @@ var schema = {
       }
     }
   },
-  "required": ["module", "config"]
+  "required": ["module"]
 }
 
 var fr = {

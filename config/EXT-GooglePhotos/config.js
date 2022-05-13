@@ -119,7 +119,7 @@ var schema = {
       "required": ["albums"]
     }
   },
-  "required": ["module", "config"]
+  "required": ["module", "config", "position"]
 }
 
 var fr = {

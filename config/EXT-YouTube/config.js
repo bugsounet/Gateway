@@ -102,8 +102,56 @@ var schema = {
       "required": ["username", "token"]
     }
   },
-  "required": ["module", "config"]
+  "required": ["module", "config", "position"]
+}
+
+var fr = {
+  "description": "Propriété pour le plugin EXT-YouTube",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "position": {
+      "title": "Position du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "fullscreen": {
+          "title": "Activer la vidéo en plein écran (par défaut dans une fenêtre)"
+        },
+        "width": {
+          "title": "Largeur de la fenêtre de votre YouTube (peut également être une valeur px)"
+        },
+        "height": {
+          "title": "Hauteur de votre fenêtre YouTube (peut également être une valeur px)"
+        },
+        "useSearch": {
+          "title": "Activer la fonctionnalité de recherche YouTube"
+        },
+        "alwaysDisplayed": {
+          "title": "La fenêtre YouTube doivent-elles toujours être affichée lorsqu'une vidéo n'est pas en cours de lecture ?"
+        },
+        "displayHeader": {
+          "title": "Afficher quelques secondes (en popup) le titre trouvé de la vidéo (nécessite EXT-Alert)"
+        },
+        "username": {
+          "title": "Nom d'utilisateur du forum de support"
+        },
+        "token": {
+          "title": "Le jeton associé à votre nom d'utilisateur (envoyé par @bugsounet)"
+        }
+      }
+    }
+  }
 }
 
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr

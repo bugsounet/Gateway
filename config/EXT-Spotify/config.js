@@ -84,7 +84,7 @@ var schema = {
       "required": ["CLIENT_ID", "CLIENT_SECRET"]
     }
   },
-  "required": ["module", "config"]
+  "required": ["module", "config", "position"]
 }
 
 var fr = {

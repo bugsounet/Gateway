@@ -571,13 +571,34 @@ async function EXTConfigJSEditor() {
     enableSort: false,
     onValidate: (json) => {
       var errors = []
+      /** Special rules for EXT-Detector **/
+      if (EXT == "EXT-Detector" && json && json.config && Array.isArray(json.config.detectors)) {
+        var SnowboyValidator = [ "smart_mirror", "jarvis", "computer", "snowboy", "subex", "neo_ya", "hey_extreme", "view_glass" ]
+        var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator" ]
+        json.config.detectors.forEach((detector, index) => {
+          if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
+            console.log(detector,errors)
+            errors.push({
+              path: ['config', 'detectors', index, "Model"],
+              message: detector.Model + " is not comptatible with Snowboy detector"
+            })
+          }
+          if (detector.detector == "Porcupine" && PorcupineValidator.indexOf(detector.Model) == -1) {
+            errors.push({
+              path: ['config', 'detectors', index, "Model"],
+              message: detector.Model + " is not comptatible with Porcupine detector"
+            })
+          }
+        })
+      }
+      /** Rules for not change module name **/
       if (json && json.module && json.module != EXT) {
         errors.push({
           path: ['module'],
           message: translation.ErrModule + " " + EXT
         })
-        return errors
       }
+      return errors
     },
     onValidationError: (errors) => {
       if (errors.length) $('#save').css("display", "none")
@@ -652,13 +673,34 @@ async function EXTModifyConfigJSEditor() {
     enableSort: false,
     onValidate: (json) => {
       var errors = []
+      /** Special rules for EXT-Detector **/
+      if (EXT == "EXT-Detector" && json && json.config && Array.isArray(json.config.detectors)) {
+        var SnowboyValidator = [ "smart_mirror", "jarvis", "computer", "snowboy", "subex", "neo_ya", "hey_extreme", "view_glass" ]
+        var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator" ]
+        json.config.detectors.forEach((detector, index) => {
+          if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
+            console.log(detector,errors)
+            errors.push({
+              path: ['config', 'detectors', index, "Model"],
+              message: detector.Model + " is not comptatible with Snowboy detector"
+            })
+          }
+          if (detector.detector == "Porcupine" && PorcupineValidator.indexOf(detector.Model) == -1) {
+            errors.push({
+              path: ['config', 'detectors', index, "Model"],
+              message: detector.Model + " is not comptatible with Porcupine detector"
+            })
+          }
+        })
+      }
+      /** Rules for not change module name **/
       if (json && json.module && json.module != EXT) {
         errors.push({
           path: ['module'],
           message: translation.ErrModule + " " + EXT
         })
-        return errors
       }
+      return errors
     },
     onValidationError: (errors) => {
       if (errors.length) {

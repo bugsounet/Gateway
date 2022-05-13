@@ -50,5 +50,32 @@ var schema = {
   "required": ["module", "config"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-Volume",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin"
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "volumePreset": {
+          "title": "Type de configuration de volume prédéfini"
+        },
+        "myScript": {
+          "title": "Votre propre script pour le contrôle du volume"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
-exports.schema = schema
+exports.schema = fr
+exports.fr = schema
