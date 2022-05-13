@@ -7,22 +7,22 @@ var cors = require("cors")
 const fs = require("fs")
 const path = require("path")
 const tools = require("./tools/tools.js")
-var build =  require('./build')
+var build =  require('./tools/build.js')
 
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
-var flash = require('connect-flash')
 var bodyParser = require('body-parser')
 var hyperwatch =  require('hyperwatch')
 var exec = require("child_process").exec
+var spawn = require('child_process').spawn
+const pm2 = require('pm2')
 
 module.exports = NodeHelper.create({
   start: function () {
-    this.config= null
-    this.MMConfig= null
+    this.MMConfig= null // real config file (config.js)
     this.EXT= null // EXT plugins list
-    this.EXTDescription = {}
+    this.EXTDescription = {} // description of EXT
     this.EXTConfigured = [] // configured EXT in config
     this.EXTInstalled= [] // installed EXT in MM
     this.user = {
@@ -33,23 +33,28 @@ module.exports = NodeHelper.create({
     }
     this.app = null
     this.server= null
+    this.noLogin = false
+    this.translation = null
+    this.language = null
   },
 
-  socketNotificationReceived: function (noti, payload) {
+  socketNotificationReceived: async function (noti, payload) {
     switch (noti) {
       case "INIT":
         console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
         if (this.server) return
         this.config = payload
+        this.noLogin = this.config.noLogin
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
-        //log("Config:", this.config)
-        if (this.config.useApp) this.sendSocketNotification("MMConfig")
+        this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
-        this.MMConfig = payload.MM
-        //log("MMConfig:", this.MMConfig)
+        this.MMConfig = await tools.readConfig()
+        if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
+        this.language = this.MMConfig.language
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
+        this.translation = payload.Translate
         this.initialize()
         break
     }
@@ -58,60 +63,33 @@ module.exports = NodeHelper.create({
   /** init function **/
   initialize: function () {
     console.log("[GATEWAY] Start app...")
-    if (this.config.testingMode) console.log("[GATEWAY] TestingMode is activated, don't worry.. no change will be apply!")
     log("EXT plugins in database:", this.EXT.length)
-    if (!this.config.username && !this.config.password) {
-      console.error("[GATEWAY] Your have not defined user/password in config!")
-      console.error("[GATEWAY] Using default creadentials")
-    } else {
-      if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
-        console.warn("[GATEWAY] WARN: You are using default username or default password")
-        console.warn("[GATEWAY] WARN: Don't forget to change it!")
+    if (this.noLogin) console.warn("[GATEWAY] WARN: You use noLogin feature (no login/password used)")
+    else {
+      if (!this.config.username && !this.config.password) {
+        console.error("[GATEWAY] Your have not defined user/password in config!")
+        console.error("[GATEWAY] Using default creadentials")
+      } else {
+        if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
+          console.warn("[GATEWAY] WARN: You are using default username or default password")
+          console.warn("[GATEWAY] WARN: Don't forget to change it!")
+        }
+        this.user.username = this.config.username
+        this.user.password = this.config.password
       }
-      this.user.username = this.config.username
-      this.user.password = this.config.password
+      this.passportConfig()
     }
-    this.passportConfig()
     this.app = express()
-    this.wantedConfigModule = null
-    this.moduleFile = null
-    this.moduleToInstall= null
-    this.EXTConfigured= this.searchConfigured()
-    this.EXTInstalled= this.searchInstalled()
-    log("Find", this.EXTConfigured.length, "configured plugins in config file")
+    this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
+    this.EXTInstalled= tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
+    log("Find", this.EXTConfigured.length, "configured plugins in config file")
     this.Setup()
-  },
-
-  /** search installed EXT from DB**/
-  searchConfigured: function () {
-    try {
-      var Configured = []
-      this.MMConfig.modules.find(m => {
-        if (this.EXT.includes(m.module)) Configured.push(m.module)
-      })
-      return Configured.sort()
-    } catch (e) {
-      console.log("[GATEWAY] Error! " + e)
-      return Configured.sort()
-    }
-  },
-
-  /** search installed EXT **/
-  searchInstalled: function () {
-    var Installed = []
-    this.EXT.find(m => {
-      if (fs.existsSync(path.resolve(__dirname + "/../" + m + "/package.json"))) {
-        let name = require((path.resolve(__dirname + "/../" + m + "/package.json"))).name
-        if (name == m) Installed.push(m)
-        else console.warn("[GATEWAY] Found:", m, "but in package.json name is not the same:", name)
-      }
-    })
-    return Installed.sort()
   },
 
   /** http server **/
   Setup: async function () {
+    var urlencodedParser = bodyParser.urlencoded({ extended: true })
     log("Create all needed routes...")
     this.app.use(session({
       secret: 'some-secret',
@@ -121,13 +99,13 @@ module.exports = NodeHelper.create({
 
     // For parsing post request's data/body
     this.app.use(bodyParser.json())
-    this.app.use(bodyParser.urlencoded({ extended: false }))
+    this.app.use(bodyParser.urlencoded({ extended: true }))
 
     // Tells app to use password session
-    this.app.use(passport.initialize())
-    this.app.use(passport.session())
-
-    this.app.use(flash())
+    if (!this.noLogin) {
+      this.app.use(passport.initialize())
+      this.app.use(passport.session())
+    }
 
     var options = {
       dotfiles: 'ignore',
@@ -142,133 +120,165 @@ module.exports = NodeHelper.create({
     }
 
     this.app
+      .use(this.logRequest)
       .use(cors({ origin: '*' }))
+      .use('/EXT_Tools.js', express.static(__dirname + '/tools/EXT_Tools.js'))
       .use('/assets', express.static(__dirname + '/admin/assets', options))
       .get('/', (req, res) => {
-        if(req.user) res.sendFile(__dirname+ "/admin/index.html")
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/index.html")
         else res.redirect('/login')
       })
 
+      .get("/version" , (req,res) => {
+          res.send({ v: require('./package.json').version, rev: require('./package.json').rev })
+      })
+
+      .get("/translation" , (req,res) => {
+          res.send(this.translation)
+      })
+
       .get('/EXT', (req, res) => {
-        if(req.user) res.sendFile(__dirname+ "/admin/EXT.html")
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EXT.html")
         else res.redirect('/login')
       })
 
       .get('/login', (req, res) => {
-        let error = req.flash('error')
-        if (error.length) res.redirect("/login?err=" + error)
-        else res.sendFile(__dirname+ "/admin/login.html")
+        if (req.user || this.noLogin) res.redirect('/')
+        res.sendFile(__dirname+ "/admin/login.html")
       })
 
-      .post('/login', passport.authenticate('login', {
-          successRedirect: '/',
-          failureRedirect: '/login',
-          failureFlash: true
-        })
-      )
+      .post('/auth', (req, res, next) => {
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        passport.authenticate('login', (err, user, info) => {
+          if (err) {
+            console.log("[GATEWAY][" + ip + "] Error", err)
+            return next(err)
+          }
+          if (!user) {
+            console.log("[GATEWAY][" + ip + "] Bad Login", info)
+            return res.send({ err: info })
+          }
+          req.logIn(user, err => {
+            if (err) {
+              console.log("[GATEWAY][" + ip + "] Login error:", err)
+              return res.send({ err: err })
+            }
+            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you! (and don't be so lazy...)")
+            return res.send({ login: true })
+          })
+        })(req, res, next)
+      })
 
       .get('/logout', (req, res) => {
-        req.logout()
+        if (!this.noLogin) req.logout()
         res.redirect('/')
       })
 
       .get('/AllEXT', (req, res) => {
-        if(req.user) res.send(this.EXT)
+        if(req.user || this.noLogin) res.send(this.EXT)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/DescriptionEXT', (req, res) => {
-        if(req.user) res.send(this.EXTDescription)
+        if(req.user || this.noLogin) res.send(this.EXTDescription)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/InstalledEXT', (req, res) => {
-        if(req.user) res.send(this.EXTInstalled)
+        if(req.user || this.noLogin) res.send(this.EXTInstalled)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/ConfiguredEXT', (req, res) => {
-        if(req.user) res.send(this.EXTConfigured)
+        if(req.user || this.noLogin) res.send(this.EXTConfigured)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
-      .get('/ModulesConfig', (req, res) => {
-        if(req.user) res.send(this.MMConfig.modules)
+      .get('/GetMMConfig', (req, res) => {
+        if(req.user || this.noLogin) res.send(this.MMConfig)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/Terminal" , (req,res) => {
-        if(req.user) res.sendFile( __dirname+ "/admin/terminal.html")
+        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/terminal.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/install" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
-          res.sendFile( __dirname+ "/admin/install.html")
+        if(req.user || this.noLogin) {
+          if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
+            res.sendFile( __dirname+ "/admin/install.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTInstall" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
-          console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
-          var result = {
-            error: false
-          }
-          var modulePath = path.normalize(__dirname + "/../")
-          var Command= 'cd ' + __dirname + '/../ && pwd && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
-
-          var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
-            if (error) {
-              result.error = true
-              console.error(`[GATEWAY][FATAL] exec error: ${error}`)
-            } else {
-              this.EXTInstalled= this.searchInstalled()
-              console.log("[GATEWAY][DONE]", req.query.EXT)
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
+            console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
+            var result = {
+              error: false
             }
-            res.json(result)
-          })
-          child.stdout.pipe(process.stdout)
-          child.stderr.pipe(process.stdout)
+            var modulePath = path.normalize(__dirname + "/../")
+            var Command= 'cd ' + modulePath + ' && git clone https://github.com/bugsounet/' + req.query.EXT + ' && cd ' + req.query.EXT + ' && npm install'
+
+            var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
+              if (error) {
+                result.error = true
+                console.error(`[GATEWAY][FATAL] exec error: ${error}`)
+              } else {
+                this.EXTInstalled= tools.searchInstalled(this.EXT)
+                console.log("[GATEWAY][DONE]", req.query.EXT)
+              }
+              res.json(result)
+            })
+            child.stdout.pipe(process.stdout)
+            child.stderr.pipe(process.stdout)
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
-      .use("/delete" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
-          res.sendFile( __dirname+ "/admin/delete.html")
+      .get("/delete" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
+            res.sendFile( __dirname+ "/admin/delete.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
       
-      .use("/EXTDelete" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
-          console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
-          var result = {
-            error: false
-          }
-          var modulePath = path.normalize(__dirname + "/../")
-          var Command= 'cd ' + __dirname + '/../ && pwd && rm -rf ' + req.query.EXT
-          var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
-            if (error) {
-              result.error = true
-              console.error(`[GATEWAY][FATAL] exec error: ${error}`)
-            } else {
-              this.EXTInstalled= this.searchInstalled()
-              console.log("[GATEWAY][DONE]", req.query.EXT)
+      .get("/EXTDelete" , (req,res) => {
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
+            console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
+            var result = {
+              error: false
             }
-            res.json(result)
-          })
-          child.stdout.pipe(process.stdout)
-          child.stderr.pipe(process.stdout)
+            var modulePath = path.normalize(__dirname + "/../")
+            var Command= 'cd ' + modulePath + ' && rm -rf ' + req.query.EXT
+            var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
+              if (error) {
+                result.error = true
+                console.error(`[GATEWAY][FATAL] exec error: ${error}`)
+              } else {
+                this.EXTInstalled= tools.searchInstalled(this.EXT)
+                console.log("[GATEWAY][DONE]", req.query.EXT)
+              }
+              res.json(result)
+            })
+            child.stdout.pipe(process.stdout)
+            child.stderr.pipe(process.stdout)
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/bundle.js', function (req, res) {
@@ -277,74 +287,231 @@ module.exports = NodeHelper.create({
        })
 
       .get("/MMConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        res.sendFile( __dirname+ "/admin/mmconfig.html")
+        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/mmconfig.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTCreateConfig" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if (req.query.ext &&
+            this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+            this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+            this.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
+          ) {
+            res.sendFile( __dirname+ "/admin/EXTCreateConfig.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTModifyConfig" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if (req.query.ext &&
+            this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+            this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+            this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+          ) {
+            res.sendFile( __dirname+ "/admin/EXTModifyConfig.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTDeleteConfig" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if (req.query.ext &&
+            this.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
+            this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+            this.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+          ) {
+            res.sendFile( __dirname+ "/admin/EXTDeleteConfig.html")
+          }
+          else res.status(404).sendFile(__dirname+ "/admin/404.html")
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTGetCurrentConfig" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          var index = this.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
+          if (index > -1) {
+            let data = this.MMConfig.modules[index]
+            return res.send(data)
+          }
+          res.status(404).sendFile(__dirname+ "/admin/404.html")
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTGetDefaultConfig" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          let data = require("./config/"+req.query.ext+"/config.js")
+          res.send(data.default)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTGetDefaultTemplate" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          let data = require("./config/"+req.query.ext+"/config.js")
+          if (data[this.language]) {
+            data.schema = tools.configMerge({}, data.schema, data[this.language])
+          }
+          res.send(data.schema)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EXTSaveConfig" , (req,res) => {
+        if(req.user || this.noLogin) {
+          if(!req.query.config) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          let data = req.query.config
+          res.send(data)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+      
+      .post("/writeEXT", async (req,res) => {
+        console.log("[Gateway] Receiving EXT data ...")
+        let data = JSON.parse(req.body.data)
+        var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
+        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+      .post("/deleteEXT", async (req,res) => {
+        console.log("[Gateway] Receiving EXT data ...", req.body)
+        let EXTName = req.body.data
+        var NewConfig = await tools.configDelete(EXTName, this.MMConfig)
+        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+      .get("/Tools" , (req,res) => {
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/tools.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/Setting" , (req,res) => {
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/setting.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+      
+      .get("/getSetting", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.config)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+      
+      .get("/Restart" , (req,res) => {
+        if(req.user || this.noLogin) {
+          res.sendFile(__dirname+ "/admin/restarting.html")
+          setTimeout(() => this.restartMM() , 1000)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/Die" , (req,res) => {
+        if(req.user || this.noLogin) {
+          res.sendFile(__dirname+ "/admin/die.html")
+          setTimeout(() => this.doClose(), 3000)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/EditMMConfig" , (req,res) => {
+        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EditMMConfig.html")
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/GetBackupName" , async (req,res) => {
+        if(req.user || this.noLogin) {
+          var names = await tools.loadBackupNames()
+          res.send(names)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/GetBackupFile" , async (req,res) => {
+        if(req.user || this.noLogin) {
+          let data = req.query.config
+          var file = await tools.loadBackupFile(data)
+          res.send(file)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .post("/loadBackup", async (req,res) => {
+        console.log("[Gateway] Receiving backup data ...")
+        let file = req.body.data
+        var loadFile = await tools.loadBackupFile(file)
+        var resultSaveConfig = await tools.saveConfig(loadFile)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+
+      .post("/writeConfig", async (req,res) => {
+        console.log("[Gateway] Receiving config data ...")
+        let data = JSON.parse(req.body.data)
+        var resultSaveConfig = await tools.saveConfig(data)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          console.log("[GATEWAY] Reload config")
+        }
+      })
+      
+      .post("/saveSetting", urlencodedParser, async (req,res) => {
+        console.log("[Gateway] Receiving new Setting")
+        let data = JSON.parse(req.body.data)
+        console.log(data)
+        var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
+        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          this.MMConfig = await tools.readConfig()
+          console.log("[GATEWAY] Reload config")
+        }
       })
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 
-      .get("/EXTConfig" , (req,res) => {
-        if(!req.user) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        if (req.query.ext && 
-          this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
-          this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          this.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
-        ) {
-          res.sendFile( __dirname+ "/admin/EXTConfig.html")
-        }
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
+      .use(function(req, res) {
+        console.warn("[GATEWAY] Don't find:", req.url)
+        res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
-
-      .get("/EXTGetDefaultConfig" , (req,res) => {
-        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        let data = require("./config/"+req.query.ext+"/config.js")
-        res.send(data.default)
-      })
-
-      .get("/EXTGetDefaultTemplate" , (req,res) => {
-        if(!req.user || !req.query.ext) return res.status(403).sendFile(__dirname+ "/admin/403.html")
-        let data = require("./config/"+req.query.ext+"/config.js")
-        res.send(data.schema)
-      })
-/*
-    this.EXT.forEach( module => {
-      this.app.get("/"+ module, (req,res) => {
-        res.sendFile( __dirname+ "/admin/modules/" + module + "/index.html")
-      })
-     }
-    )
-*/
-    this.app.use(function(req, res) {
-      res.status(404).sendFile(__dirname+ "/admin/404.html")
-    })
           
-
     /** Create Server **/
-    this.config.listening = await this.purposeIP()
+    this.config.listening = await tools.purposeIP()
     this.server = hyperwatch(this.app.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
     }))
   },
 
-  /** search and purpose and ip address **/
-  purposeIP: async function() {
-    var IP = await tools.getIP()
-    var found = 0
-    return new Promise(resolve => {
-      IP.forEach(network => {
-        if (network.default) {
-          resolve(network.ip)
-          found = 1
-          return
-        }
-      })
-      if (!found) resolve("127.0.0.1")
-    })
-  },
-
   /** passport local strategy with username/password defined on config **/
   passportConfig: function() {
-    // Register a login strategy
     passport.use('login', new LocalStrategy(
       (username, password, done) => {
         if (username === this.user.username && password === this.user.password) {
@@ -354,16 +521,53 @@ module.exports = NodeHelper.create({
       }
     ))
 
-    // Required for storing user info into session
     passport.serializeUser((user, done) => {
       done(null, user._id)
     })
 
-    // Required for retrieving user from session
     passport.deserializeUser((id, done) => {
-      // The user should be queried against db
-      // using the id
       done(null, this.user)
     })
   },
+
+  logRequest: function(req, res, next) {
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    log("[" + ip + "][" + req.method + "] " + req.url)
+    next()
+  },
+
+  /** Part of EXT-UpdateNotification **/
+  // MagicMirror restart and stop
+  restartMM: function() {
+    if (this.config.usePM2) {
+      pm2.restart(this.config.PM2Id, (err, proc) => {
+        if (err) {
+          console.log("[GATEWAY] " + err)
+        }
+      })
+    }
+    else this.doRestart()
+  },
+
+  doRestart: function() {
+    console.log("[GATEWAY] Restarting MagicMirror...")
+    var MMdir = path.normalize(__dirname + "/../../")
+    const out = process.stdout
+    const err = process.stderr
+    const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+    subprocess.unref()
+    process.exit()
+  },
+
+  doClose: function() {
+    console.log("[GATEWAY] Closing MagicMirror...")
+    if (!this.config.usePM2) process.exit()
+    else {
+      pm2.stop(this.config.PM2Id, (err, proc) => {
+        if (err) {
+          console.log("[GATEWAY] " + err)
+        }
+      })
+    }
+  }
 })

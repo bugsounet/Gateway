@@ -9,11 +9,12 @@ logGW = (...args) => { /* do nothing */ }
 Module.register("Gateway", {
   defaults: {
     debug: true,
-    useApp: true,
     port: 8081,
     username: "admin",
     password: "admin",
-    testingMode: true
+    noLogin: false,
+    usePM2: false,
+    PM2Id: 0
   },
 
   start: async function () {
@@ -47,34 +48,7 @@ Module.register("Gateway", {
       "EXT-YouTubeVLC"
     ]
 
-    this.EXTDescription = {
-      "EXT-Alert": "Display any warning, information or error on your screen.",
-      "EXT-Background": "Change the default Google Assistant background to your own or with animated gifs for each status of the assistant.",
-      "EXT-Bring": "Show your current shopping list of Bring!",
-      "EXT-Browser": "Display any internet web page like a real browser in fullscreen",
-      "EXT-Detector": "Multi-keyword listener for MMM-GoogleAssistant v4",
-      "EXT-FreeboxTV": "Display Channel from French Internet Provider: Free",
-      "EXT-GooglePhotos": "Display your album directory with Google photos API in background or in MagicMirror position",
-      "EXT-Governor": "CPU governor enables the operating system to scale the CPU frequency up or down in order to save power or improve performance.",
-      "EXT-Internet": "Check your internet connexion, display ping.",
-      "EXT-Led": "Not yet coded!", // not coded
-      "EXT-Librespot": "Allow to play Spotify music on your mirror with Librespot.",
-      "EXT-MusicPlayer": "Play any music found on a USB Key or in defined local directory.",
-      "EXT-Photos": "Displaying any photos discover by assistant in fullscreen",
-      "EXT-Pir": "Control your screen with a PIR Sensor.",
-      "EXT-RadioPlayer": "Play radio station on MagicMirror.",
-      "EXT-Raspotify": "Play Spotify music on your mirror with Raspotify.",
-      "EXT-Screen": "After a configurated time without any user interaction the display will turn off and hide all modules for economy mode.",
-      "EXT-ScreenManager": "Automaticaly turn ON and Turn OFF your screen with defined hours.",
-      "EXT-ScreenTouch": "Allow to turn on/off your screen with touch screen.",
-      "EXT-Spotify": "This plugin show current spotify playback of any devices.",
-      "EXT-UpdateNotification": "This plugin allow to notify and auto-update if an update is detected.",
-      "EXT-Volume": "Control the sound volume level of your mirror.",
-      "EXT-Welcome": "Allow to send a welcome on start of MagicMirror.",
-      "EXT-YouTube": "This plugins allow to play YouTube video (reserved to donator).",
-      "EXT-YouTubeCast": "Allow to cast a YouTube video on MagicMirror.",
-      "EXT-YouTubeVLC": "Allow to display YouTube video in fullscreen on MagicMirror with VLC media player."
-    }
+    this.EXTDescription = {}
 
     this.GW = {
       ready: false
@@ -153,9 +127,139 @@ Module.register("Gateway", {
     }
   },
 
-  socketNotificationReceived: function(noti,payload) {
-    if (noti== "MMConfig") this.sendSocketNotification("MMConfig", { MM: config, DB: this.ExtDB, Description: this.EXTDescription } )
+  socketNotificationReceived: async function(noti,payload) {
+    if (noti== "MMConfig") {
+      var GWTranslate = await this.LoadGWTranslation()
+      this.EXTDescription = await this.LoadDescription()
+      this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: this.EXTDescription, Translate: GWTranslate } )
+    }
   },
+
+  /** load translation **/
+  LoadGWTranslation: function() {
+    return new Promise(resolve => {
+      var Tr = {}
+
+      Tr.Rotate_Msg = this.translate("GW_Rotate_Msg"),
+      Tr.Rotate_Continue = this.translate("GW_Rotate_Continue"),
+
+      Tr.Login_Welcome = this.translate("GW_Login_Welcome")
+      Tr.Login_Username = this.translate("GW_Login_Username")
+      Tr.Login_Password = this.translate("GW_Login_Password")
+
+      Tr.Home = this.translate("GW_Home")
+      Tr.Home_Welcome= this.translate("GW_Home_Welcome")
+
+      Tr.Plugins = this.translate("GW_Plugins")
+      Tr.Plugins_Welcome = this.translate("GW_Plugins_Welcome")
+      Tr.Plugins_Table_Reset= this.translate("GW_Plugins_Table_Reset")
+      Tr.Plugins_Table_Showing= this.translate("GW_Plugins_Table_Showing")
+      Tr.Plugins_Table_ALL= this.translate("GW_Plugins_Table_ALL")
+      Tr.Plugins_Table_Plugins= this.translate("GW_Plugins_Table_Plugins")
+      Tr.Plugins_Table_Name= this.translate("GW_Plugins_Table_Name")
+      Tr.Plugins_Table_Description= this.translate("GW_Plugins_Table_Description")
+      Tr.Plugins_Table_Actions= this.translate("GW_Plugins_Table_Actions")
+      Tr.Plugins_Table_Configuration= this.translate("GW_Plugins_Table_Configuration")
+      Tr.Plugins_Table_Search= this.translate("GW_Plugins_Table_Search")
+      Tr.Plugins_Table_Wiki = this.translate("GW_Plugins_Table_Wiki")
+      Tr.Plugins_Table_Install = this.translate("GW_Plugins_Table_Install")
+      Tr.Plugins_Table_Delete = this.translate("GW_Plugins_Table_Delete")
+      Tr.Plugins_Table_Modify = this.translate("GW_Plugins_Table_Modify")
+      Tr.Plugins_Table_Configure = this.translate("GW_Plugins_Table_Configure")
+      Tr.Plugins_Table_DeleteConfig = this.translate("GW_Plugins_Table_DeleteConfig")
+      Tr.Plugins_Delete_TerminalHeader = this.translate("GW_Plugins_Delete_TerminalHeader")
+      Tr.Plugins_Delete_Message = this.translate("GW_Plugins_Delete_Message")
+      Tr.Plugins_Delete_Progress = this.translate("GW_Plugins_Delete_Progress")
+      Tr.Plugins_Delete_Confirmed = this.translate("GW_Plugins_Delete_Confirmed")
+      Tr.Plugins_Install_TerminalHeader = this.translate("GW_Plugins_Install_TerminalHeader")
+      Tr.Plugins_Install_Message = this.translate("GW_Plugins_Install_Message")
+      Tr.Plugins_Install_Progress = this.translate("GW_Plugins_Install_Progress")
+      Tr.Plugins_Install_Confirmed = this.translate("GW_Plugins_Install_Confirmed")
+      Tr.Plugins_Initial_Title = this.translate("GW_Plugins_Initial_Title")
+      Tr.Plugins_DeleteConfig_Title = this.translate("GW_Plugins_DeleteConfig_Title")
+      Tr.Plugins_DeleteConfig_Confirmed = this.translate("GW_Plugins_DeleteConfig_Confirmed")
+      Tr.Plugins_Modify_Title = this.translate("GW_Plugins_Modify_Title")
+
+      Tr.Terminal = this.translate("GW_Terminal")
+
+      Tr.Configuration = this.translate("GW_Configuration")
+      Tr.Configuration_Welcome = this.translate("GW_Configuration_Welcome")
+      Tr.Configuration_EditLoad = this.translate("GW_Configuration_EditLoad")
+      Tr.Configuration_Edit_Title = this.translate("GW_Configuration_Edit_Title")
+      Tr.Configuration_Edit_AcualConfig = this.translate("GW_Configuration_Edit_AcualConfig")
+
+      Tr.Tools = this.translate("GW_Tools")
+      Tr.Tools_Welcome = this.translate("GW_Tools_Welcome")
+      Tr.Tools_subTitle = this.translate("GW_Tools_subTitle")
+      Tr.Tools_Restart = this.translate("GW_Tools_Restart")
+      Tr.Tools_Restart_Text1 = this.translate("GW_Tools_Restart_Text1")
+      Tr.Tools_Restart_Text2 = this.translate("GW_Tools_Restart_Text2")
+      Tr.Tools_Die = this.translate("GW_Tools_Die")
+      Tr.Tools_Die_Text1 = this.translate("GW_Tools_Die_Text1")
+      Tr.Tools_Die_Text2 = this.translate("GW_Tools_Die_Text2")
+      Tr.Tools_Die_Text3 = this.translate("GW_Tools_Die_Text3")
+
+      Tr.Setting = this.translate("GW_Setting")
+
+      Tr.Logout = this.translate("GW_Logout")
+
+      Tr.Delete = this.translate("GW_Delete"),
+      Tr.Install = this.translate("GW_Install"),
+      Tr.Configure = this.translate("GW_Configure"),
+      Tr.Modify = this.translate("GW_Modify")
+      Tr.Save = this.translate("GW_Save")
+      Tr.Wait = this.translate("GW_Wait")
+      Tr.Done = this.translate("GW_Done")
+      Tr.Error = this.translate("GW_Error")
+      Tr.Cancel = this.translate("GW_Cancel")
+      Tr.Confirm = this.translate("GW_Confirm")
+      Tr.Delete2 = this.translate("GW_Delete2")
+      Tr.Load = this.translate("GW_Load")
+      Tr.Restart = this.translate("GW_Restart")
+      Tr.ErrModule = this.translate("GW_ErrModule")
+      Tr.Warn_Error = this.translate("GW_Warn_Error")
+      Tr.LoadDefault = this.translate("GW_LoadDefault"),
+      Tr.MergeDefault = this.translate("GW_MergeDefault"),
+  
+      resolve(Tr)
+    })
+  },
+
+  /** load descriptions **/
+  LoadDescription: function () {
+    return new Promise(resolve => {
+      var desc = {}
+      desc["EXT-Alert"] = this.translate("EXT-Alert"),
+      desc["EXT-Background"] = this.translate("EXT-Background"),
+      desc["EXT-Bring"] = this.translate("EXT-Bring"),
+      desc["EXT-Browser"] = this.translate("EXT-Browser"),
+      desc["EXT-Detector"] = this.translate("EXT-Detector"),
+      desc["EXT-FreeboxTV"] = this.translate("EXT-FreeboxTV"),
+      desc["EXT-GooglePhotos"] = this.translate("EXT-GooglePhotos"),
+      desc["EXT-Governor"] = this.translate("EXT-Governor"),
+      desc["EXT-Internet"] = this.translate("EXT-Internet"),
+      desc["EXT-Led"] = this.translate("EXT-Led"),
+      desc["EXT-Librespot"] = this.translate("EXT-Librespot"),
+      desc["EXT-MusicPlayer"] = this.translate("EXT-MusicPlayer"),
+      desc["EXT-Photos"] = this.translate("EXT-Photos"),
+      desc["EXT-Pir"] = this.translate("EXT-Pir"),
+      desc["EXT-RadioPlayer"] = this.translate("EXT-RadioPlayer"),
+      desc["EXT-Raspotify"] = this.translate("EXT-Raspotify"),
+      desc["EXT-Screen"] = this.translate("EXT-Screen"),
+      desc["EXT-ScreenManager"] = this.translate("EXT-ScreenManager"),
+      desc["EXT-ScreenTouch"] = this.translate("EXT-ScreenTouch"),
+      desc["EXT-Spotify"] = this.translate("EXT-Spotify"),
+      desc["EXT-UpdateNotification"] = this.translate("EXT-UpdateNotification"),
+      desc["EXT-Volume"] = this.translate("EXT-Volume"),
+      desc["EXT-Welcome"] = this.translate("EXT-Welcome"),
+      desc["EXT-YouTube"] = this.translate("EXT-YouTube"),
+      desc["EXT-YouTubeCast"] = this.translate("EXT-YouTubeCast"),
+      desc["EXT-YouTubeVLC"] = this.translate("EXT-YouTubeVLC")
+      resolve(desc)
+    })
+  },
+
+
   /***********************/
   /** GA Status Gateway **/
   /***********************/

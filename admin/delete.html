@@ -13,14 +13,17 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
+    <link rel="stylesheet" href="assets/css/Account-setting-or-edit-profile.css">
     <link rel="stylesheet" href="assets/css/Animated-Type-Heading.css">
     <link rel="stylesheet" href="assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="assets/css/Countries-Select-Menu.css">
     <link rel="stylesheet" href="assets/css/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/Navbar-With-Button.css">
+    <link rel="stylesheet" href="assets/css/Pricing-Tables.css">
 </head>
 
 <body id="page-top">
@@ -31,23 +34,27 @@
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/EXT"><i class="fa fa-plug"></i><span>EXT Plugins</span></a><a class="nav-link" href="/logout"><i class="fa fa-sign-out"></i><span>Logout</span></a></li>
-                    <li class="nav-item"></li>
+                <ul class="navbar-nav text-light invisible" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i><span id="Home">Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/EXT"><i class="fa fa-plug"></i><span id="Plugins">EXT Plugins</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Terminal"><i class="fa fa-terminal"></i><span id="Terminal">Terminal Output</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/MMConfig"><i class="fa fa-code"></i><span id="Configuration">MagicMirror Configuration</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Tools"><i class="fas fa-tools"></i><span id="Tools">Tools</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Setting"><i class="fa fa-cogs"></i><span id="Setting">Setting</span></a></li>
+                    <li class="nav-item"><a class="nav-link" id="logout" href="/logout"><i class="fa fa-sign-out"></i><span id="Logout">Logout</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
                 </nav>
                 <div class="container-fluid">
                     <div class="accordion" role="tablist" id="accordion-1">
                         <div class="accordion-item">
-                            <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1">MagicMirror Terminal</button></h2>
+                            <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1" id="TerminalHeader">&nbsp;</button></h2>
                             <div class="accordion-collapse collapse item-1 show" role="tabpanel" data-bs-parent="#accordion-1">
                                 <div class="accordion-body">
                                     <div id="hyperwatch"></div>
@@ -63,9 +70,9 @@
                             <div class="row h-100">
                                 <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
                                     <div>
-                                        <h1 class="text-uppercase fw-bold text-white flash animated mb-3" id="messageText">Really Delete this plug-in?</h1>
-                                        <p id="EXT-Name">EXT-Sample</p>
-                                        <div class="btn-group btn-group-lg d-inline-block order-2" role="group" id="boutons"><button class="btn btn-danger btn-lg" type="button" onclick="LaunchDelete()">Delete</button><a class="btn btn-warning btn-lg" role="button" href="/EXT">Cancel</a></div>
+                                        <h1 class="text-uppercase fw-bold text-white flash animated mb-3" id="messageText">&nbsp;</h1>
+                                        <p id="EXT-Name">&nbsp;</p>
+                                        <div class="btn-group btn-group-lg d-inline-block order-2" role="group" id="boutons"><button class="btn btn-danger btn-lg" id="delete" type="button" onclick="LaunchDelete()">&nbsp; &nbsp; &nbsp;&nbsp;</button><a class="btn btn-warning btn-lg" role="button" id="cancel" href="/EXT">&nbsp; &nbsp; &nbsp;&nbsp;</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -84,13 +91,16 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="assets/js/EXT_Tools.js"></script>
+    <script src="/EXT_Tools.js" crossorigin="anonymous"></script>
+    <script src="assets/js/Animated-Type-Heading.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/pleaserotate.min.js"></script>
+    <script src="assets/js/Pricing-Tables.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
 

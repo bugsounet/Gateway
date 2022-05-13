@@ -13,17 +13,20 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
+    <link rel="stylesheet" href="assets/css/Account-setting-or-edit-profile.css">
     <link rel="stylesheet" href="assets/css/Animated-Type-Heading.css">
     <link rel="stylesheet" href="assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="assets/css/Countries-Select-Menu.css">
     <link rel="stylesheet" href="assets/css/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/Navbar-With-Button.css">
+    <link rel="stylesheet" href="assets/css/Pricing-Tables.css">
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" style="background: linear-gradient(0deg, black, var(--bs-blue) 70%);">
     <div class="container">
         <div class="row justify-content-center" data-aos="zoom-in">
             <div class="col-md-9 col-lg-12 col-xl-10">
@@ -36,14 +39,11 @@
                             <div class="col-lg-6">
                                 <div class="p-3">
                                     <div class="text-center">
-                                        <h4 class="text-dark mb-4">Welcome to Gateway!</h4>
+                                        <h4 class="text-dark mb-4" id="Welcome">Loading...</h4>
                                     </div>
-                                    <form class="user" action="/login" method="POST">
-                                        <div class="mb-3"><input class="form-control form-control-user" type="username" id="exampleInputEmail" placeholder="Enter your username..." name="username"></div>
-                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
-                                        <div class="mb-3">
-                                            <div class="custom-control custom-checkbox small"></div>
-                                        </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+                                    <form id="login" class="user">
+                                        <div class="mb-3"><input class="form-control form-control-user" type="username" id="username" placeholder="Enter your username..." name="username"></div>
+                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password"></div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
                                         <hr>
                                     </form><span id="flashErr" style="color: var(--bs-red);font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span>
                                 </div>
@@ -58,18 +58,21 @@
                 </div>
             </div>
         </div>
-    </div><script>if (window.location.search) {var errValue = decodeURIComponent(window.location.search.match(/(\?|&)err\=([^&]*)/)[2]);document.getElementById("flashErr").innerHTML = "Error: " + errValue;}</script>
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="assets/js/EXT_Tools.js"></script>
+    <script src="/EXT_Tools.js" crossorigin="anonymous"></script>
+    <script src="assets/js/Animated-Type-Heading.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/pleaserotate.min.js"></script>
+    <script src="assets/js/Pricing-Tables.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
 

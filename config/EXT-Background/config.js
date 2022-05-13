@@ -24,7 +24,7 @@ var schema = {
     },
     "config": {
       "type": "object",
-      "title": "configuration",
+      "title": "Configuration",
       "properties": {
         "model": {
           "type": "string",
@@ -35,8 +35,8 @@ var schema = {
         "myImage": {
           "type": ["string", "null"],
           "title": "Choose your personal image, if don't don't want model",
-          "default": null,
-        },
+          "default": null
+        }
       },
       "required": ["model"]
     }
@@ -44,5 +44,29 @@ var schema = {
   "required": ["config","module"]
 }
 
+var fr = {
+  "description": "Propriété pour le plugin EXT-Background",
+  "properties": {
+    "module": {
+      "title": "Nom du plugin",
+    },
+    "disabled": {
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "model": {
+          "title": "Choisissez votre modèle"
+        },
+        "myImage": {
+          "title": "Choisissez votre image personnelle, si vous ne voulez pas de modèle"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
+exports.fr = fr
