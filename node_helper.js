@@ -31,11 +31,19 @@ module.exports = NodeHelper.create({
       email: 'admin@bugsounet.fr',
       password: 'admin'
     }
+    this.electronOptions = {
+      electronOptions: {
+        webPreferences: {
+          webviewTag: true
+        }
+      }
+    }
     this.app = null
     this.server= null
     this.noLogin = false
     this.translation = null
     this.language = null
+    this.webviewTag = false
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -52,6 +60,7 @@ module.exports = NodeHelper.create({
         this.MMConfig = await tools.readConfig()
         if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
         this.language = this.MMConfig.language
+        this.webviewTag = tools.checkElectronOptions(this.MMConfig)
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
         this.translation = payload.Translate
@@ -494,6 +503,11 @@ module.exports = NodeHelper.create({
           this.MMConfig = await tools.readConfig()
           console.log("[GATEWAY] Reload config")
         }
+      })
+
+      .get("/getWebviewTag", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.webviewTag)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))

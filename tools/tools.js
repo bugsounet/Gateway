@@ -213,6 +213,14 @@ function configMerge(result) {
   return result
 }
 
+function checkElectronOptions(config) {
+  if (typeof config.electronOptions === "object" &&
+    typeof config.electronOptions.webPreferences === "object" &&
+    config.electronOptions.webPreferences.webviewTag
+  ) return true
+  else return false
+}
+
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
 exports.saveConfig = saveConfig
@@ -223,3 +231,4 @@ exports.searchInstalled = searchInstalled
 exports.loadBackupNames = loadBackupNames
 exports.loadBackupFile = loadBackupFile
 exports.configMerge = configMerge
+exports.checkElectronOptions = checkElectronOptions
