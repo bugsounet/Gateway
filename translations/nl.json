@@ -80,6 +80,8 @@
   "GW_Restart": "Herstart MagicMirror op de nieuwe configuratie in te laden!",
   "GW_ErrModule": "module naam fout: moet zijn",
   "GW_Warn_Error": "Opgelet: Fouten gevonden",
+  "GW_LoadDefault": "Reload Default [Translation missing]",
+  "GW_MergeDefault": "Merge with Default [Translation missing]",
 
   "EXT-Alert": "Display any warning, information or error on your screen.",
   "EXT-Background": "Change the default Google Assistant background to your own or with animated gifs for each status of the assistant.",

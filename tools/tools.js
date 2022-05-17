@@ -2,6 +2,8 @@ const path = require("path")
 const fs = require("fs")
 const util = require("util")
 const si = require('systeminformation')
+const pm2 = require('pm2')
+var spawn = require('child_process').spawn
 
 function readConfig() {
   return new Promise(resolve => {
@@ -39,6 +41,20 @@ function searchInstalled (ext) {
   return Installed.sort()
 }
 
+/** search if GA installed **/
+function searchGA () {
+  var version = 0
+  if (fs.existsSync(path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))) {
+    let name = require((path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))).name
+    if (name == "MMM-GoogleAssistant") {
+      version = require((path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))).version
+    }
+    else console.warn("[GATEWAY] Found: MMM-GoogleAssistant but in package.json name is not the same:", name)
+  }
+  return version
+}
+
+/** timeStamp for backup **/
 function timeStamp() {
   var now = new Date()
   var date = [ now.getFullYear(), now.getMonth() + 1, now.getDate() ]
@@ -54,6 +70,7 @@ function timeStamp() {
   return date.join("") + "-" +time.join(":")
 }
 
+/** Save MagicMirror config with backup **/
 function saveConfig(MMConfig) {
   return new Promise(resolve => {
     var configPath = path.resolve(__dirname, "../../../config/config.js")
@@ -90,6 +107,7 @@ function saveConfig(MMConfig) {
   })
 }
 
+/** insert or modify plugins config to MagicMirror config **/
 function configAddOrModify(EXTConfig, MMConfig) {
   return new Promise(resolve => {
     modules = MMConfig.modules
@@ -100,6 +118,7 @@ function configAddOrModify(EXTConfig, MMConfig) {
   })
 }
 
+/** delete plugins config **/
 function configDelete(EXT, MMConfig) {
   return new Promise(resolve => {
     modules = MMConfig.modules
@@ -109,6 +128,7 @@ function configDelete(EXT, MMConfig) {
   })
 }
 
+/** list of all backups **/
 function loadBackupNames() {
   return new Promise(resolve => {
     const regex = "config.js.GW"
@@ -124,6 +144,7 @@ function loadBackupNames() {
   })
 }
 
+/** read and send bakcup **/
 function loadBackupFile(file) {
   return new Promise(resolve => {
     var BackupConfig = {}
@@ -133,6 +154,7 @@ function loadBackupFile(file) {
   })
 }
 
+/** get default ip address **/
 function getIP () {
   return new Promise((resolve) => {
     si.networkInterfaceDefault()
@@ -213,6 +235,7 @@ function configMerge(result) {
   return result
 }
 
+/** check electron Options for find webviewTag **/
 function checkElectronOptions(config) {
   if (typeof config.electronOptions === "object" &&
     typeof config.electronOptions.webPreferences === "object" &&
@@ -221,6 +244,50 @@ function checkElectronOptions(config) {
   else return false
 }
 
+/** Part of EXT-UpdateNotification **/
+// MagicMirror restart and stop
+function restartMM (config) {
+  if (config.usePM2) {
+    pm2.restart(config.PM2Id, (err, proc) => {
+      if (err) {
+        console.log("[GATEWAY] " + err)
+      }
+    })
+  }
+  else doRestart()
+}
+
+function doRestart () {
+  console.log("[GATEWAY] Restarting MagicMirror...")
+  var MMdir = path.normalize(__dirname + "/../../../")
+  console.log(MMdir)
+  const out = process.stdout
+  const err = process.stderr
+  const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+  subprocess.unref()
+  process.exit()
+}
+
+function doClose (config) {
+  console.log("[GATEWAY] Closing MagicMirror...")
+  if (!config.usePM2) process.exit()
+  else {
+    pm2.stop(config.PM2Id, (err, proc) => {
+      if (err) {
+        console.log("[GATEWAY] " + err)
+      }
+    })
+  }
+}
+
+/** read and search GA config **/
+function getGAConfig (config) {
+  var index = config.modules.map(e => { return e.module }).indexOf("MMM-GoogleAssistant")
+  if (index > -1) return config.modules[index]
+  else return {}
+}
+
+/** exports functions for pretty using **/
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
 exports.saveConfig = saveConfig
@@ -232,3 +299,8 @@ exports.loadBackupNames = loadBackupNames
 exports.loadBackupFile = loadBackupFile
 exports.configMerge = configMerge
 exports.checkElectronOptions = checkElectronOptions
+exports.configMerge = configMerge
+exports.doClose = doClose
+exports.restartMM = restartMM
+exports.searchGA = searchGA
+exports.getGAConfig = getGAConfig
