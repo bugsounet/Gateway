@@ -16,6 +16,7 @@ var DescEXT = {}
 var InstEXT = []
 var ConfigEXT = []
 var versionGW = {}
+var webviewTag = false
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -98,6 +99,15 @@ window.addEventListener("load", async event => {
   if ((path == "/install") || (path == "/delete")) path = "/EXT"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
+
+function checkWebviewTag() {
+  return new Promise(resolve => {
+    $.getJSON("/getWebviewTag" , (tag) => {
+      console.log("webviewTag", tag)
+      resolve(tag)
+    })
+  })
+}
 
 function loadTranslation() {
   return new Promise(resolve => {
@@ -249,7 +259,8 @@ function doTerminal() {
   $('#TerminalHeader').text(translation.Terminal)
 }
 
-function doTools() {
+async function doTools() {
+  webviewTag = await checkWebviewTag()
   $('#title').text(translation.Tools_Welcome)
   $('#subtitle').text(translation.Tools_subTitle)
   $('#stop').text(translation.Tools_Die)

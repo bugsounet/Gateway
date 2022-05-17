@@ -15,8 +15,7 @@ var session = require('express-session')
 var bodyParser = require('body-parser')
 var hyperwatch =  require('hyperwatch')
 var exec = require("child_process").exec
-var spawn = require('child_process').spawn
-const pm2 = require('pm2')
+var semver = require('semver')
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -31,11 +30,21 @@ module.exports = NodeHelper.create({
       email: 'admin@bugsounet.fr',
       password: 'admin'
     }
+    this.electronOptions = {
+      electronOptions: {
+        webPreferences: {
+          webviewTag: true
+        }
+      }
+    }
     this.app = null
     this.server= null
     this.noLogin = false
     this.translation = null
     this.language = null
+    this.webviewTag = false
+    this.GACheck= { find: false, version: 0 }
+    this.GAConfig= {}
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -52,9 +61,12 @@ module.exports = NodeHelper.create({
         this.MMConfig = await tools.readConfig()
         if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
         this.language = this.MMConfig.language
+        this.webviewTag = tools.checkElectronOptions(this.MMConfig)
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
         this.translation = payload.Translate
+        this.GACheck.version = tools.searchGA()
+        this.GAConfig = tools.getGAConfig(this.MMConfig)
         this.initialize()
         break
     }
@@ -84,10 +96,18 @@ module.exports = NodeHelper.create({
     this.EXTInstalled= tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
     log("Find", this.EXTConfigured.length, "configured plugins in config file")
+    if (semver.gte(this.GACheck.version, '4.0.0')) {
+      this.GACheck.find = true
+      log("Find MMM-GoogleAssistant v" + this.GACheck.version)
+    }
+    else log("MMM-GoogleAssistant Not Found!")
+    if (Object.keys(this.GAConfig).length > 0) log("Find MMM-GoogleAssistant configured in MagicMirror")
+    log("webviewTag Configured:", this.webviewTag)
+    log("Language set", this.language)
     this.Setup()
   },
 
-  /** http server **/
+  /** Middleware **/
   Setup: async function () {
     var urlencodedParser = bodyParser.urlencoded({ extended: true })
     log("Create all needed routes...")
@@ -422,7 +442,7 @@ module.exports = NodeHelper.create({
       .get("/Restart" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/restarting.html")
-          setTimeout(() => this.restartMM() , 1000)
+          setTimeout(() => tools.restartMM(config) , 1000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -430,7 +450,7 @@ module.exports = NodeHelper.create({
       .get("/Die" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/die.html")
-          setTimeout(() => this.doClose(), 3000)
+          setTimeout(() => tools.doClose(config), 3000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -496,6 +516,11 @@ module.exports = NodeHelper.create({
         }
       })
 
+      .get("/getWebviewTag", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.webviewTag)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 
       .use(function(req, res) {
@@ -534,40 +559,5 @@ module.exports = NodeHelper.create({
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
     log("[" + ip + "][" + req.method + "] " + req.url)
     next()
-  },
-
-  /** Part of EXT-UpdateNotification **/
-  // MagicMirror restart and stop
-  restartMM: function() {
-    if (this.config.usePM2) {
-      pm2.restart(this.config.PM2Id, (err, proc) => {
-        if (err) {
-          console.log("[GATEWAY] " + err)
-        }
-      })
-    }
-    else this.doRestart()
-  },
-
-  doRestart: function() {
-    console.log("[GATEWAY] Restarting MagicMirror...")
-    var MMdir = path.normalize(__dirname + "/../../")
-    const out = process.stdout
-    const err = process.stderr
-    const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
-    subprocess.unref()
-    process.exit()
-  },
-
-  doClose: function() {
-    console.log("[GATEWAY] Closing MagicMirror...")
-    if (!this.config.usePM2) process.exit()
-    else {
-      pm2.stop(this.config.PM2Id, (err, proc) => {
-        if (err) {
-          console.log("[GATEWAY] " + err)
-        }
-      })
-    }
   }
 })
