@@ -18,8 +18,8 @@
   "GW_Plugins_Table_Plugins": " Plugin(s)",
   "GW_Plugins_Table_Name": "Noms des plugins",
   "GW_Plugins_Table_Description": "Descriptions",
-  "GW_Plugins_Table_Actions": "Actions",
-  "GW_Plugins_Table_Configuration": "Configuration",
+  "GW_Plugins_Table_Actions": "Requêtes",
+  "GW_Plugins_Table_Configuration": "Configurations",
   "GW_Plugins_Table_Search": "Rechercher...",
   "GW_Plugins_Table_Wiki": "Ouvrir le wiki de",
   "GW_Plugins_Table_Install": "Installer",
@@ -64,7 +64,7 @@
 
   "GW_Logout": "Déconnexion",
 
-  "GW_Delete": "Détruire",
+  "GW_Delete": "Supprimer",
   "GW_Install": "Installer",
   "GW_Configure": "Configurer",
   "GW_Modify": "Modifier",
@@ -74,7 +74,6 @@
   "GW_Error": "Erreur",
   "GW_Cancel": "Annuler",
   "GW_Confirm": "Confirmer",
-  "GW_Delete2": "Supprimer",
   "GW_Load": "Charger",
   "GW_Restart": "Veuillez redémarrer MagicMirror pour appliquer la nouvelle configuration !",
   "GW_ErrModule": "Nom du module: doit être",

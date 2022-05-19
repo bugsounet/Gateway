@@ -74,7 +74,6 @@
   "GW_Error": "Fout",
   "GW_Cancel": "Cancel",
   "GW_Confirm": "Bevestig",
-  "GW_Delete2": "Verwijderen",
   "GW_Load": "Laden",
   "GW_Restart": "Herstart MagicMirror op de nieuwe configuratie in te laden!",
   "GW_ErrModule": "module naam fout: moet zijn",

@@ -212,7 +212,6 @@ Module.register("Gateway", {
       Tr.Error = this.translate("GW_Error")
       Tr.Cancel = this.translate("GW_Cancel")
       Tr.Confirm = this.translate("GW_Confirm")
-      Tr.Delete2 = this.translate("GW_Delete2")
       Tr.Load = this.translate("GW_Load")
       Tr.Restart = this.translate("GW_Restart")
       Tr.ErrModule = this.translate("GW_ErrModule")

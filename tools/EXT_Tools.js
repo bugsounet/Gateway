@@ -22,52 +22,68 @@ var webviewTag = false
 window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
-  if (window.location.pathname != "/login") actualSetting = await getGatewaySetting()
 
+  if (window.location.pathname != "/login") actualSetting = await getGatewaySetting()
+  $('html').prop("lang", versionGW.lang)
   switch (window.location.pathname) {
     case "/":
+      $(document).prop('title', translation.Home)
       doIndex()
       break
     case "/login":
+      $(document).prop('title', translation.Login_Welcome)
       doLogin()
       break
     case "/EXT":
+      $(document).prop('title', translation.Plugins)
       createEXTTable()
       break
     case "/delete":
+      $(document).prop('title', translation.Plugins)
       doDelete()
       break
     case "/install":
+      $(document).prop('title', translation.Plugins)
       doInstall()
       break
     case "/EXTCreateConfig":
+      $(document).prop('title', translation.Plugins)
       EXTConfigJSEditor()
       break
     case "/EXTDeleteConfig":
+      $(document).prop('title', translation.Plugins)
       EXTDeleteConfigJSEditor()
       break
     case "/EXTModifyConfig":
+      $(document).prop('title', translation.Plugins)
       EXTModifyConfigJSEditor()
       break
     case "/Restart":
+      $(document).prop('title', translation.Tools)
       doRestart()
       break
     case "/Die":
+      $(document).prop('title', translation.Tools)
       doDie()
       break
     case "/Terminal":
+      $(document).prop('title', translation.Terminal)
       doTerminal()
       break
     case "/MMConfig":
+      $(document).prop('title', translation.Configuration)
       viewJSEditor()
       break
     case "/EditMMConfig":
+      $(document).prop('title', translation.Configuration)
       EditMMConfigJSEditor()
       break
     case "/Tools":
+      $(document).prop('title', translation.Tools)
       doTools()
       break
     case "/Setting":
+      $(document).prop('title', translation.Setting)
       GatewaySetting()
       break
   }
@@ -96,7 +112,13 @@ window.addEventListener("load", async event => {
   $('#accordionSidebar').removeClass("invisible")
   $('li.active').removeClass('active')
   var path=location.pathname
-  if ((path == "/install") || (path == "/delete")) path = "/EXT"
+  if (path == "/install" ||
+      path == "/delete" ||
+      path == "/EXTModifyConfig" ||
+      path == "/EXTCreateConfig"
+  ) path = "/EXT"
+  if (path == "/EditMMConfig") path = "/MMConfig"
+  if (path == "/Die" || path == "/Restart") path = "/Tools"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
 
@@ -209,7 +231,7 @@ function doIndex() {
 function doDelete() {
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
   $('#messageText').text(translation.Plugins_Delete_Message)
-  $('#delete').text(translation.Delete2)
+  $('#delete').text(translation.Delete)
   $('#cancel').text(translation.Cancel)
 }
 
@@ -831,6 +853,7 @@ function getGatewayVersion() {
 function GatewaySetting() {
   $('#version').text(versionGW.v)
   $('#rev').text(versionGW.rev)
+  $('#language').text(versionGW.lang)
 
   $('#restart').css("display", "none")
   $('#wait').css("display", "none")

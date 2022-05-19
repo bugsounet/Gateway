@@ -150,7 +150,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/version" , (req,res) => {
-          res.send({ v: require('./package.json').version, rev: require('./package.json').rev })
+          res.send({ v: require('./package.json').version, rev: require('./package.json').rev, lang: this.language })
       })
 
       .get("/translation" , (req,res) => {

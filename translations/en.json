@@ -74,7 +74,6 @@
   "GW_Error": "Error",
   "GW_Cancel": "Cancel",
   "GW_Confirm": "Confirm",
-  "GW_Delete2": "Delete",
   "GW_Load": "Load",
   "GW_Restart": "Please restart MagicMirror to apply new configuration!",
   "GW_ErrModule": "module name error: must be",
