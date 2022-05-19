@@ -442,7 +442,7 @@ module.exports = NodeHelper.create({
       .get("/Restart" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/restarting.html")
-          setTimeout(() => tools.restartMM(config) , 1000)
+          setTimeout(() => tools.restartMM(this.config) , 1000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -450,7 +450,7 @@ module.exports = NodeHelper.create({
       .get("/Die" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/die.html")
-          setTimeout(() => tools.doClose(config), 3000)
+          setTimeout(() => tools.doClose(this.config), 3000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })

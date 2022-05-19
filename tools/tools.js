@@ -248,6 +248,7 @@ function checkElectronOptions(config) {
 // MagicMirror restart and stop
 function restartMM (config) {
   if (config.usePM2) {
+    console.log("[GATEWAY] PM2 will restarting MagicMirror...")
     pm2.restart(config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
@@ -260,7 +261,6 @@ function restartMM (config) {
 function doRestart () {
   console.log("[GATEWAY] Restarting MagicMirror...")
   var MMdir = path.normalize(__dirname + "/../../../")
-  console.log(MMdir)
   const out = process.stdout
   const err = process.stderr
   const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
@@ -270,14 +270,14 @@ function doRestart () {
 
 function doClose (config) {
   console.log("[GATEWAY] Closing MagicMirror...")
-  if (!config.usePM2) process.exit()
-  else {
+  if (config.usePM2) {
     pm2.stop(config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }
     })
   }
+  else process.exit()
 }
 
 /** read and search GA config **/
