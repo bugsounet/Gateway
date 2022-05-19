@@ -154,7 +154,6 @@ Module.register("Gateway", {
       Tr.Plugins_Welcome = this.translate("GW_Plugins_Welcome")
       Tr.Plugins_Table_Reset= this.translate("GW_Plugins_Table_Reset")
       Tr.Plugins_Table_Showing= this.translate("GW_Plugins_Table_Showing")
-      Tr.Plugins_Table_ALL= this.translate("GW_Plugins_Table_ALL")
       Tr.Plugins_Table_Plugins= this.translate("GW_Plugins_Table_Plugins")
       Tr.Plugins_Table_Name= this.translate("GW_Plugins_Table_Name")
       Tr.Plugins_Table_Description= this.translate("GW_Plugins_Table_Description")

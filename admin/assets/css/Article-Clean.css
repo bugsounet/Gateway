@@ -82,3 +82,9 @@
   max-width: 100%;
 }
 
+.btn-link {
+  font-weight: 400;
+  color: #3e5cb2;
+  text-decoration: underline;
+}
+
