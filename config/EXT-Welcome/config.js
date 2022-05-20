@@ -6,8 +6,6 @@ var defaultConfig = {
   }
 }
 
-exports.default = defaultConfig
-
 var schema = {
     "title": "EXT-Welcome",
     "description": "properties for EXT-Welcome",
@@ -59,6 +57,27 @@ var fr = {
     }
 }
 
+var nl = {
+    "description": "properties for EXT-Welcome",
+    "properties": {
+      "module": {
+        "title": "Plugin name"
+      },
+      "disabled": {
+        "title": "disable the plugin"
+      },
+      "config": {
+        "title": "Configuration",
+        "properties": {
+          "welcome": {
+            "title": "Your assistant welcome"
+          }
+        }
+      }
+    }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

@@ -78,6 +78,33 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Pir plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "gpio": {
+          "title": "BCM-number of the sensor pin"
+        },
+        "reverseValue": {
+          "title": "Reverse data value received"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

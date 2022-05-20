@@ -27,63 +27,48 @@ window.addEventListener("load", async event => {
   $('html').prop("lang", versionGW.lang)
   switch (window.location.pathname) {
     case "/":
-      $(document).prop('title', translation.Home)
       doIndex()
       break
     case "/login":
-      $(document).prop('title', translation.Login_Welcome)
       doLogin()
       break
     case "/EXT":
-      $(document).prop('title', translation.Plugins)
       createEXTTable()
       break
     case "/delete":
-      $(document).prop('title', translation.Plugins)
       doDelete()
       break
     case "/install":
-      $(document).prop('title', translation.Plugins)
       doInstall()
       break
     case "/EXTCreateConfig":
-      $(document).prop('title', translation.Plugins)
       EXTConfigJSEditor()
       break
     case "/EXTDeleteConfig":
-      $(document).prop('title', translation.Plugins)
       EXTDeleteConfigJSEditor()
       break
     case "/EXTModifyConfig":
-      $(document).prop('title', translation.Plugins)
       EXTModifyConfigJSEditor()
       break
     case "/Restart":
-      $(document).prop('title', translation.Tools)
       doRestart()
       break
     case "/Die":
-      $(document).prop('title', translation.Tools)
       doDie()
       break
     case "/Terminal":
-      $(document).prop('title', translation.Terminal)
       doTerminal()
       break
     case "/MMConfig":
-      $(document).prop('title', translation.Configuration)
       viewJSEditor()
       break
     case "/EditMMConfig":
-      $(document).prop('title', translation.Configuration)
       EditMMConfigJSEditor()
       break
     case "/Tools":
-      $(document).prop('title', translation.Tools)
       doTools()
       break
     case "/Setting":
-      $(document).prop('title', translation.Setting)
       GatewaySetting()
       break
   }
@@ -211,6 +196,7 @@ function LaunchDelete() {
 }
 
 function doLogin() {
+  $(document).prop('title', translation.Login_Welcome)
   $('#Welcome').text(translation.Login_Welcome)
   $('#username').attr("placeholder", translation.Login_Username)
   $('#password').attr("placeholder", translation.Login_Password)
@@ -225,10 +211,12 @@ function doLogin() {
 }
 
 function doIndex() {
+  $(document).prop('title', translation.Home)
   $('#welcome').text(translation.Home_Welcome)
 }
 
 function doDelete() {
+  $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
   $('#messageText').text(translation.Plugins_Delete_Message)
   $('#delete').text(translation.Delete)
@@ -236,6 +224,7 @@ function doDelete() {
 }
 
 function doInstall() {
+  $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
   $('#messageText').text(translation.Plugins_Install_Message)
   $('#install').text(translation.Install)
@@ -243,6 +232,7 @@ function doInstall() {
 }
 
 function doRestart() {
+  $(document).prop('title', translation.Tools)
   $('#text1').text(translation.Tools_Restart_Text1)
   $('#text2').text(translation.Tools_Restart_Text2)
 
@@ -272,16 +262,19 @@ function doRestart() {
 }
 
 function doDie() {
+  $(document).prop('title', translation.Tools)
   $('#text1').text(translation.Tools_Die_Text1)
   $('#text2').text(translation.Tools_Die_Text2)
   $('#text3').text(translation.Tools_Die_Text3)
 }
 
 function doTerminal() {
+  $(document).prop('title', translation.Terminal)
   $('#TerminalHeader').text(translation.Terminal)
 }
 
 async function doTools() {
+  $(document).prop('title', translation.Tools)
   webviewTag = await checkWebviewTag()
   $('#title').text(translation.Tools_Welcome)
   $('#subtitle').text(translation.Tools_subTitle)
@@ -292,6 +285,7 @@ async function doTools() {
 }
 
 async function createEXTTable() {
+  $(document).prop('title', translation.Plugins)
   $('#Plugins_Welcome').text(translation.Plugins_Welcome)
   if (!AllEXT.length) AllEXT = await loadDataAllEXT()
   if (!Object.keys(DescEXT).length) DescEXT = await loadDataDescriptionEXT()
@@ -424,6 +418,7 @@ function loadMMConfig() {
 
 //make viewJSEditor
 async function viewJSEditor() {
+  $(document).prop('title', translation.Configuration)
   $('#MMConfigHeader').text(translation.Configuration_Welcome)
   $('#EditLoadButton').text(translation.Configuration_EditLoad)
   var modules = await loadMMConfig()
@@ -462,6 +457,7 @@ function loadBackupNames() {
 }
 
 async function EditMMConfigJSEditor() {
+  $(document).prop('title', translation.Configuration)
   $('#MMConfigHeader').text(translation.Configuration_Edit_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -581,6 +577,7 @@ function loadPluginTemplate(plugin) {
 }
 
 async function EXTConfigJSEditor() {
+  $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_Initial_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -673,6 +670,7 @@ function loadPluginCurrentConfig(plugin) {
 }
 
 async function EXTModifyConfigJSEditor() {
+  $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_Modify_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -784,6 +782,7 @@ async function EXTModifyConfigJSEditor() {
 }
 
 async function EXTDeleteConfigJSEditor() {
+  $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_DeleteConfig_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -851,20 +850,56 @@ function getGatewayVersion() {
 }
 
 function GatewaySetting() {
+  //translate parts
+  $(document).prop('title', translation.Setting)
+  $('#setting_title').text(translation.Setting_Title)
   $('#version').text(versionGW.v)
   $('#rev').text(versionGW.rev)
   $('#language').text(versionGW.lang)
+  $('#update').text(translation.Save)
+  $('#wait').text(translation.Wait)
+  $('#restart').text(translation.Tools_Restart)
+  $('#credentials').text(translation.Setting_Credentials)
+  $('#credentials').prop('title', translation.Setting_Credentials_tooltip)
+  $('#usernameField').text(translation.Setting_Credentials_username)
+  $('#passwordField').text(translation.Setting_Credentials_password)
+  $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
+  $('#username').prop('placeholder', translation.Setting_Credentials_username_placeholder)
+  $('#passwordField').text(translation.Setting_Credentials_password)
+  $('#password').prop('placeholder', translation.Setting_Credentials_password_placeholder)
+  $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
+  $('#confirmpwd').prop('placeholder', translation.Setting_Credentials_confirmpwd_placeholder)
+  $('#server').text(translation.Setting_Server)
+  $('#debugHeader').text(translation.Setting_Server_debug)
+  $('#pm2Header').text(translation.Setting_Server_usePM2)
+  $('#portHeader').text(translation.Setting_Server_port)
+  $('#pm2idHeader').text(translation.Setting_Server_PM2Id)
+  $('#byHeader').text(translation.Setting_Info_by)
+  $('#SupportHeader').text(translation.Setting_Info_Support)
+  $('#DonateHeader').text(translation.Setting_Info_Donate)
+  $('#DonateText').text(translation.Setting_Info_Donate_Text)
+  $('#VersionHeader').text(translation.Setting_Info_About)
+  for (let tr = 1; tr <= 10; tr++) {
+    let trans = "Setting_Info_Translator"+tr
+    if (tr == 1 && translation[trans]) {
+      $('#Translators').text(translation.Setting_Info_Translator)
+      $('#translatorsBox').css("display", "flex")
+    }
+    if (translation[trans]) $('#translator-'+tr).text(translation[trans])
+  }
 
   $('#restart').css("display", "none")
   $('#wait').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
+
   $('#update').css("display", "block")
   
   $("#login").prop("checked", !actualSetting.noLogin)
   $("input.grplogin").prop("disabled", actualSetting.noLogin)
-  $("#username").val(actualSetting.username)
-  $("#password").val(actualSetting.password)
-  
+  if (!actualSetting.noLogin) {
+    $("#username").val(actualSetting.username)
+    $("#password").val(actualSetting.password)
+  }
   $("#debug").prop("checked", actualSetting.debug)
   $("#pm2").prop("checked", actualSetting.usePM2)
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)

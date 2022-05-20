@@ -60,6 +60,27 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-ScreenTouch plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "mode": {
+          "title": "Selected mode for enable/disable the screen with touch (see wiki)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

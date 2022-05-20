@@ -76,6 +76,33 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Photos plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "displayDelay": {
+          "title": "Delay before change photo automaticaly in ms. (default is 20 secs)"
+        },
+        "loop": {
+          "title": "Make a loop on all photos"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

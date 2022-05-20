@@ -135,6 +135,48 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-YouTubeCast plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "fullscreen": {
+          "title": "Enable fullscreen video (default in windows)"
+        },
+        "width": {
+          "title": "Width of the your YouTube window (can be a px value too)"
+        },
+        "height": {
+          "title": "Height of the your YouTube window (can be a px value too)"
+        },
+        "alwaysDisplayed": {
+          "title": "Should the YouTube windows have to be always displayed when a video is not playing ?"
+        },
+        "castName": {
+          "title": "Name of the MagicMirror cast device"
+        },
+        "port": {
+          "title": "Port of the MagicMirror cast device"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

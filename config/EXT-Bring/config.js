@@ -183,6 +183,60 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Bring plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "listName": {
+          "title": "What is your list name in Bring!"
+        },
+        "email": {
+          "title": "Your email of your Bring! account?"
+        },
+        "password": {
+          "title": "Your password of your Bring! account?"
+        },
+        "lang": {
+          "title": "Choose your language number"
+        },
+        "columns": {
+          "title": "The number of colums in the table view"
+        },
+        "maxRows": {
+          "title": "The maximum number of rows to display in the table view"
+        },
+        "updateInterval": {
+          "title": "The update frequency in milliseconds.(1000ms = 1sec)"
+        },
+        "showBackground": {
+          "title": "Display a Background around item place"
+        },
+        "showBox": {
+          "title": "Display a Box around items"
+        },
+        "showHeader": {
+          "title": "Display the name of the shopping list in header of the plugin"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

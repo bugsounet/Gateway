@@ -76,6 +76,33 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Volume plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "volumePreset": {
+          "title": "Preset volume configuration type"
+        },
+        "myScript": {
+          "title": "Own script for volume control"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
-exports.schema = fr
-exports.fr = schema
+exports.schema = schema
+exports.fr = fr
+exports.nl = nl

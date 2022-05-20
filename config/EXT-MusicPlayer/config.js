@@ -138,6 +138,48 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-MusicPlayer plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "useUSB": {
+          "title": "If you prefer play file from an USB Key, set it to true"
+        },
+        "musicPath": {
+          "title": "Music path for playing music from Local Files"
+        },
+        "checkSubDirectory": {
+          "title": "Should this module inspect sub directory for create music list ?"
+        },
+        "autoStart": {
+          "title": "AutoStart USB key Music at boot of MagicMirror or when USB key is plugged in"
+        },
+        "minVolume": {
+          "title": "Volume to set when assistant speaking (in %)"
+        },
+        "maxVolume": {
+          "title": "Volume to set when music playing (in %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

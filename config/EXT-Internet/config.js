@@ -134,6 +134,48 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Internet plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "displayPing": {
+          "title": "Display the ping value on the screen"
+        },
+        "delay": {
+          "title": "Set the interval for internet checking (in ms)"
+        },
+        "scan": {
+          "title": "Ping point name or address"
+        },
+        "command": {
+          "title": "Command which will be executed after the internet connection is detected as lost"
+        },
+        "showAlert": {
+          "title": "Show or not the Alert about internet connection lost (EXT-Alert needed)"
+        },
+        "needRestart": {
+          "title": "Restart your MagicMirror app with your prefered command"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

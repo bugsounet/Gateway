@@ -145,31 +145,6 @@ var schema = {
                 ]
               }
             },
-            /* don't works ... need review
-            "if": {
-              "properties": {
-                "detector" : {
-                  "enum":  [ "Snowboy" ]
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "Models": {
-                  "enum": [ 
-                    "smart_mirror",
-                    "jarvis",
-                    "computer",
-                    "snowboy",
-                    "subex",
-                    "neo_ya",
-                    "hey_extreme",
-                    "view_glass"
-                  ]
-                }
-              }
-            },
-            */
             "required": ["detector", "Model", "Sensitivity"]
           },
           "additionalItems": {
@@ -240,6 +215,55 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Detector plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "configDeepMerge": {
+      "title": "Automatically merge with the default configuration if a feature is missing in the configuration"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "useIcon": {
+          "title": "Display Google Icon and animate it when keyword discover"
+        },
+        "touchOnly": {
+          "title": "Activate MMM-GoogleAssistant by Touch the Google Icon only and don't listen any keywords"
+        },
+        "detectors": {
+          "title": "Array of detectors",
+          "items": {
+            "properties": {
+              "detector": {
+                "title": "Detector engine"
+              },
+              "Model": {
+                "title": "Keyword name"
+              },
+              "Sensitivity": {
+                "title": "Sensitivity of detection of the keyword"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

@@ -152,6 +152,54 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-YouTube plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "fullscreen": {
+          "title": "Enable fullscreen video (default in windows)"
+        },
+        "width": {
+          "title": "Width of the your YouTube window (can be a px value too)"
+        },
+        "height": {
+          "title": "Height of the your YouTube window (can be a px value too)"
+        },
+        "useSearch": {
+          "title": "activate YouTube search functionality"
+        },
+        "alwaysDisplayed": {
+          "title": "Should the YouTube windows have to be always displayed when a video is not playing ?"
+        },
+        "displayHeader": {
+          "title": "Display a few seconds in popup the title found of the video (needed EXT-Alert)"
+        },
+        "username": {
+          "title": "username of the @bugsounet's support forum"
+        },
+        "token": {
+          "title": "The token associated to your usernane (sended by @bugsounet)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

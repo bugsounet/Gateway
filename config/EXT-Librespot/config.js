@@ -107,6 +107,42 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Librespot plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "email": {
+          "title": "Your spotify email"
+        },
+        "password": {
+          "title": "Your spotify password"
+        },
+        "deviceName": {
+          "title": "Define THIS spotify device name"
+        },
+        "minVolume": {
+          "title": "Volume to set when assistant speaking (in %)"
+        },
+        "maxVolume": {
+          "title": "Max volume when spotify playing (in %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

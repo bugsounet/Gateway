@@ -125,6 +125,45 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Spotify plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "updateInterval": {
+          "title": "Update interval when playing (refresh) in ms"
+        },
+        "idleInterval": {
+          "title": "Update interval when idle (check if Spotify active) in ms"
+        },
+        "useBottomBar": {
+          "title": "Activate visual of the current playback in the bottom bar"
+        },
+        "CLIENT_ID": {
+          "title": "Client ID of your Spotify account"
+        },
+        "CLIENT_SECRET": {
+          "title": "Client Secret of your Spotify account"
+        },
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

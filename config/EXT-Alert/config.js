@@ -46,19 +46,42 @@ var fr = {
   "description": "Propriété pour le plugin EXT-Alert",
   "properties": {
     "module": {
-      "title": "Nom du plugin",
+      "title": "Nom du plugin"
     },
     "disabled": {
-      "title": "Désactiver le plugin",
+      "title": "Désactiver le plugin"
+    },
+    "config": {
+      "title": "Configuration"
+      "properties": {
+        "debug": {
+          "title": "Activer le mode debug"
+        },
+        "ignore": {
+          "title": "Liste les plugins/modules à ignorer pour ne pas afficher leurs notifications"
+        }
+      }
+    }
+  }
+}
+
+var nl = {
+  "description": "Properties for EXT-Alert plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
     },
     "config": {
       "title": "Configuration",
       "properties": {
         "debug": {
-          "title": "Activer le mode debug",
+          "title": "Enable debug mode"
         },
         "ignore": {
-          "title": "Liste les plugins/modules à ignorer pour ne pas afficher leurs notifications",
+          "title": "Plugin list to ignore notifications"
         }
       }
     }
@@ -68,3 +91,4 @@ var fr = {
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

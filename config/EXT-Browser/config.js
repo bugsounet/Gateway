@@ -101,6 +101,42 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-Browser plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "displayDelay": {
+          "title": "Delay before closing the browser automaticaly in ms. If you want to disable this delay, set it to 0 (default is 60 secs)"
+        },
+        "scrollActivate": {
+          "title": "Activate or not auto-scrolling"
+        },
+        "scrollStep": {
+          "title": "Scrolling step in px for scrolling down"
+        },
+        "scrollInterval": {
+          "title": "Scrolling interval for next scrollStep"
+        },
+        "scrollStart": {
+          "title": "Delay before scrolling down in ms (after url loaded )"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl

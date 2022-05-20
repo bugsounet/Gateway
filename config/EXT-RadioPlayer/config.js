@@ -102,6 +102,36 @@ var fr = {
   }
 }
 
+var nl = {
+  "description": "Properties for EXT-RadioPlayer plugin",
+  "properties": {
+    "module": {
+      "title": "Plugin name"
+    },
+    "position": {
+      "title": "Plugin position"
+    },
+    "disabled": {
+      "title": "Disable the plugin"
+    },
+    "config": {
+      "title": "Configuration",
+      "properties": {
+        "debug": {
+          "title": "Enable debug mode"
+        },
+        "minVolume": {
+          "title": "Volume to set when assistant speaking (in %)"
+        },
+        "maxVolume": {
+          "title": "Volume to set when radio playing (in %)"
+        }
+      }
+    }
+  }
+}
+
 exports.default = defaultConfig
 exports.schema = schema
 exports.fr = fr
+exports.nl = nl
