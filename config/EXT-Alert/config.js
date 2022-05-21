@@ -66,22 +66,22 @@ var fr = {
 }
 
 var nl = {
-  "description": "Properties for EXT-Alert plugin",
+  "description": "Eigenschappen van de EXT-Alert plugin",
   "properties": {
     "module": {
-      "title": "Plugin name"
+      "title": "Plugin naam"
     },
     "disabled": {
-      "title": "Disable the plugin"
+      "title": "De plugin uitschakelen"
     },
     "config": {
-      "title": "Configuration",
+      "title": "Instellingen",
       "properties": {
         "debug": {
-          "title": "Enable debug mode"
+          "title": "Debug modus aanzetten"
         },
         "ignore": {
-          "title": "Plugin list to ignore notifications"
+          "title": "Plugin/module lijst die meldingen negeert"
         }
       }
     }
