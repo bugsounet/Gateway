@@ -244,6 +244,21 @@ function checkElectronOptions(config) {
   else return false
 }
 
+/** enable webview tag **/
+function setWebviewTag(MMConfig) {
+  return new Promise(resolve => {
+    let options = {
+      electronOptions: {
+        webPreferences: {
+          webviewTag: true
+        }
+      }
+    }
+    MMConfig = configMerge({}, MMConfig, options)
+    resolve(MMConfig)
+  })
+}
+
 /** Part of EXT-UpdateNotification **/
 // MagicMirror restart and stop
 function restartMM (config) {
@@ -299,8 +314,8 @@ exports.loadBackupNames = loadBackupNames
 exports.loadBackupFile = loadBackupFile
 exports.configMerge = configMerge
 exports.checkElectronOptions = checkElectronOptions
-exports.configMerge = configMerge
 exports.doClose = doClose
 exports.restartMM = restartMM
 exports.searchGA = searchGA
 exports.getGAConfig = getGAConfig
+exports.setWebviewTag = setWebviewTag

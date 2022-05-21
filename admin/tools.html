@@ -49,7 +49,11 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div class="container">
+                            <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
+                        </div>
+                    </div>
                 </nav>
                 <div class="container-fluid">
                     <section class="pricing-table" style="padding: 0px;">
@@ -87,14 +91,14 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a class="btn" href="#" style="margin-top: 5px;"><strong>Not Yet Coded</strong></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price blue wow col-md-6">
+                                    <div class="col-sm-6 col-md-3 plan price blue wow col-md-6" id="webview-Box" style="display: none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);"><strong>webview</strong></h2><span class="price">EXT Plugins</span>
                                             </li>
                                             <li class="list-group-item"><span>Modify electron Options for using properly with EXT plugins</span></li>
                                             <li class="list-group-item"><span>Needed for:<br>EXT-Browser<br>EXT-Photos<br>EXT-YouTube<br>EXT-YouTubeCast<br></span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
+                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="webviewbtn-Apply" class="btn" href="#">Apply<br></a><a class="flash animated infinite btn" id="webviewbtn-Error" href="#" style="display: none;">Error<br></a><a class="tada animated btn" id="webviewbtn-Done" href="#" style="display:none">Done<br></a></li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6 col-md-3 plan price grey wow col-md-6">
@@ -163,10 +167,7 @@
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div><script type="text/javascript">
-  // to add check modules installed and display proper section
-  //window.addEventListener("load",event=>createTr())
-</script>
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

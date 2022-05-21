@@ -107,60 +107,6 @@ window.addEventListener("load", async event => {
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
 
-function checkWebviewTag() {
-  return new Promise(resolve => {
-    $.getJSON("/getWebviewTag" , (tag) => {
-      console.log("webviewTag", tag)
-      resolve(tag)
-    })
-  })
-}
-
-function loadTranslation() {
-  return new Promise(resolve => {
-    $.getJSON("/translation" , (tr) => {
-      console.log("Translation", tr)
-      resolve(tr)
-    })
-  })
-}
-
-function loadDataAllEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/allEXT" , (all) => {
-      console.log("allEXT", all)
-      resolve(all)
-    })
-  })
-}
-
-function loadDataConfiguredEXT() {
-  return new Promise(resolve => {  
-    $.getJSON("/ConfiguredEXT" , (confEXT) => {
-      console.log("ConfiguredEXT", confEXT)
-      resolve(confEXT)
-    })
-  })
-}
-
-function loadDataInstalledEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/InstalledEXT" , (instEXT) => {
-      console.log("InstalledEXT", instEXT)
-      resolve(instEXT)
-    })
-  })
-}
-
-function loadDataDescriptionEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/DescriptionEXT" , (desEXT) => {
-      console.log("DescriptionEXT", desEXT)
-      resolve(desEXT)
-    })
-  })
-}
-
 function LaunchInstall() {
   if (window.location.search) {
     var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
@@ -274,6 +220,7 @@ function doTerminal() {
 }
 
 async function doTools() {
+  // translate
   $(document).prop('title', translation.Tools)
   webviewTag = await checkWebviewTag()
   $('#title').text(translation.Tools_Welcome)
@@ -282,6 +229,36 @@ async function doTools() {
   $('#restart').text(translation.Tools_Restart)
   $('#Die').text(translation.Confirm)
   $('#Restart').text(translation.Confirm)
+
+  // webview
+  if (!webviewTag) {
+    $('#webview-Box').css("display", "block")
+  }
+
+  document.getElementById('webviewbtn-Apply').onclick = function () {
+  $.post("/setWebviewTag")
+    .done(function( back ) {
+      if (back.error) {
+        $('#webviewbtn-Apply').css("display", "none")
+        $('#webviewbtn-Error').css("display", "inline-block")
+        $('#alert').removeClass('invisible')
+        $('#alert').removeClass('alert-success')
+        $('#alert').addClass('alert-danger')
+        $('#messageText').text(back.error)
+      } else { 
+        $('#webviewbtn-Apply').css("display", "none")
+        $('#webviewbtn-Done').css("display", "inline-block")
+        $('#alert').removeClass('invisible')
+        $('#messageText').text(translation.Restart)
+      }
+    });
+  }
+
+  document.getElementById('webviewbtn-Done').onclick = function () {
+    $('#webview-Box').css("display", "none")
+    webviewTag = true
+    $('#alert').addClass('invisible')
+  }
 }
 
 async function createEXTTable() {
@@ -407,15 +384,6 @@ function enableSearchAndSort() {
   });
 }
 
-function loadMMConfig() {
-  return new Promise(resolve => {  
-    $.getJSON("/GetMMConfig" , (config) => {
-      console.log("MMConfig", config)
-      resolve(config)
-    })
-  })
-}
-
 //make viewJSEditor
 async function viewJSEditor() {
   $(document).prop('title', translation.Configuration)
@@ -436,24 +404,6 @@ async function viewJSEditor() {
     }
   }
   const editor = new JSONEditor(container, options, modules)
-}
-
-function loadBackupConfig(file) {
-  return new Promise(resolve => {
-    $.getJSON("/GetBackupFile?config="+file , (backupFile) => {
-      console.log("backupFile", backupFile)
-      resolve(backupFile)
-    })
-  })
-}
-
-function loadBackupNames() {
-  return new Promise(resolve => {
-    $.getJSON("/GetBackupName" , (backups) => {
-      console.log("backups", backups)
-      resolve(backups)
-    })
-  })
 }
 
 async function EditMMConfigJSEditor() {
@@ -558,24 +508,6 @@ async function EditMMConfigJSEditor() {
   }
 }
 
-function loadPluginConfig(plugin) {
-  return new Promise(resolve => {
-    $.getJSON("/EXTGetDefaultConfig?ext="+plugin , (defaultConfig) => {
-      console.log("defaultConfig", defaultConfig)
-      resolve(defaultConfig)
-    })
-  })
-}
-
-function loadPluginTemplate(plugin) {
-  return new Promise(resolve => {
-    $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
-      console.log("defaultTemplate", defaultTemplate)
-      resolve(defaultTemplate)
-    })
-  })
-}
-
 async function EXTConfigJSEditor() {
   $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_Initial_Title)
@@ -658,15 +590,6 @@ async function EXTConfigJSEditor() {
         }
       });
   }
-}
-
-function loadPluginCurrentConfig(plugin) {
-  return new Promise(resolve => {
-    $.getJSON("/EXTGetCurrentConfig?ext="+plugin , (currentConfig) => {
-      console.log("CurrentConfig", currentConfig)
-      resolve(currentConfig)
-    })
-  })
 }
 
 async function EXTModifyConfigJSEditor() {
@@ -830,23 +753,6 @@ async function EXTDeleteConfigJSEditor() {
         }
       });
   }
-}
-function getGatewaySetting() {
-  return new Promise(resolve => {  
-    $.getJSON("/getSetting" , (confGW) => {
-      console.log("SettingGW", confGW)
-      resolve(confGW)
-    })
-  })
-}
-
-function getGatewayVersion() {
-  return new Promise(resolve => {  
-    $.getJSON("/version" , (versionGW) => {
-      console.log("Version", versionGW)
-      resolve(versionGW)
-    })
-  })
 }
 
 function GatewaySetting() {
@@ -1030,4 +936,131 @@ function configMerge(result) {
     }
   }
   return result
+}
+
+/** fetch datas **/
+function getGatewaySetting() {
+  return new Promise(resolve => {  
+    $.getJSON("/getSetting" , (confGW) => {
+      console.log("SettingGW", confGW)
+      resolve(confGW)
+    })
+  })
+}
+
+function getGatewayVersion() {
+  return new Promise(resolve => {  
+    $.getJSON("/version" , (versionGW) => {
+      console.log("Version", versionGW)
+      resolve(versionGW)
+    })
+  })
+}
+
+function loadPluginCurrentConfig(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetCurrentConfig?ext="+plugin , (currentConfig) => {
+      console.log("CurrentConfig", currentConfig)
+      resolve(currentConfig)
+    })
+  })
+}
+
+function checkWebviewTag() {
+  return new Promise(resolve => {
+    $.getJSON("/getWebviewTag" , (tag) => {
+      console.log("webviewTag", tag)
+      resolve(tag)
+    })
+  })
+}
+
+function loadTranslation() {
+  return new Promise(resolve => {
+    $.getJSON("/translation" , (tr) => {
+      console.log("Translation", tr)
+      resolve(tr)
+    })
+  })
+}
+
+function loadDataAllEXT() {
+  return new Promise(resolve => {
+    $.getJSON("/allEXT" , (all) => {
+      console.log("allEXT", all)
+      resolve(all)
+    })
+  })
+}
+
+function loadDataConfiguredEXT() {
+  return new Promise(resolve => {  
+    $.getJSON("/ConfiguredEXT" , (confEXT) => {
+      console.log("ConfiguredEXT", confEXT)
+      resolve(confEXT)
+    })
+  })
+}
+
+function loadDataInstalledEXT() {
+  return new Promise(resolve => {
+    $.getJSON("/InstalledEXT" , (instEXT) => {
+      console.log("InstalledEXT", instEXT)
+      resolve(instEXT)
+    })
+  })
+}
+
+function loadDataDescriptionEXT() {
+  return new Promise(resolve => {
+    $.getJSON("/DescriptionEXT" , (desEXT) => {
+      console.log("DescriptionEXT", desEXT)
+      resolve(desEXT)
+    })
+  })
+}
+
+function loadMMConfig() {
+  return new Promise(resolve => {  
+    $.getJSON("/GetMMConfig" , (config) => {
+      console.log("MMConfig", config)
+      resolve(config)
+    })
+  })
+}
+
+function loadPluginConfig(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetDefaultConfig?ext="+plugin , (defaultConfig) => {
+      console.log("defaultConfig", defaultConfig)
+      resolve(defaultConfig)
+    })
+  })
+}
+
+function loadPluginTemplate(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
+      console.log("defaultTemplate", defaultTemplate)
+      resolve(defaultTemplate)
+    })
+  })
+}
+
+function loadBackupConfig(file) {
+  return new Promise(resolve => {
+    $.getJSON("/GetBackupFile?config="+file , (backupFile) => {
+      console.log("backupFile", backupFile)
+      resolve(backupFile)
+    })
+  })
+}
+
+function loadBackupNames() {
+  return new Promise(resolve => {
+    $.getJSON("/GetBackupName" , (backups) => {
+      console.log("backups", backups)
+      resolve(backups)
+    })
+  })
 }
