@@ -17,6 +17,7 @@ var InstEXT = []
 var ConfigEXT = []
 var versionGW = {}
 var webviewTag = false
+var versionGA = {}
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -230,9 +231,23 @@ async function doTools() {
   $('#Die').text(translation.Confirm)
   $('#Restart').text(translation.Confirm)
 
+  // MMM-GoogleAssistant recipes
+  versionGA = await checkGA()
+  if (versionGA.find && versionGA.configured) {
+    $('#Recipes-Box').css("display", "block")
+  }
+
   // webview
   if (!webviewTag) {
-    $('#webview-Box').css("display", "block")
+    if (!InstEXT.length) InstEXT = await loadDataInstalledEXT()
+    var webviewNeeded = [ 'EXT-Browser', 'EXT-Photos', 'EXT-YouTube', 'EXT-YouTubeCast' ]
+    var displayNeeded = 0
+
+    InstEXT.forEach(EXT => {
+      if (webviewNeeded.indexOf(EXT) > -1) displayNeeded++
+    })
+
+    if (displayNeeded) $('#webview-Box').css("display", "block")
   }
 
   document.getElementById('webviewbtn-Apply').onclick = function () {
@@ -971,6 +986,15 @@ function checkWebviewTag() {
     $.getJSON("/getWebviewTag" , (tag) => {
       console.log("webviewTag", tag)
       resolve(tag)
+    })
+  })
+}
+
+function checkGA() {
+  return new Promise(resolve => {
+    $.getJSON("/getGAVersion" , (GA) => {
+      console.log("GAVersion", GA)
+      resolve(GA)
     })
   })
 }

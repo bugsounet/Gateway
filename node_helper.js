@@ -43,7 +43,7 @@ module.exports = NodeHelper.create({
     this.translation = null
     this.language = null
     this.webviewTag = false
-    this.GACheck= { find: false, version: 0 }
+    this.GACheck= { find: false, version: 0, configured: false }
     this.GAConfig= {}
   },
 
@@ -101,7 +101,11 @@ module.exports = NodeHelper.create({
       log("Find MMM-GoogleAssistant v" + this.GACheck.version)
     }
     else log("MMM-GoogleAssistant Not Found!")
-    if (Object.keys(this.GAConfig).length > 0) log("Find MMM-GoogleAssistant configured in MagicMirror")
+    if (Object.keys(this.GAConfig).length > 0) {
+      log("Find MMM-GoogleAssistant configured in MagicMirror")
+      this.GACheck.configured = true
+    }
+    else log("MMM-GoogleAssistant is not configured!")
     log("webviewTag Configured:", this.webviewTag)
     log("Language set", this.language)
     this.Setup()
@@ -505,7 +509,6 @@ module.exports = NodeHelper.create({
       .post("/saveSetting", urlencodedParser, async (req,res) => {
         console.log("[Gateway] Receiving new Setting")
         let data = JSON.parse(req.body.data)
-        console.log(data)
         var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
         var resultSaveConfig = await tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
@@ -518,6 +521,27 @@ module.exports = NodeHelper.create({
 
       .get("/getWebviewTag", (req,res) => {
         if(req.user || this.noLogin) res.send(this.webviewTag)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .post("/setWebviewTag", async (req,res) => {
+        if(!this.webviewTag && (req.user || this.noLogin)) {
+          console.log("[Gateway] Receiving setWebviewTag demand...")
+          let NewConfig = await tools.setWebviewTag(this.MMConfig)
+          var resultSaveConfig = await tools.saveConfig(NewConfig)
+          console.log("[GATEWAY] Write Gateway webview config result:", resultSaveConfig)
+          res.send(resultSaveConfig)
+          if (resultSaveConfig.done) {
+            this.webviewTag = true
+            this.MMConfig = await tools.readConfig()
+            console.log("[GATEWAY] Reload config")
+          }
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/getGAVersion", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.GACheck)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
