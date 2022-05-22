@@ -68,22 +68,22 @@ var fr = {
 }
 
 var nl = {
-  "description": "Properties for EXT-Background plugin",
+  "description": "Eigenschappen van de EXT-Background plugin",
   "properties": {
     "module": {
-      "title": "Plugin name"
+      "title": "Plugin naam"
     },
     "disabled": {
-      "title": "Disable the plugin"
+      "title": "De plugin uitschakelen"
     },
     "config": {
-      "title": "Configuration",
+      "title": "Instellingen",
       "properties": {
         "model": {
-          "title": "Choose your model"
+          "title": "Kies uw model"
         },
         "myImage": {
-          "title": "Choose your personal image, if don't want model"
+          "title": "Kies zelf een afbeelding, als je geen model wilt"
         }
       }
     }
