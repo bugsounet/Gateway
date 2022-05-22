@@ -15,17 +15,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Internet",
-  "description": "Properties for EXT-Internet plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Internet"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_left",
       "enum": [
         "top_bar",
@@ -45,16 +45,16 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "displayPing": {
@@ -93,6 +93,7 @@ var schema = {
   "required": ["module", "position", "config"]
 }
 
+/*
 var fr = {
   "description": "Propriété du plugin EXT-Internet",
   "properties": {
@@ -133,49 +134,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-Internet plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "displayPing": {
-          "title": "Display the ping value on the screen"
-        },
-        "delay": {
-          "title": "Set the interval for internet checking (in ms)"
-        },
-        "scan": {
-          "title": "Ping point name or address"
-        },
-        "command": {
-          "title": "Command which will be executed after the internet connection is detected as lost"
-        },
-        "showAlert": {
-          "title": "Show or not the Alert about internet connection lost (EXT-Alert needed)"
-        },
-        "needRestart": {
-          "title": "Restart your MagicMirror app with your prefered command"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

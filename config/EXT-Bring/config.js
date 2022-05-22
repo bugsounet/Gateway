@@ -19,22 +19,22 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Bring",
-  "description": "Properties for EXT-Bring plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Bring"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_right",
       "enum": [
         "top_bar",
@@ -54,11 +54,11 @@ var schema = {
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "listName": {
@@ -130,6 +130,7 @@ var schema = {
   "required": ["config","module", "position"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-Bring",
   "properties": {
@@ -235,8 +236,7 @@ var nl = {
     }
   }
 }
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

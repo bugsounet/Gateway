@@ -10,26 +10,26 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Pir",
-  "description": "Properties for EXT-Pir plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Pir"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "gpio": {
@@ -52,6 +52,7 @@ var schema = {
   "required": ["module", "config"]
 }
 
+/*
 var fr = {
   "description": "Propriété du plugin EXT-Pir",
   "properties": {
@@ -77,34 +78,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-Pir plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "gpio": {
-          "title": "BCM-number of the sensor pin"
-        },
-        "reverseValue": {
-          "title": "Reverse data value received"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

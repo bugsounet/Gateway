@@ -141,5 +141,14 @@
   "EXT-Welcome": "Laat toe om een Welkom's boodschap te tonen bij de start van uw MagicMirror.",
   "EXT-YouTube": "Deze plugin laat het toe om YouTube video's af te spelen (enkel mogelijk mits betaling).",
   "EXT-YouTubeCast": "Laat toe om YouTube video's te casten op uw MagicMirror.",
-  "EXT-YouTubeVLC": "Laat het toe om YouTube video's in volledige schermweergave te tonen op uw MagicMirror met VLC media player."
+  "EXT-YouTubeVLC": "Laat het toe om YouTube video's in volledige schermweergave te tonen op uw MagicMirror met VLC media player.",
+
+  "VAL_PluginDescription": "Eigenschappen van deze plugin",
+  "VAL_PluginName": "Plugin naam",
+  "VAL_PluginDisable": "De plugin uitschakelen",
+  "VAL_PluginConfiguration": "Instellingen",
+  "VAL_PluginDebug": "Debug modus aanzetten",
+  "VAL_PluginPosition": "Positie van de Plugin",
+  "VAL_PluginConfigDeepMerge": "Automatically merge with the default configuration if a feature is missing in the configuration",
+  "VAL_EXT-Alert_ignore": "Plugin/module lijst die meldingen negeert"
 }

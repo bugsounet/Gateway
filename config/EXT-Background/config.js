@@ -9,22 +9,22 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Background",
-  "description": "Properties for EXT-Background plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Background"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "model": {
           "type": "string",
@@ -44,17 +44,10 @@ var schema = {
   "required": ["config","module"]
 }
 
+/*
 var fr = {
-  "description": "Propriété pour le plugin EXT-Background",
   "properties": {
-    "module": {
-      "title": "Nom du plugin",
-    },
-    "disabled": {
-      "title": "Désactiver le plugin"
-    },
     "config": {
-      "title": "Configuration",
       "properties": {
         "model": {
           "title": "Choisissez votre modèle"
@@ -68,16 +61,8 @@ var fr = {
 }
 
 var nl = {
-  "description": "Eigenschappen van de EXT-Background plugin",
   "properties": {
-    "module": {
-      "title": "Plugin naam"
-    },
-    "disabled": {
-      "title": "De plugin uitschakelen"
-    },
     "config": {
-      "title": "Instellingen",
       "properties": {
         "model": {
           "title": "Kies uw model"
@@ -89,8 +74,7 @@ var nl = {
     }
   }
 }
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

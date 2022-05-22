@@ -15,17 +15,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-YouTubeCast",
-  "description": "Properties for EXT-YouTubeCast plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-YouTubeCast"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_center",
       "enum": [
         "top_bar",
@@ -45,16 +45,16 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "fullscreen": {
@@ -94,6 +94,7 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-YouTubeCast",
   "properties": {
@@ -134,49 +135,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-YouTubeCast plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "fullscreen": {
-          "title": "Enable fullscreen video (default in windows)"
-        },
-        "width": {
-          "title": "Width of the your YouTube window (can be a px value too)"
-        },
-        "height": {
-          "title": "Height of the your YouTube window (can be a px value too)"
-        },
-        "alwaysDisplayed": {
-          "title": "Should the YouTube windows have to be always displayed when a video is not playing ?"
-        },
-        "castName": {
-          "title": "Name of the MagicMirror cast device"
-        },
-        "port": {
-          "title": "Port of the MagicMirror cast device"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

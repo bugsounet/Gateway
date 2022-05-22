@@ -24,17 +24,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Screen",
-  "description": "Properties for EXT-Screen plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Screen"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_center",
       "enum": [
         "top_bar",
@@ -54,16 +54,16 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "animateBody": {
@@ -156,6 +156,7 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
+/*
 var fr = {
   "description": "Propriété du plugin EXT-Screen",
   "properties": {
@@ -223,76 +224,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-Screen plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "animateBody": {
-          "title": "Animate MagicMirror on turn on/off the screen"
-        },
-        "delay": {
-          "title": "Time before the mirror turns off the display if no user activity is detected. (in ms)"
-        },
-        "turnOffDisplay": {
-          "title": "Should the display turn off after timeout?"
-        },
-        "mode": {
-          "title": "mode for turn on/off your screen (see wiki)"
-        },
-        "ecoMode": {
-          "title": "Should the MagicMirror hide all module after timeout ?"
-        },
-        "displayCounter": {
-          "title": "Should display Count-down in screen ?"
-        },
-        "displayBar": {
-          "title": "Should display Count-up bar in screen ?"
-        },
-        "displayStyle": {
-          "title": "Style of the Counter ?"
-        },
-        "displayLastPresence": {
-          "title": "Display the date of the last user presence"
-        },
-        "lastPresenceTimeFormat": {
-          "title": "Change the date format (moment.js format) of the last presence"
-        },
-        "detectorSleeping": {
-          "title": "Activate ONLY EXT-Detector only when display is on"
-        },
-        "autoHide": {
-          "title": "Auto Hide this module when the lock function is activated"
-        },
-        "delayed": {
-          "title": "Delayed turn on screen time (only if your screen is off). (in ms)"
-        },
-        "gpio": {
-          "title": "GPIO number for control the relay (mode 6 only)"
-        },
-        "clearGpioValue": {
-          "title": "Reset GPIO value script of relay (mode 6 only)"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

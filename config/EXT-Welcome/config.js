@@ -8,22 +8,22 @@ var defaultConfig = {
 
 var schema = {
     "title": "EXT-Welcome",
-    "description": "properties for EXT-Welcome",
+    "description": "{PluginDescription}",
     "type": "object",
     "properties": {
       "module": {
         "type": "string",
-        "title": "Plugin name",
+        "title": "{PluginName}",
         "default": "EXT-Welcome"
       },
       "disabled": {
         "type": "boolean",
-        "title": "disable the plugin",
+        "title": "{PluginDisable}",
         "default": false
       },
       "config": {
         "type": "object",
-        "title": "Configuration",
+        "title": "{PluginConfiguration}",
         "properties": {
           "welcome": {
             "type": "string",
@@ -37,6 +37,7 @@ var schema = {
     "required": ["config","module"]
 }
 
+/*
 var fr = {
     "description": "Propriété pour le plugin EXT-Welcome",
     "properties": {
@@ -56,28 +57,7 @@ var fr = {
       }
     }
 }
-
-var nl = {
-    "description": "properties for EXT-Welcome",
-    "properties": {
-      "module": {
-        "title": "Plugin name"
-      },
-      "disabled": {
-        "title": "disable the plugin"
-      },
-      "config": {
-        "title": "Configuration",
-        "properties": {
-          "welcome": {
-            "title": "Your assistant welcome"
-          }
-        }
-      }
-    }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

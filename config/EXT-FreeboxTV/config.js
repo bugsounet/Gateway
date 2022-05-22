@@ -17,6 +17,8 @@ var defaultConfig = {
   }
 }
 
+// only for French users ... no translation others translation
+
 var schema = {
   "title": "EXT-FreeboxTV",
   "description": "Propriété du plugin EXT-FreeboxTV",

@@ -323,6 +323,46 @@ function getGAConfig (config) {
   else return {}
 }
 
+function makeSchemaTranslate(schema, translation) {
+  /* replace {template} by translation */
+  function translate(template) {
+    return template.replace(new RegExp("{([^}]+)}", "g"), function (_unused, varName) {
+      console.log("[GATEWAY][Translator] Find:", template, varName in translation ? translation[varName] : "Not found!")
+      return varName in translation ? translation[varName] : "{" + varName + "}"
+    })
+  }
+
+  /* read object in deep an search what translate */
+  function makeTranslate(result) {
+    var stack = Array.prototype.slice.call(arguments, 0)
+    var item
+    var key
+    while (stack.length) {
+      item = stack.shift()
+      for (key in item) {
+        if (item.hasOwnProperty(key)) {
+          if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
+            if (typeof item[key] === "object" && item[key] !== null) {
+              result[key] = makeTranslate({}, result[key], item[key])
+            } else {
+              result[key] = item[key]
+            }
+          } else {
+            if ((key == "title" || key == "description") && result[key]) {
+              result[key] = translate(item[key])
+            }
+            else result[key] = item[key]
+          }
+        }
+      }
+    }
+    return result
+  }
+
+  return makeTranslate(schema)
+
+}
+
 /** exports functions for pretty using **/
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
@@ -341,3 +381,4 @@ exports.searchGA = searchGA
 exports.getGAConfig = getGAConfig
 exports.setWebviewTag = setWebviewTag
 exports.deleteBackup = deleteBackup
+exports.makeSchemaTranslate = makeSchemaTranslate

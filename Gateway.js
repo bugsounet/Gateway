@@ -48,8 +48,6 @@ Module.register("Gateway", {
       "EXT-YouTubeVLC"
     ]
 
-    this.EXTDescription = {}
-
     this.GW = {
       ready: false
     }
@@ -130,8 +128,9 @@ Module.register("Gateway", {
   socketNotificationReceived: async function(noti,payload) {
     if (noti== "MMConfig") {
       var GWTranslate = await this.LoadGWTranslation()
-      this.EXTDescription = await this.LoadDescription()
-      this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: this.EXTDescription, Translate: GWTranslate } )
+      var EXTDescription = await this.LoadDescription()
+      var VALTranslate = await this.LoadTrSchemaValidation()
+      this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate } )
     }
   },
 
@@ -252,8 +251,8 @@ Module.register("Gateway", {
       Tr.ErrModule = this.translate("GW_ErrModule")
       Tr.Warn_Error = this.translate("GW_Warn_Error")
       Tr.LoadDefault = this.translate("GW_LoadDefault"),
-      Tr.MergeDefault = this.translate("GW_MergeDefault"),
-  
+      Tr.MergeDefault = this.translate("GW_MergeDefault")
+
       resolve(Tr)
     })
   },
@@ -292,6 +291,21 @@ Module.register("Gateway", {
     })
   },
 
+  /** load schema validation translations **/
+  LoadTrSchemaValidation: function () {
+    return new Promise(resolve => {
+      var Tr = {}
+      Tr.PluginDescription = this.translate("VAL_PluginDescription")
+      Tr.PluginName = this.translate("VAL_PluginName")
+      Tr.PluginDisable = this.translate("VAL_PluginDisable")
+      Tr.PluginPosition = this.translate("VAL_PluginPosition")
+      Tr.PluginConfigDeepMerge = this.translate("VAL_PluginConfigDeepMerge")
+      Tr.PluginConfiguration = this.translate("VAL_PluginConfiguration")
+      Tr.PluginDebug = this.translate("VAL_PluginDebug")
+      Tr["EXT-Alert_ignore"] = this.translate("VAL_EXT-Alert_ignore")
+      resolve(Tr)
+    })
+  },
 
   /***********************/
   /** GA Status Gateway **/

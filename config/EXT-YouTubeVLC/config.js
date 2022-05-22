@@ -12,26 +12,26 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-YouTubeVLC",
-  "description": "Properties for EXT-YouTubeVLC plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-YouTubeVLC"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "useSearch": {
@@ -64,6 +64,7 @@ var schema = {
   "required": ["module"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-YouTubeVLC",
   "properties": {
@@ -95,40 +96,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-YouTubeVLC plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "useSearch": {
-          "title": "activate YouTube search functionality"
-        },
-        "displayHeader": {
-          "title": "display a few seconds in popup the title found of the video (needed EXT-Alert)"
-        },
-        "minVolume": {
-          "title": "Volume to set when assistant speaking (in %)"
-        },
-        "maxVolume": {
-          "title": "Max volume when YouTube playing (in %)"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

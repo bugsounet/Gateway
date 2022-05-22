@@ -13,17 +13,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Spotify",
-  "description": "Properties for EXT-Spotify plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Spotify"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_left",
       "enum": [
         "top_bar",
@@ -43,16 +43,16 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "updateInterval": {
@@ -87,6 +87,7 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-Spotify",
   "properties": {
@@ -124,46 +125,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-Spotify plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "updateInterval": {
-          "title": "Update interval when playing (refresh) in ms"
-        },
-        "idleInterval": {
-          "title": "Update interval when idle (check if Spotify active) in ms"
-        },
-        "useBottomBar": {
-          "title": "Activate visual of the current playback in the bottom bar"
-        },
-        "CLIENT_ID": {
-          "title": "Client ID of your Spotify account"
-        },
-        "CLIENT_SECRET": {
-          "title": "Client Secret of your Spotify account"
-        },
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

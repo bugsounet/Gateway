@@ -41,6 +41,7 @@ module.exports = NodeHelper.create({
     this.server= null
     this.noLogin = false
     this.translation = null
+    this.schemaTranslatation = null
     this.language = null
     this.webviewTag = false
     this.GACheck= { find: false, version: 0, configured: false }
@@ -65,6 +66,7 @@ module.exports = NodeHelper.create({
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
         this.translation = payload.Translate
+        this.schemaTranslatation = payload.Schema
         this.GACheck.version = tools.searchGA()
         this.GAConfig = tools.getGAConfig(this.MMConfig)
         this.initialize()
@@ -383,9 +385,7 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = require("./config/"+req.query.ext+"/config.js")
-          if (data[this.language]) {
-            data.schema = tools.configMerge({}, data.schema, data[this.language])
-          }
+          data.schema = tools.makeSchemaTranslate(data.schema, this.schemaTranslatation)
           res.send(data.schema)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")

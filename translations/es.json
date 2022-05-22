@@ -141,5 +141,14 @@
   "EXT-Welcome": "Permite mostrar una bienvenida al iniciar MagicMirror.",
   "EXT-YouTube": "Este plugin permite reproducir YouTube video (reservado a donantes).",
   "EXT-YouTubeCast": "Permite enviar un video de YouTube a MagicMirror (cast).",
-  "EXT-YouTubeVLC": "Permite mostrar un video de YouTube a pantalla completa con el reproductor VLC."
+  "EXT-YouTubeVLC": "Permite mostrar un video de YouTube a pantalla completa con el reproductor VLC.",
+
+  "VAL_PluginDescription": "Properties for this plugin",
+  "VAL_PluginName": "Plugin name",
+  "VAL_PluginDisable": "Disable the plugin",
+  "VAL_PluginConfiguration": "Configuration",
+  "VAL_PluginDebug": "Enable debug mode",
+  "VAL_PluginPosition": "Plugin position",
+  "VAL_PluginConfigDeepMerge": "Automatically merge with the default configuration if a feature is missing in the configuration",
+  "VAL_EXT-Alert_ignore": "Plugin list to ignore notifications"
 }

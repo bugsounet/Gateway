@@ -15,26 +15,26 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-ScreenManager",
-  "description": "Properties for EXT-ScreenManager plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-ScreenManager"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "forceLock": {
@@ -67,6 +67,7 @@ var schema = {
   "required": ["module", "config"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-ScreenManager",
   "properties": {
@@ -95,37 +96,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-ScreenManager plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "forceLock": {
-          "title": "Force to lock the screen counter and disable it"
-        },
-        "ON": {
-          "title": "Defined cron ON time"
-        },
-        "OFF": {
-          "title": "Defined cron OFF time"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

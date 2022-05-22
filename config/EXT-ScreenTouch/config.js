@@ -8,22 +8,22 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-ScreenTouch",
-  "description": "Properties for EXT-ScreenTouch plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-ScreenTouch"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "mode": {
           "type": "number",
@@ -40,6 +40,7 @@ var schema = {
   "required": ["module", "config"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-ScreenTouch",
   "properties": {
@@ -59,28 +60,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-ScreenTouch plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "mode": {
-          "title": "Selected mode for enable/disable the screen with touch (see wiki)"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

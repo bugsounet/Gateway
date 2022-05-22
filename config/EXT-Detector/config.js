@@ -29,17 +29,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Detector",
-  "description": "Properties for EXT-Detector plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Detector"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_right",
       "enum": [
         "top_bar",
@@ -59,21 +59,21 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "configDeepMerge": {
       "type": "boolean",
-      "title": "Automatically merge with the default configuration if a feature is missing in the configuration",
+      "title": "{PluginConfigDeepMerge}",
       "default": true
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "useIcon": {
@@ -167,6 +167,7 @@ var schema = {
   "required": ["module", "position", "config"]
 }
 
+/*
 var fr = {
   "description": "Propriété pour le plugin EXT-Detector",
   "properties": {
@@ -214,56 +215,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-Detector plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "configDeepMerge": {
-      "title": "Automatically merge with the default configuration if a feature is missing in the configuration"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "useIcon": {
-          "title": "Display Google Icon and animate it when keyword discover"
-        },
-        "touchOnly": {
-          "title": "Activate MMM-GoogleAssistant by Touch the Google Icon only and don't listen any keywords"
-        },
-        "detectors": {
-          "title": "Array of detectors",
-          "items": {
-            "properties": {
-              "detector": {
-                "title": "Detector engine"
-              },
-              "Model": {
-                "title": "Keyword name"
-              },
-              "Sensitivity": {
-                "title": "Sensitivity of detection of the keyword"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

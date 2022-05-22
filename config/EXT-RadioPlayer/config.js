@@ -11,17 +11,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-RadioPlayer",
-  "description": "Properties for EXT-RadioPlayer plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-RadioPlayer"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_right",
       "enum": [
         "top_bar",
@@ -41,16 +41,16 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "minVolume": {
@@ -73,6 +73,7 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
+/*
 var fr = {
   "description": "Propriété du plugin EXT-RadioPlayer",
   "properties": {
@@ -101,37 +102,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-RadioPlayer plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "minVolume": {
-          "title": "Volume to set when assistant speaking (in %)"
-        },
-        "maxVolume": {
-          "title": "Volume to set when radio playing (in %)"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

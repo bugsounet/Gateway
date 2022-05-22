@@ -29,17 +29,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-UpdateNotification",
-  "description": "Properties for EXT-UpdateNotification plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-UpdateNotification"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_bar",
       "enum": [
         "top_bar",
@@ -59,21 +59,21 @@ var schema = {
     },
     "configDeepMerge": {
       "type": "boolean",
-      "title": "Automatically merge with the default configuration if a feature is missing in the configuration",
+      "title": "{PluginConfigDeepMerge}",
       "default": true
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "updateInterval": {
@@ -193,6 +193,7 @@ var schema = {
   "required": ["module", "config", "position", "configDeepMerge"]
 }
 
+/*
 var fr = {
   "description": "Propriété du plugin EXT-UpdateNotification",
   "properties": {
@@ -280,97 +281,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-UpdateNotification plugin",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "configDeepMerge": {
-      "title": "Automatically merge with the default configuration if a feature is missing in the configuration"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "updateInterval": {
-          "title": "Interval for update checking in ms. (default: 10 mins)"
-        },
-        "startDelay": {
-          "title": "Delay before starting first scan (default : 60 secs)"
-        },
-        "ignoreModules": {
-          "title": "Array of ignored modules names"
-        },
-        "updateCommands": {
-          "title": "Update commands for each module with an array of module/command object",
-          "items": {
-            "properties": {
-              "module" : {
-                "title": "Name of the module."
-              },
-              "command": {
-                "title": "Update command for this module"
-              }
-            }
-          }
-        },
-        "notification": {
-          "title": "How can this plugin can notify",
-          "properties": {
-            "useTelegramBot" : {
-              "title": "Do you use MMM-TelegramBot?"
-            },
-            "sendReady": {
-              "title": "Send a welcome and initialized confirmation on start"
-            },
-            "useScreen": {
-              "title": "Display update on the screen?"
-            },
-            "useCallback": {
-              "title": "Send any callback process to telegramBot?"
-            }
-          }
-        },
-        "update": {
-          "title": "How can this plugin can update modules and plugin",
-          "properties" : {
-            "autoUpdate" : {
-              "title": "If you want an automated update process, just activate it!"
-            },
-            "autoRestart": {
-              "title": "Restart MagicMirror after update automatically."
-            },
-            "PM2Name": {
-              "title": "Name or ID of the MagicMirror process in PM2"
-            },
-            "defaultCommand": {
-              "title": "Define your default update command. It is being used if there is no individual command for the module in the updateCommands array."
-            },
-            "logToConsole": {
-              "title": "This feature is needed for user who don't use PM2 ! Log process and result in console"
-            },
-            "timeout": {
-              "title": "Maximum execution time of an update in ms (default: 2 mins)"
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl

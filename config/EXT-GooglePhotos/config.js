@@ -18,17 +18,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-GooglePhotos",
-  "description": "Properties for EXT-GooglePhotos",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-GooglePhotos"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_left",
       "enum": [
         "top_bar",
@@ -48,16 +48,16 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "displayType": {
@@ -122,6 +122,7 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
+/*
 var fr = {
   "description": "Propriété du plugin EXT-GooglePhotos",
   "properties": {
@@ -171,58 +172,7 @@ var fr = {
     }
   }
 }
-
-var nl = {
-  "description": "Properties for EXT-GooglePhotos",
-  "properties": {
-    "module": {
-      "title": "Plugin name"
-    },
-    "position": {
-      "title": "Plugin position"
-    },
-    "disabled": {
-      "title": "Disable the plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Enable debug mode"
-        },
-        "displayType": {
-          "title": "How displaying Google Photos? (0: in Fullscreen, 1: in MagicMirror position)"
-        },
-        "displayDelay": {
-          "title": "Delay before displaying next photo in the iframe (default is 10 secs)"
-        },
-        "displayInfos": {
-          "title": "Displaying name of the album and photo time"
-        },
-        "albums": {
-          "title": "Album Folders names of Google Photos to display"
-        },
-        "sort": {
-          "title": "Sort received google photos new, old, random"
-        },
-        "hiResolution": {
-          "title": "Displaying photos in Hi-Resolution"
-        },
-        "timeFormat": {
-          "title": "Time/date Format"
-        },
-        "moduleHeight": {
-          "title": "module Height in px"
-        },
-        "moduleWidth": {
-          "title": "module Width in px"
-        }
-      }
-    }
-  }
-}
+*/
 
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
-exports.nl = nl
