@@ -184,52 +184,52 @@ var fr = {
 }
 
 var nl = {
-  "description": "Properties for EXT-Bring plugin",
+  "description": "Eigenschappen van de EXT-Bring plugin",
   "properties": {
     "module": {
-      "title": "Plugin name"
+      "title": "Plugin naam"
     },
     "disabled": {
-      "title": "Disable the plugin"
+      "title": "De plugin uitschakelen"
     },
     "position": {
-      "title": "Plugin position"
+      "title": "Positie van de Plugin"
     },
     "config": {
-      "title": "Configuration",
+      "title": "Instellingen",
       "properties": {
         "debug": {
-          "title": "Enable debug mode"
+          "title": "Debug modus aanzetten"
         },
         "listName": {
-          "title": "What is your list name in Bring!"
+          "title": "Wat is de naam van je lijst in Bring!"
         },
         "email": {
-          "title": "Your email of your Bring! account?"
+          "title": "Uw emailadres van uw Bring! account?"
         },
         "password": {
-          "title": "Your password of your Bring! account?"
+          "title": "Uw wachtwoord van uw Bring! account?"
         },
         "lang": {
-          "title": "Choose your language number"
+          "title": "Kies uw taal nummer"
         },
         "columns": {
-          "title": "The number of colums in the table view"
+          "title": "Het aantal kolommen in uw weergave"
         },
         "maxRows": {
-          "title": "The maximum number of rows to display in the table view"
+          "title": "Het maximum aantal rijen dat vertoont word in uw weergave"
         },
         "updateInterval": {
-          "title": "The update frequency in milliseconds.(1000ms = 1sec)"
+          "title": "Refresh frequentie in milliseconden.(1000ms = 1sec)"
         },
         "showBackground": {
-          "title": "Display a Background around item place"
+          "title": "Uw items met een achtergrond vertonen"
         },
         "showBox": {
-          "title": "Display a Box around items"
+          "title": "Uw items omkaderen"
         },
         "showHeader": {
-          "title": "Display the name of the shopping list in header of the plugin"
+          "title": "Toon de naam van uw boodschappenlijst in de hoofding van de plugin"
         }
       }
     }
