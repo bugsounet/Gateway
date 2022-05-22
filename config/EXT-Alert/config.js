@@ -52,7 +52,7 @@ var fr = {
       "title": "Désactiver le plugin"
     },
     "config": {
-      "title": "Configuration"
+      "title": "Configuration",
       "properties": {
         "debug": {
           "title": "Activer le mode debug"
