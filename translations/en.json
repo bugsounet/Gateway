@@ -59,6 +59,11 @@
   "GW_Tools_Die_Text1": "See you soon!",
   "GW_Tools_Die_Text2": "For a better use...",
   "GW_Tools_Die_Text3": "And be more lazy !",
+  "GW_Tools_Webview_Header": "Modify electron Options for using properly with EXT plugins",
+  "GW_Tools_Webview_Needed": "Needed for:",
+  "GW_Tools_Backup_Found": "backups found",
+  "GW_Tools_Backup_Text": "Flush all backups",
+  "GW_Tools_Backup_Deleted": "All backups have been deleted!",
 
   "GW_Setting": "Setting",
   "GW_Setting_Title": "Gateway Setting",

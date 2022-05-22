@@ -545,6 +545,16 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .post("/deleteBackup", async (req,res) => {
+        if(req.user || this.noLogin) {
+          console.log("[Gateway] Receiving delete backup demand...")
+          var deleteBackup = await tools.deleteBackup()
+          console.log("[GATEWAY] Delete backup result:", deleteBackup)
+          res.send(deleteBackup)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
 
       .use(function(req, res) {

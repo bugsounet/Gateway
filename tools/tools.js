@@ -144,6 +144,27 @@ function loadBackupNames() {
   })
 }
 
+/** delete all backups **/
+function deleteBackup() {
+  return new Promise(resolve => {
+    const regex = "config.js.GW"
+    var FileList = fs.readdirSync(path.resolve(__dirname, "../backup/"))
+    FileList.forEach((file) => {
+      const testFile = file.match(regex)
+      if (testFile) {
+        pathFile= path.resolve(__dirname, "../backup/"+file)
+        try {
+          fs.unlinkSync(pathFile)
+          console.log("[GATEWAY] Removed:", file)
+        } catch (e) {
+          console.log("[GATEWAY] Error occurred while trying to remove this file:", file)
+        }
+      }
+    })
+    resolve({done: "ok"})
+  })
+}
+
 /** read and send bakcup **/
 function loadBackupFile(file) {
   return new Promise(resolve => {
@@ -319,3 +340,4 @@ exports.restartMM = restartMM
 exports.searchGA = searchGA
 exports.getGAConfig = getGAConfig
 exports.setWebviewTag = setWebviewTag
+exports.deleteBackup = deleteBackup

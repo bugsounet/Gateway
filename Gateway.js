@@ -197,6 +197,11 @@ Module.register("Gateway", {
       Tr.Tools_Die_Text1 = this.translate("GW_Tools_Die_Text1")
       Tr.Tools_Die_Text2 = this.translate("GW_Tools_Die_Text2")
       Tr.Tools_Die_Text3 = this.translate("GW_Tools_Die_Text3")
+      Tr.Tools_Webview_Header = this.translate("GW_Tools_Webview_Header")
+      Tr.Tools_Webview_Needed = this.translate("GW_Tools_Webview_Needed")
+      Tr.Tools_Backup_Found = this.translate("GW_Tools_Backup_Found")
+      Tr.Tools_Backup_Text = this.translate("GW_Tools_Backup_Text")
+      Tr.Tools_Backup_Deleted = this.translate("GW_Tools_Backup_Deleted")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")

@@ -237,8 +237,49 @@ async function doTools() {
     $('#Recipes-Box').css("display", "block")
   }
 
+  // backups
+  var allBackup = await loadBackupNames()
+  if (allBackup.length > 5) {
+    $('#backupFound').text(allBackup.length)
+    $('#backupFoundText').text(translation.Tools_Backup_Found)
+    $('#backupText').text(translation.Tools_Backup_Text)
+    $('#backup-Delete').text(translation.Delete)
+    $('#backup-Error').text(translation.Error)
+    $('#backup-Done').text(translation.Done)
+    $('#backup-Box').css("display", "block")
+
+    document.getElementById('backup-Delete').onclick = function () {
+    $.post("/deleteBackup")
+      .done(function( back ) {
+        if (back.error) {
+          $('#backup-Delete').css("display", "none")
+          $('#backup-Error').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
+        } else {
+          $('#backup-Delete').css("display", "none")
+          $('#backup-Done').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text(translation.Tools_Backup_Deleted)
+        }
+      })
+    }
+
+    document.getElementById('backup-Done').onclick = function () {
+      $('#backup-Box').css("display", "none")
+      $('#alert').addClass('invisible')
+    }
+  }
+
   // webview
   if (!webviewTag) {
+    $('#webviewHeader').text(translation.Tools_Webview_Header)
+    $('#webviewNeeded').text(translation.Tools_Webview_Needed)
+    $('#webviewbtn-Apply').text(translation.Save)
+    $('#webviewbtn-Error').text(translation.Error)
+    $('#webviewbtn-Done').text(translation.Done)
     if (!InstEXT.length) InstEXT = await loadDataInstalledEXT()
     var webviewNeeded = [ 'EXT-Browser', 'EXT-Photos', 'EXT-YouTube', 'EXT-YouTubeCast' ]
     var displayNeeded = 0
@@ -248,31 +289,31 @@ async function doTools() {
     })
 
     if (displayNeeded) $('#webview-Box').css("display", "block")
-  }
 
-  document.getElementById('webviewbtn-Apply').onclick = function () {
-  $.post("/setWebviewTag")
-    .done(function( back ) {
-      if (back.error) {
-        $('#webviewbtn-Apply').css("display", "none")
-        $('#webviewbtn-Error').css("display", "inline-block")
-        $('#alert').removeClass('invisible')
-        $('#alert').removeClass('alert-success')
-        $('#alert').addClass('alert-danger')
-        $('#messageText').text(back.error)
-      } else { 
-        $('#webviewbtn-Apply').css("display", "none")
-        $('#webviewbtn-Done').css("display", "inline-block")
-        $('#alert').removeClass('invisible')
-        $('#messageText').text(translation.Restart)
-      }
-    });
-  }
+    document.getElementById('webviewbtn-Apply').onclick = function () {
+    $.post("/setWebviewTag")
+      .done(function( back ) {
+        if (back.error) {
+          $('#webviewbtn-Apply').css("display", "none")
+          $('#webviewbtn-Error').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
+        } else {
+          $('#webviewbtn-Apply').css("display", "none")
+          $('#webviewbtn-Done').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text(translation.Restart)
+        }
+      })
+    }
 
-  document.getElementById('webviewbtn-Done').onclick = function () {
-    $('#webview-Box').css("display", "none")
-    webviewTag = true
-    $('#alert').addClass('invisible')
+    document.getElementById('webviewbtn-Done').onclick = function () {
+      $('#webview-Box').css("display", "none")
+      webviewTag = true
+      $('#alert').addClass('invisible')
+    }
   }
 }
 
