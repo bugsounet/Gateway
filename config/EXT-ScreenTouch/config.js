@@ -27,7 +27,7 @@ var schema = {
       "properties": {
         "mode": {
           "type": "number",
-          "title": "Selected mode for enable/disable the screen with touch (see wiki)",
+          "title": "{EXT-ScreenTouch_Mode}",
           "default": 3,
           "enum": [ 1 , 2 , 3],
           "minimum": 1,
@@ -39,28 +39,6 @@ var schema = {
   },
   "required": ["module", "config"]
 }
-
-/*
-var fr = {
-  "description": "Propriété pour le plugin EXT-ScreenTouch",
-  "properties": {
-    "module": {
-      "title": "Nom du plugin"
-    },
-    "disabled": {
-      "title": "Désactiver le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "mode": {
-          "title": "Numéro du mode pour activer/désactiver l'écran avec l'interface tactile (see wiki)"
-        }
-      }
-    }
-  }
-}
-*/
 
 exports.default = defaultConfig
 exports.schema = schema

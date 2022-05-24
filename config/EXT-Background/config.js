@@ -28,13 +28,13 @@ var schema = {
       "properties": {
         "model": {
           "type": "string",
-          "title": "Choose your model",
+          "title": "{EXT-Background_Model}",
           "default": "jarvis",
           "enum": ["jarvis", "lego", "old", "cortana"]
         },
         "myImage": {
           "type": ["string", "null"],
-          "title": "Choose your personal image, if don't want model",
+          "title": "{EXT-Background_Image}",
           "default": null
         }
       },
@@ -43,38 +43,6 @@ var schema = {
   },
   "required": ["config","module"]
 }
-
-/*
-var fr = {
-  "properties": {
-    "config": {
-      "properties": {
-        "model": {
-          "title": "Choisissez votre modèle"
-        },
-        "myImage": {
-          "title": "Choisissez votre image personnelle, si vous ne voulez pas de modèle"
-        }
-      }
-    }
-  }
-}
-
-var nl = {
-  "properties": {
-    "config": {
-      "properties": {
-        "model": {
-          "title": "Kies uw model"
-        },
-        "myImage": {
-          "title": "Kies zelf een afbeelding, als je geen model wilt"
-        }
-      }
-    }
-  }
-}
-*/
 
 exports.default = defaultConfig
 exports.schema = schema

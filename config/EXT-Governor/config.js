@@ -34,13 +34,13 @@ var schema = {
         },
         "sleeping": {
           "type": "string",
-          "title": "Name of the governor when screen is in sleeping state",
+          "title": "{EXT-Governor_Sleep}",
           "default": "powersave",
           "enum": [ "ondemand", "powersave", "performance", "conservative" , "userspace"  ]
         },
         "working": {
           "type": "string",
-          "title": "Name of the governor when screen is actived",
+          "title": "{EXT-Governor_Work}",
           "default": "ondemand",
           "enum": [ "ondemand", "powersave", "performance", "conservative" , "userspace"  ]
         },
@@ -49,34 +49,6 @@ var schema = {
   },
   "required": ["module"]
 }
-
-/*
-var fr = {
-  "description": "Propriété du plugin EXT-Governor",
-  "properties": {
-    "module": {
-      "title": "Nom du Plugin",
-    },
-    "disabled": {
-      "title": "Désactive le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Active le mode debug"
-        },
-        "sleeping": {
-          "title": "Nom du gouverneur lorsque l'écran est en état de veille"
-        },
-        "working": {
-          "title": "Nom du gouverneur lorsque l'écran est allumé"
-        }
-      }
-    }
-  }
-}
-*/
 
 exports.default = defaultConfig
 exports.schema = schema

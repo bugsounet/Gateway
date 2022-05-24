@@ -37,27 +37,27 @@ var schema = {
         },
         "displayDelay": {
           "type": "number",
-          "title": "Delay before closing the browser automaticaly in ms. If you want to disable this delay, set it to 0 (default is 60 secs)",
+          "title": "{EXT-Browser_Delay}",
           "default": 60000
         },
         "scrollActivate": {
           "type": "boolean",
-          "title": "Activate or not auto-scrolling",
+          "title": "{EXT-Browser_Scroll}",
           "default": false
         },
         "scrollStep": {
           "type": "number",
-          "title": "Scrolling step in px for scrolling down",
+          "title": "{EXT-Browser_Step}",
           "default": 25
         },
         "scrollInterval": {
           "type": "number",
-          "title": "Scrolling interval for next scrollStep",
+          "title": "{EXT-Browser_Interval}",
           "default": 1000
         },
         "scrollStart": {
           "type": "number",
-          "title": "Delay before scrolling down in ms (after url loaded )",
+          "title": "{EXT-Browser_Start}",
           "default": 5000
         }
       }

@@ -34,7 +34,7 @@ var schema = {
         },
         "gpio": {
           "type": "number",
-          "title": "BCM-number of the sensor pin",
+          "title": "{EXT-Pir_GPIO}",
           "default": 21,
           "enum": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
           "minimum": 0,
@@ -42,7 +42,7 @@ var schema = {
         },
         "reverseValue": {
           "type": "boolean",
-          "title": "Reverse data value received",
+          "title": "{EXT-Pir_Reverse}",
           "default": false
         },
       },
@@ -51,34 +51,6 @@ var schema = {
   },
   "required": ["module", "config"]
 }
-
-/*
-var fr = {
-  "description": "Propriété du plugin EXT-Pir",
-  "properties": {
-    "module": {
-      "title": "Nom du Plugin"
-    },
-    "disabled": {
-      "title": "Désactive le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Active le mode debug"
-        },
-        "gpio": {
-          "title": "Numéro BCM de la broche du capteur"
-        },
-        "reverseValue": {
-          "title": "Le capteur envoie des valeurs inversées"
-        }
-      }
-    }
-  }
-}
-*/
 
 exports.default = defaultConfig
 exports.schema = schema

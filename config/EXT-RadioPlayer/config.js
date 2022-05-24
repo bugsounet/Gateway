@@ -55,14 +55,14 @@ var schema = {
         },
         "minVolume": {
           "type": "number",
-          "title": "Volume to set when assistant speaking (in %)",
+          "title": "{EXT-RadioPlayer_Min}",
           "default": 30,
           "minimum": 0,
           "maximum": 100
         },
         "maxVolume": {
           "type": "number",
-          "title": "Volume to set when radio playing (in %)",
+          "title": "{EXT-RadioPlayer_Max}",
           "default": 75,
           "minimum": 1,
           "maximum": 100
@@ -72,37 +72,6 @@ var schema = {
   },
   "required": ["module", "config", "position"]
 }
-
-/*
-var fr = {
-  "description": "Propriété du plugin EXT-RadioPlayer",
-  "properties": {
-    "module": {
-      "title": "Nom du Plugin"
-    },
-    "position": {
-      "title": "Position du plugin"
-    },
-    "disabled": {
-      "title": "Désactive le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Active le mode debug"
-        },
-        "minVolume": {
-          "title": "Volume à régler lorsque l'assistant parle (en %)"
-        },
-        "maxVolume": {
-          "title": "Volume à régler lors de l'écoute de la radio (en %)"
-        }
-      }
-    }
-  }
-}
-*/
 
 exports.default = defaultConfig
 exports.schema = schema

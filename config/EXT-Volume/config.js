@@ -34,13 +34,13 @@ var schema = {
         },
         "volumePreset": {
           "type": "string",
-          "title": "Preset volume configuration type",
+          "title": "{EXT-Volume_Preset}",
           "default": "PULSE",
           "enum": ["ALSA", "ALSA_HDMI", "ALSA_HEADPHONE", "PULSE", "HIFIBERRY-DAC", "RESPEAKER_SPEAKER", "RESPEAKER_PLAYBACK", "OSX" ]
         },
         "myScript": {
           "type": ["string", "null"],
-          "title": "Own script for volume control",
+          "title": "{EXT-Volume_Script}",
           "default": null
         }
       },
@@ -49,34 +49,6 @@ var schema = {
   },
   "required": ["module", "config"]
 }
-
-/*
-var fr = {
-  "description": "Propriété pour le plugin EXT-Volume",
-  "properties": {
-    "module": {
-      "title": "Nom du plugin"
-    },
-    "disabled": {
-      "title": "Désactiver le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Activer le mode debug"
-        },
-        "volumePreset": {
-          "title": "Type de configuration de volume prédéfini"
-        },
-        "myScript": {
-          "title": "Votre propre script pour le contrôle du volume"
-        }
-      }
-    }
-  }
-}
-*/
 
 exports.default = defaultConfig
 exports.schema = schema
