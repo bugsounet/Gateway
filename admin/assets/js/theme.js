@@ -66,9 +66,9 @@
 
       //check if user is scrolling up
       if (scrollDistance > 100) {
-        scrollToTop.style.display = 'block';
+        scrollToTop.setAttribute('style', 'display:block !important');
       } else {
-        scrollToTop.style.display = 'none';
+        scrollToTop.setAttribute('style', 'display:none !important');
       }
     });
   }

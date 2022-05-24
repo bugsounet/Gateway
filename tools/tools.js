@@ -144,6 +144,27 @@ function loadBackupNames() {
   })
 }
 
+/** delete all backups **/
+function deleteBackup() {
+  return new Promise(resolve => {
+    const regex = "config.js.GW"
+    var FileList = fs.readdirSync(path.resolve(__dirname, "../backup/"))
+    FileList.forEach((file) => {
+      const testFile = file.match(regex)
+      if (testFile) {
+        pathFile= path.resolve(__dirname, "../backup/"+file)
+        try {
+          fs.unlinkSync(pathFile)
+          console.log("[GATEWAY] Removed:", file)
+        } catch (e) {
+          console.log("[GATEWAY] Error occurred while trying to remove this file:", file)
+        }
+      }
+    })
+    resolve({done: "ok"})
+  })
+}
+
 /** read and send bakcup **/
 function loadBackupFile(file) {
   return new Promise(resolve => {
@@ -244,10 +265,26 @@ function checkElectronOptions(config) {
   else return false
 }
 
+/** enable webview tag **/
+function setWebviewTag(MMConfig) {
+  return new Promise(resolve => {
+    let options = {
+      electronOptions: {
+        webPreferences: {
+          webviewTag: true
+        }
+      }
+    }
+    MMConfig = configMerge({}, MMConfig, options)
+    resolve(MMConfig)
+  })
+}
+
 /** Part of EXT-UpdateNotification **/
 // MagicMirror restart and stop
 function restartMM (config) {
   if (config.usePM2) {
+    console.log("[GATEWAY] PM2 will restarting MagicMirror...")
     pm2.restart(config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
@@ -260,7 +297,6 @@ function restartMM (config) {
 function doRestart () {
   console.log("[GATEWAY] Restarting MagicMirror...")
   var MMdir = path.normalize(__dirname + "/../../../")
-  console.log(MMdir)
   const out = process.stdout
   const err = process.stderr
   const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
@@ -270,14 +306,14 @@ function doRestart () {
 
 function doClose (config) {
   console.log("[GATEWAY] Closing MagicMirror...")
-  if (!config.usePM2) process.exit()
-  else {
+  if (config.usePM2) {
     pm2.stop(config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }
     })
   }
+  else process.exit()
 }
 
 /** read and search GA config **/
@@ -285,6 +321,46 @@ function getGAConfig (config) {
   var index = config.modules.map(e => { return e.module }).indexOf("MMM-GoogleAssistant")
   if (index > -1) return config.modules[index]
   else return {}
+}
+
+function makeSchemaTranslate(schema, translation) {
+  /* replace {template} by translation */
+  function translate(template) {
+    return template.replace(new RegExp("{([^}]+)}", "g"), function (_unused, varName) {
+      console.log("[GATEWAY][Translator] Find:", template, varName in translation ? translation[varName] : "Not found!")
+      return varName in translation ? translation[varName] : "{" + varName + "}"
+    })
+  }
+
+  /* read object in deep an search what translate */
+  function makeTranslate(result) {
+    var stack = Array.prototype.slice.call(arguments, 0)
+    var item
+    var key
+    while (stack.length) {
+      item = stack.shift()
+      for (key in item) {
+        if (item.hasOwnProperty(key)) {
+          if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
+            if (typeof item[key] === "object" && item[key] !== null) {
+              result[key] = makeTranslate({}, result[key], item[key])
+            } else {
+              result[key] = item[key]
+            }
+          } else {
+            if ((key == "title" || key == "description") && result[key]) {
+              result[key] = translate(item[key])
+            }
+            else result[key] = item[key]
+          }
+        }
+      }
+    }
+    return result
+  }
+
+  return makeTranslate(schema)
+
 }
 
 /** exports functions for pretty using **/
@@ -299,8 +375,10 @@ exports.loadBackupNames = loadBackupNames
 exports.loadBackupFile = loadBackupFile
 exports.configMerge = configMerge
 exports.checkElectronOptions = checkElectronOptions
-exports.configMerge = configMerge
 exports.doClose = doClose
 exports.restartMM = restartMM
 exports.searchGA = searchGA
 exports.getGAConfig = getGAConfig
+exports.setWebviewTag = setWebviewTag
+exports.deleteBackup = deleteBackup
+exports.makeSchemaTranslate = makeSchemaTranslate

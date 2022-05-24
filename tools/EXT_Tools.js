@@ -17,13 +17,15 @@ var InstEXT = []
 var ConfigEXT = []
 var versionGW = {}
 var webviewTag = false
+var versionGA = {}
 
 // Load rules
 window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
-  if (window.location.pathname != "/login") actualSetting = await getGatewaySetting()
 
+  if (window.location.pathname != "/login") actualSetting = await getGatewaySetting()
+  $('html').prop("lang", versionGW.lang)
   switch (window.location.pathname) {
     case "/":
       doIndex()
@@ -96,63 +98,15 @@ window.addEventListener("load", async event => {
   $('#accordionSidebar').removeClass("invisible")
   $('li.active').removeClass('active')
   var path=location.pathname
-  if ((path == "/install") || (path == "/delete")) path = "/EXT"
+  if (path == "/install" ||
+      path == "/delete" ||
+      path == "/EXTModifyConfig" ||
+      path == "/EXTCreateConfig"
+  ) path = "/EXT"
+  if (path == "/EditMMConfig") path = "/MMConfig"
+  if (path == "/Die" || path == "/Restart") path = "/Tools"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
-
-function checkWebviewTag() {
-  return new Promise(resolve => {
-    $.getJSON("/getWebviewTag" , (tag) => {
-      console.log("webviewTag", tag)
-      resolve(tag)
-    })
-  })
-}
-
-function loadTranslation() {
-  return new Promise(resolve => {
-    $.getJSON("/translation" , (tr) => {
-      console.log("Translation", tr)
-      resolve(tr)
-    })
-  })
-}
-
-function loadDataAllEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/allEXT" , (all) => {
-      console.log("allEXT", all)
-      resolve(all)
-    })
-  })
-}
-
-function loadDataConfiguredEXT() {
-  return new Promise(resolve => {  
-    $.getJSON("/ConfiguredEXT" , (confEXT) => {
-      console.log("ConfiguredEXT", confEXT)
-      resolve(confEXT)
-    })
-  })
-}
-
-function loadDataInstalledEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/InstalledEXT" , (instEXT) => {
-      console.log("InstalledEXT", instEXT)
-      resolve(instEXT)
-    })
-  })
-}
-
-function loadDataDescriptionEXT() {
-  return new Promise(resolve => {
-    $.getJSON("/DescriptionEXT" , (desEXT) => {
-      console.log("DescriptionEXT", desEXT)
-      resolve(desEXT)
-    })
-  })
-}
 
 function LaunchInstall() {
   if (window.location.search) {
@@ -189,6 +143,7 @@ function LaunchDelete() {
 }
 
 function doLogin() {
+  $(document).prop('title', translation.Login_Welcome)
   $('#Welcome').text(translation.Login_Welcome)
   $('#username').attr("placeholder", translation.Login_Username)
   $('#password').attr("placeholder", translation.Login_Password)
@@ -203,17 +158,20 @@ function doLogin() {
 }
 
 function doIndex() {
+  $(document).prop('title', translation.Home)
   $('#welcome').text(translation.Home_Welcome)
 }
 
 function doDelete() {
+  $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
   $('#messageText').text(translation.Plugins_Delete_Message)
-  $('#delete').text(translation.Delete2)
+  $('#delete').text(translation.Delete)
   $('#cancel').text(translation.Cancel)
 }
 
 function doInstall() {
+  $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
   $('#messageText').text(translation.Plugins_Install_Message)
   $('#install').text(translation.Install)
@@ -221,6 +179,7 @@ function doInstall() {
 }
 
 function doRestart() {
+  $(document).prop('title', translation.Tools)
   $('#text1').text(translation.Tools_Restart_Text1)
   $('#text2').text(translation.Tools_Restart_Text2)
 
@@ -250,16 +209,20 @@ function doRestart() {
 }
 
 function doDie() {
+  $(document).prop('title', translation.Tools)
   $('#text1').text(translation.Tools_Die_Text1)
   $('#text2').text(translation.Tools_Die_Text2)
   $('#text3').text(translation.Tools_Die_Text3)
 }
 
 function doTerminal() {
+  $(document).prop('title', translation.Terminal)
   $('#TerminalHeader').text(translation.Terminal)
 }
 
 async function doTools() {
+  // translate
+  $(document).prop('title', translation.Tools)
   webviewTag = await checkWebviewTag()
   $('#title').text(translation.Tools_Welcome)
   $('#subtitle').text(translation.Tools_subTitle)
@@ -267,15 +230,101 @@ async function doTools() {
   $('#restart').text(translation.Tools_Restart)
   $('#Die').text(translation.Confirm)
   $('#Restart').text(translation.Confirm)
+
+  // MMM-GoogleAssistant recipes
+  versionGA = await checkGA()
+  if (versionGA.find && versionGA.configured) {
+    $('#Recipes-Box').css("display", "block")
+  }
+
+  // backups
+  var allBackup = await loadBackupNames()
+  if (allBackup.length > 5) {
+    $('#backupFound').text(allBackup.length)
+    $('#backupFoundText').text(translation.Tools_Backup_Found)
+    $('#backupText').text(translation.Tools_Backup_Text)
+    $('#backup-Delete').text(translation.Delete)
+    $('#backup-Error').text(translation.Error)
+    $('#backup-Done').text(translation.Done)
+    $('#backup-Box').css("display", "block")
+
+    document.getElementById('backup-Delete').onclick = function () {
+    $.post("/deleteBackup")
+      .done(function( back ) {
+        if (back.error) {
+          $('#backup-Delete').css("display", "none")
+          $('#backup-Error').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
+        } else {
+          $('#backup-Delete').css("display", "none")
+          $('#backup-Done').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text(translation.Tools_Backup_Deleted)
+        }
+      })
+    }
+
+    document.getElementById('backup-Done').onclick = function () {
+      $('#backup-Box').css("display", "none")
+      $('#alert').addClass('invisible')
+    }
+  }
+
+  // webview
+  if (!webviewTag) {
+    $('#webviewHeader').text(translation.Tools_Webview_Header)
+    $('#webviewNeeded').text(translation.Tools_Webview_Needed)
+    $('#webviewbtn-Apply').text(translation.Save)
+    $('#webviewbtn-Error').text(translation.Error)
+    $('#webviewbtn-Done').text(translation.Done)
+    if (!InstEXT.length) InstEXT = await loadDataInstalledEXT()
+    var webviewNeeded = [ 'EXT-Browser', 'EXT-Photos', 'EXT-YouTube', 'EXT-YouTubeCast' ]
+    var displayNeeded = 0
+
+    InstEXT.forEach(EXT => {
+      if (webviewNeeded.indexOf(EXT) > -1) displayNeeded++
+    })
+
+    if (displayNeeded) $('#webview-Box').css("display", "block")
+
+    document.getElementById('webviewbtn-Apply').onclick = function () {
+    $.post("/setWebviewTag")
+      .done(function( back ) {
+        if (back.error) {
+          $('#webviewbtn-Apply').css("display", "none")
+          $('#webviewbtn-Error').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#alert').removeClass('alert-success')
+          $('#alert').addClass('alert-danger')
+          $('#messageText').text(back.error)
+        } else {
+          $('#webviewbtn-Apply').css("display", "none")
+          $('#webviewbtn-Done').css("display", "inline-block")
+          $('#alert').removeClass('invisible')
+          $('#messageText').text(translation.Restart)
+        }
+      })
+    }
+
+    document.getElementById('webviewbtn-Done').onclick = function () {
+      $('#webview-Box').css("display", "none")
+      webviewTag = true
+      $('#alert').addClass('invisible')
+    }
+  }
 }
 
 async function createEXTTable() {
+  $(document).prop('title', translation.Plugins)
   $('#Plugins_Welcome').text(translation.Plugins_Welcome)
   if (!AllEXT.length) AllEXT = await loadDataAllEXT()
   if (!Object.keys(DescEXT).length) DescEXT = await loadDataDescriptionEXT()
   if (!InstEXT.length) InstEXT = await loadDataInstalledEXT()
   if (!ConfigEXT.length) ConfigEXT = await loadDataConfiguredEXT()
-  var Content = `<div id="TableSorterCard" class="card" id="TableSorterCard"><div class="row table-topper align-items-center"><div class="col-4 text-start" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="padding: 5px;margin: 2px;">${translation.Plugins_Table_Reset}</button></div><div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;"><h6 id="counter" style="margin: 0px;">${translation.Plugins_Table_Showing}<strong id="rowCount">${translation.Plugins_Table_ALL}</strong>${translation.Plugins_Table_Plugins}</h6></div></div><div class="row"><div class="col-12"><div>`
+  var Content = `<div id="TableSorterCard" class="card" id="TableSorterCard"><div class="row table-topper align-items-center"><div class="col-4 text-start" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="padding: 5px;margin: 2px;">${translation.Plugins_Table_Reset}</button></div><div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;"><h6 id="counter" style="margin: 0px;">${translation.Plugins_Table_Showing}<strong id="rowCount">${AllEXT.length}</strong>${translation.Plugins_Table_Plugins}</h6></div></div><div class="row"><div class="col-12"><div>`
   
   Content +=`<table id="ipi-table" class="table table tablesorter"><thead class="thead-dark"><tr><th>${translation.Plugins_Table_Name}</th><th class="sorter-false">${translation.Plugins_Table_Description}</th><th class="filter-false">${translation.Plugins_Table_Actions}</th><th class="filter-false">${translation.Plugins_Table_Configuration}</th></tr></thead><tbody id="EXT">`
   
@@ -391,17 +440,9 @@ function enableSearchAndSort() {
   });
 }
 
-function loadMMConfig() {
-  return new Promise(resolve => {  
-    $.getJSON("/GetMMConfig" , (config) => {
-      console.log("MMConfig", config)
-      resolve(config)
-    })
-  })
-}
-
 //make viewJSEditor
 async function viewJSEditor() {
+  $(document).prop('title', translation.Configuration)
   $('#MMConfigHeader').text(translation.Configuration_Welcome)
   $('#EditLoadButton').text(translation.Configuration_EditLoad)
   var modules = await loadMMConfig()
@@ -421,25 +462,8 @@ async function viewJSEditor() {
   const editor = new JSONEditor(container, options, modules)
 }
 
-function loadBackupConfig(file) {
-  return new Promise(resolve => {
-    $.getJSON("/GetBackupFile?config="+file , (backupFile) => {
-      console.log("backupFile", backupFile)
-      resolve(backupFile)
-    })
-  })
-}
-
-function loadBackupNames() {
-  return new Promise(resolve => {
-    $.getJSON("/GetBackupName" , (backups) => {
-      console.log("backups", backups)
-      resolve(backups)
-    })
-  })
-}
-
 async function EditMMConfigJSEditor() {
+  $(document).prop('title', translation.Configuration)
   $('#MMConfigHeader').text(translation.Configuration_Edit_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -540,25 +564,8 @@ async function EditMMConfigJSEditor() {
   }
 }
 
-function loadPluginConfig(plugin) {
-  return new Promise(resolve => {
-    $.getJSON("/EXTGetDefaultConfig?ext="+plugin , (defaultConfig) => {
-      console.log("defaultConfig", defaultConfig)
-      resolve(defaultConfig)
-    })
-  })
-}
-
-function loadPluginTemplate(plugin) {
-  return new Promise(resolve => {
-    $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
-      console.log("defaultTemplate", defaultTemplate)
-      resolve(defaultTemplate)
-    })
-  })
-}
-
 async function EXTConfigJSEditor() {
+  $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_Initial_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -641,16 +648,8 @@ async function EXTConfigJSEditor() {
   }
 }
 
-function loadPluginCurrentConfig(plugin) {
-  return new Promise(resolve => {
-    $.getJSON("/EXTGetCurrentConfig?ext="+plugin , (currentConfig) => {
-      console.log("CurrentConfig", currentConfig)
-      resolve(currentConfig)
-    })
-  })
-}
-
 async function EXTModifyConfigJSEditor() {
+  $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_Modify_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -762,6 +761,7 @@ async function EXTModifyConfigJSEditor() {
 }
 
 async function EXTDeleteConfigJSEditor() {
+  $(document).prop('title', translation.Plugins)
   $('#title').text(translation.Plugins_DeleteConfig_Title)
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
@@ -810,38 +810,58 @@ async function EXTDeleteConfigJSEditor() {
       });
   }
 }
-function getGatewaySetting() {
-  return new Promise(resolve => {  
-    $.getJSON("/getSetting" , (confGW) => {
-      console.log("SettingGW", confGW)
-      resolve(confGW)
-    })
-  })
-}
-
-function getGatewayVersion() {
-  return new Promise(resolve => {  
-    $.getJSON("/version" , (versionGW) => {
-      console.log("Version", versionGW)
-      resolve(versionGW)
-    })
-  })
-}
 
 function GatewaySetting() {
+  //translate parts
+  $(document).prop('title', translation.Setting)
+  $('#setting_title').text(translation.Setting_Title)
   $('#version').text(versionGW.v)
   $('#rev').text(versionGW.rev)
+  $('#language').text(versionGW.lang)
+  $('#update').text(translation.Save)
+  $('#wait').text(translation.Wait)
+  $('#restart').text(translation.Tools_Restart)
+  $('#credentials').text(translation.Setting_Credentials)
+  $('#credentials').prop('title', translation.Setting_Credentials_tooltip)
+  $('#usernameField').text(translation.Setting_Credentials_username)
+  $('#passwordField').text(translation.Setting_Credentials_password)
+  $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
+  $('#username').prop('placeholder', translation.Setting_Credentials_username_placeholder)
+  $('#passwordField').text(translation.Setting_Credentials_password)
+  $('#password').prop('placeholder', translation.Setting_Credentials_password_placeholder)
+  $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
+  $('#confirmpwd').prop('placeholder', translation.Setting_Credentials_confirmpwd_placeholder)
+  $('#server').text(translation.Setting_Server)
+  $('#debugHeader').text(translation.Setting_Server_debug)
+  $('#pm2Header').text(translation.Setting_Server_usePM2)
+  $('#portHeader').text(translation.Setting_Server_port)
+  $('#pm2idHeader').text(translation.Setting_Server_PM2Id)
+  $('#byHeader').text(translation.Setting_Info_by)
+  $('#SupportHeader').text(translation.Setting_Info_Support)
+  $('#DonateHeader').text(translation.Setting_Info_Donate)
+  $('#DonateText').text(translation.Setting_Info_Donate_Text)
+  $('#VersionHeader').text(translation.Setting_Info_About)
+  for (let tr = 1; tr <= 10; tr++) {
+    let trans = "Setting_Info_Translator"+tr
+    if (tr == 1 && translation[trans]) {
+      $('#Translators').text(translation.Setting_Info_Translator)
+      $('#translatorsBox').css("display", "flex")
+    }
+    if (translation[trans]) $('#translator-'+tr).text(translation[trans])
+  }
 
   $('#restart').css("display", "none")
   $('#wait').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
+
   $('#update').css("display", "block")
   
   $("#login").prop("checked", !actualSetting.noLogin)
   $("input.grplogin").prop("disabled", actualSetting.noLogin)
-  $("#username").val(actualSetting.username)
-  $("#password").val(actualSetting.password)
-  
+  if (!actualSetting.noLogin) {
+    $("#username").val(actualSetting.username)
+    $("#password").val(actualSetting.password)
+  }
   $("#debug").prop("checked", actualSetting.debug)
   $("#pm2").prop("checked", actualSetting.usePM2)
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
@@ -972,4 +992,140 @@ function configMerge(result) {
     }
   }
   return result
+}
+
+/** fetch datas **/
+function getGatewaySetting() {
+  return new Promise(resolve => {  
+    $.getJSON("/getSetting" , (confGW) => {
+      console.log("SettingGW", confGW)
+      resolve(confGW)
+    })
+  })
+}
+
+function getGatewayVersion() {
+  return new Promise(resolve => {  
+    $.getJSON("/version" , (versionGW) => {
+      console.log("Version", versionGW)
+      resolve(versionGW)
+    })
+  })
+}
+
+function loadPluginCurrentConfig(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetCurrentConfig?ext="+plugin , (currentConfig) => {
+      console.log("CurrentConfig", currentConfig)
+      resolve(currentConfig)
+    })
+  })
+}
+
+function checkWebviewTag() {
+  return new Promise(resolve => {
+    $.getJSON("/getWebviewTag" , (tag) => {
+      console.log("webviewTag", tag)
+      resolve(tag)
+    })
+  })
+}
+
+function checkGA() {
+  return new Promise(resolve => {
+    $.getJSON("/getGAVersion" , (GA) => {
+      console.log("GAVersion", GA)
+      resolve(GA)
+    })
+  })
+}
+
+function loadTranslation() {
+  return new Promise(resolve => {
+    $.getJSON("/translation" , (tr) => {
+      console.log("Translation", tr)
+      resolve(tr)
+    })
+  })
+}
+
+function loadDataAllEXT() {
+  return new Promise(resolve => {
+    $.getJSON("/allEXT" , (all) => {
+      console.log("allEXT", all)
+      resolve(all)
+    })
+  })
+}
+
+function loadDataConfiguredEXT() {
+  return new Promise(resolve => {  
+    $.getJSON("/ConfiguredEXT" , (confEXT) => {
+      console.log("ConfiguredEXT", confEXT)
+      resolve(confEXT)
+    })
+  })
+}
+
+function loadDataInstalledEXT() {
+  return new Promise(resolve => {
+    $.getJSON("/InstalledEXT" , (instEXT) => {
+      console.log("InstalledEXT", instEXT)
+      resolve(instEXT)
+    })
+  })
+}
+
+function loadDataDescriptionEXT() {
+  return new Promise(resolve => {
+    $.getJSON("/DescriptionEXT" , (desEXT) => {
+      console.log("DescriptionEXT", desEXT)
+      resolve(desEXT)
+    })
+  })
+}
+
+function loadMMConfig() {
+  return new Promise(resolve => {  
+    $.getJSON("/GetMMConfig" , (config) => {
+      console.log("MMConfig", config)
+      resolve(config)
+    })
+  })
+}
+
+function loadPluginConfig(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetDefaultConfig?ext="+plugin , (defaultConfig) => {
+      console.log("defaultConfig", defaultConfig)
+      resolve(defaultConfig)
+    })
+  })
+}
+
+function loadPluginTemplate(plugin) {
+  return new Promise(resolve => {
+    $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
+      console.log("defaultTemplate", defaultTemplate)
+      resolve(defaultTemplate)
+    })
+  })
+}
+
+function loadBackupConfig(file) {
+  return new Promise(resolve => {
+    $.getJSON("/GetBackupFile?config="+file , (backupFile) => {
+      console.log("backupFile", backupFile)
+      resolve(backupFile)
+    })
+  })
+}
+
+function loadBackupNames() {
+  return new Promise(resolve => {
+    $.getJSON("/GetBackupName" , (backups) => {
+      console.log("backups", backups)
+      resolve(backups)
+    })
+  })
 }

@@ -13,17 +13,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Spotify",
-  "description": "Properties for EXT-Spotify plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Spotify"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_left",
       "enum": [
         "top_bar",
@@ -43,41 +43,41 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "updateInterval": {
           "type": "number",
-          "title": "Update interval when playing (refresh) in ms",
+          "title": "{EXT-Spotify_Interval}",
           "default": 1000
         },
         "idleInterval": {
           "type": "number",
-          "title": "Update interval when idle (check if Spotify active) in ms",
+          "title": "{EXT-Spotify_Idle}",
           "default": 10000
         },
         "useBottomBar": {
           "type": "boolean",
-          "title": "Activate visual of the current playback in the bottom bar",
+          "title": "{EXT-Spotify_BottomBar}",
           "default": false
         },
         "CLIENT_ID": {
           "type": "string",
-          "title": "Client ID of your Spotify account",
+          "title": "{EXT-Spotify_ID}",
           "default": null
         },
         "CLIENT_SECRET": {
           "type": "string",
-          "title": "Client Secret of your Spotify account",
+          "title": "{EXT-Spotify_Secret}",
           "default": null
         },
       },
@@ -87,44 +87,5 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
-var fr = {
-  "description": "Propriété pour le plugin EXT-Spotify",
-  "properties": {
-    "module": {
-      "title": "Nom du plugin"
-    },
-    "position": {
-      "title": "Position du plugin"
-    },
-    "disabled": {
-      "title": "Désactiver le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Activer le mode debug"
-        },
-        "updateInterval": {
-          "title": "Intervalle de mise à jour lors de la lecture (rafraîchissement) en ms"
-        },
-        "idleInterval": {
-          "title": "Intervalle de mise à jour en cas d'inactivité (vérification si Spotify est utilisé) en ms"
-        },
-        "useBottomBar": {
-          "title": "Activer le visuel de la lecture en cours dans la barre inférieure"
-        },
-        "CLIENT_ID": {
-          "title": "ID client de votre compte Spotify"
-        },
-        "CLIENT_SECRET": {
-          "title": "Clé secrète client de votre compte Spotify"
-        }
-      }
-    }
-  }
-}
-
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr

@@ -116,6 +116,16 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff;
 }
 
+.pricing-area .price.grey .heading, .pricing-area .price.grey .plan-action .btn {
+  background: #858796 none repeat scroll 0 0;
+  color: #ffffff;
+}
+
+.pricing-area .price.blue .heading, .pricing-area .price.blue .plan-action .btn {
+  background: #127af3 none repeat scroll 0 0;
+  color: #ffffff;
+}
+
 .pricing-area .price.yellow .heading, .pricing-area .price.yellow .plan-action .btn {
   background: #f39c12 none repeat scroll 0 0;
   color: #ffffff;

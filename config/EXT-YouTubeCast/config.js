@@ -6,7 +6,7 @@ var defaultConfig = {
     debug: false,
     fullscreen: false,
     width: "30vw",
-    height: "17vw",
+    height: "30vh",
     alwaysDisplayed: true,
     castName: "MagicMirror",
     port: 8569
@@ -15,17 +15,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-YouTubeCast",
-  "description": "Properties for EXT-YouTubeCast plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-YouTubeCast"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_center",
       "enum": [
         "top_bar",
@@ -45,46 +45,46 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "fullscreen": {
           "type": "boolean",
-          "title": "Enable fullscreen video (default in windows)",
+          "title": "{EXT-YouTube_Fullscreen}",
           "default": false
         },
         "width": {
           "type": "string",
-          "title": "Width of the your YouTube window (can be a px value too)",
+          "title": "{EXT-YouTube_Width}",
           "default": "30vw"
         },
         "height": {
           "type": "string",
-          "title": "Height of the your YouTube window (can be a px value too)",
+          "title": "{EXT-YouTube_Height}",
           "default": "30vh"
         },
         "alwaysDisplayed": {
           "type": "boolean",
-          "title": "Should the YouTube windows have to be always displayed when a video is not playing ?",
+          "title": "{EXT-YouTube_Display}",
           "default": true
         },
         "castName": {
           "type": "string",
-          "title": "Name of the MagicMirror cast device",
+          "title": "{EXT-YouTubeCast_Name}",
           "default": "MagicMirror"
         },
         "port": {
           "type": "number",
-          "title": "Port of the MagicMirror cast device",
+          "title": "{EXT-YouTubeCast_Port}",
           "default": 8569
         }
       },
@@ -94,47 +94,5 @@ var schema = {
   "required": ["module", "config", "position"]
 }
 
-var fr = {
-  "description": "Propriété pour le plugin EXT-YouTubeCast",
-  "properties": {
-    "module": {
-      "title": "Nom du plugin"
-    },
-    "position": {
-      "title": "Position du plugin"
-    },
-    "disabled": {
-      "title": "Désactiver le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Activer le mode debug"
-        },
-        "fullscreen": {
-          "title": "Activer la vidéo en plein écran (par défaut dans une fenêtre)"
-        },
-        "width": {
-          "title": "Largeur de la fenêtre de votre YouTube (peut également être une valeur px)"
-        },
-        "height": {
-          "title": "Hauteur de votre fenêtre YouTube (peut également être une valeur px)"
-        },
-        "alwaysDisplayed": {
-          "title": "La fenêtre YouTube doivent-elles toujours être affichée lorsqu'une vidéo n'est pas en cours de lecture ?"
-        },
-        "castName": {
-          "title": "Nom de l'appareil MagicMirror cast"
-        },
-        "port": {
-          "title": "Port de diffusion sur MagicMirror"
-        }
-      }
-    }
-  }
-}
-
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr

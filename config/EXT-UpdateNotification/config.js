@@ -29,17 +29,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-UpdateNotification",
-  "description": "Properties for EXT-UpdateNotification plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-UpdateNotification"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_bar",
       "enum": [
         "top_bar",
@@ -59,36 +59,36 @@ var schema = {
     },
     "configDeepMerge": {
       "type": "boolean",
-      "title": "Automatically merge with the default configuration if a feature is missing in the configuration",
+      "title": "{PluginConfigDeepMerge}",
       "default": true
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "updateInterval": {
           "type": "number",
-          "title": "Interval for update checking in ms. (default: 10 mins)",
+          "title": "{EXT-UpdateNotification_Interval}",
           "default": 600000
         },
         "startDelay": {
           "type": "number",
-          "title": "Delay before starting first scan (default : 60 secs)",
+          "title": "{EXT-UpdateNotification_Delay}",
           "default": 60000
         },
         "ignoreModules": {
           "type": "array",
-          "title": "Array of ignored modules names",
+          "title": "{EXT-UpdateNotification_Ignore}",
           "default": [],
           "item": {
             "type": "string"
@@ -96,18 +96,18 @@ var schema = {
         },
         "updateCommands": {
           "type": "array",
-          "title": "Update commands for each module with an array of module/command object",
+          "title": "{EXT-UpdateNotification_Commands}",
           "default": [],
           "minItems": 0,
           "items": {
             "properties": {
               "module" : {
                 "type": "string",
-                "title": "Name of the module."
+                "title": "{EXT-UpdateNotification_Module}"
               },
               "command": {
                 "type": "string",
-                "title": "Update command for this module"
+                "title": "{EXT-UpdateNotification_Command}"
               }
             },
             "minProperties": 2,
@@ -127,62 +127,62 @@ var schema = {
         },
         "notification": {
           "type": "object",
-          "title": "How can this plugin can notify",
+          "title": "{EXT-UpdateNotification_Notification}",
           "properties": {
             "useTelegramBot" : {
               "type": "boolean",
-              "title": "Do you use MMM-TelegramBot?",
+              "title": "{EXT-UpdateNotification_TB}",
               "default": true
             },
             "sendReady": {
               "type": "boolean",
-              "title": "Send a welcome and initialized confirmation on start",
+              "title": "{EXT-UpdateNotification_Ready}",
               "default": true
             },
             "useScreen": {
               "type": "boolean",
-              "title": "Display update on the screen?",
+              "title": "{EXT-UpdateNotification_Screen}",
               "default": true
             },
             "useCallback": {
               "type": "boolean",
-              "title": "Send any callback process to telegramBot?",
+              "title": "{EXT-UpdateNotification_Callback}",
               "default": true
             }
           }
         },
         "update": {
           "type": "object",
-          "title": "How can this plugin can update modules and plugin",
+          "title": "{EXT-UpdateNotification_Update}",
           "properties" : {
             "autoUpdate" : {
               "type": "boolean",
-              "title": "If you want an automated update process, just activate it!",
+              "title": "{EXT-UpdateNotification_AutoUpdate}",
               "default": true
             },
             "autoRestart": {
               "type": "boolean",
-              "title": "Restart MagicMirror after update automatically.",
+              "title": "{EXT-UpdateNotification_AutoRestart}",
               "default": true
             },
             "PM2Name": {
               "type": ["string", "number"],
-              "title": "Name or ID of the MagicMirror process in PM2",
+              "title": "{EXT-UpdateNotification_PM2}",
               "default": 0
             },
             "defaultCommand": {
               "type": "string",
-              "title": "Define your default update command. It is being used if there is no individual command for the module in the updateCommands array.",
+              "title": "{EXT-UpdateNotification_DefaultCommand}",
               "default": "git reset --hard && git pull && npm install"
             },
             "logToConsole": {
               "type": "boolean",
-              "title": "This feature is needed for user who don't use PM2 ! Log process and result in console",
+              "title": "{EXT-UpdateNotification_Log}",
               "default": true
             },
             "timeout": {
               "type": "number",
-              "title": "Maximum execution time of an update in ms (default: 2 mins)",
+              "title": "{EXT-UpdateNotification_Timeout}",
               "default": 120000
             }
           }
@@ -193,94 +193,5 @@ var schema = {
   "required": ["module", "config", "position", "configDeepMerge"]
 }
 
-var fr = {
-  "description": "Propriété du plugin EXT-UpdateNotification",
-  "properties": {
-    "module": {
-      "title": "Nom du Plugin"
-    },
-    "position": {
-      "title": "Position du plugin"
-    },
-    "configDeepMerge": {
-      "title": "Fusionner automatiquement avec la configuration par défaut si une fonctionnalitée manque dans la configuration"
-    },
-    "disabled": {
-      "title": "Désactive le plugin"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Active le mode debug"
-        },
-        "updateInterval": {
-          "title": "Intervalle de vérification des mises à jour en ms. (par défaut: 10 minutes)"
-        },
-        "startDelay": {
-          "title": "Délai avant le début de la premiere recherche de mise à jour (par défaut: 60 secondes)"
-        },
-        "ignoreModules": {
-          "title": "Tableau de modules ignorés"
-        },
-        "updateCommands": {
-          "title": "Mise à jour automatique avec des commandes défini pour chaque module dans un tableau d'objet module/command",
-          "items": {
-            "properties": {
-              "module" : {
-                "title": "Nom du module"
-              },
-              "command": {
-                "title": "Commande de mise à jour pour ce module"
-              }
-            }
-          }
-        },
-        "notification": {
-          "title": "Comment ce plugin peut-il notifier ?",
-          "properties": {
-            "useTelegramBot" : {
-              "title": "Utilisez-vous MMM-TelegramBot ?"
-            },
-            "sendReady": {
-              "title": "Envoyer un message de bienvenue et une confirmation d'initialisation au démarrage"
-            },
-            "useScreen": {
-              "title": "Afficher la mise à jour à l'écran ?"
-            },
-            "useCallback": {
-              "title": "Envoyer le resultat de la mise à jour sur MMM-TelegramBot ?"
-            }
-          }
-        },
-        "update": {
-          "title": "Paramètres de mise à jour",
-          "properties" : {
-            "autoUpdate" : {
-              "title": "Activation de la mise à jour automatique"
-            },
-            "autoRestart": {
-              "title": "Redémarrer automatiquement MagicMirror après la mise à jour."
-            },
-            "PM2Name": {
-              "title": "Nom ou ID du processus MagicMirror dans PM2"
-            },
-            "defaultCommand": {
-              "title": "Définissez votre commande de mise à jour par défaut. Elle sera utilisé s'il n'y a pas de commande individuelle pour le module dans le tableau updateCommands."
-            },
-            "logToConsole": {
-              "title": "Journaliser le processus de mise à jour et le résultat dans la console"
-            },
-            "timeout": {
-              "title": "Temps d'exécution maximal d'une mise à jour en ms (par défaut : 2 min)"
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>EXT Plugins - Gateway</title>
+    <title>Gateway</title>
     <link rel="icon" type="image/png" sizes="42x42" href="assets/img/Gaterway.png">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -12,18 +12,11 @@
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
-    <link rel="stylesheet" href="assets/css/Account-setting-or-edit-profile.css">
-    <link rel="stylesheet" href="assets/css/Animated-Type-Heading.css">
     <link rel="stylesheet" href="assets/css/Article-Clean.css">
-    <link rel="stylesheet" href="assets/css/Countries-Select-Menu.css">
-    <link rel="stylesheet" href="assets/css/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-    <link rel="stylesheet" href="assets/css/Navbar-With-Button.css">
-    <link rel="stylesheet" href="assets/css/Pricing-Tables.css">
+    <link rel="stylesheet" href="assets/css/Navbar.css">
+    <link rel="stylesheet" href="assets/css/tools.css">
 </head>
 
 <body id="page-top">
@@ -49,7 +42,11 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div class="container">
+                            <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
+                        </div>
+                    </div>
                 </nav>
                 <div class="container-fluid">
                     <section class="pricing-table" style="padding: 0px;">
@@ -60,67 +57,105 @@
                             </div>
                             <div class="pricing-area text-center">
                                 <div class="row">
-                                    <div class="col-sm-4 plan price red wow">
+                                    <div class="col-sm-4 plan price red wow col-sm-6" data-aos="zoom-in">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>MagicMirror</h1><span class="price">Control</span>
+                                                <h2 style="color: var(--bs-light);">MagicMirror</h2><span class="price">Control</span>
                                             </li>
                                             <li class="list-group-item"><span id="stop">&nbsp;</span></li>
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Die" class="btn" href="/Die" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-4 plan price green wow">
+                                    <div class="col-sm-4 plan price green wow col-sm-6" data-aos="zoom-in">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>MagicMirror </h1><span class="price"><strong>Control</strong></span>
+                                                <h2 style="color: var(--bs-light);">MagicMirror </h2><span class="price"><strong>Control</strong></span>
                                             </li>
                                             <li class="list-group-item"><span id="restart">&nbsp;</span></li>
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Restart" class="btn" href="/Restart" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-4 plan price yellow wow" style="display:none">
+                                    <div class="col-sm-4 bounce animated plan price yellow wow col-sm-6" id="Recipes-Box" style="display:none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>Recipes</h1><span class="price">MMM-GoogleAssistant</span>
+                                                <h2 style="color: var(--bs-light);">Recipes</h2><span class="price">MMM-GoogleAssistant</span>
                                             </li>
                                             <li class="list-group-item"><span>Modify or add new recipe</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a class="btn" href="#" style="margin-top: 5px;">Check</a></li>
+                                            <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a class="btn" href="#" style="margin-top: 5px;"><strong>Not Yet Coded</strong></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow" style="display:none">
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price blue wow col-md-6" id="webview-Box" style="display: none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>Librespot</h1><span class="price">Setup</span>
+                                                <h2 style="color: var(--bs-light);"><strong>webview</strong></h2><span class="price">EXT Plugins</span>
+                                            </li>
+                                            <li class="list-group-item"><span id="webviewHeader">&nbsp;</span></li>
+                                            <li class="list-group-item"><span id="webviewNeeded"></span><span><br>EXT-Browser<br>EXT-Photos<br>EXT-YouTube<br>EXT-YouTubeCast<br></span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="webviewbtn-Apply" class="btn" href="#">&nbsp; &nbsp; &nbsp;&nbsp;<br></a><a class="flash animated infinite btn" id="webviewbtn-Error" href="#" style="display: none;">Error<br></a><a class="tada animated btn" id="webviewbtn-Done" href="#" style="display:none">Done<br></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price grey wow col-md-6" id="backup-Box" style="display: none">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);"><strong>MagicMirror</strong></h2><span class="price">Config Backup</span>
+                                            </li>
+                                            <li class="list-group-item"><span id="backupFound">&nbsp;</span><span>&nbsp;</span><span id="backupFoundText"></span></li>
+                                            <li class="list-group-item"><span id="backupText">&nbsp;</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="backup-Delete" class="btn" href="#">&nbsp; &nbsp; &nbsp;&nbsp;<br></a><a class="flash animated infinite btn" id="backup-Error" href="#" style="display: none;">Error<br></a><a class="tada animated btn" id="backup-Done" href="#" style="display:none">Done<br></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 plan price grey wow col-md-6" id="Librespot-Box" style="display: none">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">Librespot</h2><span class="price">Setup</span>
                                             </li>
                                             <li class="list-group-item"><span>Install Librespot app</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#">Install</a></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#">Not Yet Coded</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow" style="display:none">
+                                    <div class="col-sm-6 col-md-3 plan price grey wow col-md-6" id="Raspotify-Box" style="display:none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>Raspotify</h1><span class="price">Setup</span>
+                                                <h2 style="color: var(--bs-light);">Raspotify</h2><span class="price">Setup</span>
                                             </li>
                                             <li class="list-group-item"><span>Install Raspotify app</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#">Install</a></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow" style="display:none">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="YoutubeToken-Box" style="display:none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>Other</h1><span class="price">other</span>
+                                                <h2 style="color: var(--bs-light);">Token</h2><span class="price">EXT-YouTube</span>
                                             </li>
-                                            <li class="list-group-item"><span>Other</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a class="btn" href="#">Install</a></li>
+                                            <li class="list-group-item"><span>Create or renew token</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow" style="display:none">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="YoutubeVLCToken-Box" style="display:none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h1>Other</h1><span class="price">Other</span>
+                                                <h2 style="color: var(--bs-light);">Token</h2><span class="price">EXT-YouTubeVLC</span>
                                             </li>
-                                            <li class="list-group-item"><span>Other</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#">Install</a></li>
+                                            <li class="list-group-item"><span>Create or renew token</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="GooglePhotosToken-Box" style="display:none">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">Token</h2><span class="price">EXT-GooglePhotos</span>
+                                            </li>
+                                            <li class="list-group-item"><span>Create or renew token</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong><br></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="SpotifyToken-Box" style="display:none">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">Token</h2><span class="price">EXT-Spotify</span>
+                                            </li>
+                                            <li class="list-group-item"><span>Create or renew token</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -135,25 +170,15 @@
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div><script type="text/javascript">
-  // to add check modules installed and display proper section
-  //window.addEventListener("load",event=>createTr())
-</script>
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/EXT_Tools.js" crossorigin="anonymous"></script>
-    <script src="assets/js/Animated-Type-Heading.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/pleaserotate.min.js"></script>
-    <script src="assets/js/Pricing-Tables.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/tools.js"></script>
 </body>
 
 </html>

@@ -41,9 +41,10 @@ module.exports = NodeHelper.create({
     this.server= null
     this.noLogin = false
     this.translation = null
+    this.schemaTranslatation = null
     this.language = null
     this.webviewTag = false
-    this.GACheck= { find: false, version: 0 }
+    this.GACheck= { find: false, version: 0, configured: false }
     this.GAConfig= {}
   },
 
@@ -65,6 +66,7 @@ module.exports = NodeHelper.create({
         this.EXT = payload.DB.sort()
         this.EXTDescription = payload.Description
         this.translation = payload.Translate
+        this.schemaTranslatation = payload.Schema
         this.GACheck.version = tools.searchGA()
         this.GAConfig = tools.getGAConfig(this.MMConfig)
         this.initialize()
@@ -101,7 +103,11 @@ module.exports = NodeHelper.create({
       log("Find MMM-GoogleAssistant v" + this.GACheck.version)
     }
     else log("MMM-GoogleAssistant Not Found!")
-    if (Object.keys(this.GAConfig).length > 0) log("Find MMM-GoogleAssistant configured in MagicMirror")
+    if (Object.keys(this.GAConfig).length > 0) {
+      log("Find MMM-GoogleAssistant configured in MagicMirror")
+      this.GACheck.configured = true
+    }
+    else log("MMM-GoogleAssistant is not configured!")
     log("webviewTag Configured:", this.webviewTag)
     log("Language set", this.language)
     this.Setup()
@@ -150,7 +156,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/version" , (req,res) => {
-          res.send({ v: require('./package.json').version, rev: require('./package.json').rev })
+          res.send({ v: require('./package.json').version, rev: require('./package.json').rev, lang: this.language })
       })
 
       .get("/translation" , (req,res) => {
@@ -379,9 +385,7 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = require("./config/"+req.query.ext+"/config.js")
-          if (data[this.language]) {
-            data.schema = tools.configMerge({}, data.schema, data[this.language])
-          }
+          data.schema = tools.makeSchemaTranslate(data.schema, this.schemaTranslatation)
           res.send(data.schema)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
@@ -442,7 +446,7 @@ module.exports = NodeHelper.create({
       .get("/Restart" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/restarting.html")
-          setTimeout(() => tools.restartMM(config) , 1000)
+          setTimeout(() => tools.restartMM(this.config) , 1000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -450,7 +454,7 @@ module.exports = NodeHelper.create({
       .get("/Die" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/die.html")
-          setTimeout(() => tools.doClose(config), 3000)
+          setTimeout(() => tools.doClose(this.config), 3000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -505,7 +509,6 @@ module.exports = NodeHelper.create({
       .post("/saveSetting", urlencodedParser, async (req,res) => {
         console.log("[Gateway] Receiving new Setting")
         let data = JSON.parse(req.body.data)
-        console.log(data)
         var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
         var resultSaveConfig = await tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
@@ -518,6 +521,37 @@ module.exports = NodeHelper.create({
 
       .get("/getWebviewTag", (req,res) => {
         if(req.user || this.noLogin) res.send(this.webviewTag)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .post("/setWebviewTag", async (req,res) => {
+        if(!this.webviewTag && (req.user || this.noLogin)) {
+          console.log("[Gateway] Receiving setWebviewTag demand...")
+          let NewConfig = await tools.setWebviewTag(this.MMConfig)
+          var resultSaveConfig = await tools.saveConfig(NewConfig)
+          console.log("[GATEWAY] Write Gateway webview config result:", resultSaveConfig)
+          res.send(resultSaveConfig)
+          if (resultSaveConfig.done) {
+            this.webviewTag = true
+            this.MMConfig = await tools.readConfig()
+            console.log("[GATEWAY] Reload config")
+          }
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/getGAVersion", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.GACheck)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .post("/deleteBackup", async (req,res) => {
+        if(req.user || this.noLogin) {
+          console.log("[Gateway] Receiving delete backup demand...")
+          var deleteBackup = await tools.deleteBackup()
+          console.log("[GATEWAY] Delete backup result:", deleteBackup)
+          res.send(deleteBackup)
+        }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 

@@ -1,3 +1,7 @@
+.scroll-to-top {
+  display: none !important;
+}
+
 .article-clean {
   color: #56585b;
   background-color: #fff;
@@ -80,5 +84,11 @@
 .article-clean .text figure img {
   margin-bottom: 12px;
   max-width: 100%;
+}
+
+.btn-link {
+  font-weight: 400;
+  color: #3e5cb2;
+  text-decoration: underline;
 }
 

@@ -6,30 +6,28 @@ var defaultConfig = {
   }
 }
 
-exports.default = defaultConfig
-
 var schema = {
     "title": "EXT-Welcome",
-    "description": "properties for EXT-Welcome",
+    "description": "{PluginDescription}",
     "type": "object",
     "properties": {
       "module": {
         "type": "string",
-        "title": "Plugin name",
+        "title": "{PluginName}",
         "default": "EXT-Welcome"
       },
       "disabled": {
         "type": "boolean",
-        "title": "disable the plugin",
+        "title": "{PluginDisable}",
         "default": false
       },
       "config": {
         "type": "object",
-        "title": "Configuration",
+        "title": "{PluginConfiguration}",
         "properties": {
           "welcome": {
             "type": "string",
-            "title": "Your assistant welcome",
+            "title": "{EXT-Welcome_Welcome}",
             "default": "brief Today"
           }
         },
@@ -39,26 +37,5 @@ var schema = {
     "required": ["config","module"]
 }
 
-var fr = {
-    "description": "Propriété pour le plugin EXT-Welcome",
-    "properties": {
-      "module": {
-        "title": "Nom du plugin"
-      },
-      "disabled": {
-        "title": "Désactiver le plugin"
-      },
-      "config": {
-        "title": "Configuration",
-        "properties": {
-          "welcome": {
-            "title": "Votre demande de bienvenue"
-          }
-        }
-      }
-    }
-}
-
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr

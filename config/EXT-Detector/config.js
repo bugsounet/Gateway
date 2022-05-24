@@ -29,17 +29,17 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Detector",
-  "description": "Properties for EXT-Detector plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Detector"
     },
     "position": {
       "type": "string",
-      "title": "Plugin position",
+      "title": "{PluginPosition}",
       "default": "top_right",
       "enum": [
         "top_bar",
@@ -59,49 +59,49 @@ var schema = {
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "configDeepMerge": {
       "type": "boolean",
-      "title": "Automatically merge with the default configuration if a feature is missing in the configuration",
+      "title": "{PluginConfigDeepMerge}",
       "default": true
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "useIcon": {
           "type": "boolean",
-          "title": "Display Google Icon and animate it when keyword discover",
+          "title": "{EXT-Detector_Icon}",
           "default": true
         },
         "touchOnly": {
           "type": "boolean",
-          "title": "Activate MMM-GoogleAssistant by Touch the Google Icon only and don't listen any keywords",
+          "title": "{EXT-Detector_Touch}",
           "default": false
         },
         "detectors": {
           "type": "array",
-          "title": "Array of detectors",
+          "title": "{EXT-Detector_Detector}",
           "default": [],
           "minItems": 1,
           "items": {
             "properties": {
               "detector": {
                 "type": "string",
-                "title": "Detector engine",
+                "title": "{EXT-Detector_Engine}",
                 "enum": ["Snowboy","Porcupine"],
                 "default": "Snowboy"
               },
               "Model": {
                 "type": "string",
-                "title": "Keyword name",
+                "title": "{EXT-Detector_Keyword}",
                 "default": "jarvis",
                 "enum": [ 
                   "smart_mirror",
@@ -126,7 +126,7 @@ var schema = {
                 ]
               },
               "Sensitivity": {
-                "title": "Sensitivity of detection of the keyword",
+                "title": "{EXT-Detector_Sensitivity}",
                 "type": ["number", "null"],
                 "default": null,
                 "enum": [
@@ -145,31 +145,6 @@ var schema = {
                 ]
               }
             },
-            /* don't works ... need review
-            "if": {
-              "properties": {
-                "detector" : {
-                  "enum":  [ "Snowboy" ]
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "Models": {
-                  "enum": [ 
-                    "smart_mirror",
-                    "jarvis",
-                    "computer",
-                    "snowboy",
-                    "subex",
-                    "neo_ya",
-                    "hey_extreme",
-                    "view_glass"
-                  ]
-                }
-              }
-            },
-            */
             "required": ["detector", "Model", "Sensitivity"]
           },
           "additionalItems": {
@@ -192,54 +167,5 @@ var schema = {
   "required": ["module", "position", "config"]
 }
 
-var fr = {
-  "description": "Propriété pour le plugin EXT-Detector",
-  "properties": {
-    "module": {
-      "title": "Nom du plugin"
-    },
-    "position": {
-      "title": "Position du plugin"
-    },
-    "disabled": {
-      "title": "Désactiver le plugin"
-    },
-    "configDeepMerge": {
-      "title": "Fusionner automatiquement avec la configuration par défaut si une fonctionnalitée manque dans la configuration"
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Activer le mode debug"
-        },
-        "useIcon": {
-          "title": "Afficher l'icône Google et l'animer lorsque le mot clé est découvert"
-        },
-        "touchOnly": {
-          "title": "Activez MMM-GoogleAssistant en appuyant uniquement sur l'icône Google et écoute aucun mot-clé"
-        },
-        "detectors": {
-          "title": "Gamme des détecteurs",
-          "items": {
-            "properties": {
-              "detector": {
-                "title": "Moteur de détection"
-              },
-              "Model": {
-                "title": "Nom du mot clé"
-              },
-              "Sensitivity": {
-                "title": "Sensibilité de détection du mot clé"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr

@@ -9,31 +9,31 @@ var defaultConfig = {
 
 var schema = {
   "title": "EXT-Alert",
-  "description": "Properties for EXT-Alert plugin",
+  "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
-      "title": "Plugin name",
+      "title": "{PluginName}",
       "default": "EXT-Alert"
     },
     "disabled": {
       "type": "boolean",
-      "title": "Disable the plugin",
+      "title": "{PluginDisable}",
       "default": false
     },
     "config": {
       "type": "object",
-      "title": "Configuration",
+      "title": "{PluginConfiguration}",
       "properties": {
         "debug": {
           "type": "boolean",
-          "title": "Enable debug mode",
+          "title": "{PluginDebug}",
           "default": false
         },
         "ignore": {
           "type": "array",
-          "title": "Plugin list to ignore notifications",
+          "title": "{EXT-Alert_ignore}",
           "default": []
         }
       }
@@ -42,29 +42,5 @@ var schema = {
   "required": ["module"]
 }
 
-var fr = {
-  "description": "Propriété pour le plugin EXT-Alert",
-  "properties": {
-    "module": {
-      "title": "Nom du plugin",
-    },
-    "disabled": {
-      "title": "Désactiver le plugin",
-    },
-    "config": {
-      "title": "Configuration",
-      "properties": {
-        "debug": {
-          "title": "Activer le mode debug",
-        },
-        "ignore": {
-          "title": "Liste les plugins/modules à ignorer pour ne pas afficher leurs notifications",
-        }
-      }
-    }
-  }
-}
-
 exports.default = defaultConfig
 exports.schema = schema
-exports.fr = fr
