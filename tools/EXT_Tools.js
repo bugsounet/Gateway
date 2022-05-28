@@ -58,6 +58,9 @@ window.addEventListener("load", async event => {
       doDie()
       break
     case "/Terminal":
+      doTerminalLogs()
+      break
+    case "/ptyProcess":
       doTerminal()
       break
     case "/MMConfig":
@@ -105,6 +108,7 @@ window.addEventListener("load", async event => {
   ) path = "/EXT"
   if (path == "/EditMMConfig") path = "/MMConfig"
   if (path == "/Die" || path == "/Restart") path = "/Tools"
+  if (path == "/ptyProcess") path = "/Terminal"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
 
@@ -215,9 +219,47 @@ function doDie() {
   $('#text3').text(translation.Tools_Die_Text3)
 }
 
-function doTerminal() {
+async function doTerminalLogs() {
   $(document).prop('title', translation.Terminal)
   $('#TerminalHeader').text(translation.Terminal)
+  var socketLogs = io()
+  const termLogs = new Terminal({cursorBlink: true})
+  const fitAddonLogs = new FitAddon.FitAddon()
+  termLogs.loadAddon(fitAddonLogs)
+  termLogs.open(document.getElementById('terminal'))
+  fitAddonLogs.fit()
+
+  termLogs.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  
+  socketLogs.on('terminal.logs', function(data) {
+    termLogs.write(data)
+  })
+  
+}
+
+async function doTerminal() {
+  $(document).prop('title', translation.Terminal)
+  $('#PTYHeader').text("Gateway Terminal")
+  var socketPTY = io()
+  const termPTY = new Terminal({cursorBlink: true})
+  const fitAddonPTY = new FitAddon.FitAddon()
+  termPTY.loadAddon(fitAddonPTY)
+  termPTY.open(document.getElementById('terminal'))
+  fitAddonPTY.fit()
+  console.log(termPTY)
+  if (termPTY.rows && termPTY.cols) {
+    socketPTY.emit('terminal.size', { cols: termPTY.cols, rows: termPTY.rows })
+  }
+
+  termPTY.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  
+  termPTY.onData( data => {
+    socketPTY.emit('terminal.toTerm', data)
+  })
+  
+  socketPTY.on('terminal.incData', function(data) {
+    termPTY.write(data)
+  })
 }
 
 async function doTools() {

@@ -7,15 +7,20 @@ var cors = require("cors")
 const fs = require("fs")
 const path = require("path")
 const tools = require("./tools/tools.js")
-var build =  require('./tools/build.js')
 
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
 var bodyParser = require('body-parser')
-var hyperwatch =  require('hyperwatch')
+var hyperwatch =  require('./tools/logger.js')
 var exec = require("child_process").exec
 var semver = require('semver')
+
+//const os = require("os")
+const pty = require("node-pty")
+
+const http = require('http')
+const { Server } = require("socket.io")
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -94,6 +99,7 @@ module.exports = NodeHelper.create({
       this.passportConfig()
     }
     this.app = express()
+    this.server = http.createServer(this.app)
     this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
     this.EXTInstalled= tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
@@ -145,6 +151,8 @@ module.exports = NodeHelper.create({
       }
     }
 
+    var io = new Server(this.server)
+
     this.app
       .use(this.logRequest)
       .use(cors({ origin: '*' }))
@@ -189,7 +197,7 @@ module.exports = NodeHelper.create({
               console.log("[GATEWAY][" + ip + "] Login error:", err)
               return res.send({ err: err })
             }
-            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you! (and don't be so lazy...)")
+            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you!")
             return res.send({ login: true })
           })
         })(req, res, next)
@@ -226,7 +234,54 @@ module.exports = NodeHelper.create({
       })
 
       .get("/Terminal" , (req,res) => {
-        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/terminal.html")
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          res.sendFile( __dirname+ "/admin/terminal.html")
+          //var ioLogs = new Server(this.server)
+          io.once('connection', async (socket) => {
+            log('[' + ip + '] Connected to Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+            socket.on('disconnect', (err) => {
+              log('[' + ip + '] Disconnected from Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+            })
+            var pastLogs = await tools.readAllMMLogs(this.Master.logs)
+            io.emit("terminal.logs", pastLogs)
+            this.Master.stream.on('stdData', (data) => {
+              if (typeof data == "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"))
+            })
+          })
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/ptyProcess" , (req,res) => {
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          res.sendFile( __dirname+ "/admin/pty.html")
+          io.once('connection', (client) => {
+            log('[' + ip + '] Connected to Terminal:', this.noLogin ? "noLogin" : req.user , client.id)
+            client.on('disconnect', (err) => {
+              log('[' + ip + '] Disconnected from Terminal:', this.noLogin ? "noLogin" : req.user, client.id, err)
+            })
+            var cols = 80
+            var rows = 24
+            var ptyProcess = pty.spawn("bash", [], {
+              name: "xterm-color",
+              cols: cols,
+              rows: rows,
+              cmd: process.env.HOME,
+              env: process.env
+            })
+            ptyProcess.on("data", (data) => {
+              io.to(client.id).emit("terminal.incData", data)
+            })
+            client.on('terminal.toTerm', (data) => {
+              ptyProcess.write(data)
+            })
+            client.on('terminal.size', (size) => {
+              ptyProcess.resize(size.cols, size.rows)
+            })
+          })
+        }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
@@ -306,11 +361,6 @@ module.exports = NodeHelper.create({
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
-
-      .get('/bundle.js', function (req, res) {
-        res.setHeader('Content-Type', 'application/javascript');
-        build().pipe(res);
-       })
 
       .get("/MMConfig" , (req,res) => {
         if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/mmconfig.html")
@@ -556,6 +606,8 @@ module.exports = NodeHelper.create({
       })
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
+      .use("/xterm" , express.static(__dirname + '/node_modules/xterm'))
+      .use("/xterm-addon-fit" , express.static(__dirname + '/node_modules/xterm-addon-fit'))
 
       .use(function(req, res) {
         console.warn("[GATEWAY] Don't find:", req.url)
@@ -564,9 +616,9 @@ module.exports = NodeHelper.create({
           
     /** Create Server **/
     this.config.listening = await tools.purposeIP()
-    this.server = hyperwatch(this.app.listen(this.config.port, this.config.listening, () => {
+    this.Master = hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
-    }))
+     }))
   },
 
   /** passport local strategy with username/password defined on config **/
