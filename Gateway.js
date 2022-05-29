@@ -29,7 +29,7 @@ Module.register("Gateway", {
       "EXT-GooglePhotos",
       "EXT-Governor",
       "EXT-Internet",
-      "EXT-Led", // not coded
+      //"EXT-Led", // not coded
       "EXT-Librespot",
       "EXT-MusicPlayer",
       "EXT-Photos",
