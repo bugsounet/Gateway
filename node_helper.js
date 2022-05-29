@@ -2,6 +2,7 @@
 
 var NodeHelper = require("node_helper")
 var log = (...args) => { /* do nothing */ }
+var hyperwatch = require("./tools/hyperwatch.js")
 var express = require("express")
 var cors = require("cors")
 const path = require("path")
@@ -89,8 +90,7 @@ module.exports = NodeHelper.create({
     let libraries= [
       // { "library to load" : [ "store library name" ] }
       { "node-pty": "pty" },
-      { "./tools/tools.js": "tools" },
-      { "./tools/hyperwatch.js": "hyperwatch" }
+      { "./tools/tools.js": "tools" }
     ]
     let errors = 0
     return new Promise(resolve => {
@@ -653,7 +653,7 @@ module.exports = NodeHelper.create({
           
     /** Create Server **/
     this.config.listening = await this.lib.tools.purposeIP()
-    this.HyperWatch = this.lib.hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
+    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
     }))
   },
