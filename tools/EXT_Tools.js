@@ -285,10 +285,12 @@ async function doTools() {
   $('#Restart').text(translation.Confirm)
 
   // MMM-GoogleAssistant recipes
+  /* Will be not coded for first release
   versionGA = await checkGA()
   if (versionGA.find && versionGA.configured) {
     $('#Recipes-Box').css("display", "block")
   }
+  */
 
   // backups
   var allBackup = await loadBackupNames()
