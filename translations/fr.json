@@ -42,6 +42,8 @@
   "GW_Plugins_Modify_Title": "Modification de la configuration de",
 
   "GW_Terminal": "Visionner le Terminal",
+  "GW_TerminalOpen": "Ouvrir un Terminal",
+  "GW_TerminalGW": "Gateway Terminal",
 
   "GW_Configuration": "Config. de MagicMirror",
   "GW_Configuration_Welcome": "Configuration actuelle de MagicMirror",

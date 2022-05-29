@@ -197,6 +197,8 @@ Module.register("Gateway", {
       Tr.Plugins_Modify_Title = this.translate("GW_Plugins_Modify_Title")
 
       Tr.Terminal = this.translate("GW_Terminal")
+      Tr.TerminalOpen = this.translate("GW_TerminalOpen")
+      Tr.TerminalGW = this.translate("GW_TerminalGW")
 
       Tr.Configuration = this.translate("GW_Configuration")
       Tr.Configuration_Welcome = this.translate("GW_Configuration_Welcome")

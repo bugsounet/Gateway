@@ -222,6 +222,7 @@ function doDie() {
 async function doTerminalLogs() {
   $(document).prop('title', translation.Terminal)
   $('#TerminalHeader').text(translation.Terminal)
+  $('#openTerminal').text(translation.TerminalOpen)
   var socketLogs = io()
   const termLogs = new Terminal({cursorBlink: true})
   const fitAddonLogs = new FitAddon.FitAddon()
@@ -245,7 +246,7 @@ async function doTerminalLogs() {
 
 async function doTerminal() {
   $(document).prop('title', translation.Terminal)
-  $('#PTYHeader').text("Gateway Terminal")
+  $('#PTYHeader').text(translation.TerminalGW)
   var socketPTY = io()
   const termPTY = new Terminal({cursorBlink: true})
   const fitAddonPTY = new FitAddon.FitAddon()
