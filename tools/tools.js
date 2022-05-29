@@ -367,9 +367,7 @@ function readAllMMLogs(logs) {
   return new Promise(resolve => {
     var result = ""
     logs.forEach(log => {
-      if (typeof log == "string") {
-        result += log.replace(/\r?\n/g, "\r\n")
-      }
+      result += log.replace(/\r?\n/g, "\r\n")
     })
     resolve(result)
   })

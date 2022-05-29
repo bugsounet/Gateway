@@ -1,13 +1,14 @@
 {
   "name": "Gateway",
   "version": "2.0.0-dev",
-  "rev": "220528",
+  "rev": "220529",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {
     "preinstall": "installer/preinstall.sh",
     "postinstall": "installer/postinstall.sh",
-    "update": "installer/update.sh"
+    "update": "installer/update.sh",
+    "rebuild": "installer/rebuid.sh"
   },
   "keywords": [
     "magic mirror",

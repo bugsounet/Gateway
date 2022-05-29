@@ -234,6 +234,12 @@ async function doTerminalLogs() {
   socketLogs.on('terminal.logs', function(data) {
     termLogs.write(data)
   })
+
+  socketLogs.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    termLogs.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+    socketLogs.close()
+  });
   
 }
 
@@ -246,7 +252,6 @@ async function doTerminal() {
   termPTY.loadAddon(fitAddonPTY)
   termPTY.open(document.getElementById('terminal'))
   fitAddonPTY.fit()
-  console.log(termPTY)
   if (termPTY.rows && termPTY.cols) {
     socketPTY.emit('terminal.size', { cols: termPTY.cols, rows: termPTY.rows })
   }
@@ -260,6 +265,12 @@ async function doTerminal() {
   socketPTY.on('terminal.incData', function(data) {
     termPTY.write(data)
   })
+
+  socketPTY.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    termPTY.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+    socketPTY.close()
+  });
 }
 
 async function doTools() {
