@@ -651,7 +651,6 @@ async function EXTConfigJSEditor() {
         var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator" ]
         json.config.detectors.forEach((detector, index) => {
           if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
-            console.log(detector,errors)
             errors.push({
               path: ['config', 'detectors', index, "Model"],
               message: detector.Model + " is not comptatible with Snowboy detector"
@@ -745,7 +744,6 @@ async function EXTModifyConfigJSEditor() {
         var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator" ]
         json.config.detectors.forEach((detector, index) => {
           if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
-            console.log(detector,errors)
             errors.push({
               path: ['config', 'detectors', index, "Model"],
               message: detector.Model + " is not comptatible with Snowboy detector"
@@ -1054,7 +1052,7 @@ function configMerge(result) {
 function getGatewaySetting() {
   return new Promise(resolve => {  
     $.getJSON("/getSetting" , (confGW) => {
-      console.log("SettingGW", confGW)
+      //console.log("SettingGW", confGW)
       resolve(confGW)
     })
   })
@@ -1063,7 +1061,7 @@ function getGatewaySetting() {
 function getGatewayVersion() {
   return new Promise(resolve => {  
     $.getJSON("/version" , (versionGW) => {
-      console.log("Version", versionGW)
+      //console.log("Version", versionGW)
       resolve(versionGW)
     })
   })
@@ -1072,7 +1070,7 @@ function getGatewayVersion() {
 function loadPluginCurrentConfig(plugin) {
   return new Promise(resolve => {
     $.getJSON("/EXTGetCurrentConfig?ext="+plugin , (currentConfig) => {
-      console.log("CurrentConfig", currentConfig)
+      //console.log("CurrentConfig", currentConfig)
       resolve(currentConfig)
     })
   })
@@ -1081,7 +1079,7 @@ function loadPluginCurrentConfig(plugin) {
 function checkWebviewTag() {
   return new Promise(resolve => {
     $.getJSON("/getWebviewTag" , (tag) => {
-      console.log("webviewTag", tag)
+      //console.log("webviewTag", tag)
       resolve(tag)
     })
   })
@@ -1090,7 +1088,7 @@ function checkWebviewTag() {
 function checkGA() {
   return new Promise(resolve => {
     $.getJSON("/getGAVersion" , (GA) => {
-      console.log("GAVersion", GA)
+      //console.log("GAVersion", GA)
       resolve(GA)
     })
   })
@@ -1099,7 +1097,7 @@ function checkGA() {
 function loadTranslation() {
   return new Promise(resolve => {
     $.getJSON("/translation" , (tr) => {
-      console.log("Translation", tr)
+      //console.log("Translation", tr)
       resolve(tr)
     })
   })
@@ -1108,7 +1106,7 @@ function loadTranslation() {
 function loadDataAllEXT() {
   return new Promise(resolve => {
     $.getJSON("/allEXT" , (all) => {
-      console.log("allEXT", all)
+      //console.log("allEXT", all)
       resolve(all)
     })
   })
@@ -1117,7 +1115,7 @@ function loadDataAllEXT() {
 function loadDataConfiguredEXT() {
   return new Promise(resolve => {  
     $.getJSON("/ConfiguredEXT" , (confEXT) => {
-      console.log("ConfiguredEXT", confEXT)
+      //console.log("ConfiguredEXT", confEXT)
       resolve(confEXT)
     })
   })
@@ -1126,7 +1124,7 @@ function loadDataConfiguredEXT() {
 function loadDataInstalledEXT() {
   return new Promise(resolve => {
     $.getJSON("/InstalledEXT" , (instEXT) => {
-      console.log("InstalledEXT", instEXT)
+      //console.log("InstalledEXT", instEXT)
       resolve(instEXT)
     })
   })
@@ -1135,7 +1133,7 @@ function loadDataInstalledEXT() {
 function loadDataDescriptionEXT() {
   return new Promise(resolve => {
     $.getJSON("/DescriptionEXT" , (desEXT) => {
-      console.log("DescriptionEXT", desEXT)
+      //console.log("DescriptionEXT", desEXT)
       resolve(desEXT)
     })
   })
@@ -1144,7 +1142,7 @@ function loadDataDescriptionEXT() {
 function loadMMConfig() {
   return new Promise(resolve => {  
     $.getJSON("/GetMMConfig" , (config) => {
-      console.log("MMConfig", config)
+      //console.log("MMConfig", config)
       resolve(config)
     })
   })
@@ -1153,7 +1151,7 @@ function loadMMConfig() {
 function loadPluginConfig(plugin) {
   return new Promise(resolve => {
     $.getJSON("/EXTGetDefaultConfig?ext="+plugin , (defaultConfig) => {
-      console.log("defaultConfig", defaultConfig)
+      //console.log("defaultConfig", defaultConfig)
       resolve(defaultConfig)
     })
   })
@@ -1162,7 +1160,7 @@ function loadPluginConfig(plugin) {
 function loadPluginTemplate(plugin) {
   return new Promise(resolve => {
     $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
-      console.log("defaultTemplate", defaultTemplate)
+      //console.log("defaultTemplate", defaultTemplate)
       resolve(defaultTemplate)
     })
   })
@@ -1171,7 +1169,7 @@ function loadPluginTemplate(plugin) {
 function loadBackupConfig(file) {
   return new Promise(resolve => {
     $.getJSON("/GetBackupFile?config="+file , (backupFile) => {
-      console.log("backupFile", backupFile)
+      //console.log("backupFile", backupFile)
       resolve(backupFile)
     })
   })
@@ -1180,7 +1178,7 @@ function loadBackupConfig(file) {
 function loadBackupNames() {
   return new Promise(resolve => {
     $.getJSON("/GetBackupName" , (backups) => {
-      console.log("backups", backups)
+      //console.log("backups", backups)
       resolve(backups)
     })
   })
