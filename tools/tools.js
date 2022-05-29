@@ -323,6 +323,7 @@ function getGAConfig (config) {
   else return {}
 }
 
+/** create schema Validation with template and translation **/
 function makeSchemaTranslate(schema, translation) {
   /* replace {template} by translation */
   function translate(template) {
@@ -358,9 +359,18 @@ function makeSchemaTranslate(schema, translation) {
     }
     return result
   }
-
   return makeTranslate(schema)
+}
 
+/** create logs file fom array **/
+function readAllMMLogs(logs) {
+  return new Promise(resolve => {
+    var result = ""
+    logs.forEach(log => {
+      result += log.replace(/\r?\n/g, "\r\n")
+    })
+    resolve(result)
+  })
 }
 
 /** exports functions for pretty using **/
@@ -382,3 +392,4 @@ exports.getGAConfig = getGAConfig
 exports.setWebviewTag = setWebviewTag
 exports.deleteBackup = deleteBackup
 exports.makeSchemaTranslate = makeSchemaTranslate
+exports.readAllMMLogs = readAllMMLogs

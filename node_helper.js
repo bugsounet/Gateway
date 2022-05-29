@@ -4,18 +4,15 @@ var NodeHelper = require("node_helper")
 var log = (...args) => { /* do nothing */ }
 var express = require("express")
 var cors = require("cors")
-const fs = require("fs")
 const path = require("path")
-const tools = require("./tools/tools.js")
-var build =  require('./tools/build.js')
-
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
 var bodyParser = require('body-parser')
-var hyperwatch =  require('hyperwatch')
 var exec = require("child_process").exec
 var semver = require('semver')
+const http = require('http')
+const { Server } = require("socket.io")
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -46,6 +43,8 @@ module.exports = NodeHelper.create({
     this.webviewTag = false
     this.GACheck= { find: false, version: 0, configured: false }
     this.GAConfig= {}
+    this.lib = {}
+    this.HyperWatch = null
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -59,19 +58,62 @@ module.exports = NodeHelper.create({
         this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
-        this.MMConfig = await tools.readConfig()
-        if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
-        this.language = this.MMConfig.language
-        this.webviewTag = tools.checkElectronOptions(this.MMConfig)
-        this.EXT = payload.DB.sort()
-        this.EXTDescription = payload.Description
-        this.translation = payload.Translate
-        this.schemaTranslatation = payload.Schema
-        this.GACheck.version = tools.searchGA()
-        this.GAConfig = tools.getGAConfig(this.MMConfig)
-        this.initialize()
+        this.parseData(payload)
         break
     }
+  },
+
+  /** parse data from MagicMirror **/
+  parseData: async function(data) {
+    let bugsounet = await this.loadSensibleLibrary()
+    if (bugsounet) {
+      console.error("[GATEWAY] Warning:", bugsounet, "needed library not loaded !")
+      console.error("[GATEWAY] Try to solve it with `npm run rebuild` in Gateway directory")
+      return
+    }
+    this.MMConfig = await this.lib.tools.readConfig()
+    if (!this.MMConfig) return console.log("[GATEWAY] Error: MagicMirror config.js file not found!")
+    this.language = this.MMConfig.language
+    this.webviewTag = this.lib.tools.checkElectronOptions(this.MMConfig)
+    this.EXT = data.DB.sort()
+    this.EXTDescription = data.Description
+    this.translation = data.Translate
+    this.schemaTranslatation = data.Schema
+    this.GACheck.version = this.lib.tools.searchGA()
+    this.GAConfig = this.lib.tools.getGAConfig(this.MMConfig)
+    this.initialize()
+  },
+
+  /** Load sensible library without black screen **/
+  loadSensibleLibrary: function () {
+    let libraries= [
+      // { "library to load" : [ "store library name" ] }
+      { "node-pty": "pty" },
+      { "./tools/tools.js": "tools" },
+      { "./tools/hyperwatch.js": "hyperwatch" }
+    ]
+    let errors = 0
+    return new Promise(resolve => {
+      libraries.forEach(library => {
+        for (const [name, configValues] of Object.entries(library)) {
+          let libraryToLoad = name
+          let libraryName = configValues
+
+          try {
+            if (!this.lib[libraryName]) {
+              this.lib[libraryName] = require(libraryToLoad)
+              log("Loaded:", libraryToLoad)
+            }
+          } catch (e) {
+            console.error("[GATEWAY]", libraryToLoad, "Loading error!" , e.toString())
+            this.sendSocketNotification("WARNING" , {library: libraryToLoad })
+            errors++
+          }
+
+        }
+      })
+      resolve(errors)
+    })
   },
 
   /** init function **/
@@ -94,8 +136,9 @@ module.exports = NodeHelper.create({
       this.passportConfig()
     }
     this.app = express()
-    this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
-    this.EXTInstalled= tools.searchInstalled(this.EXT)
+    this.server = http.createServer(this.app)
+    this.EXTConfigured= this.lib.tools.searchConfigured(this.MMConfig, this.EXT)
+    this.EXTInstalled= this.lib.tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
     log("Find", this.EXTConfigured.length, "configured plugins in config file")
     if (semver.gte(this.GACheck.version, '4.0.0')) {
@@ -145,6 +188,8 @@ module.exports = NodeHelper.create({
       }
     }
 
+    var io = new Server(this.server)
+
     this.app
       .use(this.logRequest)
       .use(cors({ origin: '*' }))
@@ -189,7 +234,7 @@ module.exports = NodeHelper.create({
               console.log("[GATEWAY][" + ip + "] Login error:", err)
               return res.send({ err: err })
             }
-            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you! (and don't be so lazy...)")
+            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you!")
             return res.send({ login: true })
           })
         })(req, res, next)
@@ -226,7 +271,54 @@ module.exports = NodeHelper.create({
       })
 
       .get("/Terminal" , (req,res) => {
-        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/terminal.html")
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          res.sendFile( __dirname+ "/admin/terminal.html")
+          //var ioLogs = new Server(this.server)
+          io.once('connection', async (socket) => {
+            log('[' + ip + '] Connected to Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+            socket.on('disconnect', (err) => {
+              log('[' + ip + '] Disconnected from Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+            })
+            var pastLogs = await this.lib.tools.readAllMMLogs(this.HyperWatch.logs())
+            io.emit("terminal.logs", pastLogs)
+            this.HyperWatch.stream().on('stdData', (data) => {
+              if (typeof data == "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"))
+            })
+          })
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/ptyProcess" , (req,res) => {
+        if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          res.sendFile( __dirname+ "/admin/pty.html")
+          io.once('connection', (client) => {
+            log('[' + ip + '] Connected to Terminal:', this.noLogin ? "noLogin" : req.user , client.id)
+            client.on('disconnect', (err) => {
+              log('[' + ip + '] Disconnected from Terminal:', this.noLogin ? "noLogin" : req.user, client.id, err)
+            })
+            var cols = 80
+            var rows = 24
+            var ptyProcess = this.lib.pty.spawn("bash", [], {
+              name: "xterm-color",
+              cols: cols,
+              rows: rows,
+              cmd: process.env.HOME,
+              env: process.env
+            })
+            ptyProcess.on("data", (data) => {
+              io.to(client.id).emit("terminal.incData", data)
+            })
+            client.on('terminal.toTerm', (data) => {
+              ptyProcess.write(data)
+            })
+            client.on('terminal.size', (size) => {
+              ptyProcess.resize(size.cols, size.rows)
+            })
+          })
+        }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
@@ -256,7 +348,7 @@ module.exports = NodeHelper.create({
                 result.error = true
                 console.error(`[GATEWAY][FATAL] exec error: ${error}`)
               } else {
-                this.EXTInstalled= tools.searchInstalled(this.EXT)
+                this.EXTInstalled= this.lib.tools.searchInstalled(this.EXT)
                 console.log("[GATEWAY][DONE]", req.query.EXT)
               }
               res.json(result)
@@ -294,7 +386,7 @@ module.exports = NodeHelper.create({
                 result.error = true
                 console.error(`[GATEWAY][FATAL] exec error: ${error}`)
               } else {
-                this.EXTInstalled= tools.searchInstalled(this.EXT)
+                this.EXTInstalled= this.lib.tools.searchInstalled(this.EXT)
                 console.log("[GATEWAY][DONE]", req.query.EXT)
               }
               res.json(result)
@@ -306,11 +398,6 @@ module.exports = NodeHelper.create({
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
-
-      .get('/bundle.js', function (req, res) {
-        res.setHeader('Content-Type', 'application/javascript');
-        build().pipe(res);
-       })
 
       .get("/MMConfig" , (req,res) => {
         if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/mmconfig.html")
@@ -385,7 +472,7 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = require("./config/"+req.query.ext+"/config.js")
-          data.schema = tools.makeSchemaTranslate(data.schema, this.schemaTranslatation)
+          data.schema = this.lib.tools.makeSchemaTranslate(data.schema, this.schemaTranslatation)
           res.send(data.schema)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
@@ -403,13 +490,13 @@ module.exports = NodeHelper.create({
       .post("/writeEXT", async (req,res) => {
         console.log("[Gateway] Receiving EXT data ...")
         let data = JSON.parse(req.body.data)
-        var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
-        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        var NewConfig = await this.lib.tools.configAddOrModify(data, this.MMConfig)
+        var resultSaveConfig = await this.lib.tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = await tools.readConfig()
-          this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
+          this.MMConfig = await this.lib.tools.readConfig()
+          this.EXTConfigured= this.lib.tools.searchConfigured(this.MMConfig, this.EXT)
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -417,13 +504,13 @@ module.exports = NodeHelper.create({
       .post("/deleteEXT", async (req,res) => {
         console.log("[Gateway] Receiving EXT data ...", req.body)
         let EXTName = req.body.data
-        var NewConfig = await tools.configDelete(EXTName, this.MMConfig)
-        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        var NewConfig = await this.lib.tools.configDelete(EXTName, this.MMConfig)
+        var resultSaveConfig = await this.lib.tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = await tools.readConfig()
-          this.EXTConfigured= tools.searchConfigured(this.MMConfig, this.EXT)
+          this.MMConfig = await this.lib.tools.readConfig()
+          this.EXTConfigured= this.lib.tools.searchConfigured(this.MMConfig, this.EXT)
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -446,7 +533,7 @@ module.exports = NodeHelper.create({
       .get("/Restart" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/restarting.html")
-          setTimeout(() => tools.restartMM(this.config) , 1000)
+          setTimeout(() => this.lib.tools.restartMM(this.config) , 1000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -454,7 +541,7 @@ module.exports = NodeHelper.create({
       .get("/Die" , (req,res) => {
         if(req.user || this.noLogin) {
           res.sendFile(__dirname+ "/admin/die.html")
-          setTimeout(() => tools.doClose(this.config), 3000)
+          setTimeout(() => this.lib.tools.doClose(this.config), 3000)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
@@ -466,7 +553,7 @@ module.exports = NodeHelper.create({
 
       .get("/GetBackupName" , async (req,res) => {
         if(req.user || this.noLogin) {
-          var names = await tools.loadBackupNames()
+          var names = await this.lib.tools.loadBackupNames()
           res.send(names)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
@@ -475,7 +562,7 @@ module.exports = NodeHelper.create({
       .get("/GetBackupFile" , async (req,res) => {
         if(req.user || this.noLogin) {
           let data = req.query.config
-          var file = await tools.loadBackupFile(data)
+          var file = await this.lib.tools.loadBackupFile(data)
           res.send(file)
         }
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
@@ -484,12 +571,12 @@ module.exports = NodeHelper.create({
       .post("/loadBackup", async (req,res) => {
         console.log("[Gateway] Receiving backup data ...")
         let file = req.body.data
-        var loadFile = await tools.loadBackupFile(file)
-        var resultSaveConfig = await tools.saveConfig(loadFile)
+        var loadFile = await this.lib.tools.loadBackupFile(file)
+        var resultSaveConfig = await this.lib.tools.saveConfig(loadFile)
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = await tools.readConfig()
+          this.MMConfig = await this.lib.tools.readConfig()
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -497,11 +584,11 @@ module.exports = NodeHelper.create({
       .post("/writeConfig", async (req,res) => {
         console.log("[Gateway] Receiving config data ...")
         let data = JSON.parse(req.body.data)
-        var resultSaveConfig = await tools.saveConfig(data)
+        var resultSaveConfig = await this.lib.tools.saveConfig(data)
         console.log("[GATEWAY] Write config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = await tools.readConfig()
+          this.MMConfig = await this.lib.tools.readConfig()
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -509,12 +596,12 @@ module.exports = NodeHelper.create({
       .post("/saveSetting", urlencodedParser, async (req,res) => {
         console.log("[Gateway] Receiving new Setting")
         let data = JSON.parse(req.body.data)
-        var NewConfig = await tools.configAddOrModify(data, this.MMConfig)
-        var resultSaveConfig = await tools.saveConfig(NewConfig)
+        var NewConfig = await this.lib.tools.configAddOrModify(data, this.MMConfig)
+        var resultSaveConfig = await this.lib.tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          this.MMConfig = await tools.readConfig()
+          this.MMConfig = await this.lib.tools.readConfig()
           console.log("[GATEWAY] Reload config")
         }
       })
@@ -527,13 +614,13 @@ module.exports = NodeHelper.create({
       .post("/setWebviewTag", async (req,res) => {
         if(!this.webviewTag && (req.user || this.noLogin)) {
           console.log("[Gateway] Receiving setWebviewTag demand...")
-          let NewConfig = await tools.setWebviewTag(this.MMConfig)
-          var resultSaveConfig = await tools.saveConfig(NewConfig)
+          let NewConfig = await this.lib.tools.setWebviewTag(this.MMConfig)
+          var resultSaveConfig = await this.lib.tools.saveConfig(NewConfig)
           console.log("[GATEWAY] Write Gateway webview config result:", resultSaveConfig)
           res.send(resultSaveConfig)
           if (resultSaveConfig.done) {
             this.webviewTag = true
-            this.MMConfig = await tools.readConfig()
+            this.MMConfig = await this.lib.tools.readConfig()
             console.log("[GATEWAY] Reload config")
           }
         }
@@ -548,7 +635,7 @@ module.exports = NodeHelper.create({
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
           console.log("[Gateway] Receiving delete backup demand...")
-          var deleteBackup = await tools.deleteBackup()
+          var deleteBackup = await this.lib.tools.deleteBackup()
           console.log("[GATEWAY] Delete backup result:", deleteBackup)
           res.send(deleteBackup)
         }
@@ -556,6 +643,8 @@ module.exports = NodeHelper.create({
       })
 
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
+      .use("/xterm" , express.static(__dirname + '/node_modules/xterm'))
+      .use("/xterm-addon-fit" , express.static(__dirname + '/node_modules/xterm-addon-fit'))
 
       .use(function(req, res) {
         console.warn("[GATEWAY] Don't find:", req.url)
@@ -563,8 +652,8 @@ module.exports = NodeHelper.create({
       })
           
     /** Create Server **/
-    this.config.listening = await tools.purposeIP()
-    this.server = hyperwatch(this.app.listen(this.config.port, this.config.listening, () => {
+    this.config.listening = await this.lib.tools.purposeIP()
+    this.HyperWatch = this.lib.hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
     }))
   },

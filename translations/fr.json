@@ -42,6 +42,8 @@
   "GW_Plugins_Modify_Title": "Modification de la configuration de",
 
   "GW_Terminal": "Visionner le Terminal",
+  "GW_TerminalOpen": "Ouvrir un Terminal",
+  "GW_TerminalGW": "Gateway Terminal",
 
   "GW_Configuration": "Config. de MagicMirror",
   "GW_Configuration_Welcome": "Configuration actuelle de MagicMirror",
@@ -58,7 +60,7 @@
   "GW_Tools_Die": "Arrêter MagicMirror",
   "GW_Tools_Die_Text1": "À bientôt !",
   "GW_Tools_Die_Text2": "Pour une meilleure utilisation...",
-  "GW_Tools_Die_Text3": "Et être encore plus paresseux !",
+  "GW_Tools_Die_Text3": "de Gateway et de MagicMirror!",
   "GW_Tools_Webview_Header": "Modifier les options d'électron pour une utilisation correcte avec les plugins EXT",
   "GW_Tools_Webview_Needed": "Nécessaire pour:",
   "GW_Tools_Backup_Found": "sauvegardes trouvées",

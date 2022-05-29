@@ -126,11 +126,29 @@ Module.register("Gateway", {
   },
 
   socketNotificationReceived: async function(noti,payload) {
-    if (noti== "MMConfig") {
-      var GWTranslate = await this.LoadGWTranslation()
-      var EXTDescription = await this.LoadDescription()
-      var VALTranslate = await this.LoadTrSchemaValidation()
-      this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate } )
+    switch(noti) {
+      case "MMConfig":
+        var GWTranslate = await this.LoadGWTranslation()
+        var EXTDescription = await this.LoadDescription()
+        var VALTranslate = await this.LoadTrSchemaValidation()
+        this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate } )
+        break
+      case "WARNING":
+        if (this.GW["EXT-Alert"].hello) {
+          this.sendNotification("EXT_ALERT", {
+            type: "warning",
+            message: "Error When Loading: " + payload.library + ". Try to solve it with `npm run rebuild` in Gateway directory",
+            timer: 10000
+          })
+        } else {
+          this.sendNotification("SHOW_ALERT", {
+            type: "notification",
+            message: "Error When Loading: " + payload.library + ". Try to solve it with `npm run rebuild` in Gateway directory",
+            title: "Gateway",
+            timer: 10000
+          })
+        }
+        break
     }
   },
 
@@ -179,6 +197,8 @@ Module.register("Gateway", {
       Tr.Plugins_Modify_Title = this.translate("GW_Plugins_Modify_Title")
 
       Tr.Terminal = this.translate("GW_Terminal")
+      Tr.TerminalOpen = this.translate("GW_TerminalOpen")
+      Tr.TerminalGW = this.translate("GW_TerminalGW")
 
       Tr.Configuration = this.translate("GW_Configuration")
       Tr.Configuration_Welcome = this.translate("GW_Configuration_Welcome")
