@@ -273,15 +273,20 @@ async function doTerminalLogs() {
   termLogs.open(document.getElementById('terminal'))
   fitAddonLogs.fit()
 
-  termLogs.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
-  
+  socketLogs.on("connect", () => {
+    termLogs.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  });
+
+  socketLogs.on("disconnect", () => {
+    termLogs.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+  })
+
   socketLogs.on('terminal.logs', function(data) {
     termLogs.write(data)
   })
 
   socketLogs.io.on("error", (data) => {
     console.log("Socket Error:", data)
-    termLogs.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
     socketLogs.close()
   });
   
@@ -299,9 +304,15 @@ async function doTerminal() {
   if (termPTY.rows && termPTY.cols) {
     socketPTY.emit('terminal.size', { cols: termPTY.cols, rows: termPTY.rows })
   }
-
-  termPTY.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
   
+  socketPTY.on("connect", () => {
+    termPTY.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  });
+
+  socketPTY.on("disconnect", () => {
+    termPTY.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+  })
+
   termPTY.onData( data => {
     socketPTY.emit('terminal.toTerm', data)
   })
@@ -312,7 +323,6 @@ async function doTerminal() {
 
   socketPTY.io.on("error", (data) => {
     console.log("Socket Error:", data)
-    termPTY.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
     socketPTY.close()
   });
 }
