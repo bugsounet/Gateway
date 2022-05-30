@@ -330,8 +330,18 @@ module.exports = NodeHelper.create({
 
       .get("/install" , (req,res) => {
         if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
             res.sendFile( __dirname+ "/admin/install.html")
+            io.once('connection', async (socket) => {
+              log('[' + ip + '] Connected to installer Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+              socket.on('disconnect', (err) => {
+                log('[' + ip + '] Disconnected from installer Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+              })
+              this.HyperWatch.stream().on('stdData', (data) => {
+                if (typeof data == "string") io.to(socket.id).emit("terminal.installer", data.replace(/\r?\n/g, "\r\n"))
+              })
+            })
           }
           else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }
@@ -369,8 +379,18 @@ module.exports = NodeHelper.create({
 
       .get("/delete" , (req,res) => {
         if(req.user || this.noLogin) {
+          var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
             res.sendFile( __dirname+ "/admin/delete.html")
+            io.once('connection', async (socket) => {
+              log('[' + ip + '] Connected to uninstaller Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+              socket.on('disconnect', (err) => {
+                log('[' + ip + '] Disconnected from uninstaller Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+              })
+              this.HyperWatch.stream().on('stdData', (data) => {
+                if (typeof data == "string") io.to(socket.id).emit("terminal.delete", data.replace(/\r?\n/g, "\r\n"))
+              })
+            })
           }
           else res.status(404).sendFile(__dirname+ "/admin/404.html")
         }

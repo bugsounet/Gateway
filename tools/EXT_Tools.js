@@ -168,17 +168,60 @@ function doIndex() {
 }
 
 function doDelete() {
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
   $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
+  var socketInstaller = io()
+  const termInstaller = new Terminal({cursorBlink: true})
+  const fitAddonInstaller = new FitAddon.FitAddon()
+  termInstaller.loadAddon(fitAddonInstaller)
+  termInstaller.open(document.getElementById('terminal'))
+  fitAddonInstaller.fit()
+
+  termInstaller.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+
+  socketInstaller.on('terminal.delete', function(data) {
+    termInstaller.write(data)
+  })
+
+  socketInstaller.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    termInstaller.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+    socketInstaller.close()
+  })
+
   $('#messageText').text(translation.Plugins_Delete_Message)
+  $('#EXT-Name').text(EXT)
   $('#delete').text(translation.Delete)
   $('#cancel').text(translation.Cancel)
+
 }
 
 function doInstall() {
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
   $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
+  var socketDelete = io()
+  const termDelete = new Terminal({cursorBlink: true})
+  const fitAddonDelete = new FitAddon.FitAddon()
+  termDelete.loadAddon(fitAddonDelete)
+  termDelete.open(document.getElementById('terminal'))
+  fitAddonDelete.fit()
+
+  termDelete.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+
+  socketDelete.on('terminal.installer', function(data) {
+    termDelete.write(data)
+  })
+
+  socketDelete.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    termDelete.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+    socketDelete.close()
+  })
+
   $('#messageText').text(translation.Plugins_Install_Message)
+  $('#EXT-Name').text(EXT)
   $('#install').text(translation.Install)
   $('#cancel').text(translation.Cancel)
 }
