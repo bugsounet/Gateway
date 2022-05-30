@@ -113,40 +113,6 @@ window.addEventListener("load", async event => {
   $('a[href="' + path + '"]').closest('a').addClass('active')
 })
 
-function LaunchInstall() {
-  if (window.location.search) {
-    var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
-    $('#messageText').text(translation.Plugins_Install_Progress)
-    $('#boutons').attr('style' , 'display: none !important')
-    return new Promise (resolve => {
-      $.getJSON("/EXTInstall?EXT="+EXT , res => {
-        if (!res.error) $('#messageText').text(translation.Plugins_Install_Confirmed)
-        else $('#messageText').text(translation.Warn_Error)
-        resolve()
-      })
-    })
-  } else {
-    $('#EXT-Name').text("Error!")
-  }
-}
-
-function LaunchDelete() {
-  if (window.location.search) {
-    var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
-    $('#messageText').text(translation.Plugins_Delete_Progress)
-    $('#boutons').attr('style' , 'display: none !important')
-    return new Promise (resolve => {
-      $.getJSON("/EXTDelete?EXT="+EXT , res => {
-        if (!res.error) $('#messageText').text(translation.Plugins_Delete_Confirmed)
-        else $('#messageText').text(translation.Warn_Error)
-        resolve()
-      })
-    })
-  } else {
-    $('#EXT-Name').text("Error!")
-  }
-}
-
 function doLogin() {
   $(document).prop('title', translation.Login_Welcome)
   $('#Welcome').text(translation.Login_Welcome)
@@ -171,36 +137,6 @@ function doDelete() {
   var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
   $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
-  var socketInstaller = io()
-  const termInstaller = new Terminal({cursorBlink: true})
-  const fitAddonInstaller = new FitAddon.FitAddon()
-  termInstaller.loadAddon(fitAddonInstaller)
-  termInstaller.open(document.getElementById('terminal'))
-  fitAddonInstaller.fit()
-
-  termInstaller.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
-
-  socketInstaller.on('terminal.delete', function(data) {
-    termInstaller.write(data)
-  })
-
-  socketInstaller.io.on("error", (data) => {
-    console.log("Socket Error:", data)
-    termInstaller.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
-    socketInstaller.close()
-  })
-
-  $('#messageText').text(translation.Plugins_Delete_Message)
-  $('#EXT-Name').text(EXT)
-  $('#delete').text(translation.Delete)
-  $('#cancel').text(translation.Cancel)
-
-}
-
-function doInstall() {
-  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
-  $(document).prop('title', translation.Plugins)
-  $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
   var socketDelete = io()
   const termDelete = new Terminal({cursorBlink: true})
   const fitAddonDelete = new FitAddon.FitAddon()
@@ -208,22 +144,85 @@ function doInstall() {
   termDelete.open(document.getElementById('terminal'))
   fitAddonDelete.fit()
 
-  termDelete.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  socketDelete.on("connect", () => {
+    termDelete.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  });
 
-  socketDelete.on('terminal.installer', function(data) {
-    termDelete.write(data)
+  socketDelete.on("disconnect", () => {
+    termDelete.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
   })
 
   socketDelete.io.on("error", (data) => {
     console.log("Socket Error:", data)
-    termDelete.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
     socketDelete.close()
+  })
+
+  socketDelete.on('terminal.delete', function(data) {
+    termDelete.write(data)
+  })
+
+  $('#messageText').text(translation.Plugins_Delete_Message)
+  $('#EXT-Name').text(EXT)
+  $('#delete').text(translation.Delete)
+
+  document.getElementById('delete').onclick = function () {
+    $('#messageText').text(translation.Plugins_Delete_Progress)
+    $('#delete').addClass('disabled')
+    return new Promise (resolve => {
+      $.getJSON("/EXTDelete?EXT="+EXT , res => {
+        if (!res.error) $('#messageText').text(translation.Plugins_Delete_Confirmed)
+        else $('#messageText').text(translation.Warn_Error)
+        resolve()
+        setTimeout(() => socketDelete.close(), 500)
+      })
+    })
+  }
+}
+
+function doInstall() {
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
+  $(document).prop('title', translation.Plugins)
+  $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
+  var socketInstall = io()
+  const termInstall = new Terminal({cursorBlink: true})
+  const fitAddonInstall = new FitAddon.FitAddon()
+  termInstall.loadAddon(fitAddonInstall)
+  termInstall.open(document.getElementById('terminal'))
+  fitAddonInstall.fit()
+
+  socketInstall.on("connect", () => {
+    termInstall.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+  });
+
+  socketInstall.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    socketInstall.close()
+  })
+
+  socketInstall.on("disconnect", () => {
+    termInstall.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+  })
+
+  socketInstall.on('terminal.installer', function(data) {
+    termInstall.write(data)
   })
 
   $('#messageText').text(translation.Plugins_Install_Message)
   $('#EXT-Name').text(EXT)
   $('#install').text(translation.Install)
-  $('#cancel').text(translation.Cancel)
+
+  document.getElementById('install').onclick = function () {
+    $('#messageText').text(translation.Plugins_Install_Progress)
+    $('#install').addClass('disabled')
+    return new Promise (resolve => {
+      $.getJSON("/EXTInstall?EXT="+EXT , res => {
+        if (!res.error) $('#messageText').text(translation.Plugins_Install_Confirmed)
+        else $('#messageText').text(translation.Warn_Error)
+        resolve()
+        setTimeout(() => socketInstall.close(), 500)
+      })
+    })
+  }
 }
 
 function doRestart() {
