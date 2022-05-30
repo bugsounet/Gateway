@@ -328,7 +328,7 @@ function makeSchemaTranslate(schema, translation) {
   /* replace {template} by translation */
   function translate(template) {
     return template.replace(new RegExp("{([^}]+)}", "g"), function (_unused, varName) {
-      console.log("[GATEWAY][Translator] Find:", template, varName in translation ? translation[varName] : "Not found!")
+      if (varName in translation === false) console.warn("[GATEWAY][Translator] Missing:", template)
       return varName in translation ? translation[varName] : "{" + varName + "}"
     })
   }

@@ -406,7 +406,7 @@ module.exports = NodeHelper.create({
               error: false
             }
             var modulePath = path.normalize(__dirname + "/../")
-            var Command= 'cd ' + modulePath + ' && rm -rf ' + req.query.EXT
+            var Command= 'cd ' + modulePath + ' && rm -rfv ' + req.query.EXT
             var child = exec(Command, {cwd : modulePath } , (error, stdout, stderr) => {
               if (error) {
                 result.error = true
