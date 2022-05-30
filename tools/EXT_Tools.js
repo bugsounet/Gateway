@@ -18,6 +18,7 @@ var ConfigEXT = []
 var versionGW = {}
 var webviewTag = false
 var versionGA = {}
+var EXTStatus = {}
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -167,17 +168,60 @@ function doIndex() {
 }
 
 function doDelete() {
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
   $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Delete_TerminalHeader)
+  var socketInstaller = io()
+  const termInstaller = new Terminal({cursorBlink: true})
+  const fitAddonInstaller = new FitAddon.FitAddon()
+  termInstaller.loadAddon(fitAddonInstaller)
+  termInstaller.open(document.getElementById('terminal'))
+  fitAddonInstaller.fit()
+
+  termInstaller.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+
+  socketInstaller.on('terminal.delete', function(data) {
+    termInstaller.write(data)
+  })
+
+  socketInstaller.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    termInstaller.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+    socketInstaller.close()
+  })
+
   $('#messageText').text(translation.Plugins_Delete_Message)
+  $('#EXT-Name').text(EXT)
   $('#delete').text(translation.Delete)
   $('#cancel').text(translation.Cancel)
+
 }
 
 function doInstall() {
+  var EXT = decodeURIComponent(window.location.search.match(/(\?|&)ext\=([^&]*)/)[2])
   $(document).prop('title', translation.Plugins)
   $('#TerminalHeader').text(translation.Plugins_Install_TerminalHeader)
+  var socketDelete = io()
+  const termDelete = new Terminal({cursorBlink: true})
+  const fitAddonDelete = new FitAddon.FitAddon()
+  termDelete.loadAddon(fitAddonDelete)
+  termDelete.open(document.getElementById('terminal'))
+  fitAddonDelete.fit()
+
+  termDelete.write("\x1B[1;3;31mGateway v" + versionGW.v + " (" + versionGW.rev + "." + versionGW.lang +")\x1B[0m \r\n\n")
+
+  socketDelete.on('terminal.installer', function(data) {
+    termDelete.write(data)
+  })
+
+  socketDelete.io.on("error", (data) => {
+    console.log("Socket Error:", data)
+    termDelete.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n")
+    socketDelete.close()
+  })
+
   $('#messageText').text(translation.Plugins_Install_Message)
+  $('#EXT-Name').text(EXT)
   $('#install').text(translation.Install)
   $('#cancel').text(translation.Cancel)
 }
@@ -278,6 +322,8 @@ async function doTools() {
   // translate
   $(document).prop('title', translation.Tools)
   webviewTag = await checkWebviewTag()
+  EXTStatus = await checkEXTStatus()
+  versionGA = await checkGA()
   $('#title').text(translation.Tools_Welcome)
   $('#subtitle').text(translation.Tools_subTitle)
   $('#stop').text(translation.Tools_Die)
@@ -287,7 +333,6 @@ async function doTools() {
 
   // MMM-GoogleAssistant recipes
   /* Will be not coded for first release
-  versionGA = await checkGA()
   if (versionGA.find && versionGA.configured) {
     $('#Recipes-Box').css("display", "block")
   }
@@ -371,6 +416,78 @@ async function doTools() {
       $('#alert').addClass('invisible')
     }
   }
+
+  // screen control
+  if (EXTStatus["EXT-Screen"].hello) {
+    if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
+    else $('#Screen-Control').text(translation.TurnOn)
+    $('#Screen-Text').text(translation.Tools_Screen_Text)
+    $('#Screen-Box').css("display", "block")
+
+    document.getElementById('Screen-Control').onclick = function () {
+      $('#Screen-Control').addClass('disabled')
+      if (EXTStatus["EXT-Screen"].power) {
+        $.post( "/EXT-Screen", { data: "OFF" })
+          .done(function( back ) {
+            if (back.error) {
+              $('#alert').removeClass('invisible')
+              $('#alert').removeClass('alert-success')
+              $('#alert').addClass('alert-danger')
+              $('#messageText').text(translation.Warn_Error)
+            } else {
+              $('#alert').removeClass('invisible')
+              $('#messageText').text(translation.RequestDone)
+            }
+          });
+      } else {
+        $.post( "/EXT-Screen", { data: "ON" })
+          .done(function( back ) {
+            if (back == "error") {
+              $('#alert').removeClass('invisible')
+              $('#alert').removeClass('alert-success')
+              $('#alert').addClass('alert-danger')
+              $('#messageText').text(translation.Warn_Error)
+            } else {
+              $('#alert').removeClass('invisible')
+              $('#messageText').text(translation.RequestDone)
+            }
+          });
+      }
+    }
+  }
+
+  // GoogleAssistant Query
+  if (versionGA.find && versionGA.configured) {
+    $('#GoogleAssistant-Text').text(translation.Tools_GoogleAssistant_Text)
+    $('#GoogleAssistant-Query').prop('placeholder', translation.Tools_GoogleAssistant_Query)
+    $('#GoogleAssistant-Send').text(translation.Send)
+    $('#GoogleAssistant-Box').css("display", "block")
+    $('#GoogleAssistant-Query').keyup( function () {
+      if($(this).val().length > 5) {
+         $('#GoogleAssistant-Send').removeClass('disabled')
+      } else {
+         $('#GoogleAssistant-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('GoogleAssistant-Send').onclick = function () {
+      $('#GoogleAssistant-Send').addClass('disabled')
+      $.post( "/EXT-GAQuery", { data: $('#GoogleAssistant-Query').val() })
+        .done(function( back ) {
+          $('#GoogleAssistant-Query').val('')
+          if (back == "error") {
+            $('#alert').removeClass('invisible')
+            $('#alert').removeClass('alert-success')
+            $('#alert').addClass('alert-danger')
+            $('#messageText').text(translation.Warn_Error)
+          } else {
+            $('#alert').removeClass('invisible')
+            $('#messageText').text(translation.RequestDone)
+          }
+        });
+    }
+  }
+
 }
 
 async function createEXTTable() {
@@ -1090,6 +1207,15 @@ function checkGA() {
     $.getJSON("/getGAVersion" , (GA) => {
       //console.log("GAVersion", GA)
       resolve(GA)
+    })
+  })
+}
+
+function checkEXTStatus() {
+  return new Promise(resolve => {
+    $.getJSON("/getEXTStatus" , (Status) => {
+      //console.log("EXTStatus", Status)
+      resolve(Status)
     })
   })
 }
