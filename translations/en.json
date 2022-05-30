@@ -66,6 +66,9 @@
   "GW_Tools_Backup_Found": "backups found",
   "GW_Tools_Backup_Text": "Flush all backups",
   "GW_Tools_Backup_Deleted": "All backups have been deleted!",
+  "GW_Tools_Screen_Text": "Turn on/off your Screen",
+  "GW_Tools_GoogleAssistant_Text": "Activate MMM-GoogleAssistant with your request",
+  "GW_Tools_GoogleAssistant_Query": "Enter your request",
 
   "GW_Setting": "Setting",
   "GW_Setting_Title": "Gateway Setting",
@@ -117,6 +120,10 @@
   "GW_Warn_Error": "Warn: Some errors detected",
   "GW_LoadDefault": "Reload Default",
   "GW_MergeDefault": "Merge with Default",
+  "GW_Send": "Send",
+  "GW_TurnOn": "Turn ON",
+  "GW_TurnOff": "Turn OFF",
+  "GW_RequestDone": "Request was sent successfully",
 
   "EXT-Alert": "Display any warning, information or error on your screen.",
   "EXT-Background": "Change the default Google Assistant background to your own or with animated gifs for each status of the assistant.",

@@ -22,6 +22,7 @@ module.exports = NodeHelper.create({
     this.EXTDescription = {} // description of EXT
     this.EXTConfigured = [] // configured EXT in config
     this.EXTInstalled= [] // installed EXT in MM
+    this.EXTStatus = {}
     this.user = {
       _id: 1,
       username: 'admin',
@@ -35,6 +36,7 @@ module.exports = NodeHelper.create({
         }
       }
     }
+    this.initialized = false
     this.app = null
     this.server= null
     this.noLogin = false
@@ -61,6 +63,9 @@ module.exports = NodeHelper.create({
       case "MMConfig":
         this.parseData(payload)
         break
+      case "EXTStatus":
+        if (this.initialized && payload) this.EXTStatus = payload
+        break
     }
   },
 
@@ -80,6 +85,7 @@ module.exports = NodeHelper.create({
     this.EXTDescription = data.Description
     this.translation = data.Translate
     this.schemaTranslatation = data.Schema
+    this.EXTStatus = data.EXTStatus
     this.GACheck.version = this.lib.tools.searchGA()
     this.GAConfig = this.lib.tools.getGAConfig(this.MMConfig)
     this.initialize()
@@ -632,6 +638,37 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .get("/getEXTStatus", (req,res) => {
+        if(req.user || this.noLogin) res.send(this.EXTStatus)
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .post("/EXT-Screen", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (data == "OFF") {
+            this.sendSocketNotification("SendNoti", "EXT_SCREEN-END")
+            return res.send("ok")
+          }
+          if (data == "ON") {
+            this.sendSocketNotification("SendNoti", "EXT_SCREEN-WAKEUP")
+            return res.send("ok")
+          }
+          res.send("error")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-GAQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {noti: "GAv4_ACTIVATE", payload: { type: "TEXT" , key: data }})
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
           console.log("[Gateway] Receiving delete backup demand...")
@@ -656,6 +693,7 @@ module.exports = NodeHelper.create({
     this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
     }))
+    this.initialized= true
   },
 
   /** passport local strategy with username/password defined on config **/

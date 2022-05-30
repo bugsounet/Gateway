@@ -9,7 +9,7 @@
   "GW_Login_Password": "Mot de passe",
 
   "GW_Home": "Accueil",
-  "GW_Home_Welcome": "Bienvenue sur l'application Gateway (beta)",
+  "GW_Home_Welcome": "Bienvenue sur l'application Gateway",
 
   "GW_Plugins": "Gestionnaire de plugins",
   "GW_Plugins_Welcome": "Gestionnaire de plugins EXT",
@@ -66,6 +66,9 @@
   "GW_Tools_Backup_Found": "sauvegardes trouvées",
   "GW_Tools_Backup_Text": "Supprimer toutes les sauvegardes",
   "GW_Tools_Backup_Deleted": "Toutes les sauvegardes ont bien été supprimées!",
+  "GW_Tools_Screen_Text": "Allumer ou éteindre votre écran",
+  "GW_Tools_GoogleAssistant_Text": "Active MMM-GoogleAssistant avec votre demande",
+  "GW_Tools_GoogleAssistant_Query": "Entrez votre demande",
 
   "GW_Setting": "Paramètres",
   "GW_Setting_Title": "Paramètres de Gateway",
@@ -117,6 +120,10 @@
   "GW_Warn_Error": "Attention: Des erreurs ont été détectées",
   "GW_LoadDefault": "Recharger la Config. par défaut",
   "GW_MergeDefault": "Fusionner avec les valeurs par défaut",
+  "GW_Send": "Envoyer",
+  "GW_TurnOn": "Allumer",
+  "GW_TurnOff": "Eteindre",
+  "GW_RequestDone": "La commande a été envoyée avec succès",
 
   "EXT-Alert": "Affichez tout avertissement, information ou erreur sur votre écran.",
   "EXT-Background": "Modifiez l'arrière-plan par défaut de l'assistant Google par le vôtre ou avec des gifs animés pour chaque statut de l'assistant.",

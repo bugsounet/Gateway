@@ -131,7 +131,7 @@ Module.register("Gateway", {
         var GWTranslate = await this.LoadGWTranslation()
         var EXTDescription = await this.LoadDescription()
         var VALTranslate = await this.LoadTrSchemaValidation()
-        this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate } )
+        this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate, EXTStatus: this.GW } )
         break
       case "WARNING":
         if (this.GW["EXT-Alert"].hello) {
@@ -148,6 +148,12 @@ Module.register("Gateway", {
             timer: 10000
           })
         }
+        break
+      case "SendNoti":
+        if (payload.payload && payload.noti) {
+           return this.sendNotification(payload.noti, payload.payload)
+        }
+        this.sendNotification(payload)
         break
     }
   },
@@ -221,6 +227,9 @@ Module.register("Gateway", {
       Tr.Tools_Backup_Found = this.translate("GW_Tools_Backup_Found")
       Tr.Tools_Backup_Text = this.translate("GW_Tools_Backup_Text")
       Tr.Tools_Backup_Deleted = this.translate("GW_Tools_Backup_Deleted")
+      Tr.Tools_Screen_Text = this.translate("GW_Tools_Screen_Text")
+      Tr.Tools_GoogleAssistant_Text = this.translate("GW_Tools_GoogleAssistant_Text")
+      Tr.Tools_GoogleAssistant_Query = this.translate("GW_Tools_GoogleAssistant_Query")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")
@@ -272,6 +281,10 @@ Module.register("Gateway", {
       Tr.Warn_Error = this.translate("GW_Warn_Error")
       Tr.LoadDefault = this.translate("GW_LoadDefault"),
       Tr.MergeDefault = this.translate("GW_MergeDefault")
+      Tr.Send = this.translate("GW_Send")
+      Tr.TurnOn = this.translate("GW_TurnOn")
+      Tr.TurnOff = this.translate("GW_TurnOff")
+      Tr.RequestDone = this.translate("GW_RequestDone")
 
       resolve(Tr)
     })
@@ -498,10 +511,12 @@ Module.register("Gateway", {
       case "EXT_SCREEN-OFF":
         if (!this.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         this.GW["EXT-Screen"].power = false
+        this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SCREEN-ON":
         if (!this.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         this.GW["EXT-Screen"].power = true
+        this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_STOP":
         if (this.GW["EXT-Alert"].hello && this.hasPluginConnected(this.GW, "connected", true)) {
@@ -612,6 +627,7 @@ Module.register("Gateway", {
       case this.ExtDB.find(name => name === module): //read DB and find module
         this.GW[module].hello= true
         logGW("Hello,", module)
+        this.sendSocketNotification("EXTStatus", this.GW)
         this.onStartPlugin(module)
         break
       default:
@@ -639,6 +655,7 @@ Module.register("Gateway", {
       logGW("Connected:", extName, "[browserOrPhoto Mode]")
       if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-STOP")
       this.GW[extName].connected = true
+      this.sendSocketNotification("EXTStatus", this.GW)
       return
     }
 
@@ -651,12 +668,14 @@ Module.register("Gateway", {
     logGW("Connected:", extName)
     logGW("Debug:", this.GW)
     this.GW[extName].connected = true
+    this.sendSocketNotification("EXTStatus", this.GW)
   },
 
   /** disconnected rules **/
   disconnected: function(extName) {
     if (!this.GW.ready) return console.error("[GATEWAY] MMM-GoogleAssistant is not ready")
     if (extName) this.GW[extName].connected = false
+    this.sendSocketNotification("EXTStatus", this.GW)
     // sport time ... verify if there is again an EXT module connected !
     setTimeout(()=> { // wait 1 sec before scan ...
       if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_SCREEN-UNLOCK")
