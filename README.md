@@ -28,6 +28,21 @@ All name of `MMM-GoogleAssistant` plugins start with `EXT` and the `Gateway` wil
 
 Gateway is a real conductor 🙂
 
+# Gateway v2.x.x now has an app
+  Gateway has an embedded application.<br>
+  This application is available directly through your browser.<br>
+  It can be used locally or remotely over the internet.<br>
+ 
+  * Allows to Install / delete all EXT plugins
+  * Allows to configure / modify your EXT with a template
+  * Allows to configure MagicMirror
+  * Allows you to create a backup of your configuration file at each modification
+  * Displaying Magic Mirror Logs in real time
+  * allows you to do now operations with the embedded Terminal
+  * Allows you to manually restart or stop MagicMirror
+  * Allows you to turn off or turn on your screen
+  * ...
+
 # Installation / update / configuration
 
 Read the docs in [wiki](https://wiki.bugsounet.fr/Gateway)
