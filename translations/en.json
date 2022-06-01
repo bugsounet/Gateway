@@ -78,7 +78,7 @@
   "GW_Setting_Credentials_password": "Password",
   "GW_Setting_Credentials_confirmpwd": "Confirm Password",
   "GW_Setting_Credentials_username_placeholder": "Enter username",
-  "GW_Setting_Credentials_password_placeholder": "Entrez your password",
+  "GW_Setting_Credentials_password_placeholder": "Enter your password",
   "GW_Setting_Credentials_confirmpwd_placeholder": "Confirm your password",
   "GW_Setting_Server": "Gateway Server",
   "GW_Setting_Server_debug": "Debug mode",
