@@ -1002,7 +1002,7 @@ function GatewaySetting() {
   $('#wait').text(translation.Wait)
   $('#restart').text(translation.Tools_Restart)
   $('#credentials').text(translation.Setting_Credentials)
-  $('#credentials').prop('title', translation.Setting_Credentials_tooltip)
+  $('#credentials-check').prop('title', translation.Setting_Credentials_tooltip)
   $('#usernameField').text(translation.Setting_Credentials_username)
   $('#passwordField').text(translation.Setting_Credentials_password)
   $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
