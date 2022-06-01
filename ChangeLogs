@@ -1,0 +1,180 @@
+22/06/01:
+* Update: Dependencies (package-lock.json)
+* Release Gateway v2.0.0
+* Update: en translation
+* Fix: double tooltip in setting
+
+22/05/31:
+* Update: de translation (@lxne)
+* Update: fr translation (@pitchx)
+* Move: Logs from website to ChangLogs file
+* Update: index with pretty Home
+
+2022/05/30: 
+* Now in pre-release2
+* Add: begin of de translation (thx @lxne)
+* Add: Screen Contol Tools (if EXT-Screen installed)
+* Add: Google Assistant Tools remote query
+* Fix: Installer / delete Terminal Logs and Web Page
+* Clean: All Custom Code and make proper place
+* Fix: Link Color in Error 403 / 404
+* Fix: Verbose when deleting module in Terminal Logs
+* Last Fix: Show Gateway version only when Terminal is connected
+
+2022/05/29: (update)
+* Now in pre-release1 (pre1 tag)
+* Add: Lastest translating part of terminal
+
+2022/05/29:
+* Rewrite (again) main logger (HyperWatch)
+* Add: npm run rebuild
+* Loading: Load sensible library in async and send callback when failed
+* Add: callback on main screen if node-pty is not load (prevent black screen)
+
+2022/05/28:
+* Update: nl translation (@bitass)
+* Update: es translation (@CalcU)
+* Recode Terminal Logger
+* Added: Real Terminal
+* Update dependencies (found 0 vulnerabilities at this day)
+
+2022/05/24:
+* Update: nl translation (@bitass)
+
+2022/05/23:
+* Move all translations of schema validation to main translation file
+* Review of French translate file (@pitchx)
+
+2022/05/22:
+* Translation: es translation begin (thx to @CalcU)
+* Fix: correct mismake on fr schema validation of EXT-Alert
+* Fix: minor display bug on all pages
+* Fix: load only needed css/js scripts on each page
+* Under Coding: Translation in one file (idea of @CalcU)
+  * move all translations of schema validation to main translation file
+
+2022/05/21:
+* Update: nl translation
+* Add: webview code
+* Tools Add: checkcode for displaying recipes box
+* Fix: font size in restart / die page
+* Tools Add: delete backups
+
+2022/05/20:
+* Translate Setting page
+* Add translators section names
+* Prepare nl schema validation translation
+
+2022/05/19:
+* Translate title of all pages
+* Add: language value in setting
+* Fix: Selected Path in navbar from categories path
+* Review minor translations part
+* Fix: restart with pm2
+* Update: nl translation (thx @bitass)
+
+2022/05/18:
+* EXT Explorer:
+   * display number of plugins available by default on start page
+   * Fix: container size for all browser (size)
+* GW Tools:
+    * Fix: design for all browser and phone
+    * Prepare some new tools design
+
+2022/05/17:
+* Prepare Code for:
+  * checking code for electronOptions:webviewTag
+  * checking if GA installed (and check version)
+  * checking if GA configured
+* Move restart/die fonction to tools.js
+* Try to add package-lock.json for solving vulnerabilities
+
+2022/05/15:
+* Begin `nl` translate for HTML5 pages only (Thanks @bitass)
+
+2022/05/13:
+* Done: schema validation and translate of all plugins
+* Fix: EXT-Detector model rules (initial / modify config)
+
+2022/05/12:
+* Add: 2 new button in EXT config modification:
+  * Reload default config
+  * Merge default config with actual config
+* Add: translate/ add/ update schema validation of
+  * EXT-GooglePhotos
+  * EXT-Governor
+  * EXT-Internet
+  * EXT-Librespot
+  * EXT-MusicPlayer
+  * EXT-Photos
+  * EXT-Pir
+  * EXT-RadioPlayer
+  * EXT-Screen
+  * EXT-ScreenManager
+  * EXT-Spotify
+  * EXT-UpdateNotification (needed review)
+
+
+2022/05/11:
+* Add: Translate code for schema validation
+* Add: translate schema validation of
+  * EXT-Alert
+  * EXT-Background
+  * EXT-Bring
+  * EXT-Browser
+  * EXT-Detector
+* Add/Fix schema auto verification  of configuration:
+  * EXT-Detector (needed review)
+
+2022/05/10:
+* Modify top bar style
+* Fix: "Loading..." content
+* Add/Fix schema auto verification  of configuration:
+  * EXT-Screen
+  * EXT-Spotify
+  * EXT-YouTube
+  * EXT-YouTubeCast
+  * EXT-YouTubeVLC
+
+2022/05/09:
+* Fix: Translation not displayed on Terminal output
+* Fix: closeMagicMirror function properly and add logs
+* Add/Fix schema auto verification  of configuration:
+  * EXT-Alert
+  * EXT-Background
+  * EXT-Bring
+  * EXT-Browser
+  * EXT-FreeboxTV
+  * EXT-GooglePhotos
+  * EXT-Governor
+  * EXT-Internet
+  * EXT-Librespot
+  * EXT-MusicPlayer
+  * EXT-Photos
+  * EXT-Pir
+  * EXT-RadioPlayer
+  * EXT-Raspotify
+  * EXT-ScreenTouch
+  * EXT-Volume
+  * EXT-Welcome
+
+2022/05/08:
+* Auto Translate: ALL except GW parameters
+* Fix: Load EXT_Tools on each page (no cache)
+* Fix: New credentials not saved
+
+2022/05/07:
+* Display version of GW in setting
+* Don't show logout in navbar when noLogin feature is used
+* Begin Translate !
+
+2022/05/06:
+* Add Please rotate (for mobile)
+* Fonctional setting section
+* Change color of left navbar
+
+2022/05/05:
+* Add begin coding design of Setting section
+
+2022/04/10:
+* Starting Coding v2.x.x
