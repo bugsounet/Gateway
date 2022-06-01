@@ -42,8 +42,8 @@
   "GW_Plugins_Modify_Title": "Pas configuartie aan van",
 
   "GW_Terminal": "Terminal Venster",
-  "GW_TerminalOpen": "Open Terminal",
-  "GW_TerminalGW": "Gateway Terminal",
+  "GW_TerminalOpen": "Openen Terminal Venster",
+  "GW_TerminalGW": "Gateway Terminal Venster",
 
   "GW_Configuration": "MagicMirror Configuratie",
   "GW_Configuration_Welcome": "MagicMirror configuratie (Enkel lezen)",
@@ -66,9 +66,9 @@
   "GW_Tools_Backup_Found": "backups gevonden",
   "GW_Tools_Backup_Text": "Alle backups verwijderen",
   "GW_Tools_Backup_Deleted": "Alle backups zijn verwijderd!",
-  "GW_Tools_Screen_Text": "Turn on/off your Screen",
-  "GW_Tools_GoogleAssistant_Text": "Send a request to MMM-GoogleAssistant",
-  "GW_Tools_GoogleAssistant_Query": "Enter your request",
+  "GW_Tools_Screen_Text": "Uw scherm aan/uit zetten",
+  "GW_Tools_GoogleAssistant_Text": "Verzend een verzoek aan MMM-GoogleAssistant",
+  "GW_Tools_GoogleAssistant_Query": "Wat is uw verzoek",
 
   "GW_Setting": "Instellingen",
   "GW_Setting_Title": "Gateway Instellingen",
@@ -120,10 +120,10 @@
   "GW_Warn_Error": "Opgelet: Fouten gevonden",
   "GW_LoadDefault": "Inladen van de standaard instellingen",
   "GW_MergeDefault": "Voeg samen met de standaars instellingen",
-  "GW_Send": "Send",
-  "GW_TurnOn": "Turn ON",
-  "GW_TurnOff": "Turn OFF",
-  "GW_RequestDone": "Request was sent successfully",
+  "GW_Send": "Verzenden",
+  "GW_TurnOn": "AAN zetten",
+  "GW_TurnOff": "UIT zetten",
+  "GW_RequestDone": "Uw verzoek is met succesvol verzonden",
 
   "EXT-Alert": "Toont elke waarschuwing, info of fout op je scherm.",
   "EXT-Background": "Verander de Google Assistant achtergrond naar uw keuze met geanimeerde gif's voor elke status van de assistent.",
