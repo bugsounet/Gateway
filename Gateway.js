@@ -14,7 +14,9 @@ Module.register("Gateway", {
     password: "admin",
     noLogin: false,
     usePM2: false,
-    PM2Id: 0
+    PM2Id: 0,
+    useMapping: false,
+    portMapping: 8081
   },
 
   start: async function () {
@@ -246,6 +248,8 @@ Module.register("Gateway", {
       Tr.Setting_Server_usePM2 = this.translate("GW_Setting_Server_usePM2")
       Tr.Setting_Server_port = this.translate("GW_Setting_Server_port")
       Tr.Setting_Server_PM2Id = this.translate("GW_Setting_Server_PM2Id")
+      Tr.Setting_Server_useMapping = this.translate("GW_Setting_Server_useMapping")
+      Tr.Setting_Server_portMapping = this.translate("GW_Setting_Server_portMapping")
       Tr.Setting_Info_by = this.translate("GW_Setting_Info_by")
       Tr.Setting_Info_Support = this.translate("GW_Setting_Info_Support")
       Tr.Setting_Info_Donate = this.translate("GW_Setting_Info_Donate")

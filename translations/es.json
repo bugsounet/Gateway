@@ -85,6 +85,8 @@
   "GW_Setting_Server_usePM2": "Usa PM2",
   "GW_Setting_Server_port": "Puerto de escucha",
   "GW_Setting_Server_PM2Id": "Numero de proceso de PM2",
+  "GW_Setting_Server_useMapping": "Use port mapping with upnp",
+  "GW_Setting_Server_portMapping": "Mapping port for internet using",
   "GW_Setting_Info_by": "por @bugsounet",
   "GW_Setting_Info_Support": "Soporte",
   "GW_Setting_Info_Donate": "Donación",

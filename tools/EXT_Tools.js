@@ -1021,6 +1021,8 @@ function GatewaySetting() {
   $('#DonateHeader').text(translation.Setting_Info_Donate)
   $('#DonateText').text(translation.Setting_Info_Donate_Text)
   $('#VersionHeader').text(translation.Setting_Info_About)
+  $('#upnpHeader').text(translation.Setting_Server_useMapping)
+  $('#upnpPortHeader').text(translation.Setting_Server_portMapping)
   for (let tr = 1; tr <= 10; tr++) {
     let trans = "Setting_Info_Translator"+tr
     if (tr == 1 && translation[trans]) {
@@ -1047,13 +1049,29 @@ function GatewaySetting() {
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
   $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
   $("#port option[value='" + actualSetting.port + "']").prop('selected', true)
-  
+
+  $("#upnp").prop("checked", actualSetting.useMapping)
+  $("select.grpupnp").prop("disabled", !actualSetting.useMapping)
+  if (actualSetting.noLogin) {
+    $("#upnp").prop("disabled", true)
+    $("#upnp").prop("checked", false)
+    $("select.grpupnp").prop("disabled", true)
+  }
+  $("#upnpPort option[value='" + actualSetting.portMapping + "']").prop('selected', true)
+
   document.getElementById('login').onclick = function () {
     $("input.grplogin").prop("disabled", !this.checked)
+    $("#upnp").prop("disabled", !this.checked)
+    $("#upnp").prop("checked", false)
+    $("select.grpupnp").prop("disabled", true)
   }
 
   document.getElementById('pm2').onclick = function () {
     $("select.grppm2").prop("disabled", !this.checked)
+  }
+
+  document.getElementById('upnp').onclick = function () {
+    $("select.grpupnp").prop("disabled", !this.checked)
   }
   
   $("#GatewaySetting").submit(function(event) {
@@ -1066,7 +1084,9 @@ function GatewaySetting() {
         password: "admin",
         noLogin: false,
         usePM2: false,
-        PM2Id: 0
+        PM2Id: 0,
+        useMapping: false,
+        portMapping: 8081
       }
     }
     event.preventDefault()
@@ -1119,6 +1139,17 @@ function GatewaySetting() {
       newGatewayConfig.config.usePM2 = false
       newGatewayConfig.config.PM2Id = 0
     }
+    var useMapping = $( "input[type=checkbox][name=upnp]:checked" ).val()
+    var portMapping = Number($( "select#upnpPort" ).val())
+    if (useMapping) {
+      newGatewayConfig.config.useMapping = true
+      newGatewayConfig.config.portMapping = portMapping
+    }
+    else {
+      newGatewayConfig.config.useMapping = false
+      newGatewayConfig.config.portMapping = portMapping
+    }
+
     $('#alert').removeClass('invisible')
     $('#alert').removeClass('alert-danger')
     $('#alert').addClass('alert-success')

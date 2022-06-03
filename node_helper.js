@@ -48,6 +48,8 @@ module.exports = NodeHelper.create({
     this.GAConfig= {}
     this.lib = {}
     this.HyperWatch = null
+    this.Mapping = null
+    this.loginWarn = false
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -135,6 +137,7 @@ module.exports = NodeHelper.create({
         if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
           console.warn("[GATEWAY] WARN: You are using default username or default password")
           console.warn("[GATEWAY] WARN: Don't forget to change it!")
+          this.loginWarn = true
         }
         this.user.username = this.config.username
         this.user.password = this.config.password
@@ -710,8 +713,15 @@ module.exports = NodeHelper.create({
           
     /** Create Server **/
     this.config.listening = await this.lib.tools.purposeIP()
-    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
+    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, async () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
+      if (this.config.useMapping) {
+        console.log("[GATEWAY][UPNP] Try to Mapping port with upnp")
+        this.Mapping = await this.lib.tools.portMapping(this.config, this.loginWarn)
+        if (this.Mapping.done) console.log("[GATEWAY][UPNP] Start listening on http://"+this.Mapping.ip+":" + this.config.portMapping)
+        else console.error("[GATEWAY][UPNP] Mapping error !")
+      }
+      else await this.lib.tools.portMappingDelete()
     }))
     this.initialized= true
   },

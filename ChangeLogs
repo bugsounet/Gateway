@@ -1,3 +1,8 @@
+22/06/03:
+* New: Start coding upnp
+* Add: new setting in UI
+* Add: new translation part
+
 22/06/01:
 * Update: Dependencies (package-lock.json)
 * Release Gateway v2.0.0

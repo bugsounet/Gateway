@@ -85,6 +85,8 @@
   "GW_Setting_Server_usePM2": "Gebruik PM2 app",
   "GW_Setting_Server_port": "Listening Poort",
   "GW_Setting_Server_PM2Id": "PM2 Process Nummer",
+  "GW_Setting_Server_useMapping": "Use port mapping with upnp",
+  "GW_Setting_Server_portMapping": "Mapping port for internet using",
   "GW_Setting_Info_by": "door @bugsounet",
   "GW_Setting_Info_Support": "Hulp/support",
   "GW_Setting_Info_Donate": "Donaties",
