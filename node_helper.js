@@ -692,9 +692,29 @@ module.exports = NodeHelper.create({
         else res.send("error")
       })
 
+      .post("/EXT-AlertQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_ALERT",
+            payload: {
+              type: "information",
+              message: data,
+              sender: req.user ? req.user.username : 'Gateway',
+              timer: 30 * 1000,
+              sound: "modules/Gateway/tools/message.mp3",
+              icon: "modules/Gateway/admin/assets/img/gateway.jpg"
+            }
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
-          console.log("[Gateway] Receiving delete backup demand...")
+          console.log("[GATEWAY] Receiving delete backup demand...")
           var deleteBackup = await this.lib.tools.deleteBackup()
           console.log("[GATEWAY] Delete backup result:", deleteBackup)
           res.send(deleteBackup)

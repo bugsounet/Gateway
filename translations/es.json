@@ -69,6 +69,8 @@
   "GW_Tools_Screen_Text": "Turn on/off your Screen",
   "GW_Tools_GoogleAssistant_Text": "Send a request to MMM-GoogleAssistant",
   "GW_Tools_GoogleAssistant_Query": "Enter your request",
+  "GW_Tools_Alert_Text": "Send a message to your mirror",
+  "GW_Tools_Alert_Query": "Enter your message",
 
   "GW_Setting": "Opciones",
   "GW_Setting_Title": "Opciones del Gateway",

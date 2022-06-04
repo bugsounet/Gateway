@@ -1,6 +1,7 @@
 22/06/04:
 * Update preinstall package (missing build-essential)
 * Update typo in translations
+* Add: EXT-Alert in tools
 
 22/06/03:
 * Starting Gateway v2.1.0

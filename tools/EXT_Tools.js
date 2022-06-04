@@ -465,6 +465,38 @@ async function doTools() {
     }
   }
 
+  // EXT-Alert query
+  if (EXTStatus["EXT-Alert"].hello) {
+    $('#Alert-Query').prop('placeholder', translation.Tools_Alert_Query)
+    $('#Alert-Text').text(translation.Tools_Alert_Text)
+    $('#Alert-Send').text(translation.Send)
+    $('#Alert-Box').css("display", "block")
+    $('#Alert-Query').keyup( function () {
+      if($(this).val().length > 5) {
+         $('#Alert-Send').removeClass('disabled')
+      } else {
+         $('#Alert-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('Alert-Send').onclick = function () {
+      $('#Alert-Send').addClass('disabled')
+      $.post( "/EXT-AlertQuery", { data: $('#Alert-Query').val() })
+        .done(function( back ) {
+          $('#Alert-Query').val('')
+          if (back == "error") {
+            $('#alert').removeClass('invisible')
+            $('#alert').removeClass('alert-success')
+            $('#alert').addClass('alert-danger')
+            $('#messageText').text(translation.Warn_Error)
+          } else {
+            $('#alert').removeClass('invisible')
+            $('#messageText').text(translation.RequestDone)
+          }
+        });
+    }
+  }
+
   // GoogleAssistant Query
   if (versionGA.find && versionGA.configured) {
     $('#GoogleAssistant-Text').text(translation.Tools_GoogleAssistant_Text)
