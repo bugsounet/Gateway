@@ -234,6 +234,7 @@ Module.register("Gateway", {
       Tr.Tools_GoogleAssistant_Query = this.translate("GW_Tools_GoogleAssistant_Query")
       Tr.Tools_Alert_Text = this.translate("GW_Tools_Alert_Text")
       Tr.Tools_Alert_Query = this.translate("GW_Tools_Alert_Query")
+      Tr.Tools_Volume_Text = this.translate("GW_Tools_Volume_Text")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")

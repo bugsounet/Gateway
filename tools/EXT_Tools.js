@@ -329,6 +329,7 @@ async function doTerminal() {
 
 async function doTools() {
   // translate
+  var timeout = null
   $(document).prop('title', translation.Tools)
   webviewTag = await checkWebviewTag()
   EXTStatus = await checkEXTStatus()
@@ -359,22 +360,27 @@ async function doTools() {
     $('#backup-Box').css("display", "block")
 
     document.getElementById('backup-Delete').onclick = function () {
-    $.post("/deleteBackup")
-      .done(function( back ) {
-        if (back.error) {
-          $('#backup-Delete').css("display", "none")
-          $('#backup-Error').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#alert').removeClass('alert-success')
-          $('#alert').addClass('alert-danger')
-          $('#messageText').text(back.error)
-        } else {
-          $('#backup-Delete').css("display", "none")
-          $('#backup-Done').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#messageText').text(translation.Tools_Backup_Deleted)
-        }
-      })
+      clearTimeout(timeout)
+      $.post("/deleteBackup")
+        .done(function( back ) {
+          if (back.error) {
+            $('#backup-Delete').css("display", "none")
+            $('#backup-Error').css("display", "inline-block")
+            $('#alert').removeClass('invisible')
+            $('#alert').removeClass('alert-success')
+            $('#alert').addClass('alert-danger')
+            $('#messageText').text(back.error)
+          } else {
+            $('#backup-Delete').css("display", "none")
+            $('#backup-Done').css("display", "inline-block")
+            $('#alert').removeClass('invisible')
+            $('#messageText').text(translation.Tools_Backup_Deleted)
+          }
+          timeout = setTimeout(() => {
+            $('#alert').addClass('invisible')
+            $('#messageText').text("")
+          }, 5000)
+        })
     }
 
     document.getElementById('backup-Done').onclick = function () {
@@ -401,22 +407,27 @@ async function doTools() {
     if (displayNeeded) $('#webview-Box').css("display", "block")
 
     document.getElementById('webviewbtn-Apply').onclick = function () {
-    $.post("/setWebviewTag")
-      .done(function( back ) {
-        if (back.error) {
-          $('#webviewbtn-Apply').css("display", "none")
-          $('#webviewbtn-Error').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#alert').removeClass('alert-success')
-          $('#alert').addClass('alert-danger')
-          $('#messageText').text(back.error)
-        } else {
-          $('#webviewbtn-Apply').css("display", "none")
-          $('#webviewbtn-Done').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#messageText').text(translation.Restart)
-        }
-      })
+      clearTimeout(timeout)
+      $.post("/setWebviewTag")
+        .done(function( back ) {
+          if (back.error) {
+            $('#webviewbtn-Apply').css("display", "none")
+            $('#webviewbtn-Error').css("display", "inline-block")
+            $('#alert').removeClass('invisible')
+            $('#alert').removeClass('alert-success')
+            $('#alert').addClass('alert-danger')
+            $('#messageText').text(back.error)
+          } else {
+            $('#webviewbtn-Apply').css("display", "none")
+            $('#webviewbtn-Done').css("display", "inline-block")
+            $('#alert').removeClass('invisible')
+            $('#messageText').text(translation.Restart)
+          }
+          timeout = setTimeout(() => {
+            $('#alert').addClass('invisible')
+            $('#messageText').text("")
+          }, 5000)
+        })
     }
 
     document.getElementById('webviewbtn-Done').onclick = function () {
@@ -434,6 +445,7 @@ async function doTools() {
     $('#Screen-Box').css("display", "block")
 
     document.getElementById('Screen-Control').onclick = function () {
+      clearTimeout(timeout)
       $('#Screen-Control').addClass('disabled')
       if (EXTStatus["EXT-Screen"].power) {
         $.post( "/EXT-Screen", { data: "OFF" })
@@ -462,6 +474,10 @@ async function doTools() {
             }
           });
       }
+      timeout = setTimeout(() => {
+        $('#alert').addClass('invisible')
+        $('#messageText').text("")
+      }, 5000)
     }
   }
 
@@ -480,6 +496,7 @@ async function doTools() {
     })
 
     document.getElementById('Alert-Send').onclick = function () {
+      clearTimeout(timeout)
       $('#Alert-Send').addClass('disabled')
       $.post( "/EXT-AlertQuery", { data: $('#Alert-Query').val() })
         .done(function( back ) {
@@ -493,6 +510,37 @@ async function doTools() {
             $('#alert').removeClass('invisible')
             $('#messageText').text(translation.RequestDone)
           }
+          timeout = setTimeout(() => {
+            $('#alert').addClass('invisible')
+            $('#messageText').text("")
+          }, 5000)
+        });
+    }
+  }
+
+  // Volume control
+  if (EXTStatus["EXT-Volume"].hello) {
+    $('#Volume-Text').text(translation.Tools_Volume_Text)
+    $('#Volume-Send').text(translation.Confirm)
+    $('#Volume-Box').css("display", "block")
+
+    document.getElementById('Volume-Send').onclick = function () {
+      clearTimeout(timeout)
+      $.post( "/EXT-VolumeSend", { data: $('#Volume-Query').val() })
+        .done(function( back ) {
+          if (back == "error") {
+            $('#alert').removeClass('invisible')
+            $('#alert').removeClass('alert-success')
+            $('#alert').addClass('alert-danger')
+            $('#messageText').text(translation.Warn_Error)
+          } else {
+            $('#alert').removeClass('invisible')
+            $('#messageText').text(translation.RequestDone)
+          }
+          timeout = setTimeout(() => {
+            $('#alert').addClass('invisible')
+            $('#messageText').text("")
+          }, 5000)
         });
     }
   }
@@ -512,6 +560,7 @@ async function doTools() {
     })
 
     document.getElementById('GoogleAssistant-Send').onclick = function () {
+      clearTimeout(timeout)
       $('#GoogleAssistant-Send').addClass('disabled')
       $.post( "/EXT-GAQuery", { data: $('#GoogleAssistant-Query').val() })
         .done(function( back ) {
@@ -525,6 +574,10 @@ async function doTools() {
             $('#alert').removeClass('invisible')
             $('#messageText').text(translation.RequestDone)
           }
+          timeout = setTimeout(() => {
+            $('#alert').addClass('invisible')
+            $('#messageText').text("")
+          }, 5000)
         });
     }
   }

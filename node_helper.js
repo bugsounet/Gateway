@@ -686,7 +686,13 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) {
           let data = req.body.data
           if (!data) return res.send("error")
-          this.sendSocketNotification("SendNoti", {noti: "GAv4_ACTIVATE", payload: { type: "TEXT" , key: data }})
+          this.sendSocketNotification("SendNoti", {
+            noti: "GAv4_ACTIVATE",
+            payload: {
+              type: "TEXT",
+              key: data
+            }
+          })
           res.send("ok")
         }
         else res.send("error")
@@ -706,6 +712,19 @@ module.exports = NodeHelper.create({
               sound: "modules/Gateway/tools/message.mp3",
               icon: "modules/Gateway/admin/assets/img/gateway.jpg"
             }
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-VolumeSend", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_VOLUME-SET",
+            payload: data
           })
           res.send("ok")
         }

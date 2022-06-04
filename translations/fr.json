@@ -71,6 +71,7 @@
   "GW_Tools_GoogleAssistant_Query": "Entrez votre demande",
   "GW_Tools_Alert_Text": "Affiche un message sur votre mirroir",
   "GW_Tools_Alert_Query": "Entrez votre message",
+  "GW_Tools_Volume_Text": "Defini le volume sonore de votre mirroir",
 
   "GW_Setting": "Paramètres",
   "GW_Setting_Title": "Paramètres de Gateway",

@@ -156,9 +156,9 @@ function deleteBackup() {
         pathFile= path.resolve(__dirname, "../backup/"+file)
         try {
           fs.unlinkSync(pathFile)
-          console.log("[GATEWAY] Removed:", file)
+          //console.log("[GATEWAY] Removed:", file)
         } catch (e) {
-          console.log("[GATEWAY] Error occurred while trying to remove this file:", file)
+          console.error("[GATEWAY] Error occurred while trying to remove this file:", file)
         }
       }
     })
