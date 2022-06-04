@@ -85,7 +85,7 @@
   "GW_Setting_Server_usePM2": "Utiliser l'application PM2",
   "GW_Setting_Server_port": "Port d'écoute",
   "GW_Setting_Server_PM2Id": "Numéro de processus PM2",
-  "GW_Setting_Server_useMapping": "Utiliser la redirection de port avec upnp",
+  "GW_Setting_Server_useMapping": "Utiliser la redirection de port avec UPnP",
   "GW_Setting_Server_portMapping": "Port à rediriger pour une utilisation avec internet",
   "GW_Setting_Info_by": "par @bugsounet",
   "GW_Setting_Info_Support": "Support",

@@ -1,6 +1,10 @@
+22/06/04:
+* Update preinstall package (missing build-essential)
+* Update typo in translations
+
 22/06/03:
 * Starting Gateway v2.1.0
-* New: Start coding upnp (beta)
+* New: Start coding UPnP (beta)
 * Add: new setting in UI
 * Add: new translation part
 
@@ -8,6 +12,7 @@
 * Update: Dependencies (package-lock.json)
 * Release Gateway v2.0.0
 * Update: en translation
+* Update: nl translation (@bitass)
 * Fix: double tooltip in setting
 
 22/05/31:
