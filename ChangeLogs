@@ -2,6 +2,8 @@
 * Update: es translation (@CalCu)
 * Add: EXT-Spotify Controller
 * Update: Tools use alertify for displaying any notifications / errors
+* Correct: Volume 40% value in Tools
+* Coorect: Displaying Spotify logo in Tools
 
 22/06/04:
 * Update preinstall package (missing build-essential)
