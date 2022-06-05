@@ -733,11 +733,14 @@ module.exports = NodeHelper.create({
 
       .post("/EXT-SpotifyQuery", (req, res) => {
         if(req.user || this.noLogin) {
-          let data = req.body.data
-          if (!data) return res.send("error")
+          let result = req.body.data
+          if (!result) return res.send("error")
+          let query = req.body.data.query
+          let type = req.body.data.type
+          if (!query || !type ) return res.send("error")
           var pl = {
-            type: "artist,track,album,playlist",
-            query: data,
+            type: type,
+            query: query,
             random: false
           }
           this.sendSocketNotification("SendNoti", {

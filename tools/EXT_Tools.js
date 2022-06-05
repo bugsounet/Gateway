@@ -495,6 +495,7 @@ async function doTools() {
   }
 
   if (EXTStatus["EXT-Spotify"].hello) {
+    var type = null
     setInterval(async () => {
       EXTStatus = await checkEXTStatus()
       if(EXTStatus["EXT-Spotify"].connected) {
@@ -506,11 +507,17 @@ async function doTools() {
       }
     }, 1000)
     $('#Spotify-Text').text(translation.Tools_Spotify_Text)
+    $('#Spotify-Text2').text(translation.Tools_Spotify_Text2)
     $('#Spotify-Send').text(translation.Send)
+    $('#Spotify-Artist-Text').text(translation.Tools_Spotify_Artist)
+    $('#Spotify-Track-Text').text(translation.Tools_Spotify_Track)
+    $('#Spotify-Album-Text').text(translation.Tools_Spotify_Album)
+    $('#Spotify-Playlist-Text').text(translation.Tools_Spotify_Playlist)
     $('#Spotify-Query').prop('placeholder', translation.Tools_Spotify_Query)
+    $('#Spotify-Send').text(translation.Send)
     $('#Spotify-Box').css("display", "block")
     $('#Spotify-Query').keyup( function () {
-      if($(this).val().length > 5) {
+      if($(this).val().length > 1 && type) {
          $('#Spotify-Send').removeClass('disabled')
       } else {
          $('#Spotify-Send').addClass('disabled')
@@ -519,7 +526,12 @@ async function doTools() {
 
     document.getElementById('Spotify-Send').onclick = function () {
       $('#Spotify-Send').addClass('disabled')
-      $.post( "/EXT-SpotifyQuery", { data: $('#Spotify-Query').val() })
+      $.post( "/EXT-SpotifyQuery", {
+        data: {
+          query: $('#Spotify-Query').val(),
+          type: type
+        }
+      })
         .done(function( back ) {
           $('#Spotify-Query').val('')
           if (back == "error") {
@@ -541,8 +553,77 @@ async function doTools() {
     document.getElementById('Spotify-Next').onclick = function () {
       $.post("/EXT-SpotifyNext")
     }
+
     document.getElementById('Spotify-Previous').onclick = function () {
       $.post("/EXT-SpotifyPrevious")
+    }
+
+    document.getElementById('Spotify-Artist').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "artist"
+      $("#Spotify-Track").prop("checked", !this.checked)
+      $("#Spotify-Album").prop("checked", !this.checked)
+      $("#Spotify-Playlist").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    }
+
+    document.getElementById('Spotify-Track').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "track"
+      $("#Spotify-Artist").prop("checked", !this.checked)
+      $("#Spotify-Album").prop("checked", !this.checked)
+      $("#Spotify-Playlist").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    }
+
+    document.getElementById('Spotify-Album').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "album"
+      $("#Spotify-Artist").prop("checked", !this.checked)
+      $("#Spotify-Track").prop("checked", !this.checked)
+      $("#Spotify-Playlist").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    }
+
+    document.getElementById('Spotify-Playlist').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "playlist"
+      $("#Spotify-Artist").prop("checked", !this.checked)
+      $("#Spotify-Track").prop("checked", !this.checked)
+      $("#Spotify-Album").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
     }
   }
 

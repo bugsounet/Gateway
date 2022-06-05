@@ -211,7 +211,7 @@
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="GoogleAssistant-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price green wow col-md-6" id="Spotify-Box" style="display:none">
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price green wow col-md-6" id="Spotify-Box" style="/*display:none*/">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <div class="d-xl-flex justify-content-xl-center align-items-xl-center"><i class="fa fa-spotify" style="padding-right: 5px;font-size: 30px;padding-top: 0px;padding-bottom: 5px;"></i>
@@ -221,6 +221,15 @@
                                             <li class="list-group-item"><span id="Spotify-Text">&nbsp; &nbsp;&nbsp;</span></li>
                                             <li class="list-group-item">
                                                 <div class="btn-group btn-group-lg d-flex" role="group" style="padding: 0px;padding-right: 3%;padding-left: 3%;margin-right: 0px;"><button class="btn btn-success border rounded border-2 border-dark flex-wrap" id="Spotify-Previous" type="button" style="border-top-style: solid;margin: 0px;margin-right: 5px;"><i class="fa fa-step-backward"></i></button><button class="btn btn-success border rounded border-2 border-dark" id="Spotify-Play" type="button" style="margin-right: 5px;"><i class="fa fa-play"></i></button><button class="btn btn-success border rounded border-2 border-dark" id="Spotify-Stop" type="button" style="margin-right: 5px; display: none"><i class="fa fa-stop"></i></button><button class="btn btn-success border rounded border-2 border-dark" id="Spotify-Next" type="button"><i class="fa fa-step-forward"></i></button></div>
+                                            </li>
+                                            <li class="list-group-item"><span id="Spotify-Text2">&nbsp; Type de recherche:&nbsp;</span></li>
+                                            <li class="list-group-item">
+                                                <div class="d-flex flex-grow-0 flex-shrink-0 flex-wrap justify-content-xl-center">
+                                                    <div class="form-check form-switch form-check-inline"><input class="form-check-input" type="checkbox" id="Spotify-Artist" value="artist"><label class="form-check-label" id="Spotify-Artist-Text" for="Spotify-Artist">Artist</label></div>
+                                                    <div class="form-check form-switch form-check-inline"><input class="form-check-input" type="checkbox" id="Spotify-Track" checked="" value="track"><label class="form-check-label" id="Spotify-Track-Text" for="Spotify-Track">Track</label></div>
+                                                    <div class="form-check form-switch form-check-inline"><input class="form-check-input" type="checkbox" id="Spotify-Album" value="album"><label class="form-check-label" id="Spotify-Album-Text" for="Spotify-Album">Album</label></div>
+                                                    <div class="form-check form-switch form-check-inline"><input class="form-check-input" type="checkbox" id="Spotify-Playlist" value="playlist"><label class="form-check-label" id="Spotify-Playlist-Text" for="Spotify-Playlist">Playlist</label></div>
+                                                </div>
                                             </li>
                                             <li class="list-group-item"><input type="text" id="Spotify-Query" placeholder="" style="width: 95%"></li>
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="Spotify-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>

@@ -164,7 +164,6 @@ Module.register("Gateway", {
   LoadGWTranslation: function() {
     return new Promise(resolve => {
       var Tr = {}
-
       Tr.Rotate_Msg = this.translate("GW_Rotate_Msg"),
       Tr.Rotate_Continue = this.translate("GW_Rotate_Continue"),
 
@@ -236,7 +235,12 @@ Module.register("Gateway", {
       Tr.Tools_Alert_Query = this.translate("GW_Tools_Alert_Query")
       Tr.Tools_Volume_Text = this.translate("GW_Tools_Volume_Text")
       Tr.Tools_Spotify_Text = this.translate("GW_Tools_Spotify_Text")
+      Tr.Tools_Spotify_Text2 = this.translate("GW_Tools_Spotify_Text2")
       Tr.Tools_Spotify_Query = this.translate("GW_Tools_Spotify_Query")
+      Tr.Tools_Spotify_Artist = this.translate("GW_Tools_Spotify_Artist")
+      Tr.Tools_Spotify_Track = this.translate("GW_Tools_Spotify_Track")
+      Tr.Tools_Spotify_Album = this.translate("GW_Tools_Spotify_Album")
+      Tr.Tools_Spotify_Playlist = this.translate("GW_Tools_Spotify_Playlist")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")
