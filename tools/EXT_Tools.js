@@ -545,6 +545,67 @@ async function doTools() {
     }
   }
 
+  if (EXTStatus["EXT-Spotify"].hello) {
+    setInterval(async () => {
+      EXTStatus = await checkEXTStatus()
+      if(EXTStatus["EXT-Spotify"].connected) {
+        $('#Spotify-Play').css("display", "none")
+        $('#Spotify-Stop').css("display", "block")
+      } else {
+        $('#Spotify-Play').css("display", "block")
+        $('#Spotify-Stop').css("display", "none")
+      }
+    }, 1000)
+    $('#Spotify-Text').text(translation.Tools_Spotify_Text)
+    $('#Spotify-Send').text(translation.Send)
+    $('#Spotify-Query').prop('placeholder', translation.Tools_Spotify_Query)
+    $('#Spotify-Box').css("display", "block")
+    $('#Spotify-Query').keyup( function () {
+      if($(this).val().length > 5) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('Spotify-Send').onclick = function () {
+      clearTimeout(timeout)
+      $('#Spotify-Send').addClass('disabled')
+      $.post( "/EXT-SpotifyQuery", { data: $('#Spotify-Query').val() })
+        .done(function( back ) {
+          $('#Spotify-Query').val('')
+          if (back == "error") {
+            $('#alert').removeClass('invisible')
+            $('#alert').removeClass('alert-success')
+            $('#alert').addClass('alert-danger')
+            $('#messageText').text(translation.Warn_Error)
+          } else {
+            $('#alert').removeClass('invisible')
+            $('#messageText').text(translation.RequestDone)
+          }
+          timeout = setTimeout(() => {
+            $('#alert').addClass('invisible')
+            $('#messageText').text("")
+          }, 5000)
+        });
+    }
+
+    document.getElementById('Spotify-Play').onclick = function () {
+      $.post("/EXT-SpotifyPlay")
+    }
+
+    document.getElementById('Spotify-Stop').onclick = function () {
+      $.post("/EXT-SpotifyStop")
+    }
+
+    document.getElementById('Spotify-Next').onclick = function () {
+      $.post("/EXT-SpotifyNext")
+    }
+    document.getElementById('Spotify-Previous').onclick = function () {
+      $.post("/EXT-SpotifyPrevious")
+    }
+  }
+
   // GoogleAssistant Query
   if (versionGA.find && versionGA.configured) {
     $('#GoogleAssistant-Text').text(translation.Tools_GoogleAssistant_Text)

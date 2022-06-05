@@ -731,6 +731,55 @@ module.exports = NodeHelper.create({
         else res.send("error")
       })
 
+      .post("/EXT-SpotifyQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          var pl = {
+            type: "artist,track,album,playlist",
+            query: data,
+            random: false
+          }
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_SPOTIFY-SEARCH",
+            payload: pl
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyPlay", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PLAY")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyStop", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-STOP")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyNext", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-NEXT")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyPrevious", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PREVIOUS")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
           console.log("[GATEWAY] Receiving delete backup demand...")

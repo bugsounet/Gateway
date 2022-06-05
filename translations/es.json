@@ -72,6 +72,8 @@
   "GW_Tools_Alert_Text": "Enviar un mensaje a tu mirror",
   "GW_Tools_Alert_Query": "Escribe tu mensaje",
   "GW_Tools_Volume_Text": "Define el volumen del mirror",
+  "GW_Tools_Spotify_Text": "Spotify player controller",
+  "GW_Tools_Spotify_Query": "Enter your research",
 
   "GW_Setting": "Opciones",
   "GW_Setting_Title": "Opciones del Gateway",
