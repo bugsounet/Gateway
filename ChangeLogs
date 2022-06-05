@@ -1,6 +1,7 @@
 22/06/05
 * Update: es translation (@CalCu)
 * Add: EXT-Spotify Controller
+* Update: Tools use alertify for displaying any notifications / errors
 
 22/06/04:
 * Update preinstall package (missing build-essential)

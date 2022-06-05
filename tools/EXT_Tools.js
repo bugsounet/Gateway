@@ -329,7 +329,6 @@ async function doTerminal() {
 
 async function doTools() {
   // translate
-  var timeout = null
   $(document).prop('title', translation.Tools)
   webviewTag = await checkWebviewTag()
   EXTStatus = await checkEXTStatus()
@@ -360,32 +359,23 @@ async function doTools() {
     $('#backup-Box').css("display", "block")
 
     document.getElementById('backup-Delete').onclick = function () {
-      clearTimeout(timeout)
       $.post("/deleteBackup")
         .done(function( back ) {
           if (back.error) {
             $('#backup-Delete').css("display", "none")
             $('#backup-Error').css("display", "inline-block")
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(back.error)
+            alertify.error(back.error)
           } else {
             $('#backup-Delete').css("display", "none")
             $('#backup-Done').css("display", "inline-block")
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.Tools_Backup_Deleted)
+            alertify.success(translation.Tools_Backup_Deleted)
+            back.error
           }
-          timeout = setTimeout(() => {
-            $('#alert').addClass('invisible')
-            $('#messageText').text("")
-          }, 5000)
         })
     }
 
     document.getElementById('backup-Done').onclick = function () {
       $('#backup-Box').css("display", "none")
-      $('#alert').addClass('invisible')
     }
   }
 
@@ -407,33 +397,23 @@ async function doTools() {
     if (displayNeeded) $('#webview-Box').css("display", "block")
 
     document.getElementById('webviewbtn-Apply').onclick = function () {
-      clearTimeout(timeout)
       $.post("/setWebviewTag")
         .done(function( back ) {
           if (back.error) {
             $('#webviewbtn-Apply').css("display", "none")
             $('#webviewbtn-Error').css("display", "inline-block")
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(back.error)
+            alertify.success(back.error)
           } else {
             $('#webviewbtn-Apply').css("display", "none")
             $('#webviewbtn-Done').css("display", "inline-block")
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.Restart)
+            alertify.success(translation.Restart)
           }
-          timeout = setTimeout(() => {
-            $('#alert').addClass('invisible')
-            $('#messageText').text("")
-          }, 5000)
         })
     }
 
     document.getElementById('webviewbtn-Done').onclick = function () {
       $('#webview-Box').css("display", "none")
       webviewTag = true
-      $('#alert').addClass('invisible')
     }
   }
 
@@ -445,39 +425,26 @@ async function doTools() {
     $('#Screen-Box').css("display", "block")
 
     document.getElementById('Screen-Control').onclick = function () {
-      clearTimeout(timeout)
       $('#Screen-Control').addClass('disabled')
       if (EXTStatus["EXT-Screen"].power) {
         $.post( "/EXT-Screen", { data: "OFF" })
           .done(function( back ) {
             if (back.error) {
-              $('#alert').removeClass('invisible')
-              $('#alert').removeClass('alert-success')
-              $('#alert').addClass('alert-danger')
-              $('#messageText').text(translation.Warn_Error)
+              alertify.error(translation.Warn_Error)
             } else {
-              $('#alert').removeClass('invisible')
-              $('#messageText').text(translation.RequestDone)
+              alertify.success(translation.RequestDone)
             }
           });
       } else {
         $.post( "/EXT-Screen", { data: "ON" })
           .done(function( back ) {
             if (back == "error") {
-              $('#alert').removeClass('invisible')
-              $('#alert').removeClass('alert-success')
-              $('#alert').addClass('alert-danger')
-              $('#messageText').text(translation.Warn_Error)
+              alertify.error(translation.Warn_Error)
             } else {
-              $('#alert').removeClass('invisible')
-              $('#messageText').text(translation.RequestDone)
+              alertify.success(translation.RequestDone)
             }
           });
       }
-      timeout = setTimeout(() => {
-        $('#alert').addClass('invisible')
-        $('#messageText').text("")
-      }, 5000)
     }
   }
 
@@ -496,24 +463,15 @@ async function doTools() {
     })
 
     document.getElementById('Alert-Send').onclick = function () {
-      clearTimeout(timeout)
       $('#Alert-Send').addClass('disabled')
       $.post( "/EXT-AlertQuery", { data: $('#Alert-Query').val() })
         .done(function( back ) {
           $('#Alert-Query').val('')
           if (back == "error") {
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(translation.Warn_Error)
+            alertify.error(translation.Warn_Error)
           } else {
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.RequestDone)
+            alertify.success(translation.RequestDone)
           }
-          timeout = setTimeout(() => {
-            $('#alert').addClass('invisible')
-            $('#messageText').text("")
-          }, 5000)
         });
     }
   }
@@ -525,22 +483,13 @@ async function doTools() {
     $('#Volume-Box').css("display", "block")
 
     document.getElementById('Volume-Send').onclick = function () {
-      clearTimeout(timeout)
       $.post( "/EXT-VolumeSend", { data: $('#Volume-Query').val() })
         .done(function( back ) {
           if (back == "error") {
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(translation.Warn_Error)
+            alertify.error(translation.Warn_Error)
           } else {
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.RequestDone)
+            alertify.success(translation.RequestDone)
           }
-          timeout = setTimeout(() => {
-            $('#alert').addClass('invisible')
-            $('#messageText').text("")
-          }, 5000)
         });
     }
   }
@@ -569,24 +518,15 @@ async function doTools() {
     })
 
     document.getElementById('Spotify-Send').onclick = function () {
-      clearTimeout(timeout)
       $('#Spotify-Send').addClass('disabled')
       $.post( "/EXT-SpotifyQuery", { data: $('#Spotify-Query').val() })
         .done(function( back ) {
           $('#Spotify-Query').val('')
           if (back == "error") {
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(translation.Warn_Error)
+            alertify.error(translation.Warn_Error)
           } else {
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.RequestDone)
+            alertify.success(translation.RequestDone)
           }
-          timeout = setTimeout(() => {
-            $('#alert').addClass('invisible')
-            $('#messageText').text("")
-          }, 5000)
         });
     }
 
@@ -621,24 +561,15 @@ async function doTools() {
     })
 
     document.getElementById('GoogleAssistant-Send').onclick = function () {
-      clearTimeout(timeout)
       $('#GoogleAssistant-Send').addClass('disabled')
       $.post( "/EXT-GAQuery", { data: $('#GoogleAssistant-Query').val() })
         .done(function( back ) {
           $('#GoogleAssistant-Query').val('')
           if (back == "error") {
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(translation.Warn_Error)
+            alertify.error(translation.Warn_Error)
           } else {
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.RequestDone)
+            alertify.success(translation.RequestDone)
           }
-          timeout = setTimeout(() => {
-            $('#alert').addClass('invisible')
-            $('#messageText').text("")
-          }, 5000)
         });
     }
   }
