@@ -88,6 +88,9 @@
   "GW_Tools_Update_Header" :"Updates available",
   "GW_Tools_Update_Text" :"Modules and EXT Plugins:",
   "GW_Tools_Update_Text2" :"NPM dependencies:",
+  "GW_Tools_YouTube_Text" :"Play a YouTube video",
+  "GW_Tools_YouTube_Query": "Enter your YouTube search",
+  "GW_Tools_Stop_Text" :"Stop all running plugins",
 
   "GW_Setting": "Setting",
   "GW_Setting_Title": "Gateway Setting",

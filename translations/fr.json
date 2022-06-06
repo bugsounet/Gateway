@@ -88,6 +88,9 @@
   "GW_Tools_Update_Header" :"Mises à jour disponibles",
   "GW_Tools_Update_Text" :"Modules et EXT Plugins:",
   "GW_Tools_Update_Text2" :"Dépendences NPM:",
+  "GW_Tools_YouTube_Text" :"Lance une vidéo YouTube",
+  "GW_Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
+  "GW_Tools_Stop_Text" :"Arrête tous les plugins en fonctionnement",
 
   "GW_Setting": "Paramètres",
   "GW_Setting_Title": "Paramètres de Gateway",

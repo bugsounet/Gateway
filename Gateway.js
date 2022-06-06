@@ -162,6 +162,9 @@ Module.register("Gateway", {
         }
         this.sendNotification(payload)
         break
+      case "SendStop":
+        this.ActionsOnExt("EXT_STOP")
+        break
     }
   },
 
@@ -255,6 +258,9 @@ Module.register("Gateway", {
       Tr.Tools_Update_Header = this.translate("GW_Tools_Update_Header")
       Tr.Tools_Update_Text = this.translate("GW_Tools_Update_Text")
       Tr.Tools_Update_Text2 = this.translate("GW_Tools_Update_Text2")
+      Tr.Tools_YouTube_Text = this.translate("GW_Tools_YouTube_Text")
+      Tr.Tools_YouTube_Query = this.translate("GW_Tools_YouTube_Query")
+      Tr.Tools_Stop_Text = this.translate("GW_Tools_Stop_Text")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")

@@ -724,6 +724,53 @@ async function doTools() {
     }
   }
 
+  // YouTube Query
+  if (EXTStatus["EXT-YouTube"].hello || EXTStatus["EXT-YouTubeVLC"].hello) {
+    $('#YouTube-Text').text(translation.Tools_YouTube_Text)
+    $('#YouTube-Query').prop('placeholder', translation.Tools_YouTube_Query)
+    $('#YouTube-Send').text(translation.Send)
+    $('#YouTube-Box').css("display", "block")
+    $('#YouTube-Query').keyup( function () {
+      if($(this).val().length > 1) {
+         $('#YouTube-Send').removeClass('disabled')
+      } else {
+         $('#YouTube-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('YouTube-Send').onclick = function () {
+      $.post( "/EXT-YouTubeQuery", { data: $('#YouTube-Query').val() })
+        .done(function( back ) {
+          $('#YouTube-Query').val('')
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+    }
+  }
+
+  // Stop Command
+  $('#Stop-Text').text(translation.Tools_Stop_Text)
+  $('#Stop-Send').text(translation.Send)
+  document.getElementById('Stop-Send').onclick = function () {
+    $.post( "/EXT-StopQuery")
+      .done(function( back ) {
+        if (back == "error") {
+          alertify.error(translation.Warn_Error)
+        } else {
+          alertify.success(translation.RequestDone)
+        }
+      })
+  }
+
+  setInterval(() => {
+    if (this.hasPluginConnected(EXTStatus, "connected", true)) {
+      $('#Stop-Box').css("display", "block")
+    }
+    else $('#Stop-Box').css("display", "none")
+  }, 1000)
 }
 
 async function createEXTTable() {
@@ -1585,4 +1632,20 @@ function loadBackupNames() {
       resolve(backups)
     })
   })
+}
+
+function hasPluginConnected(obj, key, value) {
+  if (typeof obj === 'object' && obj !== null) {
+    if (obj.hasOwnProperty(key)) return true
+    for (var p in obj) {
+      if (obj.hasOwnProperty(p) && this.hasPluginConnected(obj[p], key, value)) {
+        //logGW("check", key+":"+value, "in", p)
+        if (obj[p][key] == value) {
+          //logGW(p, "is connected")
+          return true
+        }
+      }
+    }
+  }
+  return false
 }

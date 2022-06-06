@@ -792,6 +792,38 @@ module.exports = NodeHelper.create({
         else res.send("error")
       })
 
+      .post("/EXT-YouTubeQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          if (this.EXTStatus["EXT-YouTube"].hello) {
+            this.sendSocketNotification("SendNoti", {
+              noti: "EXT_YOUTUBE-SEARCH",
+              payload: data
+            })
+            res.send("ok")
+          } else if (this.EXTStatus["EXT-YouTubeVLC"].hello) {
+            this.sendSocketNotification("SendNoti", {
+              noti: "EXT_YOUTUBEVLC-SEARCH",
+              payload: data
+            })
+            res.send("ok")
+          } else {
+            res.send("error")
+          }
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-StopQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendStop")
+          this.sendSocketNotification("SendNoti", "EXT_STOP")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
           console.log("[GATEWAY] Receiving delete backup demand...")
