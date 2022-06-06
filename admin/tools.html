@@ -59,7 +59,7 @@
                             </div>
                             <div class="pricing-area text-center">
                                 <div class="row">
-                                    <div class="col-sm-4 plan price red wow col-sm-6" data-aos="zoom-in">
+                                    <div class="col-sm-4 plan price red wow col-sm-6" data-aos="zoom-in" id="Die-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">MagicMirror</h2><span class="price">Control</span>
@@ -68,7 +68,7 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Die" class="btn" href="/Die" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-4 plan price green wow col-sm-6" data-aos="zoom-in">
+                                    <div class="col-sm-4 plan price green wow col-sm-6" data-aos="zoom-in" id="Restart-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">MagicMirror </h2><span class="price"><strong>Control</strong></span>
@@ -85,6 +85,17 @@
                                             <li class="list-group-item"><span id="webviewHeader">&nbsp;</span></li>
                                             <li class="list-group-item"><span id="webviewNeeded"></span><span><br>EXT-Browser<br>EXT-Photos<br>EXT-YouTube<br>EXT-YouTubeCast<br></span></li>
                                             <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="webviewbtn-Apply" class="btn">&nbsp; &nbsp; &nbsp;&nbsp;<br></a><a class="flash animated infinite btn" id="webviewbtn-Error" style="display: none;">Error<br></a><a class="tada animated btn" id="webviewbtn-Done" style="display:none">Done<br></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-4 bounce animated plan price yellow wow col-sm-6" id="Update-Box" style="display:none">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">Update</h2><span class="price">Control</span>
+                                            </li>
+                                            <li class="list-group-item"><span>Appliquer les mise à jours trouvées</span></li>
+                                            <li class="list-group-item" id="Update-Modules-Box" style="display:none"><span>Modules et Plugins:</span></li>
+                                            <li class="list-group-item" id="Update-NPM-Box" style="display:none"><span>Dépendences NPM:</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Update-Confirm" class="btn" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6 col-md-3 bounce animated plan price grey wow col-md-6" id="backup-Box" style="display: none">
@@ -211,7 +222,7 @@
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="GoogleAssistant-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price green wow col-md-6" id="Spotify-Box" style="/*display:none*/">
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price green wow col-md-6" id="Spotify-Box" style="display:none">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <div class="d-flex d-xl-flex justify-content-center justify-content-xl-center align-items-xl-center"><i class="fa fa-spotify align-self-center" style="padding-right: 5px;font-size: 30px;padding-top: 0px;padding-bottom: 5px;"></i>

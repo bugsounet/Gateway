@@ -783,6 +783,15 @@ module.exports = NodeHelper.create({
         }
         else res.send("error")
       })
+
+      .post("/EXT-UNUpdate", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_UPDATENOTIFICATION-UPDATE")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
           console.log("[GATEWAY] Receiving delete backup demand...")

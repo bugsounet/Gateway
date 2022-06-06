@@ -19,6 +19,7 @@ var versionGW = {}
 var webviewTag = false
 var versionGA = {}
 var EXTStatus = {}
+var ErrEXTStatus = 0
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -333,6 +334,12 @@ async function doTools() {
   webviewTag = await checkWebviewTag()
   EXTStatus = await checkEXTStatus()
   versionGA = await checkGA()
+
+  // live stream every secs of EXT for update
+  setInterval(async() => {
+    EXTStatus = await checkEXTStatus()
+  }, 1000)
+
   $('#title').text(translation.Tools_Welcome)
   $('#subtitle').text(translation.Tools_subTitle)
   $('#stop').text(translation.Tools_Die)
@@ -419,13 +426,14 @@ async function doTools() {
 
   // screen control
   if (EXTStatus["EXT-Screen"].hello) {
-    if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
-    else $('#Screen-Control').text(translation.TurnOn)
+    setInterval (() => {
+      if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
+      else $('#Screen-Control').text(translation.TurnOn)
+    }, 1000)
     $('#Screen-Text').text(translation.Tools_Screen_Text)
     $('#Screen-Box').css("display", "block")
 
     document.getElementById('Screen-Control').onclick = function () {
-      $('#Screen-Control').addClass('disabled')
       if (EXTStatus["EXT-Screen"].power) {
         $.post( "/EXT-Screen", { data: "OFF" })
           .done(function( back ) {
@@ -494,10 +502,48 @@ async function doTools() {
     }
   }
 
+  // Update Control
+  if (EXTStatus["EXT-UpdateNotification"].hello) {
+    // only on live
+    setInterval(async() => {
+      $('#Update-Confirm').text(translation.Confirm)
+      var updateModules = EXTStatus["EXT-UpdateNotification"].module
+      var updateNpm = EXTStatus["EXT-UpdateNotification"].npm
+      if (!updateModules || !updateNpm) return $('#Update-Box').css("display", "none")
+      if (!Object.keys(updateModules).length && !Object.keys(updateNpm).length) return $('#Update-Box').css("display", "none")
+      if (Object.keys(updateModules).length) {
+        $('#Update-Box').css("display", "block")
+        for (const [key, value] of Object.entries(updateModules)) {
+          if($("#" + key).length == 0) $("#Update-Modules-Box").append("<br><span id='"+key + "'>" + key + "</span>")
+        }
+        $('#Update-Modules-Box').css("display", "block")
+      }
+      if (Object.keys(updateNpm).length) {
+        $('#Update-Box').css("display", "block")
+        for (const [key, value] of Object.entries(updateNpm)) {
+          var library = value.library.replace('@bugsounet/', '')
+          if($("#" + value.module + "-" + library).length == 0) $("#Update-NPM-Box").append("<br><span id='"+ value.module + "-" + library + "'>" + key + "</span>")
+        }
+        $('#Update-NPM-Box').css("display", "block")
+      }
+     }, 1000)
+    document.getElementById('Update-Confirm').onclick = function () {
+      $('#Update-Confirm').addClass('disabled')
+      $.post("/EXT-UNUpdate")
+        .done(function( back ) {
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+    }
+  }
+
+  // Spotify Control
   if (EXTStatus["EXT-Spotify"].hello) {
     var type = null
-    setInterval(async () => {
-      EXTStatus = await checkEXTStatus()
+    setInterval(() => {
       if(EXTStatus["EXT-Spotify"].connected) {
         $('#Spotify-Play').css("display", "none")
         $('#Spotify-Stop').css("display", "block")
@@ -1415,6 +1461,16 @@ function checkEXTStatus() {
       //console.log("EXTStatus", Status)
       resolve(Status)
     })
+      .done(() => {
+        if(ErrEXTStatus) {
+          ErrEXTStatus= 0
+          alertify.success("EXTStatus: Connected!")
+        }
+      })
+      .fail(() => {
+        ErrEXTStatus++
+        if (ErrEXTStatus== 1) alertify.error("EXTStatus: Connexion Lost!")
+      })
   })
 }
 

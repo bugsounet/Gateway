@@ -63,6 +63,8 @@ Module.register("Gateway", {
 
     /** special rules **/
     this.GW["EXT-Screen"].power = true
+    this.GW["EXT-UpdateNotification"].update = {}
+    this.GW["EXT-UpdateNotification"].npm = {}
 
     this.urls = {
       photos: {
@@ -626,6 +628,16 @@ Module.register("Gateway", {
         if (this.GW["EXT-Detector"].hello) this.sendNotification("EXT_DETECTOR-START")
         if (this.GW["EXT-Spotify"].hello) this.sendNotification("EXT_SPOTIFY-MAIN_START")
         if (this.GW["EXT-GooglePhotos"].hello) this.sendNotification("EXT_GOOGLEPHOTOS-START")
+        break
+      case "EXT_UN-MODULE_UPDATE":
+        if (!this.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+        this.GW["EXT-UpdateNotification"].module = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_UN-NPM_UPDATE":
+        if (!this.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+        this.GW["EXT-UpdateNotification"].npm = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
         break
       /** Warn if not in db **/
       default:
