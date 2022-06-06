@@ -502,8 +502,13 @@ async function doTools() {
   // Volume control
   if (EXTStatus["EXT-Volume"].hello) {
     $('#Volume-Text').text(translation.Tools_Volume_Text)
+    $('#Volume-Text2').text(translation.Tools_Volume_Text2)
+    $('#Volume-Text3').text(translation.Tools_Volume_Text3)
     $('#Volume-Send').text(translation.Confirm)
     $('#Volume-Box').css("display", "block")
+    setInterval(() => {
+      $('#Volume-Set').text(EXTStatus["EXT-Volume"].set + "%")
+    }, 1000)
 
     document.getElementById('Volume-Send').onclick = function () {
       $.post( "/EXT-VolumeSend", { data: $('#Volume-Query').val() })
@@ -562,7 +567,6 @@ async function doTools() {
   if (EXTStatus["EXT-Spotify"].hello) {
     var type = null
     setInterval(() => {
-      console.log(EXTStatus["EXT-Spotify"])
       if(EXTStatus["EXT-Spotify"].connected || (EXTStatus["EXT-Spotify"].remote && EXTStatus["EXT-Spotify"].play)) {
         $('#Spotify-Play').css("display", "none")
         $('#Spotify-Stop').css("display", "block")

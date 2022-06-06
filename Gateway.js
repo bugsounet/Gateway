@@ -67,6 +67,7 @@ Module.register("Gateway", {
     this.GW["EXT-UpdateNotification"].npm = {}
     this.GW["EXT-Spotify"].remote = false
     this.GW["EXT-Spotify"].play = false
+    this.GW["EXT-Volume"].set = 0
 
     this.urls = {
       photos: {
@@ -242,6 +243,8 @@ Module.register("Gateway", {
       Tr.Tools_Alert_Text = this.translate("GW_Tools_Alert_Text")
       Tr.Tools_Alert_Query = this.translate("GW_Tools_Alert_Query")
       Tr.Tools_Volume_Text = this.translate("GW_Tools_Volume_Text")
+      Tr.Tools_Volume_Text2 = this.translate("GW_Tools_Volume_Text2")
+      Tr.Tools_Volume_Text3 = this.translate("GW_Tools_Volume_Text3")
       Tr.Tools_Spotify_Text = this.translate("GW_Tools_Spotify_Text")
       Tr.Tools_Spotify_Text2 = this.translate("GW_Tools_Spotify_Text2")
       Tr.Tools_Spotify_Query = this.translate("GW_Tools_Spotify_Query")
@@ -462,6 +465,7 @@ Module.register("Gateway", {
       Tr["EXT-UpdateNotification_Timeout"] = this.translate("VAL_EXT-UpdateNotification_Timeout")
       Tr["EXT-Volume_Preset"] = this.translate("VAL_EXT-Volume_Preset")
       Tr["EXT-Volume_Script"] = this.translate("VAL_EXT-Volume_Script")
+      Tr["EXT-Volume_Start"] = this.translate("VAL_EXT-Volume_Start")
       Tr["EXT-Welcome_Welcome"] = this.translate("VAL_EXT-Welcome_Welcome")
       Tr["EXT-YouTube_Fullscreen"] = this.translate("VAL_EXT-YouTube_Fullscreen")
       Tr["EXT-YouTube_Width"] = this.translate("VAL_EXT-YouTube_Width")
@@ -657,6 +661,11 @@ Module.register("Gateway", {
       case "EXT_UN-NPM_UPDATE":
         if (!this.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
         this.GW["EXT-UpdateNotification"].npm = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_VOLUME-GET":
+        if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
+        this.GW["EXT-Volume"].set = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       /** Warn if not in db **/

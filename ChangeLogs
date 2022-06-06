@@ -6,6 +6,8 @@
 * Fix: Review Login translate (Thx to @CalCu for report)
 * Fix: Translate in EXT-Detector (check snowboy/porcupine keyword)
 * Fix: Missing translated part on check username/password in setting
+* Update: Display current volume in Tools
+* Update: New Feature in EXT-Volume
 
 22/06/05
 * Update: es translation (@CalCu)

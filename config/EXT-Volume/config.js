@@ -4,7 +4,8 @@ var defaultConfig = {
   config: {
     debug: false,
     volumePreset: "PULSE",
-    myScript: null
+    myScript: null,
+    startVolume: 100
   }
 }
 
@@ -42,6 +43,14 @@ var schema = {
           "type": ["string", "null"],
           "title": "{EXT-Volume_Script}",
           "default": null
+        },
+        "startVolume": {
+          "type": "number",
+          "title": "{EXT-Volume_Start}",
+          "default": 100,
+          "enum": [0,10,20,30,40,50,60,70,80,90,100],
+          "minimum": 0,
+          "maximum": 100
         }
       },
       "required": ["volumePreset"]
