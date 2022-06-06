@@ -1,6 +1,8 @@
 22/06/06
 * Add: EXT-UpdateNotification in tools
 * Update: Stream EXTStatus (Status of ALL plugins) for realtime using
+* Fix: Minor display problem in Screen tools at start
+* Add: translate for EXT-UpdateNotification in tools
 
 22/06/05
 * Update: es translation (@CalCu)

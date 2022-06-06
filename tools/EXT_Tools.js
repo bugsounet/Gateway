@@ -426,6 +426,8 @@ async function doTools() {
 
   // screen control
   if (EXTStatus["EXT-Screen"].hello) {
+    if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
+    else $('#Screen-Control').text(translation.TurnOn)
     setInterval (() => {
       if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
       else $('#Screen-Control').text(translation.TurnOn)
@@ -504,6 +506,9 @@ async function doTools() {
 
   // Update Control
   if (EXTStatus["EXT-UpdateNotification"].hello) {
+    $('#Update-Header').text(translation.Tools_Update_Header)
+    $('#Update-Text').text(translation.Tools_Update_Text)
+    $('#Update-Text2').text(translation.Tools_Update_Text2)
     // only on live
     setInterval(async() => {
       $('#Update-Confirm').text(translation.Confirm)
@@ -544,7 +549,8 @@ async function doTools() {
   if (EXTStatus["EXT-Spotify"].hello) {
     var type = null
     setInterval(() => {
-      if(EXTStatus["EXT-Spotify"].connected) {
+      console.log(EXTStatus["EXT-Spotify"])
+      if(EXTStatus["EXT-Spotify"].connected || (EXTStatus["EXT-Spotify"].remote && EXTStatus["EXT-Spotify"].play)) {
         $('#Spotify-Play').css("display", "none")
         $('#Spotify-Stop').css("display", "block")
       } else {

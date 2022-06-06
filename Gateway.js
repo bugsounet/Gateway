@@ -65,6 +65,8 @@ Module.register("Gateway", {
     this.GW["EXT-Screen"].power = true
     this.GW["EXT-UpdateNotification"].update = {}
     this.GW["EXT-UpdateNotification"].npm = {}
+    this.GW["EXT-Spotify"].remote = false
+    this.GW["EXT-Spotify"].play = false
 
     this.urls = {
       photos: {
@@ -243,6 +245,9 @@ Module.register("Gateway", {
       Tr.Tools_Spotify_Track = this.translate("GW_Tools_Spotify_Track")
       Tr.Tools_Spotify_Album = this.translate("GW_Tools_Spotify_Album")
       Tr.Tools_Spotify_Playlist = this.translate("GW_Tools_Spotify_Playlist")
+      Tr.Tools_Update_Header = this.translate("GW_Tools_Update_Header")
+      Tr.Tools_Update_Text = this.translate("GW_Tools_Update_Text")
+      Tr.Tools_Update_Text2 = this.translate("GW_Tools_Update_Text2")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")
@@ -558,8 +563,19 @@ Module.register("Gateway", {
         this.disconnected("EXT-RadioPlayer")
         break
       case "EXT_SPOTIFY-CONNECTED":
+        if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-Spotify"].remote = true
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
       case "EXT_SPOTIFY-DISCONNECTED":
-        /* do nothing because it's just the player! */
+        if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-Spotify"].remote = false
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_SPOTIFY-PLAYING":
+        if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-Spotify"].play = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-PLAYER_CONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")

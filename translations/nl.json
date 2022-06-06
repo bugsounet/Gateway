@@ -79,6 +79,9 @@
   "GW_Tools_Spotify_Track": "Track",
   "GW_Tools_Spotify_Album": "Album",
   "GW_Tools_Spotify_Playlist": "Playlist",
+  "GW_Tools_Update_Header" :"Updates available",
+  "GW_Tools_Update_Text" :"Modules and EXT Plugins:",
+  "GW_Tools_Update_Text2" :"NPM dependencies:",
 
   "GW_Setting": "Instellingen",
   "GW_Setting_Title": "Gateway Instellingen",

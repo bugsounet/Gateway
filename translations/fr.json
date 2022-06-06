@@ -79,6 +79,9 @@
   "GW_Tools_Spotify_Track": "Piste",
   "GW_Tools_Spotify_Album": "Album",
   "GW_Tools_Spotify_Playlist": "Play Liste",
+  "GW_Tools_Update_Header" :"Mises à jour disponibles",
+  "GW_Tools_Update_Text" :"Modules et EXT Plugins:",
+  "GW_Tools_Update_Text2" :"Dépendences NPM:",
 
   "GW_Setting": "Paramètres",
   "GW_Setting_Title": "Paramètres de Gateway",
