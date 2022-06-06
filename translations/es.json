@@ -7,6 +7,8 @@
   "GW_Login_Welcome": "Bienvenidos al Gateway!",
   "GW_Login_Username": "Introduce tu nombre de Usuario...",
   "GW_Login_Password": "Contraseña",
+  "GW_Login_Error": "Error: Invalid username and password.",
+  "GW_Login_Login": "Login",
 
   "GW_Home": "Inicio",
   "GW_Home_Welcome": "Bienvenido a la web del Gateway",
@@ -35,6 +37,8 @@
   "GW_Plugins_Install_Message": "PREPARADO PARA INSTALAR ESTE PLUGIN?",
   "GW_Plugins_Install_Progress": "Instalación en progreso...",
   "GW_Plugins_Install_Confirmed": "Instalación completa!",
+  "GW_Plugins_Error_Snowboy": "is not comptatible with Snowboy detector",
+  "GW_Plugins_Error_Porcupine": "is not comptatible with Porcupine detector",
 
   "GW_Plugins_Initial_Title": "Configuración inicial de",
   "GW_Plugins_DeleteConfig_Title": "Borrar la Configuración de",

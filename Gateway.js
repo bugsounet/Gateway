@@ -174,6 +174,8 @@ Module.register("Gateway", {
       Tr.Login_Welcome = this.translate("GW_Login_Welcome")
       Tr.Login_Username = this.translate("GW_Login_Username")
       Tr.Login_Password = this.translate("GW_Login_Password")
+      Tr.Login_Error = this.translate("GW_Login_Error")
+      Tr.Login_Login = this.translate("GW_Login_Login")
 
       Tr.Home = this.translate("GW_Home")
       Tr.Home_Welcome= this.translate("GW_Home_Welcome")
@@ -206,6 +208,8 @@ Module.register("Gateway", {
       Tr.Plugins_DeleteConfig_Title = this.translate("GW_Plugins_DeleteConfig_Title")
       Tr.Plugins_DeleteConfig_Confirmed = this.translate("GW_Plugins_DeleteConfig_Confirmed")
       Tr.Plugins_Modify_Title = this.translate("GW_Plugins_Modify_Title")
+      Tr.Plugins_Error_Snowboy = this.translate("GW_Plugins_Error_Snowboy")
+      Tr.Plugins_Error_Porcupine = this.translate("GW_Plugins_Error_Porcupine")
 
       Tr.Terminal = this.translate("GW_Terminal")
       Tr.TerminalOpen = this.translate("GW_TerminalOpen")

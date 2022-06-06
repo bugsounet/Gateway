@@ -3,6 +3,9 @@
 * Update: Stream EXTStatus (Status of ALL plugins) for realtime using
 * Fix: Minor display problem in Screen tools at start
 * Add: translate for EXT-UpdateNotification in tools
+* Fix: Review Login translate (Thx to @CalCu for report)
+* Fix: Translate in EXT-Detector (check snowboy/porcupine keyword)
+* Fix: Missing translated part on check username/password in setting
 
 22/06/05
 * Update: es translation (@CalCu)

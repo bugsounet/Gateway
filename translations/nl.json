@@ -7,6 +7,8 @@
   "GW_Login_Welcome": "Welkom, dit is de MagicMirror GATEWAY!",
   "GW_Login_Username": "Geef uw gebruikersnaam...",
   "GW_Login_Password": "Wachtwoord",
+  "GW_Login_Error": "Error: Invalid username and password.",
+  "GW_Login_Login": "Login",
 
   "GW_Home": "Startpagina",
   "GW_Home_Welcome": "Welkom op de MagicMirror GATEWAY webpagina",
@@ -35,6 +37,8 @@
   "GW_Plugins_Install_Message": "GEREED OM PLUGIN TE INSTALLEREN",
   "GW_Plugins_Install_Progress": "Installeren is bezig...",
   "GW_Plugins_Install_Confirmed": "Installatie voltooid!",
+  "GW_Plugins_Error_Snowboy": "is not comptatible with Snowboy detector",
+  "GW_Plugins_Error_Porcupine": "is not comptatible with Porcupine detector",
 
   "GW_Plugins_Initial_Title": "Initiële Configuratie van",
   "GW_Plugins_DeleteConfig_Title": "Verwijder Configuratie van",

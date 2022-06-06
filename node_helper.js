@@ -833,7 +833,7 @@ module.exports = NodeHelper.create({
         if (username === this.user.username && password === this.user.password) {
           return done(null, this.user)
         }
-        else done(null, false, { message: 'Invalid username and password.' })
+        else done(null, false, { message: this.translation["Login_Error"] })
       }
     ))
 

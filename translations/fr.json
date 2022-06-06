@@ -7,6 +7,8 @@
   "GW_Login_Welcome": "Bienvenue sur Gateway !",
   "GW_Login_Username": "Entrez votre nom d'utilisateur...",
   "GW_Login_Password": "Mot de passe",
+  "GW_Login_Error": "Erreur: L'identification a échouée.",
+  "GW_Login_Login": "Se Connecter",
 
   "GW_Home": "Accueil",
   "GW_Home_Welcome": "Bienvenue sur l'application Gateway",
@@ -35,6 +37,8 @@
   "GW_Plugins_Install_Message": "Voulez-vous installer ce plugin ?",
   "GW_Plugins_Install_Progress": "Installation en cours...",
   "GW_Plugins_Install_Confirmed": "Installation effectuée !",
+  "GW_Plugins_Error_Snowboy": "n'est la compatible avec le detecteur de type Snowboy",
+  "GW_Plugins_Error_Porcupine": "n'est la compatible avec le detecteur de type Porcupine",
 
   "GW_Plugins_Initial_Title": "Configuration initiale de",
   "GW_Plugins_DeleteConfig_Title": "Supprimer la configuration de",

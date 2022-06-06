@@ -115,15 +115,28 @@ window.addEventListener("load", async event => {
 })
 
 function doLogin() {
+  $("#Login-submit").addClass('disabled')
   $(document).prop('title', translation.Login_Welcome)
   $('#Welcome').text(translation.Login_Welcome)
   $('#username').attr("placeholder", translation.Login_Username)
   $('#password').attr("placeholder", translation.Login_Password)
+  $('#Login-submit').text(translation.Login_Login)
+
+  $('#login').on('input change', function() {
+    if ($('#username').val() !='' && $('#password').val() !='') $("#Login-submit").removeClass('disabled')
+    else $("#Login-submit").addClass('disabled')
+  })
+
   $("#login").submit(function(event) {
     event.preventDefault()
     $.post( "/auth", $(this).serialize())
       .done(back => {
-        if (back.err) document.getElementById("flashErr").innerHTML = "Error: " + back.err.message
+        if (back.err) {
+          $("#flashErr").text(back.err.message)
+          $("#username").val('')
+          $("#password").val('')
+          $("#Login-submit").addClass('disabled')
+        }
         else $(location).attr('href',"/")
       })
     })
@@ -1082,13 +1095,13 @@ async function EXTModifyConfigJSEditor() {
           if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
             errors.push({
               path: ['config', 'detectors', index, "Model"],
-              message: detector.Model + " is not comptatible with Snowboy detector"
+              message: detector.Model + " " + translation.Plugins_Error_Snowboy
             })
           }
           if (detector.detector == "Porcupine" && PorcupineValidator.indexOf(detector.Model) == -1) {
             errors.push({
               path: ['config', 'detectors', index, "Model"],
-              message: detector.Model + " is not comptatible with Porcupine detector"
+              message: detector.Model + " " + translation.Plugins_Error_Porcupine
             })
           }
         })
@@ -1309,21 +1322,21 @@ function GatewaySetting() {
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
-        $('#messageText').text("Please enter Username!")
+        $('#messageText').text(translation.Setting_Credentials_username_placeholder)
         return
       }
       if (!password) {
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
-        $('#messageText').text("Please enter Password!")
+        $('#messageText').text(translation.Setting_Credentials_password_placeholder)
         return
       }
       if (password != confirm) {
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
-        $('#messageText').text("Password is not confirmed!")
+        $('#messageText').text(translation.Setting_Credentials_confirmpwd_placeholder)
         return
       }
       newGatewayConfig.config.noLogin = false
