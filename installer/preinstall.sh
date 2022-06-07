@@ -64,5 +64,34 @@ else
 fi
 
 echo
+# Required packages on Debian based systems
+deb_dependencies=(build-essential)
+# Required packages on RPM based systems
+rpm_dependencies=(file-libs wget autoconf automake binutils bison flex gcc gcc-c++ glibc-devel libtool make pkgconf strace byacc ccache cscope ctags elfutils indent ltrace perf valgrind)
+# Check dependencies
+if [ "${debian}" ]
+then
+  dependencies=( "${deb_dependencies[@]}" )
+else
+  if [ "${have_dnf}" ]
+  then
+    dependencies=( "${rpm_dependencies[@]}" )
+  else
+    if [ "${have_yum}" ]
+    then
+      dependencies=( "${rpm_dependencies[@]}" )
+    else
+      dependencies=( "${deb_dependencies[@]}" )
+    fi
+  fi
+fi
+
+[ "${__NO_DEP_CHECK__}" ] || {
+  Installer_info "Checking all dependencies..."
+  Installer_update_dependencies
+  Installer_success "All Dependencies needed are installed !"
+}
+
+echo
 Installer_info "Installing all npm libraries..."
 

@@ -14,7 +14,9 @@ Module.register("Gateway", {
     password: "admin",
     noLogin: false,
     usePM2: false,
-    PM2Id: 0
+    PM2Id: 0,
+    useMapping: false,
+    portMapping: 8081
   },
 
   start: async function () {
@@ -61,6 +63,11 @@ Module.register("Gateway", {
 
     /** special rules **/
     this.GW["EXT-Screen"].power = true
+    this.GW["EXT-UpdateNotification"].update = {}
+    this.GW["EXT-UpdateNotification"].npm = {}
+    this.GW["EXT-Spotify"].remote = false
+    this.GW["EXT-Spotify"].play = false
+    this.GW["EXT-Volume"].set = 0
 
     this.urls = {
       photos: {
@@ -155,6 +162,9 @@ Module.register("Gateway", {
         }
         this.sendNotification(payload)
         break
+      case "SendStop":
+        this.ActionsOnExt("EXT_STOP")
+        break
     }
   },
 
@@ -162,13 +172,14 @@ Module.register("Gateway", {
   LoadGWTranslation: function() {
     return new Promise(resolve => {
       var Tr = {}
-
       Tr.Rotate_Msg = this.translate("GW_Rotate_Msg"),
       Tr.Rotate_Continue = this.translate("GW_Rotate_Continue"),
 
       Tr.Login_Welcome = this.translate("GW_Login_Welcome")
       Tr.Login_Username = this.translate("GW_Login_Username")
       Tr.Login_Password = this.translate("GW_Login_Password")
+      Tr.Login_Error = this.translate("GW_Login_Error")
+      Tr.Login_Login = this.translate("GW_Login_Login")
 
       Tr.Home = this.translate("GW_Home")
       Tr.Home_Welcome= this.translate("GW_Home_Welcome")
@@ -201,6 +212,8 @@ Module.register("Gateway", {
       Tr.Plugins_DeleteConfig_Title = this.translate("GW_Plugins_DeleteConfig_Title")
       Tr.Plugins_DeleteConfig_Confirmed = this.translate("GW_Plugins_DeleteConfig_Confirmed")
       Tr.Plugins_Modify_Title = this.translate("GW_Plugins_Modify_Title")
+      Tr.Plugins_Error_Snowboy = this.translate("GW_Plugins_Error_Snowboy")
+      Tr.Plugins_Error_Porcupine = this.translate("GW_Plugins_Error_Porcupine")
 
       Tr.Terminal = this.translate("GW_Terminal")
       Tr.TerminalOpen = this.translate("GW_TerminalOpen")
@@ -230,6 +243,24 @@ Module.register("Gateway", {
       Tr.Tools_Screen_Text = this.translate("GW_Tools_Screen_Text")
       Tr.Tools_GoogleAssistant_Text = this.translate("GW_Tools_GoogleAssistant_Text")
       Tr.Tools_GoogleAssistant_Query = this.translate("GW_Tools_GoogleAssistant_Query")
+      Tr.Tools_Alert_Text = this.translate("GW_Tools_Alert_Text")
+      Tr.Tools_Alert_Query = this.translate("GW_Tools_Alert_Query")
+      Tr.Tools_Volume_Text = this.translate("GW_Tools_Volume_Text")
+      Tr.Tools_Volume_Text2 = this.translate("GW_Tools_Volume_Text2")
+      Tr.Tools_Volume_Text3 = this.translate("GW_Tools_Volume_Text3")
+      Tr.Tools_Spotify_Text = this.translate("GW_Tools_Spotify_Text")
+      Tr.Tools_Spotify_Text2 = this.translate("GW_Tools_Spotify_Text2")
+      Tr.Tools_Spotify_Query = this.translate("GW_Tools_Spotify_Query")
+      Tr.Tools_Spotify_Artist = this.translate("GW_Tools_Spotify_Artist")
+      Tr.Tools_Spotify_Track = this.translate("GW_Tools_Spotify_Track")
+      Tr.Tools_Spotify_Album = this.translate("GW_Tools_Spotify_Album")
+      Tr.Tools_Spotify_Playlist = this.translate("GW_Tools_Spotify_Playlist")
+      Tr.Tools_Update_Header = this.translate("GW_Tools_Update_Header")
+      Tr.Tools_Update_Text = this.translate("GW_Tools_Update_Text")
+      Tr.Tools_Update_Text2 = this.translate("GW_Tools_Update_Text2")
+      Tr.Tools_YouTube_Text = this.translate("GW_Tools_YouTube_Text")
+      Tr.Tools_YouTube_Query = this.translate("GW_Tools_YouTube_Query")
+      Tr.Tools_Stop_Text = this.translate("GW_Tools_Stop_Text")
 
       Tr.Setting = this.translate("GW_Setting")
       Tr.Setting_Title = this.translate("GW_Setting_Title")
@@ -246,6 +277,8 @@ Module.register("Gateway", {
       Tr.Setting_Server_usePM2 = this.translate("GW_Setting_Server_usePM2")
       Tr.Setting_Server_port = this.translate("GW_Setting_Server_port")
       Tr.Setting_Server_PM2Id = this.translate("GW_Setting_Server_PM2Id")
+      Tr.Setting_Server_useMapping = this.translate("GW_Setting_Server_useMapping")
+      Tr.Setting_Server_portMapping = this.translate("GW_Setting_Server_portMapping")
       Tr.Setting_Info_by = this.translate("GW_Setting_Info_by")
       Tr.Setting_Info_Support = this.translate("GW_Setting_Info_Support")
       Tr.Setting_Info_Donate = this.translate("GW_Setting_Info_Donate")
@@ -438,6 +471,7 @@ Module.register("Gateway", {
       Tr["EXT-UpdateNotification_Timeout"] = this.translate("VAL_EXT-UpdateNotification_Timeout")
       Tr["EXT-Volume_Preset"] = this.translate("VAL_EXT-Volume_Preset")
       Tr["EXT-Volume_Script"] = this.translate("VAL_EXT-Volume_Script")
+      Tr["EXT-Volume_Start"] = this.translate("VAL_EXT-Volume_Start")
       Tr["EXT-Welcome_Welcome"] = this.translate("VAL_EXT-Welcome_Welcome")
       Tr["EXT-YouTube_Fullscreen"] = this.translate("VAL_EXT-YouTube_Fullscreen")
       Tr["EXT-YouTube_Width"] = this.translate("VAL_EXT-YouTube_Width")
@@ -543,8 +577,19 @@ Module.register("Gateway", {
         this.disconnected("EXT-RadioPlayer")
         break
       case "EXT_SPOTIFY-CONNECTED":
+        if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-Spotify"].remote = true
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
       case "EXT_SPOTIFY-DISCONNECTED":
-        /* do nothing because it's just the player! */
+        if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-Spotify"].remote = false
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_SPOTIFY-PLAYING":
+        if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-Spotify"].play = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-PLAYER_CONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
@@ -613,6 +658,21 @@ Module.register("Gateway", {
         if (this.GW["EXT-Detector"].hello) this.sendNotification("EXT_DETECTOR-START")
         if (this.GW["EXT-Spotify"].hello) this.sendNotification("EXT_SPOTIFY-MAIN_START")
         if (this.GW["EXT-GooglePhotos"].hello) this.sendNotification("EXT_GOOGLEPHOTOS-START")
+        break
+      case "EXT_UN-MODULE_UPDATE":
+        if (!this.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+        this.GW["EXT-UpdateNotification"].module = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_UN-NPM_UPDATE":
+        if (!this.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+        this.GW["EXT-UpdateNotification"].npm = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_VOLUME-GET":
+        if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
+        this.GW["EXT-Volume"].set = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
         break
       /** Warn if not in db **/
       default:

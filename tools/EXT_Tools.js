@@ -19,6 +19,7 @@ var versionGW = {}
 var webviewTag = false
 var versionGA = {}
 var EXTStatus = {}
+var ErrEXTStatus = 0
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -114,15 +115,28 @@ window.addEventListener("load", async event => {
 })
 
 function doLogin() {
+  $("#Login-submit").addClass('disabled')
   $(document).prop('title', translation.Login_Welcome)
   $('#Welcome').text(translation.Login_Welcome)
   $('#username').attr("placeholder", translation.Login_Username)
   $('#password').attr("placeholder", translation.Login_Password)
+  $('#Login-submit').text(translation.Login_Login)
+
+  $('#login').on('input change', function() {
+    if ($('#username').val() !='' && $('#password').val() !='') $("#Login-submit").removeClass('disabled')
+    else $("#Login-submit").addClass('disabled')
+  })
+
   $("#login").submit(function(event) {
     event.preventDefault()
     $.post( "/auth", $(this).serialize())
       .done(back => {
-        if (back.err) document.getElementById("flashErr").innerHTML = "Error: " + back.err.message
+        if (back.err) {
+          $("#flashErr").text(back.err.message)
+          $("#username").val('')
+          $("#password").val('')
+          $("#Login-submit").addClass('disabled')
+        }
         else $(location).attr('href',"/")
       })
     })
@@ -333,6 +347,12 @@ async function doTools() {
   webviewTag = await checkWebviewTag()
   EXTStatus = await checkEXTStatus()
   versionGA = await checkGA()
+
+  // live stream every secs of EXT for update
+  setInterval(async() => {
+    EXTStatus = await checkEXTStatus()
+  }, 1000)
+
   $('#title').text(translation.Tools_Welcome)
   $('#subtitle').text(translation.Tools_subTitle)
   $('#stop').text(translation.Tools_Die)
@@ -359,27 +379,23 @@ async function doTools() {
     $('#backup-Box').css("display", "block")
 
     document.getElementById('backup-Delete').onclick = function () {
-    $.post("/deleteBackup")
-      .done(function( back ) {
-        if (back.error) {
-          $('#backup-Delete').css("display", "none")
-          $('#backup-Error').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#alert').removeClass('alert-success')
-          $('#alert').addClass('alert-danger')
-          $('#messageText').text(back.error)
-        } else {
-          $('#backup-Delete').css("display", "none")
-          $('#backup-Done').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#messageText').text(translation.Tools_Backup_Deleted)
-        }
-      })
+      $.post("/deleteBackup")
+        .done(function( back ) {
+          if (back.error) {
+            $('#backup-Delete').css("display", "none")
+            $('#backup-Error').css("display", "inline-block")
+            alertify.error(back.error)
+          } else {
+            $('#backup-Delete').css("display", "none")
+            $('#backup-Done').css("display", "inline-block")
+            alertify.success(translation.Tools_Backup_Deleted)
+            back.error
+          }
+        })
     }
 
     document.getElementById('backup-Done').onclick = function () {
       $('#backup-Box').css("display", "none")
-      $('#alert').addClass('invisible')
     }
   }
 
@@ -401,28 +417,23 @@ async function doTools() {
     if (displayNeeded) $('#webview-Box').css("display", "block")
 
     document.getElementById('webviewbtn-Apply').onclick = function () {
-    $.post("/setWebviewTag")
-      .done(function( back ) {
-        if (back.error) {
-          $('#webviewbtn-Apply').css("display", "none")
-          $('#webviewbtn-Error').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#alert').removeClass('alert-success')
-          $('#alert').addClass('alert-danger')
-          $('#messageText').text(back.error)
-        } else {
-          $('#webviewbtn-Apply').css("display", "none")
-          $('#webviewbtn-Done').css("display", "inline-block")
-          $('#alert').removeClass('invisible')
-          $('#messageText').text(translation.Restart)
-        }
-      })
+      $.post("/setWebviewTag")
+        .done(function( back ) {
+          if (back.error) {
+            $('#webviewbtn-Apply').css("display", "none")
+            $('#webviewbtn-Error').css("display", "inline-block")
+            alertify.success(back.error)
+          } else {
+            $('#webviewbtn-Apply').css("display", "none")
+            $('#webviewbtn-Done').css("display", "inline-block")
+            alertify.success(translation.Restart)
+          }
+        })
     }
 
     document.getElementById('webviewbtn-Done').onclick = function () {
       $('#webview-Box').css("display", "none")
       webviewTag = true
-      $('#alert').addClass('invisible')
     }
   }
 
@@ -430,37 +441,257 @@ async function doTools() {
   if (EXTStatus["EXT-Screen"].hello) {
     if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
     else $('#Screen-Control').text(translation.TurnOn)
+    setInterval (() => {
+      if (EXTStatus["EXT-Screen"].power) $('#Screen-Control').text(translation.TurnOff)
+      else $('#Screen-Control').text(translation.TurnOn)
+    }, 1000)
     $('#Screen-Text').text(translation.Tools_Screen_Text)
     $('#Screen-Box').css("display", "block")
 
     document.getElementById('Screen-Control').onclick = function () {
-      $('#Screen-Control').addClass('disabled')
       if (EXTStatus["EXT-Screen"].power) {
         $.post( "/EXT-Screen", { data: "OFF" })
           .done(function( back ) {
             if (back.error) {
-              $('#alert').removeClass('invisible')
-              $('#alert').removeClass('alert-success')
-              $('#alert').addClass('alert-danger')
-              $('#messageText').text(translation.Warn_Error)
+              alertify.error(translation.Warn_Error)
             } else {
-              $('#alert').removeClass('invisible')
-              $('#messageText').text(translation.RequestDone)
+              alertify.success(translation.RequestDone)
             }
           });
       } else {
         $.post( "/EXT-Screen", { data: "ON" })
           .done(function( back ) {
             if (back == "error") {
-              $('#alert').removeClass('invisible')
-              $('#alert').removeClass('alert-success')
-              $('#alert').addClass('alert-danger')
-              $('#messageText').text(translation.Warn_Error)
+              alertify.error(translation.Warn_Error)
             } else {
-              $('#alert').removeClass('invisible')
-              $('#messageText').text(translation.RequestDone)
+              alertify.success(translation.RequestDone)
             }
           });
+      }
+    }
+  }
+
+  // EXT-Alert query
+  if (EXTStatus["EXT-Alert"].hello) {
+    $('#Alert-Query').prop('placeholder', translation.Tools_Alert_Query)
+    $('#Alert-Text').text(translation.Tools_Alert_Text)
+    $('#Alert-Send').text(translation.Send)
+    $('#Alert-Box').css("display", "block")
+    $('#Alert-Query').keyup( function () {
+      if($(this).val().length > 5) {
+         $('#Alert-Send').removeClass('disabled')
+      } else {
+         $('#Alert-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('Alert-Send').onclick = function () {
+      $('#Alert-Send').addClass('disabled')
+      $.post( "/EXT-AlertQuery", { data: $('#Alert-Query').val() })
+        .done(function( back ) {
+          $('#Alert-Query').val('')
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        });
+    }
+  }
+
+  // Volume control
+  if (EXTStatus["EXT-Volume"].hello) {
+    $('#Volume-Text').text(translation.Tools_Volume_Text)
+    $('#Volume-Text2').text(translation.Tools_Volume_Text2)
+    $('#Volume-Text3').text(translation.Tools_Volume_Text3)
+    $('#Volume-Send').text(translation.Confirm)
+    $('#Volume-Box').css("display", "block")
+    setInterval(() => {
+      $('#Volume-Set').text(EXTStatus["EXT-Volume"].set + "%")
+    }, 1000)
+
+    document.getElementById('Volume-Send').onclick = function () {
+      $.post( "/EXT-VolumeSend", { data: $('#Volume-Query').val() })
+        .done(function( back ) {
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        });
+    }
+  }
+
+  // Update Control
+  if (EXTStatus["EXT-UpdateNotification"].hello) {
+    $('#Update-Header').text(translation.Tools_Update_Header)
+    $('#Update-Text').text(translation.Tools_Update_Text)
+    $('#Update-Text2').text(translation.Tools_Update_Text2)
+    // only on live
+    setInterval(async() => {
+      $('#Update-Confirm').text(translation.Confirm)
+      var updateModules = EXTStatus["EXT-UpdateNotification"].module
+      var updateNpm = EXTStatus["EXT-UpdateNotification"].npm
+      if (!updateModules || !updateNpm) return $('#Update-Box').css("display", "none")
+      if (!Object.keys(updateModules).length && !Object.keys(updateNpm).length) return $('#Update-Box').css("display", "none")
+      if (Object.keys(updateModules).length) {
+        $('#Update-Box').css("display", "block")
+        for (const [key, value] of Object.entries(updateModules)) {
+          if($("#" + key).length == 0) $("#Update-Modules-Box").append("<br><span id='"+key + "'>" + key + "</span>")
+        }
+        $('#Update-Modules-Box').css("display", "block")
+      }
+      if (Object.keys(updateNpm).length) {
+        $('#Update-Box').css("display", "block")
+        for (const [key, value] of Object.entries(updateNpm)) {
+          var library = value.library.replace('@bugsounet/', '')
+          if($("#" + value.module + "-" + library).length == 0) $("#Update-NPM-Box").append("<br><span id='"+ value.module + "-" + library + "'>" + key + "</span>")
+        }
+        $('#Update-NPM-Box').css("display", "block")
+      }
+     }, 1000)
+    document.getElementById('Update-Confirm').onclick = function () {
+      $('#Update-Confirm').addClass('disabled')
+      $.post("/EXT-UNUpdate")
+        .done(function( back ) {
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+    }
+  }
+
+  // Spotify Control
+  if (EXTStatus["EXT-Spotify"].hello) {
+    var type = null
+    setInterval(() => {
+      if(EXTStatus["EXT-Spotify"].connected || (EXTStatus["EXT-Spotify"].remote && EXTStatus["EXT-Spotify"].play)) {
+        $('#Spotify-Play').css("display", "none")
+        $('#Spotify-Stop').css("display", "block")
+      } else {
+        $('#Spotify-Play').css("display", "block")
+        $('#Spotify-Stop').css("display", "none")
+      }
+    }, 1000)
+    $('#Spotify-Text').text(translation.Tools_Spotify_Text)
+    $('#Spotify-Text2').text(translation.Tools_Spotify_Text2)
+    $('#Spotify-Send').text(translation.Send)
+    $('#Spotify-Artist-Text').text(translation.Tools_Spotify_Artist)
+    $('#Spotify-Track-Text').text(translation.Tools_Spotify_Track)
+    $('#Spotify-Album-Text').text(translation.Tools_Spotify_Album)
+    $('#Spotify-Playlist-Text').text(translation.Tools_Spotify_Playlist)
+    $('#Spotify-Query').prop('placeholder', translation.Tools_Spotify_Query)
+    $('#Spotify-Send').text(translation.Send)
+    $('#Spotify-Box').css("display", "block")
+    $('#Spotify-Query').keyup( function () {
+      if($(this).val().length > 1 && type) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('Spotify-Send').onclick = function () {
+      $('#Spotify-Send').addClass('disabled')
+      $.post( "/EXT-SpotifyQuery", {
+        data: {
+          query: $('#Spotify-Query').val(),
+          type: type
+        }
+      })
+        .done(function( back ) {
+          $('#Spotify-Query').val('')
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        });
+    }
+
+    document.getElementById('Spotify-Play').onclick = function () {
+      $.post("/EXT-SpotifyPlay")
+    }
+
+    document.getElementById('Spotify-Stop').onclick = function () {
+      $.post("/EXT-SpotifyStop")
+    }
+
+    document.getElementById('Spotify-Next').onclick = function () {
+      $.post("/EXT-SpotifyNext")
+    }
+
+    document.getElementById('Spotify-Previous').onclick = function () {
+      $.post("/EXT-SpotifyPrevious")
+    }
+
+    document.getElementById('Spotify-Artist').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "artist"
+      $("#Spotify-Track").prop("checked", !this.checked)
+      $("#Spotify-Album").prop("checked", !this.checked)
+      $("#Spotify-Playlist").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    }
+
+    document.getElementById('Spotify-Track').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "track"
+      $("#Spotify-Artist").prop("checked", !this.checked)
+      $("#Spotify-Album").prop("checked", !this.checked)
+      $("#Spotify-Playlist").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    }
+
+    document.getElementById('Spotify-Album').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "album"
+      $("#Spotify-Artist").prop("checked", !this.checked)
+      $("#Spotify-Track").prop("checked", !this.checked)
+      $("#Spotify-Playlist").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
+      }
+    }
+
+    document.getElementById('Spotify-Playlist').onclick = function () {
+      if (!this.checked) {
+        type = null
+        $('#Spotify-Send').addClass('disabled')
+        return
+      }
+      type = "playlist"
+      $("#Spotify-Artist").prop("checked", !this.checked)
+      $("#Spotify-Track").prop("checked", !this.checked)
+      $("#Spotify-Album").prop("checked", !this.checked)
+      if ($('#Spotify-Query').val().length > 1) {
+         $('#Spotify-Send').removeClass('disabled')
+      } else {
+         $('#Spotify-Send').addClass('disabled')
       }
     }
   }
@@ -485,18 +716,61 @@ async function doTools() {
         .done(function( back ) {
           $('#GoogleAssistant-Query').val('')
           if (back == "error") {
-            $('#alert').removeClass('invisible')
-            $('#alert').removeClass('alert-success')
-            $('#alert').addClass('alert-danger')
-            $('#messageText').text(translation.Warn_Error)
+            alertify.error(translation.Warn_Error)
           } else {
-            $('#alert').removeClass('invisible')
-            $('#messageText').text(translation.RequestDone)
+            alertify.success(translation.RequestDone)
           }
         });
     }
   }
 
+  // YouTube Query
+  if (EXTStatus["EXT-YouTube"].hello || EXTStatus["EXT-YouTubeVLC"].hello) {
+    $('#YouTube-Text').text(translation.Tools_YouTube_Text)
+    $('#YouTube-Query').prop('placeholder', translation.Tools_YouTube_Query)
+    $('#YouTube-Send').text(translation.Send)
+    $('#YouTube-Box').css("display", "block")
+    $('#YouTube-Query').keyup( function () {
+      if($(this).val().length > 1) {
+         $('#YouTube-Send').removeClass('disabled')
+      } else {
+         $('#YouTube-Send').addClass('disabled')
+      }
+    })
+
+    document.getElementById('YouTube-Send').onclick = function () {
+      $.post( "/EXT-YouTubeQuery", { data: $('#YouTube-Query').val() })
+        .done(function( back ) {
+          $('#YouTube-Query').val('')
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+    }
+  }
+
+  // Stop Command
+  $('#Stop-Text').text(translation.Tools_Stop_Text)
+  $('#Stop-Send').text(translation.Send)
+  document.getElementById('Stop-Send').onclick = function () {
+    $.post( "/EXT-StopQuery")
+      .done(function( back ) {
+        if (back == "error") {
+          alertify.error(translation.Warn_Error)
+        } else {
+          alertify.success(translation.RequestDone)
+        }
+      })
+  }
+
+  setInterval(() => {
+    if (this.hasPluginConnected(EXTStatus, "connected", true)) {
+      $('#Stop-Box').css("display", "block")
+    }
+    else $('#Stop-Box').css("display", "none")
+  }, 1000)
 }
 
 async function createEXTTable() {
@@ -872,13 +1146,13 @@ async function EXTModifyConfigJSEditor() {
           if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
             errors.push({
               path: ['config', 'detectors', index, "Model"],
-              message: detector.Model + " is not comptatible with Snowboy detector"
+              message: detector.Model + " " + translation.Plugins_Error_Snowboy
             })
           }
           if (detector.detector == "Porcupine" && PorcupineValidator.indexOf(detector.Model) == -1) {
             errors.push({
               path: ['config', 'detectors', index, "Model"],
-              message: detector.Model + " is not comptatible with Porcupine detector"
+              message: detector.Model + " " + translation.Plugins_Error_Porcupine
             })
           }
         })
@@ -1021,6 +1295,8 @@ function GatewaySetting() {
   $('#DonateHeader').text(translation.Setting_Info_Donate)
   $('#DonateText').text(translation.Setting_Info_Donate_Text)
   $('#VersionHeader').text(translation.Setting_Info_About)
+  $('#upnpHeader').text(translation.Setting_Server_useMapping)
+  $('#upnpPortHeader').text(translation.Setting_Server_portMapping)
   for (let tr = 1; tr <= 10; tr++) {
     let trans = "Setting_Info_Translator"+tr
     if (tr == 1 && translation[trans]) {
@@ -1047,13 +1323,29 @@ function GatewaySetting() {
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
   $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
   $("#port option[value='" + actualSetting.port + "']").prop('selected', true)
-  
+
+  $("#upnp").prop("checked", actualSetting.useMapping)
+  $("select.grpupnp").prop("disabled", !actualSetting.useMapping)
+  if (actualSetting.noLogin) {
+    $("#upnp").prop("disabled", true)
+    $("#upnp").prop("checked", false)
+    $("select.grpupnp").prop("disabled", true)
+  }
+  $("#upnpPort option[value='" + actualSetting.portMapping + "']").prop('selected', true)
+
   document.getElementById('login').onclick = function () {
     $("input.grplogin").prop("disabled", !this.checked)
+    $("#upnp").prop("disabled", !this.checked)
+    $("#upnp").prop("checked", false)
+    $("select.grpupnp").prop("disabled", true)
   }
 
   document.getElementById('pm2').onclick = function () {
     $("select.grppm2").prop("disabled", !this.checked)
+  }
+
+  document.getElementById('upnp').onclick = function () {
+    $("select.grpupnp").prop("disabled", !this.checked)
   }
   
   $("#GatewaySetting").submit(function(event) {
@@ -1066,7 +1358,9 @@ function GatewaySetting() {
         password: "admin",
         noLogin: false,
         usePM2: false,
-        PM2Id: 0
+        PM2Id: 0,
+        useMapping: false,
+        portMapping: 8081
       }
     }
     event.preventDefault()
@@ -1079,21 +1373,21 @@ function GatewaySetting() {
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
-        $('#messageText').text("Please enter Username!")
+        $('#messageText').text(translation.Setting_Credentials_username_placeholder)
         return
       }
       if (!password) {
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
-        $('#messageText').text("Please enter Password!")
+        $('#messageText').text(translation.Setting_Credentials_password_placeholder)
         return
       }
       if (password != confirm) {
         $('#alert').removeClass('invisible')
         $('#alert').removeClass('alert-success')
         $('#alert').addClass('alert-danger')
-        $('#messageText').text("Password is not confirmed!")
+        $('#messageText').text(translation.Setting_Credentials_confirmpwd_placeholder)
         return
       }
       newGatewayConfig.config.noLogin = false
@@ -1119,6 +1413,17 @@ function GatewaySetting() {
       newGatewayConfig.config.usePM2 = false
       newGatewayConfig.config.PM2Id = 0
     }
+    var useMapping = $( "input[type=checkbox][name=upnp]:checked" ).val()
+    var portMapping = Number($( "select#upnpPort" ).val())
+    if (useMapping) {
+      newGatewayConfig.config.useMapping = true
+      newGatewayConfig.config.portMapping = portMapping
+    }
+    else {
+      newGatewayConfig.config.useMapping = false
+      newGatewayConfig.config.portMapping = portMapping
+    }
+
     $('#alert').removeClass('invisible')
     $('#alert').removeClass('alert-danger')
     $('#alert').addClass('alert-success')
@@ -1226,6 +1531,16 @@ function checkEXTStatus() {
       //console.log("EXTStatus", Status)
       resolve(Status)
     })
+      .done(() => {
+        if(ErrEXTStatus) {
+          ErrEXTStatus= 0
+          alertify.success("EXTStatus: Connected!")
+        }
+      })
+      .fail(() => {
+        ErrEXTStatus++
+        if (ErrEXTStatus== 1) alertify.error("EXTStatus: Connexion Lost!")
+      })
   })
 }
 
@@ -1317,4 +1632,20 @@ function loadBackupNames() {
       resolve(backups)
     })
   })
+}
+
+function hasPluginConnected(obj, key, value) {
+  if (typeof obj === 'object' && obj !== null) {
+    if (obj.hasOwnProperty(key)) return true
+    for (var p in obj) {
+      if (obj.hasOwnProperty(p) && this.hasPluginConnected(obj[p], key, value)) {
+        //logGW("check", key+":"+value, "in", p)
+        if (obj[p][key] == value) {
+          //logGW(p, "is connected")
+          return true
+        }
+      }
+    }
+  }
+  return false
 }

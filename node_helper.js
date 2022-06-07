@@ -48,6 +48,8 @@ module.exports = NodeHelper.create({
     this.GAConfig= {}
     this.lib = {}
     this.HyperWatch = null
+    this.Mapping = null
+    this.loginWarn = false
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -135,6 +137,7 @@ module.exports = NodeHelper.create({
         if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
           console.warn("[GATEWAY] WARN: You are using default username or default password")
           console.warn("[GATEWAY] WARN: Don't forget to change it!")
+          this.loginWarn = true
         }
         this.user.username = this.config.username
         this.user.password = this.config.password
@@ -683,7 +686,139 @@ module.exports = NodeHelper.create({
         if(req.user || this.noLogin) {
           let data = req.body.data
           if (!data) return res.send("error")
-          this.sendSocketNotification("SendNoti", {noti: "GAv4_ACTIVATE", payload: { type: "TEXT" , key: data }})
+          this.sendSocketNotification("SendNoti", {
+            noti: "GAv4_ACTIVATE",
+            payload: {
+              type: "TEXT",
+              key: data
+            }
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-AlertQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_ALERT",
+            payload: {
+              type: "information",
+              message: data,
+              sender: req.user ? req.user.username : 'Gateway',
+              timer: 30 * 1000,
+              sound: "modules/Gateway/tools/message.mp3",
+              icon: "modules/Gateway/admin/assets/img/gateway.jpg"
+            }
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-VolumeSend", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_VOLUME-SET",
+            payload: data
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let result = req.body.data
+          if (!result) return res.send("error")
+          let query = req.body.data.query
+          let type = req.body.data.type
+          if (!query || !type ) return res.send("error")
+          var pl = {
+            type: type,
+            query: query,
+            random: false
+          }
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_SPOTIFY-SEARCH",
+            payload: pl
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyPlay", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PLAY")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyStop", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-STOP")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyNext", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-NEXT")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-SpotifyPrevious", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PREVIOUS")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-UNUpdate", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendNoti", "EXT_UPDATENOTIFICATION-UPDATE")
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-YouTubeQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          if (this.EXTStatus["EXT-YouTube"].hello) {
+            this.sendSocketNotification("SendNoti", {
+              noti: "EXT_YOUTUBE-SEARCH",
+              payload: data
+            })
+            res.send("ok")
+          } else if (this.EXTStatus["EXT-YouTubeVLC"].hello) {
+            this.sendSocketNotification("SendNoti", {
+              noti: "EXT_YOUTUBEVLC-SEARCH",
+              payload: data
+            })
+            res.send("ok")
+          } else {
+            res.send("error")
+          }
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-StopQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          this.sendSocketNotification("SendStop")
+          this.sendSocketNotification("SendNoti", "EXT_STOP")
           res.send("ok")
         }
         else res.send("error")
@@ -691,7 +826,7 @@ module.exports = NodeHelper.create({
 
       .post("/deleteBackup", async (req,res) => {
         if(req.user || this.noLogin) {
-          console.log("[Gateway] Receiving delete backup demand...")
+          console.log("[GATEWAY] Receiving delete backup demand...")
           var deleteBackup = await this.lib.tools.deleteBackup()
           console.log("[GATEWAY] Delete backup result:", deleteBackup)
           res.send(deleteBackup)
@@ -710,8 +845,15 @@ module.exports = NodeHelper.create({
           
     /** Create Server **/
     this.config.listening = await this.lib.tools.purposeIP()
-    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
+    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, async () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
+      if (this.config.useMapping) {
+        console.log("[GATEWAY][UPNP] Try to Mapping port with upnp")
+        this.Mapping = await this.lib.tools.portMapping(this.config, this.loginWarn)
+        if (this.Mapping.done) console.log("[GATEWAY][UPNP] Start listening on http://"+this.Mapping.ip+":" + this.config.portMapping)
+        else console.error("[GATEWAY][UPNP] Mapping error !")
+      }
+      else await this.lib.tools.portMappingDelete()
     }))
     this.initialized= true
   },
@@ -723,7 +865,7 @@ module.exports = NodeHelper.create({
         if (username === this.user.username && password === this.user.password) {
           return done(null, this.user)
         }
-        else done(null, false, { message: 'Invalid username and password.' })
+        else done(null, false, { message: this.translation["Login_Error"] })
       }
     ))
 

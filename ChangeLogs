@@ -1,7 +1,44 @@
+22/06/07
+* Add: YouTube search in Tools
+* Add: Plugins Stop in Tools
+
+22/06/06
+* Add: EXT-UpdateNotification in tools
+* Update: Stream EXTStatus (Status of ALL plugins) for realtime using
+* Fix: Minor display problem in Screen tools at start
+* Add: translate for EXT-UpdateNotification in tools
+* Fix: Review Login translate (Thx to @CalCu for report)
+* Fix: Translate in EXT-Detector (check snowboy/porcupine keyword)
+* Fix: Missing translated part on check username/password in setting
+* Update: Display current volume in Tools
+* Update: New Feature in EXT-Volume
+* Update: Dependencies
+* <Pre-release v2.1.0>
+
+22/06/05
+* Update: es translation (@CalCu)
+* Add: EXT-Spotify Controller
+* Update: Tools use alertify for displaying any notifications / errors
+* Correct: Volume 40% value in Tools
+* Correct: Displaying Spotify logo in Tools
+
+22/06/04:
+* Update preinstall package (missing build-essential)
+* Update typo in translations
+* Add: EXT-Alert in tools
+* Add: EXT-Volume in tools
+
+22/06/03:
+* Starting Gateway v2.1.0
+* New: Start coding UPnP (beta)
+* Add: new setting in UI
+* Add: new translation part
+
 22/06/01:
 * Update: Dependencies (package-lock.json)
 * Release Gateway v2.0.0
 * Update: en translation
+* Update: nl translation (@bitass)
 * Fix: double tooltip in setting
 
 22/05/31:
