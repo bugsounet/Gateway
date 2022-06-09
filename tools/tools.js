@@ -15,6 +15,16 @@ function readConfig() {
   })
 }
 
+/** read streamsConfig.json of EXT-FreeboxTV**/
+function readFreeteuseTV() {
+  return new Promise(resolve => {
+    var streamsConfig = undefined
+    let file = path.resolve(__dirname, "../../EXT-FreeboxTV/streamsConfig.json")
+    if (fs.existsSync(file)) streamsConfig = require(file)
+    resolve(streamsConfig)
+  })
+}
+
 /** search installed EXT from DB**/
 function searchConfigured (config,ext) {
   try {
@@ -478,3 +488,4 @@ exports.makeSchemaTranslate = makeSchemaTranslate
 exports.readAllMMLogs = readAllMMLogs
 exports.portMapping = portMapping
 exports.portMappingDelete = portMappingDelete
+exports.readFreeteuseTV = readFreeteuseTV

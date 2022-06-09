@@ -751,6 +751,21 @@ async function doTools() {
     }
   }
 
+  // FreeboxTV query
+  if (EXTStatus["EXT-FreeboxTV"].hello && versionGW.lang == 'fr') {
+    $('#FreeboxTV-Box').css("display", "block")
+    document.getElementById('FreeboxTV-Send').onclick = function () {
+      $.post( "/EXT-FreeboxTVQuery", { data: $('#FreeboxTV-Query').val() })
+        .done(function( back ) {
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+    }
+  }
+
   // Stop Command
   $('#Stop-Text').text(translation.Tools_Stop_Text)
   $('#Stop-Send').text(translation.Send)

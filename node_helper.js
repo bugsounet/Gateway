@@ -90,6 +90,7 @@ module.exports = NodeHelper.create({
     this.EXTStatus = data.EXTStatus
     this.GACheck.version = this.lib.tools.searchGA()
     this.GAConfig = this.lib.tools.getGAConfig(this.MMConfig)
+    this.freeteuse = await this.lib.tools.readFreeteuseTV()
     this.initialize()
   },
 
@@ -811,6 +812,19 @@ module.exports = NodeHelper.create({
           } else {
             res.send("error")
           }
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-FreeboxTVQuery", (req, res) => {
+        if(req.user || this.noLogin || !this.freeteuse) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_FREEBOXTV-PLAY",
+            payload: data
+          })
+          res.send("ok")
         }
         else res.send("error")
       })
