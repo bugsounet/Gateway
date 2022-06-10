@@ -91,6 +91,8 @@
   "GW_Tools_YouTube_Text" :"Lance une vidéo YouTube",
   "GW_Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
   "GW_Tools_Stop_Text" :"Arrête tous les plugins en fonctionnement",
+  "GW_Tools_Radio_Text" :"Ecouter la Radio",
+  "GW_Tools_Radio_Text2" :"No radio found!",
 
   "GW_Setting": "Paramètres",
   "GW_Setting_Title": "Paramètres de Gateway",
@@ -148,6 +150,7 @@
   "GW_TurnOn": "Allumer",
   "GW_TurnOff": "Eteindre",
   "GW_RequestDone": "La commande a été envoyée avec succès",
+  "GW_Listen": "Ecouter",
 
   "EXT-Alert": "Affichez tout avertissement, information ou erreur sur votre écran.",
   "EXT-Background": "Modifiez l'arrière-plan par défaut de l'assistant Google par le vôtre ou avec des gifs animés pour chaque statut de l'assistant.",

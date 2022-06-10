@@ -91,6 +91,8 @@
   "GW_Tools_YouTube_Text" :"Play a YouTube video",
   "GW_Tools_YouTube_Query": "Enter your YouTube search",
   "GW_Tools_Stop_Text" :"Stop all running plugins",
+  "GW_Tools_Radio_Text" :"Listen Radio",
+  "GW_Tools_Radio_Text2" :"No radio found!",
 
   "GW_Setting": "Instellingen",
   "GW_Setting_Title": "Gateway Instellingen",
@@ -148,6 +150,7 @@
   "GW_TurnOn": "AAN zetten",
   "GW_TurnOff": "UIT zetten",
   "GW_RequestDone": "Uw verzoek is met succesvol verzonden",
+  "GW_Listen": "Listen",
 
   "EXT-Alert": "Toont elke waarschuwing, info of fout op je scherm.",
   "EXT-Background": "Verander de Google Assistant achtergrond naar uw keuze met geanimeerde gif's voor elke status van de assistent.",

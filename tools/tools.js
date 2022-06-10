@@ -15,6 +15,30 @@ function readConfig() {
   })
 }
 
+/** read streamsConfig.json of EXT-FreeboxTV**/
+function readFreeteuseTV() {
+  return new Promise(resolve => {
+    var streamsConfig = undefined
+    let file = path.resolve(__dirname, "../../EXT-FreeboxTV/streamsConfig.json")
+    if (fs.existsSync(file)) streamsConfig = require(file)
+    resolve(streamsConfig)
+  })
+}
+
+function readRadioRecipe(lang) {
+  return new Promise(resolve => {
+    var RadioResult = undefined
+    let file = path.resolve(__dirname, "../../EXT-RadioPlayer/recipe/EXT-RadioPlayer."+lang+".js")
+    try {
+      if (fs.existsSync(file)) RadioResult = require(file).recipe.commands
+    } catch (e) {
+      resolve(RadioResult)
+      console.error("[GATEWAY][Radio] error when loading file", file)
+    }
+    resolve(RadioResult)
+  })
+}
+
 /** search installed EXT from DB**/
 function searchConfigured (config,ext) {
   try {
@@ -478,3 +502,5 @@ exports.makeSchemaTranslate = makeSchemaTranslate
 exports.readAllMMLogs = readAllMMLogs
 exports.portMapping = portMapping
 exports.portMappingDelete = portMappingDelete
+exports.readFreeteuseTV = readFreeteuseTV
+exports.readRadioRecipe = readRadioRecipe

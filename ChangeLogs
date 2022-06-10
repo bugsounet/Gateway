@@ -1,3 +1,15 @@
+22/06/10
+* Add: EXT-RadioPlayer
+* Use alertify on error
+
+22/06/09
+* v2.1.1 start
+* Add: FreeboxTV in Tools (French language only)
+* Fix: Error when GA not found
+
+22/06/08
+* Release v2.1.0
+
 22/06/07
 * Add: YouTube search in Tools
 * Add: Plugins Stop in Tools
