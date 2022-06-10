@@ -129,15 +129,23 @@ function doLogin() {
 
   $("#login").submit(function(event) {
     event.preventDefault()
+    alertify.set('notifier','position', 'top-center')
     $.post( "/auth", $(this).serialize())
       .done(back => {
         if (back.err) {
-          $("#flashErr").text(back.err.message)
+          alertify.error("[Login] " + back.err.message)
           $("#username").val('')
           $("#password").val('')
           $("#Login-submit").addClass('disabled')
         }
-        else $(location).attr('href',"/")
+        else {
+          alertify.success($('#username').val() + ", " + translation.Login_Welcome)
+          setTimeout( () => { $(location).attr('href',"/") } , 2000 )
+        }
+      })
+      .fail(function(err) {
+        alertify.error("[Login] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        console.log(err)
       })
     })
 }
@@ -189,6 +197,9 @@ function doDelete() {
         resolve()
         setTimeout(() => socketDelete.close(), 500)
       })
+      .fail(function(err) {
+        alertify.error("[doDelete] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
     })
   }
 }
@@ -234,6 +245,9 @@ function doInstall() {
         else $('#messageText').text(translation.Warn_Error)
         resolve()
         setTimeout(() => socketInstall.close(), 500)
+      })
+      .fail(function(err) {
+        alertify.error("[doInstall] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
       })
     })
   }
@@ -392,6 +406,9 @@ async function doTools() {
             back.error
           }
         })
+        .fail(function(err) {
+          alertify.error("[Delete] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
 
     document.getElementById('backup-Done').onclick = function () {
@@ -429,6 +446,9 @@ async function doTools() {
             alertify.success(translation.Restart)
           }
         })
+        .fail(function(err) {
+          alertify.error("[WebviewTag] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
 
     document.getElementById('webviewbtn-Done').onclick = function () {
@@ -457,7 +477,10 @@ async function doTools() {
             } else {
               alertify.success(translation.RequestDone)
             }
-          });
+          })
+          .fail(function(err) {
+            alertify.error("[Screen] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+          })
       } else {
         $.post( "/EXT-Screen", { data: "ON" })
           .done(function( back ) {
@@ -466,7 +489,10 @@ async function doTools() {
             } else {
               alertify.success(translation.RequestDone)
             }
-          });
+          })
+          .fail(function(err) {
+          alertify.error("[Screen] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
       }
     }
   }
@@ -495,7 +521,10 @@ async function doTools() {
           } else {
             alertify.success(translation.RequestDone)
           }
-        });
+        })
+        .fail(function(err) {
+          alertify.error("[Alert] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
   }
 
@@ -518,7 +547,10 @@ async function doTools() {
           } else {
             alertify.success(translation.RequestDone)
           }
-        });
+        })
+        .fail(function(err) {
+          alertify.error("[Volume] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
   }
 
@@ -559,6 +591,9 @@ async function doTools() {
           } else {
             alertify.success(translation.RequestDone)
           }
+        })
+        .fail(function(err) {
+          alertify.error("[UpdateNotification] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
         })
     }
   }
@@ -608,7 +643,10 @@ async function doTools() {
           } else {
             alertify.success(translation.RequestDone)
           }
-        });
+        })
+        .fail(function(err) {
+          alertify.error("[Spotify] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
 
     document.getElementById('Spotify-Play').onclick = function () {
@@ -720,7 +758,10 @@ async function doTools() {
           } else {
             alertify.success(translation.RequestDone)
           }
-        });
+        })
+        .fail(function(err) {
+          alertify.error("[GoogleAssistant] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
   }
 
@@ -748,6 +789,45 @@ async function doTools() {
             alertify.success(translation.RequestDone)
           }
         })
+        .fail(function(err) {
+          alertify.error("[YouTube] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
+    }
+  }
+
+  // RadioPlayer query
+  if (EXTStatus["EXT-RadioPlayer"].hello) {
+    $('#Radio-Text').text(translation.Tools_Radio_Text)
+    $('#Radio-Send').text(translation.Listen)
+    var radio = await loadRadio()
+    if (radio.length) {
+      radio.forEach(station => {
+        $('#Radio-Query').append($('<option>', { 
+          value: station,
+          text : station,
+          selected: false
+        }))
+      })
+    }
+    else {
+      $('#Radio-Query').css("display", "none")
+      $('#Radio-Text2').text(translation.Tools_Radio_Text2)
+      $('#Radio-Text2').css("display", "block")
+      $('#Radio-Send').addClass('disabled')
+    }
+    $('#Radio-Box').css("display", "block")
+    document.getElementById('Radio-Send').onclick = function () {
+      $.post( "/EXT-RadioQuery", { data: $('#Radio-Query').val() })
+        .done(function( back ) {
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+        .fail(function(err) {
+          alertify.error("[RadioPlayer] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
   }
 
@@ -763,6 +843,9 @@ async function doTools() {
             alertify.success(translation.RequestDone)
           }
         })
+        .fail(function(err) {
+          alertify.error("[FreeboxTV] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
     }
   }
 
@@ -777,6 +860,9 @@ async function doTools() {
         } else {
           alertify.success(translation.RequestDone)
         }
+      })
+      .fail(function(err) {
+        alertify.error("[STOP] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
       })
   }
 
@@ -1010,7 +1096,10 @@ async function EditMMConfigJSEditor() {
           $('#alert').removeClass('invisible')
           $('#messageText').text(translation.Restart)
         }
-      });
+      })
+      .fail(function(err) {
+        alertify.error("[loadBackup] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
   }
   document.getElementById('save').onclick = function () {
     let data = editor.getText()
@@ -1031,7 +1120,10 @@ async function EditMMConfigJSEditor() {
           $('#alert').removeClass('invisible')
           $('#messageText').text(translation.Restart)
         }
-      });
+      })
+      .fail(function(err) {
+        alertify.error("[writeConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
   }
 }
 
@@ -1114,7 +1206,10 @@ async function EXTConfigJSEditor() {
           $('#alert').removeClass('invisible')
           $('#messageText').text(translation.Restart)
         }
-      });
+      })
+      .fail(function(err) {
+        alertify.error("[writeEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
   }
 }
 
@@ -1214,7 +1309,10 @@ async function EXTModifyConfigJSEditor() {
           $('#alert').removeClass('invisible')
           $('#messageText').text(translation.Restart)
         }
-      });
+      })
+      .fail(function(err) {
+        alertify.error("[writeEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
   }
   document.getElementById('loadDefault').onclick = async function () {
     editor.set(defaultConfig)
@@ -1276,7 +1374,10 @@ async function EXTDeleteConfigJSEditor() {
           $('#alert').removeClass('invisible')
           $('#messageText').text(translation.Plugins_DeleteConfig_Confirmed)
         }
-      });
+      })
+      .fail(function(err) {
+        alertify.error("[deleteEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
   }
 }
 
@@ -1467,6 +1568,9 @@ function GatewaySetting() {
           $('#restart').css("display", "block")
         }
       })
+      .fail(function(err) {
+        alertify.error("[saveSetting] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      })
   })
 }
 
@@ -1501,6 +1605,10 @@ function getGatewaySetting() {
       //console.log("SettingGW", confGW)
       resolve(confGW)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[getGatewaySetting] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1509,6 +1617,10 @@ function getGatewayVersion() {
     $.getJSON("/version" , (versionGW) => {
       //console.log("Version", versionGW)
       resolve(versionGW)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[getGatewayVersion] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }
@@ -1519,6 +1631,10 @@ function loadPluginCurrentConfig(plugin) {
       //console.log("CurrentConfig", currentConfig)
       resolve(currentConfig)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadPluginCurrentConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1528,6 +1644,10 @@ function checkWebviewTag() {
       //console.log("webviewTag", tag)
       resolve(tag)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[checkWebviewTag] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1536,6 +1656,10 @@ function checkGA() {
     $.getJSON("/getGAVersion" , (GA) => {
       //console.log("GAVersion", GA)
       resolve(GA)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[checkGA] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }
@@ -1552,9 +1676,10 @@ function checkEXTStatus() {
           alertify.success("EXTStatus: Connected!")
         }
       })
-      .fail(() => {
+      .fail((err) => {
         ErrEXTStatus++
         if (ErrEXTStatus== 1) alertify.error("EXTStatus: Connexion Lost!")
+        if (err.status == 403) $(location).attr('href',"/")
       })
   })
 }
@@ -1565,6 +1690,10 @@ function loadTranslation() {
       //console.log("Translation", tr)
       resolve(tr)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadTranslation] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1573,6 +1702,10 @@ function loadDataAllEXT() {
     $.getJSON("/allEXT" , (all) => {
       //console.log("allEXT", all)
       resolve(all)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadDataAllEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }
@@ -1583,6 +1716,10 @@ function loadDataConfiguredEXT() {
       //console.log("ConfiguredEXT", confEXT)
       resolve(confEXT)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadDataConfiguredEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1591,6 +1728,10 @@ function loadDataInstalledEXT() {
     $.getJSON("/InstalledEXT" , (instEXT) => {
       //console.log("InstalledEXT", instEXT)
       resolve(instEXT)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadDataInstalledEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }
@@ -1601,6 +1742,10 @@ function loadDataDescriptionEXT() {
       //console.log("DescriptionEXT", desEXT)
       resolve(desEXT)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadDataDescriptionEXT] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1609,6 +1754,10 @@ function loadMMConfig() {
     $.getJSON("/GetMMConfig" , (config) => {
       //console.log("MMConfig", config)
       resolve(config)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadMMConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }
@@ -1619,6 +1768,10 @@ function loadPluginConfig(plugin) {
       //console.log("defaultConfig", defaultConfig)
       resolve(defaultConfig)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadPluginConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1627,6 +1780,10 @@ function loadPluginTemplate(plugin) {
     $.getJSON("/EXTGetDefaultTemplate?ext="+plugin , (defaultTemplate) => {
       //console.log("defaultTemplate", defaultTemplate)
       resolve(defaultTemplate)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadPluginTemplate] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }
@@ -1637,6 +1794,10 @@ function loadBackupConfig(file) {
       //console.log("backupFile", backupFile)
       resolve(backupFile)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadBackupConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
 }
 
@@ -1646,7 +1807,27 @@ function loadBackupNames() {
       //console.log("backups", backups)
       resolve(backups)
     })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[loadBackupNames] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
   })
+}
+
+function loadRadio() {
+  return new Promise(resolve => {
+    $.getJSON("/GetRadioStations" , (radio) => {
+      //console.log("radio", radio)
+      resolve(radio)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      if (err.status == 404) resolve([])
+      else alertify.warning("[loadRadio] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+      
+    })
+  })    
+  
 }
 
 function hasPluginConnected(obj, key, value) {

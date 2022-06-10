@@ -91,6 +91,7 @@ module.exports = NodeHelper.create({
     this.GACheck.version = this.lib.tools.searchGA()
     this.GAConfig = this.lib.tools.getGAConfig(this.MMConfig)
     this.freeteuse = await this.lib.tools.readFreeteuseTV()
+    this.radio= await this.lib.tools.readRadioRecipe(this.language)
     this.initialize()
   },
 
@@ -151,11 +152,11 @@ module.exports = NodeHelper.create({
     this.EXTInstalled= this.lib.tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
     log("Find", this.EXTConfigured.length, "configured plugins in config file")
-    if (semver.gte(this.GACheck.version, '4.0.0')) {
+    if (this.GAcheck && semver.gte(this.GACheck.version, '4.0.0')) {
       this.GACheck.find = true
       log("Find MMM-GoogleAssistant v" + this.GACheck.version)
     }
-    else log("MMM-GoogleAssistant Not Found!")
+    else console.warn("[GATEWAY] MMM-GoogleAssistant Not Found!")
     if (Object.keys(this.GAConfig).length > 0) {
       log("Find MMM-GoogleAssistant configured in MagicMirror")
       this.GACheck.configured = true
@@ -598,6 +599,15 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .get("/GetRadioStations", (req,res) => {
+        if (req.user || this.noLogin) {
+          if (!this.radio) return res.status(404).sendFile(__dirname+ "/admin/404.html")
+          var allRadio = Object.keys(this.radio)
+          res.send(allRadio)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
       .post("/loadBackup", async (req,res) => {
         console.log("[Gateway] Receiving backup data ...")
         let file = req.body.data
@@ -824,6 +834,24 @@ module.exports = NodeHelper.create({
             noti: "EXT_FREEBOXTV-PLAY",
             payload: data
           })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-RadioQuery", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          try {
+            var toListen= this.radio[data].notificationExec.payload()
+            this.sendSocketNotification("SendNoti", {
+              noti: "EXT_RADIO-START",
+              payload: toListen
+            })
+          } catch (e) {
+            res.send("error")
+          }
           res.send("ok")
         }
         else res.send("error")

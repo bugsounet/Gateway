@@ -91,6 +91,8 @@
   "GW_Tools_YouTube_Text" :"Play a YouTube video",
   "GW_Tools_YouTube_Query": "Enter your YouTube search",
   "GW_Tools_Stop_Text" :"Stop all running plugins",
+  "GW_Tools_Radio_Text" :"Listen Radio",
+  "GW_Tools_Radio_Text2" :"No radio found!",
 
   "GW_Setting": "Opciones",
   "GW_Setting_Title": "Opciones del Gateway",
@@ -148,6 +150,7 @@
   "GW_TurnOn": "Encender",
   "GW_TurnOff": "Apagar",
   "GW_RequestDone": "La petición fue enviada correctamente",
+  "GW_Listen": "Listen",
 
   "EXT-Alert": "Mostrar cualquier aviso, información o error en la pantalla.",
   "EXT-Background": "Cambia el fondo por defecto de Google Assistant al tuyo propio o a Gifs animados para cada estado del asistente.",
