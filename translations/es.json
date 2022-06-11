@@ -214,6 +214,7 @@
   "VAL_EXT-GooglePhotos_Delay": "Retraso antes de mostrar la siguiente foto (por defecto es 10 segs)",
   "VAL_EXT-GooglePhotos_Infos": "Mostrando el nombre del álbum y la fecha de la foto",
   "VAL_EXT-GooglePhotos_Albums": "Nombre de las carpetas de Google Fotos para mostrar",
+  "VAL_EXT-GooglePhotos_Background": "Displaying a blurred decoration of the photo",
   "VAL_EXT-GooglePhotos_Sort": "Ordenar las fotos recibidas nuevas, antiguas, aleatorias",
   "VAL_EXT-GooglePhotos_HD": "Mostrar fotos en Alta resolución",
   "VAL_EXT-GooglePhotos_Format": "Formato de Hora/Fecha",

@@ -214,6 +214,7 @@
   "VAL_EXT-GooglePhotos_Delay": "Délai avant l'affichage de la photo suivante dans l'iframe (la valeur par défaut est de 10 secondes)",
   "VAL_EXT-GooglePhotos_Infos": "Affichage du nom de l'album et de l'heure de la photo",
   "VAL_EXT-GooglePhotos_Albums": "Affichage du nom de l'album et de l'heure de la photo",
+  "VAL_EXT-GooglePhotos_Background": "Affiche un décor flou de la photo",
   "VAL_EXT-GooglePhotos_Sort": "Trie les photos google reçues (new: nouvelles, old: anciennes, random: aléatoires",
   "VAL_EXT-GooglePhotos_HD": "Affichage des photos en haute résolution",
   "VAL_EXT-GooglePhotos_Format": "Format heure/date",

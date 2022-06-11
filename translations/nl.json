@@ -214,6 +214,7 @@
   "VAL_EXT-GooglePhotos_Delay": "Vertraging alvorens volgende foto te tonen in het iframe (standaard 10 sec)",
   "VAL_EXT-GooglePhotos_Infos": "Tonen van de album naam en foto tijd",
   "VAL_EXT-GooglePhotos_Albums": "Tonen van de mapnamen van de Google Photos",
+  "VAL_EXT-GooglePhotos_Background": "Displaying a blurred decoration of the photo",
   "VAL_EXT-GooglePhotos_Sort": "Sorteer de google photos in oud, nieuw of willekeurig",
   "VAL_EXT-GooglePhotos_HD": "In hoge resolutie de foto's tonen",
   "VAL_EXT-GooglePhotos_Format": "Tijd/datum Formaat",

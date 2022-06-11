@@ -214,6 +214,7 @@
   "VAL_EXT-GooglePhotos_Delay": "Verzögerung bis zur Anzeige des nächsten Fotos (Standard ist 10 Sekunden).",
   "VAL_EXT-GooglePhotos_Infos": "Albumname und Fotozeit anzeigen.",
   "VAL_EXT-GooglePhotos_Albums": "Albennamen für die Anzeige",
+  "VAL_EXT-GooglePhotos_Background": "Displaying a blurred decoration of the photo",
   "VAL_EXT-GooglePhotos_Sort": "Sortierung der Google Fotos. Neu, alt, zufällig.",
   "VAL_EXT-GooglePhotos_HD": "Fotos in hoher Auflösung anzeigen.",
   "VAL_EXT-GooglePhotos_Format": "Format von Zeit/Datum",
