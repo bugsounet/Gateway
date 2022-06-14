@@ -1,3 +1,8 @@
+22/06/14
+* Review/rewrite [~FUNCTION~] in config
+* Read Correctly backup with function
+* Cleaning all tests
+
 22/06/12
 * try Fix problem with Function in config
 * Fix: GoogleAssistant WidGet not activated

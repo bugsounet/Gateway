@@ -14,7 +14,7 @@ function readConfig() {
     let file = path.resolve(__dirname, "../../../config/config.js")
     if (fs.existsSync(file)) {
       MMConfig = require(file)
-      MMConfig = configStartMerge({}, MMConfig, MMConfig)
+      MMConfig = configStartMerge(MMConfig)
     }
     //console.log(MMConfig)
     resolve(MMConfig)
@@ -103,7 +103,6 @@ function timeStamp() {
 
 /** Save MagicMirror config with backup **/
 function saveConfig(MMConfig) {
-  //MMConfig = configMerge({}, MMConfig, MMConfig)
   return new Promise(resolve => {
     var configPath = path.resolve(__dirname, "../../../config/config.js")
     var configPathTMP = path.resolve(__dirname, "../../../config/configTMP.js")
@@ -153,22 +152,14 @@ function saveConfig(MMConfig) {
             rl.on('line', (line) => {
               var Search = FunctionSearch.exec(line)
               if (Search) {
-                //console.log(line)
-                //console.log("0", Search[0])
-                //console.log("1", Search[1])
-                //console.log("2", Search[2])
-                //console.log("3", Search[3])
-                var reviverFunction = Search[3].replace(/\\n/g,'\n');
-                reviverFunction = reviverFunction.replace(/\\/g, '')
-                line = Search[1] + reviverFunction
-                console.log("[GATEWAY][FUNCTION] Reviver line:", line)
-
+                var reviverFunction = reviver(Search)
+                line = reviverFunction
                 return fs.appendFileSync(outputFile, line + '\n')
               }
               fs.appendFileSync(outputFile, line + '\n')
             })
             instream.on("end", () => {
-              resolve({done: "ok" })
+              console.log("[GATEWAY] Gateway saved new configuration!")
               fs.unlink(inputFile, (err) => {
                 if (err) {
                   resolve({error: "Error when deleting file" })
@@ -253,7 +244,10 @@ function loadBackupFile(file) {
   return new Promise(resolve => {
     var BackupConfig = {}
     let filePath = path.resolve(__dirname, "../backup/" + file)
-    if (fs.existsSync(filePath)) BackupConfig = require(filePath)
+    if (fs.existsSync(filePath)) {
+      BackupConfig = require(filePath)
+      BackupConfig = configStartMerge(BackupConfig)
+    }
     resolve(BackupConfig)
   })
 }
@@ -317,7 +311,7 @@ async function purposeIP() {
 
 /** config merge **/
 function configStartMerge(result) {
-  var stack = Array.prototype.slice.call(arguments, 1)
+  var stack = Array.prototype.slice.call(arguments, 0)
   var item
   var key
   while (stack.length) {
@@ -360,8 +354,6 @@ function configMerge(result) {
     item = stack.shift()
     for (key in item) {
       if (item.hasOwnProperty(key)) {
-        //console.log("key",key, typeof result[key])
-        //console.log("item", item)
         if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
           if (typeof item[key] === "object" && item[key] !== null) {
             result[key] = configMerge({}, result[key], item[key])
@@ -369,22 +361,6 @@ function configMerge(result) {
             result[key] = item[key]
           }
         } else result[key] = item[key]
-        /* if (Object.prototype.toString.call(result[key]) == "[object Array]") {
-            result[key] = configMerge([], result[key], item[key])
-            //console.log(typeof item[key], item[key], Object.prototype.toString.call(item[key]))
-        } else if (Object.prototype.toString.call(result[key]) == "[object Object]") {
-            //console.log(typeof item[key], item[key], Object.prototype.toString.call(item[key]))
-            result[key] = configMerge({}, result[key], item[key])
-        } else {
-          //console.log(item[key], item[key].toString().indexOf('[FUNCTION]'))
-          if (item[key] && item[key].toString().indexOf('[FUNCTION]') > -1) {
-            console.log(item[key], key)
-            result[key] = JSON.parse(item[key], reviver)
-            console.log(result[key])
-          } else {
-            result[key] = item[key]
-          }
-        }*/
       }
     }
   }
@@ -590,6 +566,7 @@ async function portMappingDelete() {
   })
 }
 
+// Function() in config ?
 function replacer(key, value) {
   if (typeof value == "function") {
     return "[FUNCTION]" + value.toString()
@@ -597,10 +574,15 @@ function replacer(key, value) {
   return value
 }
 
-function reviver(key, value) {
-  value = value.slice(10)
-  let functionTemplate = `(${value})`
-  return eval(functionTemplate).toString()
+function reviver(value) {
+  // value[1] = feature
+  // value[3] = function()
+  console.log("[GATEWAY][FUNCTION] Function found!")
+  var charsReplacer = value[3].replace(/\\n/g,'\n')
+  charsReplacer = charsReplacer.replace(/\\/g, '')
+  var result = value[1] + charsReplacer
+  console.log("[GATEWAY][FUNCTION] Reviver line:\n", result)
+  return result
 }
 
 /** exports functions for pretty using **/
