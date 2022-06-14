@@ -321,6 +321,7 @@ Module.register("Gateway", {
       Tr.TurnOff = this.translate("GW_TurnOff")
       Tr.RequestDone = this.translate("GW_RequestDone")
       Tr.Listen = this.translate("GW_Listen")
+      Tr.Update = this.translate("GW_Update")
 
       resolve(Tr)
     })

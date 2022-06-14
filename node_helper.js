@@ -14,6 +14,7 @@ var exec = require("child_process").exec
 var semver = require('semver')
 const http = require('http')
 const { Server } = require("socket.io")
+const fetch = require("node-fetch")
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -212,7 +213,26 @@ module.exports = NodeHelper.create({
       })
 
       .get("/version" , (req,res) => {
-          res.send({ v: require('./package.json').version, rev: require('./package.json').rev, lang: this.language })
+          let remoteFile = "https://raw.githubusercontent.com/bugsounet/Gateway/master/package.json"
+          var result = {
+            v: require('./package.json').version,
+            rev: require('./package.json').rev,
+            lang: this.language,
+            last: 0,
+            needUpdate: false
+          }
+          fetch(remoteFile)
+            .then(response => response.json())
+            .then(data => {
+              result.last = data.version
+              if (semver.gte(result.last, result.v)) result.needUpdate = true
+              res.send(result)
+            })
+            .catch(e => {
+              console.error("[GATEWAY] Error on fetch last version number")
+              res.send(result)
+            })
+
       })
 
       .get("/translation" , (req,res) => {

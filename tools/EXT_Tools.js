@@ -153,6 +153,13 @@ function doLogin() {
 function doIndex() {
   $(document).prop('title', translation.Home)
   $('#welcome').text(translation.Home_Welcome)
+  console.log(versionGW)
+  if (versionGW.needUpdate) {
+    $('#alert').removeClass('invisible')
+    $('#alert').removeClass('alert-success')
+    $('#alert').addClass('alert-warning')
+    $('#messageText').text(translation.Update + " v"+versionGW.last)
+  }
 }
 
 function doDelete() {
