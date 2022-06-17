@@ -896,6 +896,17 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .post("/readExternalBackup", async (req,res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send({error: "error"})
+          console.log("[GATEWAY] Receiving External backup...")
+          var transformExternalBackup = await this.lib.tools.transformExternalBackup(data)
+          res.send({ data: transformExternalBackup })
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
       .use("/xterm" , express.static(__dirname + '/node_modules/xterm'))
       .use("/xterm-addon-fit" , express.static(__dirname + '/node_modules/xterm-addon-fit'))

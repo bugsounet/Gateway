@@ -21,6 +21,23 @@ function readConfig() {
   })
 }
 
+function readTMPBackupConfig(file) {
+  return new Promise(resolve => {
+    var TMPConfig = undefined
+    if (fs.existsSync(file)) {
+      TMPConfig = require(file)
+      TMPConfig = configStartMerge(TMPConfig)
+      fs.unlink(file, (err) => {
+        if (err) {
+          //resolve({error: "Error when deleting file" })
+          return console.error("[GATEWAY] error", err)
+        }
+      })
+      resolve(TMPConfig)
+    }
+  })
+}
+
 /** read streamsConfig.json of EXT-FreeboxTV**/
 function readFreeteuseTV() {
   return new Promise(resolve => {
@@ -177,6 +194,21 @@ function saveConfig(MMConfig) {
     destination.on("error", (error) => {
       resolve({error: "Error when writing file" })
       console.log("[GATEWAY]", error)
+    })
+  })
+}
+
+function transformExternalBackup(backup) {
+  return new Promise(resolve => {
+    var tmpFile = path.resolve(__dirname, "../tmp/config.tmp" + timeStamp())
+    fs.writeFile(tmpFile, backup, async (err) => {
+      if (err) {
+        console.log("[GATEWAY][externalBackup]", err)
+        resolve({error: "Error when writing external tmp backup file" })
+      } else {
+        result = await readTMPBackupConfig(tmpFile)
+        resolve(result)
+      }
     })
   })
 }
@@ -609,3 +641,4 @@ exports.portMapping = portMapping
 exports.portMappingDelete = portMappingDelete
 exports.readFreeteuseTV = readFreeteuseTV
 exports.readRadioRecipe = readRadioRecipe
+exports.transformExternalBackup = transformExternalBackup

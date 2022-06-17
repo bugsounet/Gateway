@@ -85,7 +85,7 @@ window.addEventListener("load", async event => {
     forcePortrait: false,
     message: translation.Rotate_Msg,
     subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
+    allowClickBypass: true,
     onlyMobile: true
   }
   PleaseRotate.start(Options)
@@ -1032,11 +1032,13 @@ async function EditMMConfigJSEditor() {
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
   $('#error').text(translation.Error)
+  $('#errorConfig').text(translation.Error)
   $('#save').text(translation.Save)
   $('#load').text(translation.Load)
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
+  $('#errorConfig').css("display", "none")
   $('#load').css("display", "none")
   $('#save').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
@@ -1048,8 +1050,16 @@ async function EditMMConfigJSEditor() {
     mode: 'code',
     mainMenuBar: false,
     onValidationError: (errors) => {
-      if (errors.length) $('#save').css("display", "none")
-      else $('#save').css("display", "block")
+      if (errors.length) {
+        $('#save').css("display", "none")
+        $('#externalSave').addClass('disabled')
+        $('#errorConfig').css("display", "block")
+      }
+      else {
+        $('#errorConfig').css("display", "none")
+        $('#save').css("display", "block")
+        $('#externalSave').removeClass('disabled')
+      }
     }
   }
   
@@ -1131,6 +1141,46 @@ async function EditMMConfigJSEditor() {
       .fail(function(err) {
         alertify.error("[writeConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
       })
+  }
+  FileReaderJS.setupInput(document.getElementById('fileToLoad'), {
+    readAsDefault: 'Text',
+    on: {
+      load: function (event, file) {
+        console.log(event.target)
+        if (event.target.result) {
+          $.post( "/readExternalBackup", { data: event.target.result })
+            .done(function( back ) {
+              if (back.error) {
+                console.log(back.error)
+              } else {
+                console.log(back.data)
+                editor.update(back.data)
+                editor.refresh()
+              }
+            })
+            .fail(function(err) {
+              alertify.error("[readExternalBackup] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+            })
+        }
+      }
+    }
+  })
+  document.getElementById('externalSave').onclick = function () {
+    // Save Dialog
+    let fname = window.prompt("Save as...")
+
+    // Check json extension in file name
+    if (fname.indexOf(".") === -1) {
+      fname = fname + ".json"
+    } else {
+      if (fname.split('.').pop().toLowerCase() === "json") {
+        // Nothing to do
+      } else {
+        fname = fname.split('.')[0] + ".json"
+      }
+    }
+    const blob = new Blob([editor.getText()], {type: 'application/json;charset=utf-8'})
+    saveAs(blob, fname)
   }
 }
 
@@ -1851,4 +1901,15 @@ function hasPluginConnected(obj, key, value) {
     }
   }
   return false
+}
+
+function processSelectedFiles(fileInput) {
+  let files = fileInput.files
+  let file = files[0].name
+
+  $('#backup').append($('<option>', {
+    value: "default",
+    text : file,
+    selected: true
+  }))
 }
