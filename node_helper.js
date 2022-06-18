@@ -200,6 +200,10 @@ module.exports = NodeHelper.create({
       }
     }
 
+    var healthDownloader = function(req, res) {
+      res.redirect('/')
+    }
+
     var io = new Server(this.server)
 
     this.app
@@ -907,6 +911,37 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .post("/saveExternalBackup", async (req,res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send({error: "error"})
+          console.log("[GATEWAY] Receiving External backup...")
+          var linkExternalBackup = await this.lib.tools.saveExternalConfig(data)
+          if (linkExternalBackup.data) {
+            console.log("[GATEWAY] Generate link number:", linkExternalBackup.data)
+            healthDownloader = (req_, res_) => {
+              if (req_.params[0] == linkExternalBackup.data) {
+                res_.sendFile(__dirname + '/download/'+ linkExternalBackup.data + '.js')
+                healthDownloader = function(req_, res_) {
+                  res_.redirect('/')
+                }
+                setTimeout(() => {
+                  this.lib.tools.deleteDownload(linkExternalBackup.data)
+                }, 1000 * 10)
+              } else {
+                res_.redirect('/')
+              }
+            }
+          }
+          res.send(linkExternalBackup)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/download/*", (req,res) => {
+        healthDownloader(req, res)
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
       .use("/xterm" , express.static(__dirname + '/node_modules/xterm'))
       .use("/xterm-addon-fit" , express.static(__dirname + '/node_modules/xterm-addon-fit'))
@@ -915,7 +950,7 @@ module.exports = NodeHelper.create({
         console.warn("[GATEWAY] Don't find:", req.url)
         res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
-          
+
     /** Create Server **/
     this.config.listening = await this.lib.tools.purposeIP()
     this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, async () => {

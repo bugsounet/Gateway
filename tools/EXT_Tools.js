@@ -1146,16 +1146,15 @@ async function EditMMConfigJSEditor() {
     readAsDefault: 'Text',
     on: {
       load: function (event, file) {
-        console.log(event.target)
         if (event.target.result) {
           $.post( "/readExternalBackup", { data: event.target.result })
             .done(function( back ) {
               if (back.error) {
-                console.log(back.error)
+                alertify.error("[readExternalBackup]" + back.error)
               } else {
-                console.log(back.data)
                 editor.update(back.data)
                 editor.refresh()
+                alertify.sucess("External Config Loaded !" + back.error)
               }
             })
             .fail(function(err) {
@@ -1166,21 +1165,39 @@ async function EditMMConfigJSEditor() {
     }
   })
   document.getElementById('externalSave').onclick = function () {
-    // Save Dialog
-    let fname = window.prompt("Save as...")
-
-    // Check json extension in file name
-    if (fname.indexOf(".") === -1) {
-      fname = fname + ".json"
-    } else {
-      if (fname.split('.').pop().toLowerCase() === "json") {
-        // Nothing to do
-      } else {
-        fname = fname.split('.')[0] + ".json"
+    alertify.prompt( 'Gateway', 'Save config file as:', 'config', 
+      function(evt, value) {
+        let fileName = value
+        if (fileName.indexOf(".") === -1) {
+          fileName = fileName + ".js"
+        } else {
+          if (fileName.split('.').pop().toLowerCase() === "js") {
+          // Nothing to do
+          } else {
+            fileName = fileName.split('.')[0] + ".js"
+          }
+        }
+        var configToSave = editor.get()
+        $.post( "/saveExternalBackup", { data: configToSave })
+            .done(function( back ) {
+              if (back.error) {
+                alertify.error(back.error)
+              } else {
+                alertify.success("Download is ready !")
+                $.get( "download/" + back.data, function( data ) {
+                  const blob = new Blob([data], {type: 'application/javascript;charset=utf-8'})
+                  saveAs(blob, fileName)
+                })
+              }
+            })
+            .fail(function(err) {
+              alertify.error("[readExternalBackup] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+            })
+      },
+      function() {
+         // do nothing
       }
-    }
-    const blob = new Blob([editor.getText()], {type: 'application/json;charset=utf-8'})
-    saveAs(blob, fname)
+    )
   }
 }
 
