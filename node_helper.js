@@ -229,7 +229,7 @@ module.exports = NodeHelper.create({
             .then(response => response.json())
             .then(data => {
               result.last = data.version
-              if (semver.gte(result.last, result.v)) result.needUpdate = true
+              if (semver.gt(result.last, result.v)) result.needUpdate = true
               res.send(result)
             })
             .catch(e => {
