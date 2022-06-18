@@ -151,6 +151,7 @@
   "GW_TurnOff": "Spegni",
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
+  "GW_Update": "Update available",
 
   "EXT-Alert": "Mostra Informazioni, Errori o warning sullo schermo.",
   "EXT-Background": "Cambia lo sfondo di default del Google Assistant.",

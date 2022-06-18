@@ -1,4 +1,5 @@
 22/06/18
+* Add: it.json translation (@dvbit)
 * Code external Load and Save
 * Add: Generate download link for external save
 * Clean some debug coding logs
