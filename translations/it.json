@@ -49,7 +49,7 @@
   "GW_TerminalOpen": "Apri Terminale",
   "GW_TerminalGW": "Terminale Gateway",
 
-  "GW_Configuration": "Configurazione MagicMirror",
+  "GW_Configuration": "Config. MagicMirror",
   "GW_Configuration_Welcome": "Configurazione MagicMirror (Sola Lettura)",
   "GW_Configuration_EditLoad": "Modifica o Carica backup",
   "GW_Configuration_Edit_Title": "Editor Configurazione MagicMirror",
