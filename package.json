@@ -31,7 +31,7 @@
     "@bugsounet/nat-api": "^1.0.1",
     "express-session": "^1.17.2",
     "jsoneditor": "^9.7.4",
-    "magicmirror-rebuild": "^1.0.5",
+    "magicmirror-rebuild": "^1.0.6",
     "node-pty": "^0.10.1",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
