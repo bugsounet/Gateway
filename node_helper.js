@@ -14,6 +14,7 @@ var exec = require("child_process").exec
 var semver = require('semver')
 const http = require('http')
 const { Server } = require("socket.io")
+const fetch = require("node-fetch")
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -152,7 +153,7 @@ module.exports = NodeHelper.create({
     this.EXTInstalled= this.lib.tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
     log("Find", this.EXTConfigured.length, "configured plugins in config file")
-    if (this.GAcheck && semver.gte(this.GACheck.version, '4.0.0')) {
+    if (this.GACheck && semver.gte(this.GACheck.version, '4.0.0')) {
       this.GACheck.find = true
       log("Find MMM-GoogleAssistant v" + this.GACheck.version)
     }
@@ -199,6 +200,10 @@ module.exports = NodeHelper.create({
       }
     }
 
+    var healthDownloader = function(req, res) {
+      res.redirect('/')
+    }
+
     var io = new Server(this.server)
 
     this.app
@@ -212,7 +217,26 @@ module.exports = NodeHelper.create({
       })
 
       .get("/version" , (req,res) => {
-          res.send({ v: require('./package.json').version, rev: require('./package.json').rev, lang: this.language })
+          let remoteFile = "https://raw.githubusercontent.com/bugsounet/Gateway/master/package.json"
+          var result = {
+            v: require('./package.json').version,
+            rev: require('./package.json').rev,
+            lang: this.language,
+            last: 0,
+            needUpdate: false
+          }
+          fetch(remoteFile)
+            .then(response => response.json())
+            .then(data => {
+              result.last = data.version
+              if (semver.gte(result.last, result.v)) result.needUpdate = true
+              res.send(result)
+            })
+            .catch(e => {
+              console.error("[GATEWAY] Error on fetch last version number")
+              res.send(result)
+            })
+
       })
 
       .get("/translation" , (req,res) => {
@@ -876,6 +900,48 @@ module.exports = NodeHelper.create({
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
+      .post("/readExternalBackup", async (req,res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send({error: "error"})
+          console.log("[GATEWAY] Receiving External backup...")
+          var transformExternalBackup = await this.lib.tools.transformExternalBackup(data)
+          res.send({ data: transformExternalBackup })
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .post("/saveExternalBackup", async (req,res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send({error: "error"})
+          console.log("[GATEWAY] Receiving External backup...")
+          var linkExternalBackup = await this.lib.tools.saveExternalConfig(data)
+          if (linkExternalBackup.data) {
+            console.log("[GATEWAY] Generate link number:", linkExternalBackup.data)
+            healthDownloader = (req_, res_) => {
+              if (req_.params[0] == linkExternalBackup.data) {
+                res_.sendFile(__dirname + '/download/'+ linkExternalBackup.data + '.js')
+                healthDownloader = function(req_, res_) {
+                  res_.redirect('/')
+                }
+                setTimeout(() => {
+                  this.lib.tools.deleteDownload(linkExternalBackup.data)
+                }, 1000 * 10)
+              } else {
+                res_.redirect('/')
+              }
+            }
+          }
+          res.send(linkExternalBackup)
+        }
+        else res.status(403).sendFile(__dirname+ "/admin/403.html")
+      })
+
+      .get("/download/*", (req,res) => {
+        healthDownloader(req, res)
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
       .use("/xterm" , express.static(__dirname + '/node_modules/xterm'))
       .use("/xterm-addon-fit" , express.static(__dirname + '/node_modules/xterm-addon-fit'))
@@ -884,7 +950,7 @@ module.exports = NodeHelper.create({
         console.warn("[GATEWAY] Don't find:", req.url)
         res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
-          
+
     /** Create Server **/
     this.config.listening = await this.lib.tools.purposeIP()
     this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, async () => {

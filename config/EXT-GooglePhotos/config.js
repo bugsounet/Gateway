@@ -7,6 +7,7 @@ var defaultConfig = {
     displayType: 0,
     displayDelay: 10 * 1000,
     displayInfos: true,
+    displayBackground: true,
     albums: [],
     sort: "new", // "old", "random"
     hiResolution: true,
@@ -76,6 +77,11 @@ var schema = {
         "displayInfos": {
           "type": "boolean",
           "title": "{EXT-GooglePhotos_Infos}",
+          "default": true
+        },
+        "displayBackground": {
+          "type": "boolean",
+          "title": "{EXT-GooglePhotos_Background}",
           "default": true
         },
         "albums": {

@@ -151,6 +151,7 @@
   "GW_TurnOff": "UIT zetten",
   "GW_RequestDone": "Uw verzoek is met succesvol verzonden",
   "GW_Listen": "Listen",
+  "GW_Update": "Update beschikbaar",
 
   "EXT-Alert": "Toont elke waarschuwing, info of fout op je scherm.",
   "EXT-Background": "Verander de Google Assistant achtergrond naar uw keuze met geanimeerde gif's voor elke status van de assistent.",
@@ -214,6 +215,7 @@
   "VAL_EXT-GooglePhotos_Delay": "Vertraging alvorens volgende foto te tonen in het iframe (standaard 10 sec)",
   "VAL_EXT-GooglePhotos_Infos": "Tonen van de album naam en foto tijd",
   "VAL_EXT-GooglePhotos_Albums": "Tonen van de mapnamen van de Google Photos",
+  "VAL_EXT-GooglePhotos_Background": "Displaying a blurred decoration of the photo",
   "VAL_EXT-GooglePhotos_Sort": "Sorteer de google photos in oud, nieuw of willekeurig",
   "VAL_EXT-GooglePhotos_HD": "In hoge resolutie de foto's tonen",
   "VAL_EXT-GooglePhotos_Format": "Tijd/datum Formaat",

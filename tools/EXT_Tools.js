@@ -85,7 +85,7 @@ window.addEventListener("load", async event => {
     forcePortrait: false,
     message: translation.Rotate_Msg,
     subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
+    allowClickBypass: true,
     onlyMobile: true
   }
   PleaseRotate.start(Options)
@@ -153,6 +153,13 @@ function doLogin() {
 function doIndex() {
   $(document).prop('title', translation.Home)
   $('#welcome').text(translation.Home_Welcome)
+  console.log(versionGW)
+  if (versionGW.needUpdate) {
+    $('#alert').removeClass('invisible')
+    $('#alert').removeClass('alert-success')
+    $('#alert').addClass('alert-warning')
+    $('#messageText').text(translation.Update + " v"+versionGW.last)
+  }
 }
 
 function doDelete() {
@@ -1025,11 +1032,13 @@ async function EditMMConfigJSEditor() {
   $('#wait').text(translation.Wait)
   $('#done').text(translation.Done)
   $('#error').text(translation.Error)
+  $('#errorConfig').text(translation.Error)
   $('#save').text(translation.Save)
   $('#load').text(translation.Load)
   $('#wait').css("display", "none")
   $('#done').css("display", "none")
   $('#error').css("display", "none")
+  $('#errorConfig').css("display", "none")
   $('#load').css("display", "none")
   $('#save').css("display", "none")
   $('#buttonGrp').removeClass('invisible')
@@ -1041,8 +1050,16 @@ async function EditMMConfigJSEditor() {
     mode: 'code',
     mainMenuBar: false,
     onValidationError: (errors) => {
-      if (errors.length) $('#save').css("display", "none")
-      else $('#save').css("display", "block")
+      if (errors.length) {
+        $('#save').css("display", "none")
+        $('#externalSave').addClass('disabled')
+        $('#errorConfig').css("display", "block")
+      }
+      else {
+        $('#errorConfig').css("display", "none")
+        $('#save').css("display", "block")
+        $('#externalSave').removeClass('disabled')
+      }
     }
   }
   
@@ -1124,6 +1141,63 @@ async function EditMMConfigJSEditor() {
       .fail(function(err) {
         alertify.error("[writeConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
       })
+  }
+  FileReaderJS.setupInput(document.getElementById('fileToLoad'), {
+    readAsDefault: 'Text',
+    on: {
+      load: function (event, file) {
+        if (event.target.result) {
+          $.post( "/readExternalBackup", { data: event.target.result })
+            .done(function( back ) {
+              if (back.error) {
+                alertify.error("[readExternalBackup]" + back.error)
+              } else {
+                editor.update(back.data)
+                editor.refresh()
+                alertify.sucess("External Config Loaded !" + back.error)
+              }
+            })
+            .fail(function(err) {
+              alertify.error("[readExternalBackup] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+            })
+        }
+      }
+    }
+  })
+  document.getElementById('externalSave').onclick = function () {
+    alertify.prompt( 'Gateway', 'Save config file as:', 'config', 
+      function(evt, value) {
+        let fileName = value
+        if (fileName.indexOf(".") === -1) {
+          fileName = fileName + ".js"
+        } else {
+          if (fileName.split('.').pop().toLowerCase() === "js") {
+          // Nothing to do
+          } else {
+            fileName = fileName.split('.')[0] + ".js"
+          }
+        }
+        var configToSave = editor.get()
+        $.post( "/saveExternalBackup", { data: configToSave })
+            .done(function( back ) {
+              if (back.error) {
+                alertify.error(back.error)
+              } else {
+                alertify.success("Download is ready !")
+                $.get( "download/" + back.data, function( data ) {
+                  const blob = new Blob([data], {type: 'application/javascript;charset=utf-8'})
+                  saveAs(blob, fileName)
+                })
+              }
+            })
+            .fail(function(err) {
+              alertify.error("[readExternalBackup] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+            })
+      },
+      function() {
+         // do nothing
+      }
+    )
   }
 }
 
@@ -1844,4 +1918,15 @@ function hasPluginConnected(obj, key, value) {
     }
   }
   return false
+}
+
+function processSelectedFiles(fileInput) {
+  let files = fileInput.files
+  let file = files[0].name
+
+  $('#backup').append($('<option>', {
+    value: "default",
+    text : file,
+    selected: true
+  }))
 }

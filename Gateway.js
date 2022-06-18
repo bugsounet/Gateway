@@ -321,6 +321,7 @@ Module.register("Gateway", {
       Tr.TurnOff = this.translate("GW_TurnOff")
       Tr.RequestDone = this.translate("GW_RequestDone")
       Tr.Listen = this.translate("GW_Listen")
+      Tr.Update = this.translate("GW_Update")
 
       resolve(Tr)
     })
@@ -399,6 +400,7 @@ Module.register("Gateway", {
       Tr["EXT-GooglePhotos_Delay"] = this.translate("VAL_EXT-GooglePhotos_Delay")
       Tr["EXT-GooglePhotos_Infos"] = this.translate("VAL_EXT-GooglePhotos_Infos")
       Tr["EXT-GooglePhotos_Albums"] = this.translate("VAL_EXT-GooglePhotos_Albums")
+      Tr["EXT-GooglePhotos_Background"] = this.translate("VAL_EXT-GooglePhotos_Background")
       Tr["EXT-GooglePhotos_Sort"] = this.translate("VAL_EXT-GooglePhotos_Sort")
       Tr["EXT-GooglePhotos_HD"] = this.translate("VAL_EXT-GooglePhotos_HD")
       Tr["EXT-GooglePhotos_Format"] = this.translate("VAL_EXT-GooglePhotos_Format")
