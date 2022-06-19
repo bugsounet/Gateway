@@ -153,7 +153,6 @@ module.exports = NodeHelper.create({
     this.EXTInstalled= this.lib.tools.searchInstalled(this.EXT)
     log("Find", this.EXTInstalled.length , "installed plugins in MagicMirror")
     log("Find", this.EXTConfigured.length, "configured plugins in config file")
-    console.log(this.GACheck)
     if (this.GACheck.version && semver.gte(this.GACheck.version, '4.0.0')) {
       this.GACheck.find = true
       log("Find MMM-GoogleAssistant v" + this.GACheck.version)
