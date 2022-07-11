@@ -65,7 +65,7 @@ fi
 
 echo
 # Required packages on Debian based systems
-deb_dependencies=(build-essential)
+deb_dependencies=(python3 make build-essential)
 # Required packages on RPM based systems
 rpm_dependencies=(file-libs wget autoconf automake binutils bison flex gcc gcc-c++ glibc-devel libtool make pkgconf strace byacc ccache cscope ctags elfutils indent ltrace perf valgrind)
 # Check dependencies

@@ -25,7 +25,7 @@ cd ..
 
 Installer_info "Welcome to Gateway rebuild script"
 Installer_warning "This script will erase current build and reinstall it"
-Installer_yesno "Do you want to continue ?" || exit 0
+#Installer_yesno "Do you want to continue ?" || exit 0
 
 echo
 Installer_info "Deleting: package-lock.json node_modules" 
