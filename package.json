@@ -1,7 +1,7 @@
 {
   "name": "Gateway",
-  "version": "2.1.8",
-  "rev": "220804",
+  "version": "2.1.9",
+  "rev": "221011",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {

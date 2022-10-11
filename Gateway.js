@@ -34,6 +34,7 @@ Module.register("Gateway", {
       //"EXT-Led", // not coded
       "EXT-Librespot",
       "EXT-MusicPlayer",
+      "EXT-Pages",
       "EXT-Photos",
       "EXT-Pir",
       "EXT-RadioPlayer",
@@ -552,11 +553,13 @@ Module.register("Gateway", {
         if (!this.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         this.GW["EXT-Screen"].power = false
         this.sendSocketNotification("EXTStatus", this.GW)
+        if (this.GW["EXT-Pages"].hello) this.sendNotification("EXT_PAGES-PAUSE")
         break
       case "EXT_SCREEN-ON":
         if (!this.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         this.GW["EXT-Screen"].power = true
         this.sendSocketNotification("EXTStatus", this.GW)
+        if (this.GW["EXT-Pages"].hello) this.sendNotification("EXT_PAGES-RESUME")
         break
       case "EXT_STOP":
         if (this.GW["EXT-Alert"].hello && this.hasPluginConnected(this.GW, "connected", true)) {

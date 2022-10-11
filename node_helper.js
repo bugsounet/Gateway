@@ -276,8 +276,11 @@ module.exports = NodeHelper.create({
       })
 
       .get('/logout', (req, res) => {
-        if (!this.noLogin) req.logout()
-        res.redirect('/')
+        if (!this.noLogin) req.logout(err => {
+          if (err) { return console.error("[GATEWAY] Logout:", err) }
+          res.redirect('/')
+        })
+        else res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
 
       .get('/AllEXT', (req, res) => {
