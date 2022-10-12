@@ -693,6 +693,7 @@ Module.register("Gateway", {
       case "EXT_SPOTIFY-SCL_FORCED":
         if (!this.GW["EXT-SpotifyCanvasLyrics"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-SpotifyCanvasLyrics"].forced = payload
+        if (this.GW["EXT-SpotifyCanvasLyrics"].connected) this.disconnected("EXT-SpotifyCanvasLyrics")
         break
       /** Warn if not in db **/
       default:
