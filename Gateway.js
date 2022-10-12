@@ -593,13 +593,13 @@ Module.register("Gateway", {
       case "EXT_SPOTIFY-CONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-Spotify"].remote = true
-        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW{"EXT-SpotifyCanvasLyrics"].forced) this.connected("EXT-SpotifyCanvasLyrics")
+        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW["EXT-SpotifyCanvasLyrics"].forced) this.connected("EXT-SpotifyCanvasLyrics")
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-DISCONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-Spotify"].remote = false
-        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW{"EXT-SpotifyCanvasLyrics"].forced) this.disconnected("EXT-SpotifyCanvasLyrics")
+        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW["EXT-SpotifyCanvasLyrics"].forced) this.disconnected("EXT-SpotifyCanvasLyrics")
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-PLAYING":
@@ -692,7 +692,7 @@ Module.register("Gateway", {
         break
       case "EXT_SPOTIFY-SCL_FORCED":
         if (!this.GW["EXT-SpotifyCanvasLyrics"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
-        this.GW{"EXT-SpotifyCanvasLyrics"].forced = payload
+        this.GW["EXT-SpotifyCanvasLyrics"].forced = payload
         break
       /** Warn if not in db **/
       default:
