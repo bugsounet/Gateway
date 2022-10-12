@@ -728,6 +728,7 @@ Module.register("Gateway", {
       logGW("Connected:", extName, "[browserOrPhoto Mode]")
       if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-STOP")
       this.GW[extName].connected = true
+      this.lockPages(extName)
       this.sendSocketNotification("EXTStatus", this.GW)
       return
     }
@@ -742,14 +743,7 @@ Module.register("Gateway", {
     logGW("Connected:", extName)
     logGW("Debug:", this.GW)
     this.GW[extName].connected = true
-
-    if (this.GW["EXT-Pages"].hello) {
-      if(this.GW[extName].hello && this.GW[extName].connected && typeof this.GW["EXT-Pages"][extName] == "number") {
-        this.sendNotification("EXT_PAGES-CHANGED", this.GW["EXT-Pages"][extName])
-        this.sendNotification("EXT_PAGES-LOCK")
-      }
-      else this.sendNotification("EXT_PAGES-PAUSE")
-    }
+    this.lockPages(extName)
     this.sendSocketNotification("EXTStatus", this.GW)
   },
 
@@ -765,6 +759,16 @@ Module.register("Gateway", {
       if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
     }, 1000)
+  },
+
+  lockPages: function(extName) {
+    if (this.GW["EXT-Pages"].hello) {
+      if(this.GW[extName].hello && this.GW[extName].connected && typeof this.GW["EXT-Pages"][extName] == "number") {
+        this.sendNotification("EXT_PAGES-CHANGED", this.GW["EXT-Pages"][extName])
+        this.sendNotification("EXT_PAGES-LOCK")
+      }
+      else this.sendNotification("EXT_PAGES-PAUSE")
+    }
   },
 
   browserOrPhoto: function() {
