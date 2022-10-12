@@ -43,6 +43,7 @@ Module.register("Gateway", {
       "EXT-ScreenManager",
       "EXT-ScreenTouch",
       "EXT-Spotify",
+      "EXT-SpotifyCanvasLyrics",
       "EXT-UpdateNotification",
       "EXT-Volume",
       "EXT-Welcome",
@@ -69,6 +70,7 @@ Module.register("Gateway", {
     this.GW["EXT-Spotify"].remote = false
     this.GW["EXT-Spotify"].play = false
     this.GW["EXT-Volume"].set = 0
+    this.GW["EXT-SpotifyCanvasLyrics"].forced = false
 
     this.urls = {
       photos: {
@@ -591,11 +593,13 @@ Module.register("Gateway", {
       case "EXT_SPOTIFY-CONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-Spotify"].remote = true
+        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW{"EXT-SpotifyCanvasLyrics"].forced) this.connected("EXT-SpotifyCanvasLyrics")
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-DISCONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-Spotify"].remote = false
+        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW{"EXT-SpotifyCanvasLyrics"].forced) this.disconnected("EXT-SpotifyCanvasLyrics")
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-PLAYING":
@@ -685,6 +689,10 @@ Module.register("Gateway", {
         if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
         this.GW["EXT-Volume"].set = payload
         this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_SPOTIFY-SCL_FORCED":
+        if (!this.GW["EXT-SpotifyCanvasLyrics"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW{"EXT-SpotifyCanvasLyrics"].forced = payload
         break
       /** Warn if not in db **/
       default:
