@@ -34,6 +34,7 @@ Module.register("Gateway", {
       //"EXT-Led", // not coded
       "EXT-Librespot",
       "EXT-MusicPlayer",
+      "EXT-Pages",
       "EXT-Photos",
       "EXT-Pir",
       "EXT-RadioPlayer",
@@ -42,6 +43,7 @@ Module.register("Gateway", {
       "EXT-ScreenManager",
       "EXT-ScreenTouch",
       "EXT-Spotify",
+      "EXT-SpotifyCanvasLyrics",
       "EXT-UpdateNotification",
       "EXT-Volume",
       "EXT-Welcome",
@@ -68,6 +70,7 @@ Module.register("Gateway", {
     this.GW["EXT-Spotify"].remote = false
     this.GW["EXT-Spotify"].play = false
     this.GW["EXT-Volume"].set = 0
+    this.GW["EXT-SpotifyCanvasLyrics"].forced = false
 
     this.urls = {
       photos: {
@@ -103,7 +106,7 @@ Module.register("Gateway", {
 
   notificationReceived: function(noti, payload, sender) {
     if (noti.startsWith("ASSISTANT_")) return this.ActionsOnStatus(noti)
-    if (noti.startsWith("EXT_")) return this.ActionsOnExt(noti,payload)
+    if (noti.startsWith("EXT_")) return this.ActionsOnExt(noti,payload,sender)
     switch(noti) {
       case "DOM_OBJECTS_CREATED":
         this.sendSocketNotification("INIT", this.config)
@@ -540,10 +543,13 @@ Module.register("Gateway", {
   /** Ext Gateway **/
   /*****************/
 
-  ActionsOnExt: function(noti,payload) {
+  ActionsOnExt: function(noti,payload,sender) {
     switch(noti) {
       case "EXT_HELLO":
         this.helloEXT(payload)
+        break
+      case "EXT_PAGES-Gateway":
+        if (sender.name == "EXT-Pages") Object.assign(this.GW["EXT-Pages"], payload)
         break
       case "EXT_GATEWAY":
         this.gatewayEXT(payload)
@@ -552,11 +558,13 @@ Module.register("Gateway", {
         if (!this.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         this.GW["EXT-Screen"].power = false
         this.sendSocketNotification("EXTStatus", this.GW)
+        if (this.GW["EXT-Pages"].hello) this.sendNotification("EXT_PAGES-PAUSE")
         break
       case "EXT_SCREEN-ON":
         if (!this.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         this.GW["EXT-Screen"].power = true
         this.sendSocketNotification("EXTStatus", this.GW)
+        if (this.GW["EXT-Pages"].hello) this.sendNotification("EXT_PAGES-RESUME")
         break
       case "EXT_STOP":
         if (this.GW["EXT-Alert"].hello && this.hasPluginConnected(this.GW, "connected", true)) {
@@ -585,11 +593,13 @@ Module.register("Gateway", {
       case "EXT_SPOTIFY-CONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-Spotify"].remote = true
+        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW["EXT-SpotifyCanvasLyrics"].forced) this.connected("EXT-SpotifyCanvasLyrics")
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-DISCONNECTED":
         if (!this.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
         this.GW["EXT-Spotify"].remote = false
+        if (this.GW["EXT-SpotifyCanvasLyrics"].hello && this.GW["EXT-SpotifyCanvasLyrics"].forced) this.disconnected("EXT-SpotifyCanvasLyrics")
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-PLAYING":
@@ -680,6 +690,12 @@ Module.register("Gateway", {
         this.GW["EXT-Volume"].set = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
+      case "EXT_SPOTIFY-SCL_FORCED":
+        if (!this.GW["EXT-SpotifyCanvasLyrics"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
+        this.GW["EXT-SpotifyCanvasLyrics"].forced = payload
+        if (this.GW["EXT-SpotifyCanvasLyrics"].forced && this.GW["EXT-Spotify"].remote && this.GW["EXT-Spotify"].play) this.connected("EXT-SpotifyCanvasLyrics")
+        if (!this.GW["EXT-SpotifyCanvasLyrics"].forced && this.GW["EXT-SpotifyCanvasLyrics"].connected) this.disconnected("EXT-SpotifyCanvasLyrics")
+        break
       /** Warn if not in db **/
       default:
         logGW("Sorry, i don't understand what is", noti, payload ? payload : "")
@@ -707,6 +723,7 @@ Module.register("Gateway", {
     if (!plugin) return
     if (plugin == "EXT-Background") this.sendNotification("GAv4_FORCE_FULLSCREEN")
     if (plugin == "EXT-Detector") setTimeout(() => this.sendNotification("EXT_DETECTOR-START") , 300)
+    if (plugin == "EXT-Pages") this.sendNotification("EXT_PAGES-Gateway")
   },
 
   /** connected rules **/
@@ -721,6 +738,7 @@ Module.register("Gateway", {
       logGW("Connected:", extName, "[browserOrPhoto Mode]")
       if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-STOP")
       this.GW[extName].connected = true
+      this.lockPages(extName)
       this.sendSocketNotification("EXTStatus", this.GW)
       return
     }
@@ -731,9 +749,11 @@ Module.register("Gateway", {
     if (this.GW["EXT-YouTube"].hello && this.GW["EXT-YouTube"].connected) this.sendNotification("EXT_YOUTUBE-STOP")
     if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-STOP")
     if (this.GW["EXT-YouTubeCast"].hello && this.GW["EXT-YouTubeCast"].connected) this.sendNotification("EXT_YOUTUBECAST-STOP")
+
     logGW("Connected:", extName)
     logGW("Debug:", this.GW)
     this.GW[extName].connected = true
+    this.lockPages(extName)
     this.sendSocketNotification("EXTStatus", this.GW)
   },
 
@@ -741,12 +761,24 @@ Module.register("Gateway", {
   disconnected: function(extName) {
     if (!this.GW.ready) return console.error("[GATEWAY] MMM-GoogleAssistant is not ready")
     if (extName) this.GW[extName].connected = false
+
     this.sendSocketNotification("EXTStatus", this.GW)
     // sport time ... verify if there is again an EXT module connected !
     setTimeout(()=> { // wait 1 sec before scan ...
-      if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_SCREEN-UNLOCK")
+      if (this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_SCREEN-UNLOCK")
+      if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
     }, 1000)
+  },
+
+  lockPages: function(extName) {
+    if (this.GW["EXT-Pages"].hello) {
+      if(this.GW[extName].hello && this.GW[extName].connected && typeof this.GW["EXT-Pages"][extName] == "number") {
+        this.sendNotification("EXT_PAGES-CHANGED", this.GW["EXT-Pages"][extName])
+        this.sendNotification("EXT_PAGES-LOCK")
+      }
+      else this.sendNotification("EXT_PAGES-PAUSE")
+    }
   },
 
   browserOrPhoto: function() {
