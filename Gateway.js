@@ -513,6 +513,7 @@ Module.register("Gateway", {
           if (!this.GW["EXT-Screen"].power) this.sendNotification("EXT_SCREEN-WAKEUP")
           this.sendNotification("EXT_SCREEN-LOCK", { show: true } )
         }
+        if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-PAUSE")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MIN")
         if (this.GW["EXT-RadioPlayer"].hello && this.GW["EXT-RadioPlayer"].connected) this.sendNotification("EXT_RADIO-VOLUME_MIN")
         if (this.GW["EXT-MusicPlayer"].hello && this.GW["EXT-MusicPlayer"].connected) this.sendNotification("EXT_MUSIC-VOLUME_MIN")
@@ -524,6 +525,7 @@ Module.register("Gateway", {
         if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
           this.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
         }
+        if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-RESUME")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MAX")
         if (this.GW["EXT-RadioPlayer"].hello && this.GW["EXT-RadioPlayer"].connected) this.sendNotification("EXT_RADIO-VOLUME_MAX")
         if (this.GW["EXT-MusicPlayer"].hello && this.GW["EXT-MusicPlayer"].connected) this.sendNotification("EXT_MUSIC-VOLUME_MAX")
