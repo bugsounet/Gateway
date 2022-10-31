@@ -31,9 +31,9 @@ Module.register("Gateway", {
       "EXT-GooglePhotos",
       "EXT-Governor",
       "EXT-Internet",
-      //"EXT-Led", // not coded
       "EXT-Librespot",
       "EXT-MusicPlayer",
+      "EXT-Motion",
       "EXT-Pages",
       "EXT-Photos",
       "EXT-Pir",
@@ -42,6 +42,7 @@ Module.register("Gateway", {
       "EXT-Screen",
       "EXT-ScreenManager",
       "EXT-ScreenTouch",
+      "EXT-Selfies",
       "EXT-Spotify",
       "EXT-SpotifyCanvasLyrics",
       "EXT-UpdateNotification",
@@ -64,6 +65,7 @@ Module.register("Gateway", {
     }))
 
     /** special rules **/
+    this.GW["EXT-Motion"].started = false
     this.GW["EXT-Screen"].power = true
     this.GW["EXT-UpdateNotification"].update = {}
     this.GW["EXT-UpdateNotification"].npm = {}
@@ -697,6 +699,24 @@ Module.register("Gateway", {
         this.GW["EXT-SpotifyCanvasLyrics"].forced = payload
         if (this.GW["EXT-SpotifyCanvasLyrics"].forced && this.GW["EXT-Spotify"].remote && this.GW["EXT-Spotify"].play) this.connected("EXT-SpotifyCanvasLyrics")
         if (!this.GW["EXT-SpotifyCanvasLyrics"].forced && this.GW["EXT-SpotifyCanvasLyrics"].connected) this.disconnected("EXT-SpotifyCanvasLyrics")
+        break
+      case "EXT_MOTION-STARTED":
+        if (!this.GW["EXT-Motion"].hello) return console.error("[GATEWAY] Warn Motion don't say to me HELLO!")
+        this.GW["EXT-Motion"].started = true
+        break
+      case "EXT_MOTION-STOPPED":
+        if (!this.GW["EXT-Motion"].hello) return console.error("[GATEWAY] Warn Motion don't say to me HELLO!")
+        this.GW["EXT-Motion"].started = false
+        break
+      case "EXT_SELFIES-START":
+        if (!this.GW["EXT-Selfies"].hello) return console.error("[GATEWAY] Warn Selfies don't say to me HELLO!")
+        this.connected("EXT-Selfies")
+        if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
+        break
+      case "EXT_SELFIES-END":
+        if (!this.GW["EXT-Selfies"].hello) return console.error("[GATEWAY] Warn Selfies don't say to me HELLO!")
+        this.disconnected("EXT-Selfies")
+        if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
         break
       /** Warn if not in db **/
       default:
