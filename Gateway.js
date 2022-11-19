@@ -358,6 +358,10 @@ Module.register("Gateway", {
       desc["EXT-Pir"] = this.translate("EXT-Pir"),
       desc["EXT-RadioPlayer"] = this.translate("EXT-RadioPlayer"),
       desc["EXT-Raspotify"] = this.translate("EXT-Raspotify"),
+      desc["EXT-Selfies"] = this.translate("EXT-Selfies"),
+      desc["EXT-SelfiesFlash"] = this.translate("EXT-SelfiesFlash"),
+      desc["EXT-SelfiesSender"] = this.translate("EXT-SelfiesSender"),
+      desc["EXT-SelfiesViewer"] = this.translate("EXT-SelfiesViewer"),
       desc["EXT-Screen"] = this.translate("EXT-Screen"),
       desc["EXT-ScreenManager"] = this.translate("EXT-ScreenManager"),
       desc["EXT-ScreenTouch"] = this.translate("EXT-ScreenTouch"),
@@ -457,6 +461,7 @@ Module.register("Gateway", {
       Tr["EXT-RadioPlayer_Min"] = this.translate("VAL_EXT-RadioPlayer_Min")
       Tr["EXT-RadioPlayer_Max"] = this.translate("VAL_EXT-RadioPlayer_Max")
       Tr["EXT-Raspotify_Card"] = this.translate("VAL_EXT-Raspotify_Card")
+      Tr["EXT-SelfiesFlash_gpio"] = this.translate("VAL_EXT-SelfiesFlash_gpio")
       Tr["EXT-Screen_Body"] = this.translate("VAL_EXT-Screen_Body")
       Tr["EXT-Screen_Delay"] = this.translate("VAL_EXT-Screen_Delay")
       Tr["EXT-Screen_Display"] = this.translate("VAL_EXT-Screen_Display")
