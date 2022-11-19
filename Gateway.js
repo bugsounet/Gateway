@@ -348,6 +348,7 @@ Module.register("Gateway", {
       desc["EXT-Internet"] = this.translate("EXT-Internet"),
       desc["EXT-Led"] = this.translate("EXT-Led"),
       desc["EXT-Librespot"] = this.translate("EXT-Librespot"),
+      desc["EXT-Motion"] = this.translate("EXT-Motion"),
       desc["EXT-MusicPlayer"] = this.translate("EXT-MusicPlayer"),
       desc["EXT-Photos"] = this.translate("EXT-Photos"),
       desc["EXT-Pir"] = this.translate("EXT-Pir"),
@@ -425,6 +426,9 @@ Module.register("Gateway", {
       Tr["EXT-Librespot_Name"] = this.translate("VAL_EXT-Librespot_Name")
       Tr["EXT-Librespot_Min"] = this.translate("VAL_EXT-Librespot_Min")
       Tr["EXT-Librespot_Max"] = this.translate("VAL_EXT-Librespot_Max")
+      Tr["EXT-Motion_captureIntervalTime"] = this.translate("VAL_EXT-Motion_captureIntervalTime")
+      Tr["EXT-Motion_scoreThreshold"] = this.translate("VAL_EXT-Motion_scoreThreshold")
+      Tr["EXT-Motion_deviceId"] = this.translate("VAL_EXT-Motion_deviceId")
       Tr["EXT-MusicPlayer_USB"] = this.translate("VAL_EXT-MusicPlayer_USB")
       Tr["EXT-MusicPlayer_Path"] = this.translate("VAL_EXT-MusicPlayer_Path")
       Tr["EXT-MusicPlayer_Check"] = this.translate("VAL_EXT-MusicPlayer_Check")
