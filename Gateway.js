@@ -353,6 +353,7 @@ Module.register("Gateway", {
       desc["EXT-Librespot"] = this.translate("EXT-Librespot"),
       desc["EXT-Motion"] = this.translate("EXT-Motion"),
       desc["EXT-MusicPlayer"] = this.translate("EXT-MusicPlayer"),
+      desc["EXT-Pages"] = this.translate("EXT-Pages"),
       desc["EXT-Photos"] = this.translate("EXT-Photos"),
       desc["EXT-Pir"] = this.translate("EXT-Pir"),
       desc["EXT-RadioPlayer"] = this.translate("EXT-RadioPlayer"),
@@ -438,6 +439,17 @@ Module.register("Gateway", {
       Tr["EXT-MusicPlayer_Start"] = this.translate("VAL_EXT-MusicPlayer_Start")
       Tr["EXT-MusicPlayer_Min"] = this.translate("VAL_EXT-MusicPlayer_Min")
       Tr["EXT-MusicPlayer_Max"] = this.translate("VAL_EXT-MusicPlayer_Max")
+      Tr["EXT-Pages_pages"] = this.translate("VAL_EXT-Pages_pages")
+      Tr["EXT-Pages_fixed"] = this.translate("VAL_EXT-Pages_fixed")
+      Tr["EXT-Pages_hiddenPages"] = this.translate("VAL_EXT-Pages_hiddenPages")
+      Tr["EXT-Pages_animates"] = this.translate("VAL_EXT-Pages_animates")
+      Tr["EXT-Pages_animationTime"] = this.translate("VAL_EXT-Pages_animationTime")
+      Tr["EXT-Pages_rotationTime"] = this.translate("VAL_EXT-Pages_rotationTime")
+      Tr["EXT-Pages_rotationTimes"] = this.translate("VAL_EXT-Pages_rotationTimes")
+      Tr["EXT-Pages_rotationHomePage"] = this.translate("VAL_EXT-Pages_rotationHomePage")
+      Tr["EXT-Pages_homePage"] = this.translate("VAL_EXT-Pages_homePage")
+      Tr["EXT-Pages_indicator"] = this.translate("VAL_EXT-Pages_indicator")
+      Tr["EXT-Pages_Gateway"] = this.translate("VAL_EXT-Pages_Gateway")
       Tr["EXT-Photos_Delay"] = this.translate("VAL_EXT-Photos_Delay")
       Tr["EXT-Photos_Loop"] = this.translate("VAL_EXT-Photos_Loop")
       Tr["EXT-Pir_GPIO"] = this.translate("VAL_EXT-Pir_GPIO")

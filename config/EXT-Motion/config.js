@@ -17,7 +17,7 @@ var schema = {
     "module": {
       "type": "string",
       "title": "{PluginName}",
-      "default": "EXT-Pir"
+      "default": "EXT-Motion"
     },
     "disabled": {
       "type": "boolean",
