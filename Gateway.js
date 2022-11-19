@@ -366,6 +366,7 @@ Module.register("Gateway", {
       desc["EXT-ScreenManager"] = this.translate("EXT-ScreenManager"),
       desc["EXT-ScreenTouch"] = this.translate("EXT-ScreenTouch"),
       desc["EXT-Spotify"] = this.translate("EXT-Spotify"),
+      desc["EXT-SpotifyCanvasLyrics"] = this.translate("EXT-SpotifyCanvasLyrics"),
       desc["EXT-UpdateNotification"] = this.translate("EXT-UpdateNotification"),
       desc["EXT-Volume"] = this.translate("EXT-Volume"),
       desc["EXT-Welcome"] = this.translate("EXT-Welcome"),
