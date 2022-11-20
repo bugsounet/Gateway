@@ -422,6 +422,7 @@ Module.register("Gateway", {
       Tr["EXT-GooglePhotos_Format"] = this.translate("VAL_EXT-GooglePhotos_Format")
       Tr["EXT-GooglePhotos_Height"] = this.translate("VAL_EXT-GooglePhotos_Height")
       Tr["EXT-GooglePhotos_Width"] = this.translate("VAL_EXT-GooglePhotos_Width")
+      Tr["EXT-GooglePhotos_uploadAlbum"] = this.translate("VAL_EXT-GooglePhotos_uploadAlbum")
       Tr["EXT-Governor_Sleep"] = this.translate("VAL_EXT-Governor_Sleep")
       Tr["EXT-Governor_Work"] = this.translate("VAL_EXT-Governor_Work")
       Tr["EXT-Internet_Ping"] = this.translate("VAL_EXT-Internet_Ping")

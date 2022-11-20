@@ -227,6 +227,7 @@
   "VAL_EXT-GooglePhotos_Format": "Format heure/date",
   "VAL_EXT-GooglePhotos_Height": "Hauteur du module en px",
   "VAL_EXT-GooglePhotos_Width": "Largeur du module en px",
+  "VAL_EXT-GooglePhotos_uploadAlbum": "Nom de l'album pour télécharger les photos",
   "VAL_EXT-Governor_Sleep": "Nom du gouverneur lorsque l'écran est en état de veille",
   "VAL_EXT-Governor_Work": "Nom du gouverneur lorsque l'écran est allumé",
   "VAL_EXT-Internet_Ping": "Afficher la valeur du ping à l'écran",
