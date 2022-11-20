@@ -8,7 +8,7 @@ logGW = (...args) => { /* do nothing */ }
 
 Module.register("Gateway", {
   defaults: {
-    debug: true,
+    debug: false,
     port: 8081,
     username: "admin",
     password: "admin",
@@ -463,6 +463,24 @@ Module.register("Gateway", {
       Tr["EXT-RadioPlayer_Max"] = this.translate("VAL_EXT-RadioPlayer_Max")
       Tr["EXT-Raspotify_Card"] = this.translate("VAL_EXT-Raspotify_Card")
       Tr["EXT-SelfiesFlash_gpio"] = this.translate("VAL_EXT-SelfiesFlash_gpio")
+      Tr["EXT-SelfiesSender_sendTelegramBotAuto"] = this.translate("VAL_EXT-SelfiesSender_sendTelegramBotAuto")
+      Tr["EXT-SelfiesSender_sendGooglePhotos"] = this.translate("VAL_EXT-SelfiesSender_sendGooglePhotos")
+      Tr["EXT-SelfiesSender_sendGooglePhotosAuto"] = this.translate("VAL_EXT-SelfiesSender_sendGooglePhotosAuto")
+      Tr["EXT-SelfiesSender_sendMail"] = this.translate("VAL_EXT-SelfiesSender_sendMail")
+      Tr["EXT-SelfiesSender_sendMailAuto"] = this.translate("VAL_EXT-SelfiesSender_sendMailAuto")
+      Tr["EXT-SelfiesSender_sendMailConfig"] = this.translate("VAL_EXT-SelfiesSender_sendMailConfig")
+      Tr["EXT-SelfiesSender_transport"] = this.translate("VAL_EXT-SelfiesSender_transport")
+      Tr["EXT-SelfiesSender_host"] = this.translate("VAL_EXT-SelfiesSender_host")
+      Tr["EXT-SelfiesSender_port"] = this.translate("VAL_EXT-SelfiesSender_port")
+      Tr["EXT-SelfiesSender_secure"] = this.translate("VAL_EXT-SelfiesSender_secure")
+      Tr["EXT-SelfiesSender_auth"] = this.translate("VAL_EXT-SelfiesSender_auth")
+      Tr["EXT-SelfiesSender_user"] = this.translate("VAL_EXT-SelfiesSender_user")
+      Tr["EXT-SelfiesSender_pass"] = this.translate("VAL_EXT-SelfiesSender_pass")
+      Tr["EXT-SelfiesSender_message"] = this.translate("VAL_EXT-SelfiesSender_message")
+      Tr["EXT-SelfiesSender_from"] = this.translate("VAL_EXT-SelfiesSender_from")
+      Tr["EXT-SelfiesSender_to"] = this.translate("VAL_EXT-SelfiesSender_to")
+      Tr["EXT-SelfiesSender_subject"] = this.translate("VAL_EXT-SelfiesSender_subject")
+      Tr["EXT-SelfiesSender_text"] = this.translate("VAL_EXT-SelfiesSender_text")
       Tr["EXT-SelfiesViewer_moduleWidth"] = this.translate("VAL_EXT-SelfiesViewer_moduleWidth")
       Tr["EXT-SelfiesViewer_moduleHeight"] = this.translate("VAL_EXT-SelfiesViewer_moduleHeight")
       Tr["EXT-SelfiesViewer_displayDelay"] = this.translate("VAL_EXT-SelfiesViewer_displayDelay")
