@@ -13,7 +13,8 @@ var defaultConfig = {
     hiResolution: true,
     timeFormat: "DD/MM/YYYY HH:mm",
     moduleHeight: 300,
-    moduleWidth: 300
+    moduleWidth: 300,
+    uploadAlbum: null
   }
 }
 
@@ -121,6 +122,11 @@ var schema = {
           "title": "{EXT-GooglePhotos_Width}",
           "default": 10000
         },
+        "uploadAlbum": {
+          "type": ["string", "null"],
+          "title": "{EXT-GooglePhotos_uploadAlbum}",
+          "default": null
+        }
       },
       "required": ["albums"]
     }

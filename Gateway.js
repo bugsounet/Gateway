@@ -8,7 +8,7 @@ logGW = (...args) => { /* do nothing */ }
 
 Module.register("Gateway", {
   defaults: {
-    debug: true,
+    debug: false,
     port: 8081,
     username: "admin",
     password: "admin",
@@ -31,9 +31,9 @@ Module.register("Gateway", {
       "EXT-GooglePhotos",
       "EXT-Governor",
       "EXT-Internet",
-      //"EXT-Led", // not coded
       "EXT-Librespot",
       "EXT-MusicPlayer",
+      "EXT-Motion",
       "EXT-Pages",
       "EXT-Photos",
       "EXT-Pir",
@@ -42,6 +42,10 @@ Module.register("Gateway", {
       "EXT-Screen",
       "EXT-ScreenManager",
       "EXT-ScreenTouch",
+      "EXT-Selfies",
+      "EXT-SelfiesFlash",
+      "EXT-SelfiesSender",
+      "EXT-SelfiesViewer",
       "EXT-Spotify",
       "EXT-SpotifyCanvasLyrics",
       "EXT-UpdateNotification",
@@ -64,6 +68,7 @@ Module.register("Gateway", {
     }))
 
     /** special rules **/
+    this.GW["EXT-Motion"].started = false
     this.GW["EXT-Screen"].power = true
     this.GW["EXT-UpdateNotification"].update = {}
     this.GW["EXT-UpdateNotification"].npm = {}
@@ -346,15 +351,22 @@ Module.register("Gateway", {
       desc["EXT-Internet"] = this.translate("EXT-Internet"),
       desc["EXT-Led"] = this.translate("EXT-Led"),
       desc["EXT-Librespot"] = this.translate("EXT-Librespot"),
+      desc["EXT-Motion"] = this.translate("EXT-Motion"),
       desc["EXT-MusicPlayer"] = this.translate("EXT-MusicPlayer"),
+      desc["EXT-Pages"] = this.translate("EXT-Pages"),
       desc["EXT-Photos"] = this.translate("EXT-Photos"),
       desc["EXT-Pir"] = this.translate("EXT-Pir"),
       desc["EXT-RadioPlayer"] = this.translate("EXT-RadioPlayer"),
       desc["EXT-Raspotify"] = this.translate("EXT-Raspotify"),
+      desc["EXT-Selfies"] = this.translate("EXT-Selfies"),
+      desc["EXT-SelfiesFlash"] = this.translate("EXT-SelfiesFlash"),
+      desc["EXT-SelfiesSender"] = this.translate("EXT-SelfiesSender"),
+      desc["EXT-SelfiesViewer"] = this.translate("EXT-SelfiesViewer"),
       desc["EXT-Screen"] = this.translate("EXT-Screen"),
       desc["EXT-ScreenManager"] = this.translate("EXT-ScreenManager"),
       desc["EXT-ScreenTouch"] = this.translate("EXT-ScreenTouch"),
       desc["EXT-Spotify"] = this.translate("EXT-Spotify"),
+      desc["EXT-SpotifyCanvasLyrics"] = this.translate("EXT-SpotifyCanvasLyrics"),
       desc["EXT-UpdateNotification"] = this.translate("EXT-UpdateNotification"),
       desc["EXT-Volume"] = this.translate("EXT-Volume"),
       desc["EXT-Welcome"] = this.translate("EXT-Welcome"),
@@ -410,6 +422,7 @@ Module.register("Gateway", {
       Tr["EXT-GooglePhotos_Format"] = this.translate("VAL_EXT-GooglePhotos_Format")
       Tr["EXT-GooglePhotos_Height"] = this.translate("VAL_EXT-GooglePhotos_Height")
       Tr["EXT-GooglePhotos_Width"] = this.translate("VAL_EXT-GooglePhotos_Width")
+      Tr["EXT-GooglePhotos_uploadAlbum"] = this.translate("VAL_EXT-GooglePhotos_uploadAlbum")
       Tr["EXT-Governor_Sleep"] = this.translate("VAL_EXT-Governor_Sleep")
       Tr["EXT-Governor_Work"] = this.translate("VAL_EXT-Governor_Work")
       Tr["EXT-Internet_Ping"] = this.translate("VAL_EXT-Internet_Ping")
@@ -423,12 +436,26 @@ Module.register("Gateway", {
       Tr["EXT-Librespot_Name"] = this.translate("VAL_EXT-Librespot_Name")
       Tr["EXT-Librespot_Min"] = this.translate("VAL_EXT-Librespot_Min")
       Tr["EXT-Librespot_Max"] = this.translate("VAL_EXT-Librespot_Max")
+      Tr["EXT-Motion_captureIntervalTime"] = this.translate("VAL_EXT-Motion_captureIntervalTime")
+      Tr["EXT-Motion_scoreThreshold"] = this.translate("VAL_EXT-Motion_scoreThreshold")
+      Tr["EXT-Motion_deviceId"] = this.translate("VAL_EXT-Motion_deviceId")
       Tr["EXT-MusicPlayer_USB"] = this.translate("VAL_EXT-MusicPlayer_USB")
       Tr["EXT-MusicPlayer_Path"] = this.translate("VAL_EXT-MusicPlayer_Path")
       Tr["EXT-MusicPlayer_Check"] = this.translate("VAL_EXT-MusicPlayer_Check")
       Tr["EXT-MusicPlayer_Start"] = this.translate("VAL_EXT-MusicPlayer_Start")
       Tr["EXT-MusicPlayer_Min"] = this.translate("VAL_EXT-MusicPlayer_Min")
       Tr["EXT-MusicPlayer_Max"] = this.translate("VAL_EXT-MusicPlayer_Max")
+      Tr["EXT-Pages_pages"] = this.translate("VAL_EXT-Pages_pages")
+      Tr["EXT-Pages_fixed"] = this.translate("VAL_EXT-Pages_fixed")
+      Tr["EXT-Pages_hiddenPages"] = this.translate("VAL_EXT-Pages_hiddenPages")
+      Tr["EXT-Pages_animates"] = this.translate("VAL_EXT-Pages_animates")
+      Tr["EXT-Pages_animationTime"] = this.translate("VAL_EXT-Pages_animationTime")
+      Tr["EXT-Pages_rotationTime"] = this.translate("VAL_EXT-Pages_rotationTime")
+      Tr["EXT-Pages_rotationTimes"] = this.translate("VAL_EXT-Pages_rotationTimes")
+      Tr["EXT-Pages_rotationHomePage"] = this.translate("VAL_EXT-Pages_rotationHomePage")
+      Tr["EXT-Pages_homePage"] = this.translate("VAL_EXT-Pages_homePage")
+      Tr["EXT-Pages_indicator"] = this.translate("VAL_EXT-Pages_indicator")
+      Tr["EXT-Pages_Gateway"] = this.translate("VAL_EXT-Pages_Gateway")
       Tr["EXT-Photos_Delay"] = this.translate("VAL_EXT-Photos_Delay")
       Tr["EXT-Photos_Loop"] = this.translate("VAL_EXT-Photos_Loop")
       Tr["EXT-Pir_GPIO"] = this.translate("VAL_EXT-Pir_GPIO")
@@ -436,6 +463,45 @@ Module.register("Gateway", {
       Tr["EXT-RadioPlayer_Min"] = this.translate("VAL_EXT-RadioPlayer_Min")
       Tr["EXT-RadioPlayer_Max"] = this.translate("VAL_EXT-RadioPlayer_Max")
       Tr["EXT-Raspotify_Card"] = this.translate("VAL_EXT-Raspotify_Card")
+      Tr["EXT-Selfies_captureWidth"] = this.translate("VAL_EXT-Selfies_captureWidth")
+      Tr["EXT-Selfies_captureHeight"] = this.translate("VAL_EXT-Selfies_captureHeight")
+      Tr["EXT-Selfies_device"] = this.translate("VAL_EXT-Selfies_device")
+      Tr["EXT-Selfies_usePreview"] = this.translate("VAL_EXT-Selfies_usePreview")
+      Tr["EXT-Selfies_previewWidth"] = this.translate("VAL_EXT-Selfies_previewWidth")
+      Tr["EXT-Selfies_previewHeight"] = this.translate("VAL_EXT-Selfies_previewHeight")
+      Tr["EXT-Selfies_displayButton"] = this.translate("VAL_EXT-Selfies_displayButton")
+      Tr["EXT-Selfies_buttonStyle"] = this.translate("VAL_EXT-Selfies_buttonStyle")
+      Tr["EXT-Selfies_buttons"] = this.translate("VAL_EXT-Selfies_buttons")
+      Tr["EXT-Selfies_blinkButton"] = this.translate("VAL_EXT-Selfies_blinkButton")
+      Tr["EXT-Selfies_playShutter"] = this.translate("VAL_EXT-Selfies_playShutter")
+      Tr["EXT-Selfies_resultDuration"] = this.translate("VAL_EXT-Selfies_resultDuration")
+      Tr["EXT-Selfies_autoValidate"] = this.translate("VAL_EXT-Selfies_autoValidate")
+      Tr["EXT-Selfies_counterStyle"] = this.translate("VAL_EXT-Selfies_counterStyle")
+      Tr["EXT-Selfies_showResult"] = this.translate("VAL_EXT-Selfies_showResult")
+      Tr["EXT-SelfiesFlash_gpio"] = this.translate("VAL_EXT-SelfiesFlash_gpio")
+      Tr["EXT-SelfiesSender_sendTelegramBotAuto"] = this.translate("VAL_EXT-SelfiesSender_sendTelegramBotAuto")
+      Tr["EXT-SelfiesSender_sendGooglePhotos"] = this.translate("VAL_EXT-SelfiesSender_sendGooglePhotos")
+      Tr["EXT-SelfiesSender_sendGooglePhotosAuto"] = this.translate("VAL_EXT-SelfiesSender_sendGooglePhotosAuto")
+      Tr["EXT-SelfiesSender_sendMail"] = this.translate("VAL_EXT-SelfiesSender_sendMail")
+      Tr["EXT-SelfiesSender_sendMailAuto"] = this.translate("VAL_EXT-SelfiesSender_sendMailAuto")
+      Tr["EXT-SelfiesSender_sendMailConfig"] = this.translate("VAL_EXT-SelfiesSender_sendMailConfig")
+      Tr["EXT-SelfiesSender_transport"] = this.translate("VAL_EXT-SelfiesSender_transport")
+      Tr["EXT-SelfiesSender_host"] = this.translate("VAL_EXT-SelfiesSender_host")
+      Tr["EXT-SelfiesSender_port"] = this.translate("VAL_EXT-SelfiesSender_port")
+      Tr["EXT-SelfiesSender_secure"] = this.translate("VAL_EXT-SelfiesSender_secure")
+      Tr["EXT-SelfiesSender_auth"] = this.translate("VAL_EXT-SelfiesSender_auth")
+      Tr["EXT-SelfiesSender_user"] = this.translate("VAL_EXT-SelfiesSender_user")
+      Tr["EXT-SelfiesSender_pass"] = this.translate("VAL_EXT-SelfiesSender_pass")
+      Tr["EXT-SelfiesSender_message"] = this.translate("VAL_EXT-SelfiesSender_message")
+      Tr["EXT-SelfiesSender_from"] = this.translate("VAL_EXT-SelfiesSender_from")
+      Tr["EXT-SelfiesSender_to"] = this.translate("VAL_EXT-SelfiesSender_to")
+      Tr["EXT-SelfiesSender_subject"] = this.translate("VAL_EXT-SelfiesSender_subject")
+      Tr["EXT-SelfiesSender_text"] = this.translate("VAL_EXT-SelfiesSender_text")
+      Tr["EXT-SelfiesViewer_moduleWidth"] = this.translate("VAL_EXT-SelfiesViewer_moduleWidth")
+      Tr["EXT-SelfiesViewer_moduleHeight"] = this.translate("VAL_EXT-SelfiesViewer_moduleHeight")
+      Tr["EXT-SelfiesViewer_displayDelay"] = this.translate("VAL_EXT-SelfiesViewer_displayDelay")
+      Tr["EXT-SelfiesViewer_displayBackground"] = this.translate("VAL_EXT-SelfiesViewer_displayBackground")
+      Tr["EXT-SelfiesViewer_sortBy"] = this.translate("VAL_EXT-SelfiesViewer_sortBy")
       Tr["EXT-Screen_Body"] = this.translate("VAL_EXT-Screen_Body")
       Tr["EXT-Screen_Delay"] = this.translate("VAL_EXT-Screen_Delay")
       Tr["EXT-Screen_Display"] = this.translate("VAL_EXT-Screen_Display")
@@ -512,6 +578,7 @@ Module.register("Gateway", {
         if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
           if (!this.GW["EXT-Screen"].power) this.sendNotification("EXT_SCREEN-WAKEUP")
           this.sendNotification("EXT_SCREEN-LOCK", { show: true } )
+          if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-PAUSE")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MIN")
@@ -524,6 +591,7 @@ Module.register("Gateway", {
         if (this.GW["EXT-Detector"].hello) this.sendNotification("EXT_DETECTOR-START")
         if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
           this.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
+          if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-RESUME")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MAX")
@@ -698,6 +766,24 @@ Module.register("Gateway", {
         if (this.GW["EXT-SpotifyCanvasLyrics"].forced && this.GW["EXT-Spotify"].remote && this.GW["EXT-Spotify"].play) this.connected("EXT-SpotifyCanvasLyrics")
         if (!this.GW["EXT-SpotifyCanvasLyrics"].forced && this.GW["EXT-SpotifyCanvasLyrics"].connected) this.disconnected("EXT-SpotifyCanvasLyrics")
         break
+      case "EXT_MOTION-STARTED":
+        if (!this.GW["EXT-Motion"].hello) return console.error("[GATEWAY] Warn Motion don't say to me HELLO!")
+        this.GW["EXT-Motion"].started = true
+        break
+      case "EXT_MOTION-STOPPED":
+        if (!this.GW["EXT-Motion"].hello) return console.error("[GATEWAY] Warn Motion don't say to me HELLO!")
+        this.GW["EXT-Motion"].started = false
+        break
+      case "EXT_SELFIES-START":
+        if (!this.GW["EXT-Selfies"].hello) return console.error("[GATEWAY] Warn Selfies don't say to me HELLO!")
+        this.connected("EXT-Selfies")
+        if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
+        break
+      case "EXT_SELFIES-END":
+        if (!this.GW["EXT-Selfies"].hello) return console.error("[GATEWAY] Warn Selfies don't say to me HELLO!")
+        this.disconnected("EXT-Selfies")
+        if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
+        break
       /** Warn if not in db **/
       default:
         logGW("Sorry, i don't understand what is", noti, payload ? payload : "")
@@ -734,6 +820,7 @@ Module.register("Gateway", {
     if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
       if (!this.GW["EXT-Screen"].power) this.sendNotification("EXT_SCREEN-WAKEUP")
       this.sendNotification("EXT_SCREEN-LOCK")
+      if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
     }
 
     if (this.browserOrPhoto()) {
@@ -767,7 +854,10 @@ Module.register("Gateway", {
     this.sendSocketNotification("EXTStatus", this.GW)
     // sport time ... verify if there is again an EXT module connected !
     setTimeout(()=> { // wait 1 sec before scan ...
-      if (this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_SCREEN-UNLOCK")
+      if (this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
+        this.sendNotification("EXT_SCREEN-UNLOCK")
+        if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
+      }
       if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
     }, 1000)
