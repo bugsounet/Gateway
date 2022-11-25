@@ -69,6 +69,7 @@ Module.register("Gateway", {
 
     /** special rules **/
     this.GW["EXT-Motion"].started = false
+    this.GW["EXT-Pir"].started = false
     this.GW["EXT-Screen"].power = true
     this.GW["EXT-UpdateNotification"].update = {}
     this.GW["EXT-UpdateNotification"].npm = {}
@@ -579,6 +580,7 @@ Module.register("Gateway", {
           if (!this.GW["EXT-Screen"].power) this.sendNotification("EXT_SCREEN-WAKEUP")
           this.sendNotification("EXT_SCREEN-LOCK", { show: true } )
           if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
+          if (this.GW["EXT-Pir"].hello && this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-STOP")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-PAUSE")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MIN")
@@ -592,6 +594,7 @@ Module.register("Gateway", {
         if(this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
           this.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
           if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
+          if (this.GW["EXT-Pir"].hello && !this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-RESTART")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-RESUME")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MAX")
@@ -774,6 +777,14 @@ Module.register("Gateway", {
         if (!this.GW["EXT-Motion"].hello) return console.error("[GATEWAY] Warn Motion don't say to me HELLO!")
         this.GW["EXT-Motion"].started = false
         break
+      case "EXT_PIR-STARTED":
+        if (!this.GW["EXT-Pir"].hello) return console.error("[GATEWAY] Warn Pir don't say to me HELLO!")
+        this.GW["EXT-Pir"].started = true
+        break
+      case "EXT_PIR-STOPPED":
+        if (!this.GW["EXT-Pir"].hello) return console.error("[GATEWAY] Warn Pir don't say to me HELLO!")
+        this.GW["EXT-Pir"].started = false
+        break
       case "EXT_SELFIES-START":
         if (!this.GW["EXT-Selfies"].hello) return console.error("[GATEWAY] Warn Selfies don't say to me HELLO!")
         this.connected("EXT-Selfies")
@@ -821,6 +832,7 @@ Module.register("Gateway", {
       if (!this.GW["EXT-Screen"].power) this.sendNotification("EXT_SCREEN-WAKEUP")
       this.sendNotification("EXT_SCREEN-LOCK")
       if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
+      if (this.GW["EXT-Pir"].hello && this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-STOP")
     }
 
     if (this.browserOrPhoto()) {
@@ -857,6 +869,7 @@ Module.register("Gateway", {
       if (this.GW["EXT-Screen"].hello && !this.hasPluginConnected(this.GW, "connected", true)) {
         this.sendNotification("EXT_SCREEN-UNLOCK")
         if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
+        if (this.GW["EXT-Pir"].hello && !this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-RESTART")
       }
       if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
