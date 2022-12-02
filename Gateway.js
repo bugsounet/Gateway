@@ -31,6 +31,7 @@ Module.register("Gateway", {
       "EXT-GooglePhotos",
       "EXT-Governor",
       "EXT-Internet",
+      "EXT-Keyboard",
       "EXT-Librespot",
       "EXT-MusicPlayer",
       "EXT-Motion",
@@ -48,6 +49,7 @@ Module.register("Gateway", {
       "EXT-SelfiesViewer",
       "EXT-Spotify",
       "EXT-SpotifyCanvasLyrics",
+      "EXT-StreamDeck",
       "EXT-UpdateNotification",
       "EXT-Volume",
       "EXT-Welcome",
@@ -581,6 +583,7 @@ Module.register("Gateway", {
           this.sendNotification("EXT_SCREEN-LOCK", { show: true } )
           if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
           if (this.GW["EXT-Pir"].hello && this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-STOP")
+          if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-ON")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-PAUSE")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MIN")
@@ -595,6 +598,7 @@ Module.register("Gateway", {
           this.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
           if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
           if (this.GW["EXT-Pir"].hello && !this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-RESTART")
+          if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-OFF")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-RESUME")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MAX")
@@ -833,6 +837,7 @@ Module.register("Gateway", {
       this.sendNotification("EXT_SCREEN-LOCK")
       if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
       if (this.GW["EXT-Pir"].hello && this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-STOP")
+      if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-ON")
     }
 
     if (this.browserOrPhoto()) {
@@ -870,6 +875,7 @@ Module.register("Gateway", {
         this.sendNotification("EXT_SCREEN-UNLOCK")
         if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
         if (this.GW["EXT-Pir"].hello && !this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-RESTART")
+        if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-OFF")
       }
       if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
