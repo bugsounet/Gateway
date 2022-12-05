@@ -178,7 +178,6 @@
   "EXT-Welcome": "Laat toe om een Welkom's boodschap te tonen bij de start van uw MagicMirror.",
   "EXT-YouTube": "Deze plugin laat het toe om YouTube video's af te spelen (enkel mogelijk mits betaling).",
   "EXT-YouTubeCast": "Laat toe om YouTube video's te casten op uw MagicMirror.",
-  "EXT-YouTubeVLC": "Laat het toe om YouTube video's in volledige schermweergave te tonen op uw MagicMirror met VLC media player.",
 
   "VAL_PluginDescription": "Eigenschappen van deze plugin",
   "VAL_PluginName": "Plugin naam",
@@ -302,7 +301,5 @@
   "VAL_EXT-YouTube_Username": "gebruikersnaam die je gebruikt op het @bugsounet's support forum",
   "VAL_EXT-YouTube_Token": "De token die je ontvangen hebt van het forum (verzonden door @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Naam van het MagicMirror cast apparaat",
-  "VAL_EXT-YouTubeCast_Port": "Gebruikte poort van het MagicMirror cast apparaat",
-  "VAL_EXT-YouTubeVLC_Min": "Volume die je wenst als de assistant spreekt (in %)",
-  "VAL_EXT-YouTubeVLC_Max": "Maximale volume als er een YouTube video aan het afspelen is (in %)"
+  "VAL_EXT-YouTubeCast_Port": "Gebruikte poort van het MagicMirror cast apparaat"
 }

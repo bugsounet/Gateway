@@ -178,7 +178,6 @@
   "EXT-Welcome": "Beim Start von MagicMirror eine Willkommensnachricht senden.",
   "EXT-YouTube": "Ermöglicht das Abspielen von YouTube-Videos (reserviert für Spender).",
   "EXT-YouTubeCast": "Ermöglicht das Streamen eines YouTube-Videos zu MagicMirror.",
-  "EXT-YouTubeVLC": "Ermöglicht die Darstellung von YouTube-Videos im Vollbildmodus auf MagicMirror mit VLC Media Player.",
 
   "VAL_PluginDescription": "Eigenschaften für dieses Plugin",
   "VAL_PluginName": "Plugin Name",
@@ -302,7 +301,5 @@
   "VAL_EXT-YouTube_Username": "Benutzername im @bugsounet's Support Forum",
   "VAL_EXT-YouTube_Token": "Der token zu Deinem Benutzernamen (erhalten von @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Name des MagicMirror cast Gerätes",
-  "VAL_EXT-YouTubeCast_Port": "Port des MagicMirror cast Gerätes",
-  "VAL_EXT-YouTubeVLC_Min": "Lautstärke bei der Sprachausgabe (in %)",
-  "VAL_EXT-YouTubeVLC_Max": "Maximale Lautstärke bei YouTube-Wiedergabe (in %)"
+  "VAL_EXT-YouTubeCast_Port": "Port des MagicMirror cast Gerätes"
 }
