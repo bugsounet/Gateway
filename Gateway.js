@@ -31,6 +31,7 @@ Module.register("Gateway", {
       "EXT-GooglePhotos",
       "EXT-Governor",
       "EXT-Internet",
+      "EXT-Keyboard",
       "EXT-Librespot",
       "EXT-MusicPlayer",
       "EXT-Motion",
@@ -48,12 +49,12 @@ Module.register("Gateway", {
       "EXT-SelfiesViewer",
       "EXT-Spotify",
       "EXT-SpotifyCanvasLyrics",
+      "EXT-StreamDeck",
       "EXT-UpdateNotification",
       "EXT-Volume",
       "EXT-Welcome",
       "EXT-YouTube",
-      "EXT-YouTubeCast",
-      "EXT-YouTubeVLC"
+      "EXT-YouTubeCast"
     ]
 
     this.GW = {
@@ -373,7 +374,6 @@ Module.register("Gateway", {
       desc["EXT-Welcome"] = this.translate("EXT-Welcome"),
       desc["EXT-YouTube"] = this.translate("EXT-YouTube"),
       desc["EXT-YouTubeCast"] = this.translate("EXT-YouTubeCast"),
-      desc["EXT-YouTubeVLC"] = this.translate("EXT-YouTubeVLC")
       resolve(desc)
     })
   },
@@ -559,8 +559,6 @@ Module.register("Gateway", {
       Tr["EXT-YouTube_Token"] = this.translate("VAL_EXT-YouTube_Token")
       Tr["EXT-YouTubeCast_Name"] = this.translate("VAL_EXT-YouTubeCast_Name")
       Tr["EXT-YouTubeCast_Port"] = this.translate("VAL_EXT-YouTubeCast_Port")
-      Tr["EXT-YouTubeVLC_Min"] = this.translate("VAL_EXT-YouTubeVLC_Min")
-      Tr["EXT-YouTubeVLC_Max"] = this.translate("VAL_EXT-YouTubeVLC_Max")
       resolve(Tr)
     })
   },
@@ -581,12 +579,12 @@ Module.register("Gateway", {
           this.sendNotification("EXT_SCREEN-LOCK", { show: true } )
           if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
           if (this.GW["EXT-Pir"].hello && this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-STOP")
+          if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-ON")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-PAUSE")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MIN")
         if (this.GW["EXT-RadioPlayer"].hello && this.GW["EXT-RadioPlayer"].connected) this.sendNotification("EXT_RADIO-VOLUME_MIN")
         if (this.GW["EXT-MusicPlayer"].hello && this.GW["EXT-MusicPlayer"].connected) this.sendNotification("EXT_MUSIC-VOLUME_MIN")
-        if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-VOLUME_MIN")
         if (this.GW["EXT-FreeboxTV"].hello && this.GW["EXT-FreeboxTV"].connected) this.sendNotification("EXT-FREEBOXTV-VOLUME_MIN")
         break
       case "ASSISTANT_STANDBY":
@@ -595,12 +593,12 @@ Module.register("Gateway", {
           this.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
           if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
           if (this.GW["EXT-Pir"].hello && !this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-RESTART")
+          if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-OFF")
         }
         if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-RESUME")
         if (this.GW["EXT-Spotify"].hello && this.GW["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-VOLUME_MAX")
         if (this.GW["EXT-RadioPlayer"].hello && this.GW["EXT-RadioPlayer"].connected) this.sendNotification("EXT_RADIO-VOLUME_MAX")
         if (this.GW["EXT-MusicPlayer"].hello && this.GW["EXT-MusicPlayer"].connected) this.sendNotification("EXT_MUSIC-VOLUME_MAX")
-        if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-VOLUME_MAX")
         if (this.GW["EXT-FreeboxTV"].hello && this.GW["EXT-FreeboxTV"].connected) this.sendNotification("EXT-FREEBOXTV-VOLUME_MAX")
         break
       case "ASSISTANT_REPLY":
@@ -695,14 +693,6 @@ Module.register("Gateway", {
       case "EXT_YOUTUBE-DISCONNECTED":
         if (!this.GW["EXT-YouTube"].hello) return console.error("[GATEWAY] Warn YouTube don't say to me HELLO!")
         this.disconnected("EXT-YouTube")
-        break
-      case "EXT_YOUTUBEVLC-CONNECTED":
-        if (!this.GW["EXT-YouTubeVLC"].hello) return console.error("[GATEWAY] Warn YouTubeVLC don't say to me HELLO!")
-        this.connected("EXT-YouTubeVLC")
-        break
-      case "EXT_YOUTUBEVLC-DISCONNECTED":
-        if (!this.GW["EXT-YouTubeVLC"].hello) return console.error("[GATEWAY] Warn YouTubeVLC don't say to me HELLO!")
-        this.disconnected("EXT-YouTubeVLC")
         break
       case "EXT_YOUTUBECAST-CONNECTED":
         if (!this.GW["EXT-YouTubeCast"].hello) return console.error("[GATEWAY] Warn YouTubeCast don't say to me HELLO!")
@@ -833,11 +823,11 @@ Module.register("Gateway", {
       this.sendNotification("EXT_SCREEN-LOCK")
       if (this.GW["EXT-Motion"].hello && this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-DESTROY")
       if (this.GW["EXT-Pir"].hello && this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-STOP")
+      if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-ON")
     }
 
     if (this.browserOrPhoto()) {
       logGW("Connected:", extName, "[browserOrPhoto Mode]")
-      if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-STOP")
       this.GW[extName].connected = true
       this.lockPages(extName)
       this.sendSocketNotification("EXTStatus", this.GW)
@@ -848,7 +838,6 @@ Module.register("Gateway", {
     if (this.GW["EXT-MusicPlayer"].hello && this.GW["EXT-MusicPlayer"].connected) this.sendNotification("EXT_MUSIC-STOP")
     if (this.GW["EXT-RadioPlayer"].hello && this.GW["EXT-RadioPlayer"].connected) this.sendNotification("EXT_RADIO-STOP")
     if (this.GW["EXT-YouTube"].hello && this.GW["EXT-YouTube"].connected) this.sendNotification("EXT_YOUTUBE-STOP")
-    if (this.GW["EXT-YouTubeVLC"].hello && this.GW["EXT-YouTubeVLC"].connected) this.sendNotification("EXT_YOUTUBEVLC-STOP")
     if (this.GW["EXT-YouTubeCast"].hello && this.GW["EXT-YouTubeCast"].connected) this.sendNotification("EXT_YOUTUBECAST-STOP")
 
     logGW("Connected:", extName)
@@ -870,6 +859,7 @@ Module.register("Gateway", {
         this.sendNotification("EXT_SCREEN-UNLOCK")
         if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
         if (this.GW["EXT-Pir"].hello && !this.GW["EXT-Pir"].started) this.sendNotification("EXT_PIR-RESTART")
+        if (this.GW["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-OFF")
       }
       if (this.GW["EXT-Pages"].hello && !this.hasPluginConnected(this.GW, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
@@ -976,9 +966,6 @@ Module.register("Gateway", {
           return
         }
         this.sendNotification("EXT_YOUTUBE-PLAY", YouTube[3])
-      }
-      else if (this.GW["EXT-YouTubeVLC"].hello) {
-        this.sendNotification("EXT_YOUTUBEVLC-PLAY", YouTube[3])
       }
       return
     }

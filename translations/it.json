@@ -178,7 +178,6 @@
   "EXT-Welcome": "Mostra un messaggio di benvenuto all’avvio.",
   "EXT-YouTube": "Mostra Video YouTube video (Solo per  donatori).",
   "EXT-YouTubeCast": "Permette di fare Cast di video YouTube sullo Specchio.",
-  "EXT-YouTubeVLC": "Mostra Video YouTube a pieno schermo  usando VLC.",
 
   "VAL_PluginDescription": "Proprietà Plugin",
   "VAL_PluginName": "Nome Plugin",
@@ -301,7 +300,5 @@
   "VAL_EXT-YouTube_Username": "username of the @bugsounet's support forum",
   "VAL_EXT-YouTube_Token": "The token associated to your usernane (sended by @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Name of the MagicMirror cast device",
-  "VAL_EXT-YouTubeCast_Port": "Port of the MagicMirror cast device",
-  "VAL_EXT-YouTubeVLC_Min": "Volume to set when assistant speaking (in %)",
-  "VAL_EXT-YouTubeVLC_Max": "Max volume when YouTube playing (in %)"
+  "VAL_EXT-YouTubeCast_Port": "Port of the MagicMirror cast device"
 }

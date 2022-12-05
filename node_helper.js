@@ -840,12 +840,6 @@ module.exports = NodeHelper.create({
               payload: data
             })
             res.send("ok")
-          } else if (this.EXTStatus["EXT-YouTubeVLC"].hello) {
-            this.sendSocketNotification("SendNoti", {
-              noti: "EXT_YOUTUBEVLC-SEARCH",
-              payload: data
-            })
-            res.send("ok")
           } else {
             res.send("error")
           }
