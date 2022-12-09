@@ -748,7 +748,7 @@ Module.register("Gateway", {
         this.GW["EXT-UpdateNotification"].npm = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
-      case "EXT_VOLUME-GET":
+      case "EXT_VOLUME-SPEAKER_GET":
         if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
         this.GW["EXT-Volume"].set = payload
         this.sendSocketNotification("EXTStatus", this.GW)
