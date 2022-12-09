@@ -288,7 +288,6 @@
   "VAL_EXT-UpdateNotification_DefaultCommand": "Define tu comando de actualización por defecto. Se usará si no existe un comando individual para el módulo en la lista de comandos de actualización.",
   "VAL_EXT-UpdateNotification_Log": "Esta característica la necesitan los usuarios que no usan PM2 ! Grabar proceso y resultados en la consola",
   "VAL_EXT-UpdateNotification_Timeout": "Tiempo máximo de ejecución de una actualización en ms (defecto: 2 mins)",
-  "VAL_EXT-Volume_Preset": "Tipo de configuración de volumen preestablecida",
   "VAL_EXT-Volume_Start": "Define start volume [0-100]",
   "VAL_EXT-Volume_Script": "Script propio para el control del volumen",
   "VAL_EXT-Welcome_Welcome": "Tu bienvenida para el asistente",

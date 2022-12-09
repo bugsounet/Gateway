@@ -3,9 +3,10 @@ var defaultConfig = {
   disabled: false,
   config: {
     debug: false,
-    volumePreset: "PULSE",
-    myScript: null,
-    startVolume: 100
+    mySpeakerScript: null,
+    startSpeakerVolume: 100,
+    myRecorderScript: null,
+    startRecorderVolume: 50,
   }
 }
 
@@ -33,18 +34,25 @@ var schema = {
           "title": "{PluginDebug}",
           "default": false
         },
-        "volumePreset": {
-          "type": "string",
-          "title": "{EXT-Volume_Preset}",
-          "default": "PULSE",
-          "enum": ["ALSA", "ALSA_HDMI", "ALSA_HEADPHONE", "PULSE", "HIFIBERRY-DAC", "RESPEAKER_SPEAKER", "RESPEAKER_PLAYBACK", "OSX" ]
-        },
-        "myScript": {
+        "mySpeakerScript": {
           "type": ["string", "null"],
           "title": "{EXT-Volume_Script}",
           "default": null
         },
-        "startVolume": {
+        "startSpeakerVolume": {
+          "type": "number",
+          "title": "{EXT-Volume_Start}",
+          "default": 100,
+          "enum": [0,10,20,30,40,50,60,70,80,90,100],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "myRecorderScript": {
+          "type": ["string", "null"],
+          "title": "{EXT-Volume_Script}",
+          "default": null
+        },
+        "startRecorderVolume": {
           "type": "number",
           "title": "{EXT-Volume_Start}",
           "default": 100,
@@ -52,8 +60,9 @@ var schema = {
           "minimum": 0,
           "maximum": 100
         }
+
       },
-      "required": ["volumePreset"]
+      "required": ["startSpeakerVolume"]
     }
   },
   "required": ["module", "config"]

@@ -545,7 +545,6 @@ Module.register("Gateway", {
       Tr["EXT-UpdateNotification_DefaultCommand"] = this.translate("VAL_EXT-UpdateNotification_DefaultCommand")
       Tr["EXT-UpdateNotification_Log"] = this.translate("VAL_EXT-UpdateNotification_Log")
       Tr["EXT-UpdateNotification_Timeout"] = this.translate("VAL_EXT-UpdateNotification_Timeout")
-      Tr["EXT-Volume_Preset"] = this.translate("VAL_EXT-Volume_Preset")
       Tr["EXT-Volume_Script"] = this.translate("VAL_EXT-Volume_Script")
       Tr["EXT-Volume_Start"] = this.translate("VAL_EXT-Volume_Start")
       Tr["EXT-Welcome_Welcome"] = this.translate("VAL_EXT-Welcome_Welcome")
