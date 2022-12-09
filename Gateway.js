@@ -545,7 +545,6 @@ Module.register("Gateway", {
       Tr["EXT-UpdateNotification_DefaultCommand"] = this.translate("VAL_EXT-UpdateNotification_DefaultCommand")
       Tr["EXT-UpdateNotification_Log"] = this.translate("VAL_EXT-UpdateNotification_Log")
       Tr["EXT-UpdateNotification_Timeout"] = this.translate("VAL_EXT-UpdateNotification_Timeout")
-      Tr["EXT-Volume_Preset"] = this.translate("VAL_EXT-Volume_Preset")
       Tr["EXT-Volume_Script"] = this.translate("VAL_EXT-Volume_Script")
       Tr["EXT-Volume_Start"] = this.translate("VAL_EXT-Volume_Start")
       Tr["EXT-Welcome_Welcome"] = this.translate("VAL_EXT-Welcome_Welcome")
@@ -748,7 +747,7 @@ Module.register("Gateway", {
         this.GW["EXT-UpdateNotification"].npm = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
-      case "EXT_VOLUME-GET":
+      case "EXT_VOLUME-SPEAKER_GET":
         if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
         this.GW["EXT-Volume"].set = payload
         this.sendSocketNotification("EXTStatus", this.GW)

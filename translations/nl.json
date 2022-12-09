@@ -288,7 +288,6 @@
   "VAL_EXT-UpdateNotification_DefaultCommand": "Defineer uw standaard update opdracht. Word gebruikt als er geen individuele opdracht is toegekend.",
   "VAL_EXT-UpdateNotification_Log": "Deze optie is nodig voor gebruikers zonder PM2",
   "VAL_EXT-UpdateNotification_Timeout": "Maximale uitvoer tijd van een update in ms (standaard 2 min)",
-  "VAL_EXT-Volume_Preset": "Vooraf ingesteld volume",
   "VAL_EXT-Volume_Script": "Eigen script voor het volume beheer",
   "VAL_EXT-Volume_Start": "Define start volume [0-100]",
   "VAL_EXT-Welcome_Welcome": "Welkom dit is uw Google Assistent",

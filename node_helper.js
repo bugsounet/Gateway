@@ -761,7 +761,7 @@ module.exports = NodeHelper.create({
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
-            noti: "EXT_VOLUME-SET",
+            noti: "EXT_VOLUME-SPEAKER_SET",
             payload: data
           })
           res.send("ok")
