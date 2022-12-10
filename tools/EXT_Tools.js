@@ -153,7 +153,6 @@ function doLogin() {
 function doIndex() {
   $(document).prop('title', translation.Home)
   $('#welcome').text(translation.Home_Welcome)
-  console.log(versionGW)
   if (versionGW.needUpdate) {
     $('#alert').removeClass('invisible')
     $('#alert').removeClass('alert-success')
@@ -773,7 +772,7 @@ async function doTools() {
   }
 
   // YouTube Query
-  if (EXTStatus["EXT-YouTube"].hello || EXTStatus["EXT-YouTubeVLC"].hello) {
+  if (EXTStatus["EXT-YouTube"].hello) {
     $('#YouTube-Text').text(translation.Tools_YouTube_Text)
     $('#YouTube-Query').prop('placeholder', translation.Tools_YouTube_Query)
     $('#YouTube-Send').text(translation.Send)
