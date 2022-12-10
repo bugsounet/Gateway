@@ -756,12 +756,25 @@ module.exports = NodeHelper.create({
         else res.send("error")
       })
 
-      .post("/EXT-VolumeSend", (req, res) => {
+      .post("/EXT-VolumeSendSpeaker", (req, res) => {
         if(req.user || this.noLogin) {
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
             noti: "EXT_VOLUME-SPEAKER_SET",
+            payload: data
+          })
+          res.send("ok")
+        }
+        else res.send("error")
+      })
+
+      .post("/EXT-VolumeSendRecorder", (req, res) => {
+        if(req.user || this.noLogin) {
+          let data = req.body.data
+          if (!data) return res.send("error")
+          this.sendSocketNotification("SendNoti", {
+            noti: "EXT_VOLUME-RECORDER_SET",
             payload: data
           })
           res.send("ok")

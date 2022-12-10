@@ -153,7 +153,6 @@ function doLogin() {
 function doIndex() {
   $(document).prop('title', translation.Home)
   $('#welcome').text(translation.Home_Welcome)
-  console.log(versionGW)
   if (versionGW.needUpdate) {
     $('#alert').removeClass('invisible')
     $('#alert').removeClass('alert-success')
@@ -543,11 +542,37 @@ async function doTools() {
     $('#Volume-Send').text(translation.Confirm)
     $('#Volume-Box').css("display", "block")
     setInterval(() => {
-      $('#Volume-Set').text(EXTStatus["EXT-Volume"].set + "%")
+      $('#Volume-Set').text(EXTStatus["EXT-Volume"].speaker + "%")
     }, 1000)
 
     document.getElementById('Volume-Send').onclick = function () {
-      $.post( "/EXT-VolumeSend", { data: $('#Volume-Query').val() })
+      $.post( "/EXT-VolumeSendSpeaker", { data: $('#Volume-Query').val() })
+        .done(function( back ) {
+          if (back == "error") {
+            alertify.error(translation.Warn_Error)
+          } else {
+            alertify.success(translation.RequestDone)
+          }
+        })
+        .fail(function(err) {
+          alertify.error("[Volume] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+        })
+    }
+  }
+
+  // mic control
+  if (EXTStatus["EXT-Volume"].hello) {
+    $('#Volume-Text-Record').text(translation.Tools_Volume_Text_Record)
+    $('#Volume-Text-Record2').text(translation.Tools_Volume_Text2)
+    $('#Volume-Text-Record3').text(translation.Tools_Volume_Text3)
+    $('#Volume-Send-Record').text(translation.Confirm)
+    $('#Volume-Box-Record').css("display", "block")
+    setInterval(() => {
+      $('#Volume-Set-Record').text(EXTStatus["EXT-Volume"].recorder + "%")
+    }, 1000)
+
+    document.getElementById('Volume-Send-Record').onclick = function () {
+      $.post( "/EXT-VolumeSendRecorder", { data: $('#Volume-Query-Record').val() })
         .done(function( back ) {
           if (back == "error") {
             alertify.error(translation.Warn_Error)
@@ -773,7 +798,7 @@ async function doTools() {
   }
 
   // YouTube Query
-  if (EXTStatus["EXT-YouTube"].hello || EXTStatus["EXT-YouTubeVLC"].hello) {
+  if (EXTStatus["EXT-YouTube"].hello) {
     $('#YouTube-Text').text(translation.Tools_YouTube_Text)
     $('#YouTube-Query').prop('placeholder', translation.Tools_YouTube_Query)
     $('#YouTube-Send').text(translation.Send)

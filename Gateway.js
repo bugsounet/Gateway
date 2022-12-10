@@ -76,7 +76,8 @@ Module.register("Gateway", {
     this.GW["EXT-UpdateNotification"].npm = {}
     this.GW["EXT-Spotify"].remote = false
     this.GW["EXT-Spotify"].play = false
-    this.GW["EXT-Volume"].set = 0
+    this.GW["EXT-Volume"].speaker = 0
+    this.GW["EXT-Volume"].recorder = 0
     this.GW["EXT-SpotifyCanvasLyrics"].forced = false
 
     this.urls = {
@@ -256,6 +257,7 @@ Module.register("Gateway", {
       Tr.Tools_GoogleAssistant_Query = this.translate("GW_Tools_GoogleAssistant_Query")
       Tr.Tools_Alert_Text = this.translate("GW_Tools_Alert_Text")
       Tr.Tools_Alert_Query = this.translate("GW_Tools_Alert_Query")
+      Tr.Tools_Volume_Text_Record = this.translate("GW_Tools_Volume_Text_Record")
       Tr.Tools_Volume_Text = this.translate("GW_Tools_Volume_Text")
       Tr.Tools_Volume_Text2 = this.translate("GW_Tools_Volume_Text2")
       Tr.Tools_Volume_Text3 = this.translate("GW_Tools_Volume_Text3")
@@ -351,7 +353,7 @@ Module.register("Gateway", {
       desc["EXT-GooglePhotos"] = this.translate("EXT-GooglePhotos"),
       desc["EXT-Governor"] = this.translate("EXT-Governor"),
       desc["EXT-Internet"] = this.translate("EXT-Internet"),
-      desc["EXT-Led"] = this.translate("EXT-Led"),
+      desc["EXT-Keyboard"] = this.translate("EXT-Keyboard"),
       desc["EXT-Librespot"] = this.translate("EXT-Librespot"),
       desc["EXT-Motion"] = this.translate("EXT-Motion"),
       desc["EXT-MusicPlayer"] = this.translate("EXT-MusicPlayer"),
@@ -369,6 +371,7 @@ Module.register("Gateway", {
       desc["EXT-ScreenTouch"] = this.translate("EXT-ScreenTouch"),
       desc["EXT-Spotify"] = this.translate("EXT-Spotify"),
       desc["EXT-SpotifyCanvasLyrics"] = this.translate("EXT-SpotifyCanvasLyrics"),
+      desc["EXT-StreamDeck"] = this.translate("EXT-StreamDeck"),
       desc["EXT-UpdateNotification"] = this.translate("EXT-UpdateNotification"),
       desc["EXT-Volume"] = this.translate("EXT-Volume"),
       desc["EXT-Welcome"] = this.translate("EXT-Welcome"),
@@ -432,6 +435,13 @@ Module.register("Gateway", {
       Tr["EXT-Internet_Command"] = this.translate("VAL_EXT-Internet_Command")
       Tr["EXT-Internet_Alert"] = this.translate("VAL_EXT-Internet_Alert")
       Tr["EXT-Internet_Restart"] = this.translate("VAL_EXT-Internet_Restart")
+      Tr["EXT-Keyboard_keyFinder"] =  this.translate("VAL_EXT-Keyboard_keyFinder")
+      Tr["EXT-Keyboard_keys"] =  this.translate("VAL_EXT-Keyboard_keys")
+      Tr["EXT-Keyboard_keycode"] =  this.translate("VAL_EXT-Keyboard_keycode")
+      Tr["EXT-Keyboard_notification"] =  this.translate("VAL_EXT-Keyboard_notification")
+      Tr["EXT-Keyboard_payload"] =  this.translate("VAL_EXT-Keyboard_payload")
+      Tr["EXT-Keyboard_command"] =  this.translate("VAL_EXT-Keyboard_command")
+      Tr["EXT-Keyboard_sound"] =  this.translate("VAL_EXT-Keyboard_sound")
       Tr["EXT-Librespot_Email"] = this.translate("VAL_EXT-Librespot_Email")
       Tr["EXT-Librespot_Password"] = this.translate("VAL_EXT-Librespot_Password")
       Tr["EXT-Librespot_Name"] = this.translate("VAL_EXT-Librespot_Name")
@@ -527,6 +537,11 @@ Module.register("Gateway", {
       Tr["EXT-Spotify_BottomBar"] = this.translate("VAL_EXT-Spotify_BottomBar")
       Tr["EXT-Spotify_ID"] = this.translate("VAL_EXT-Spotify_ID")
       Tr["EXT-Spotify_Secret"] = this.translate("VAL_EXT-Spotify_Secret")
+      Tr["EXT-StreamDeck_device"] = this.translate("VAL_EXT-StreamDeck_device")
+      Tr["EXT-StreamDeck_brightness"] = this.translate("VAL_EXT-StreamDeck_brightness")
+      Tr["EXT-StreamDeck_ecobrightness"] = this.translate("VAL_EXT-StreamDeck_ecobrightness")
+      Tr["EXT-StreamDeck_ecotime"] = this.translate("VAL_EXT-StreamDeck_ecotime")
+      Tr["EXT-StreamDeck_logo"] = this.translate("VAL_EXT-StreamDeck_logo")
       Tr["EXT-UpdateNotification_Interval"] = this.translate("VAL_EXT-UpdateNotification_Interval")
       Tr["EXT-UpdateNotification_Delay"] = this.translate("VAL_EXT-UpdateNotification_Delay")
       Tr["EXT-UpdateNotification_Ignore"] = this.translate("VAL_EXT-UpdateNotification_Ignore")
@@ -749,7 +764,12 @@ Module.register("Gateway", {
         break
       case "EXT_VOLUME-SPEAKER_GET":
         if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
-        this.GW["EXT-Volume"].set = payload
+        this.GW["EXT-Volume"].speaker = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_VOLUME-RECORDER_GET":
+        if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
+        this.GW["EXT-Volume"].recorder = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-SCL_FORCED":
