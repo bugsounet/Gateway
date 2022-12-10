@@ -76,7 +76,8 @@ Module.register("Gateway", {
     this.GW["EXT-UpdateNotification"].npm = {}
     this.GW["EXT-Spotify"].remote = false
     this.GW["EXT-Spotify"].play = false
-    this.GW["EXT-Volume"].set = 0
+    this.GW["EXT-Volume"].speaker = 0
+    this.GW["EXT-Volume"].recorder = 0
     this.GW["EXT-SpotifyCanvasLyrics"].forced = false
 
     this.urls = {
@@ -256,6 +257,7 @@ Module.register("Gateway", {
       Tr.Tools_GoogleAssistant_Query = this.translate("GW_Tools_GoogleAssistant_Query")
       Tr.Tools_Alert_Text = this.translate("GW_Tools_Alert_Text")
       Tr.Tools_Alert_Query = this.translate("GW_Tools_Alert_Query")
+      Tr.Tools_Volume_Text_Record = this.translate("GW_Tools_Volume_Text_Record")
       Tr.Tools_Volume_Text = this.translate("GW_Tools_Volume_Text")
       Tr.Tools_Volume_Text2 = this.translate("GW_Tools_Volume_Text2")
       Tr.Tools_Volume_Text3 = this.translate("GW_Tools_Volume_Text3")
@@ -749,7 +751,12 @@ Module.register("Gateway", {
         break
       case "EXT_VOLUME-SPEAKER_GET":
         if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
-        this.GW["EXT-Volume"].set = payload
+        this.GW["EXT-Volume"].speaker = payload
+        this.sendSocketNotification("EXTStatus", this.GW)
+        break
+      case "EXT_VOLUME-RECORDER_GET":
+        if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
+        this.GW["EXT-Volume"].recorder = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-SCL_FORCED":
