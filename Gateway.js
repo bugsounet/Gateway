@@ -47,6 +47,7 @@ Module.register("Gateway", {
       "EXT-SelfiesFlash",
       "EXT-SelfiesSender",
       "EXT-SelfiesViewer",
+      "EXT-SmartHome",
       "EXT-Spotify",
       "EXT-SpotifyCanvasLyrics",
       "EXT-StreamDeck",
@@ -79,6 +80,8 @@ Module.register("Gateway", {
     this.GW["EXT-Volume"].speaker = 0
     this.GW["EXT-Volume"].recorder = 0
     this.GW["EXT-SpotifyCanvasLyrics"].forced = false
+    this.GW["EXT-Pages"].actual = 0
+    this.GW["EXT-Pages"].total = 0
 
     this.urls = {
       photos: {
@@ -123,6 +126,9 @@ Module.register("Gateway", {
         if (sender.name == "MMM-GoogleAssistant") {
           this.GW.ready = true
           logGW("Gateway is ready too!")
+          setInterval(() => {
+            this.sendNotification("EXT_GATEWAY-STATUS" , this.GW)
+          }, 1000)
         } else {
           console.error("[GATEWAY]", this.sender.name, "Don't try to enforce my rules!")
         }
@@ -803,6 +809,11 @@ Module.register("Gateway", {
         if (!this.GW["EXT-Selfies"].hello) return console.error("[GATEWAY] Warn Selfies don't say to me HELLO!")
         this.disconnected("EXT-Selfies")
         if (this.GW["EXT-Motion"].hello && !this.GW["EXT-Motion"].started) this.sendNotification("EXT_MOTION-INIT")
+        break
+      case "EXT_PAGES-NUMBER_IS":
+        if (!this.GW["EXT-Pages"].hello) return console.error("[GATEWAY] Warn Pages don't say to me HELLO!")
+        this.GW["EXT-Pages"].actual = payload.Actual
+        this.GW["EXT-Pages"].total = payload.Total
         break
       /** Warn if not in db **/
       default:
