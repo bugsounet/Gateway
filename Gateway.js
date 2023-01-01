@@ -815,6 +815,12 @@ Module.register("Gateway", {
         this.GW["EXT-Pages"].actual = payload.Actual
         this.GW["EXT-Pages"].total = payload.Total
         break
+      case "EXT_GATEWAY-REBOOT": // only available with EXT-SmarHome
+        if (!this.GW["EXT-SmartHome"].hello) return
+        if (sender.name == "EXT-SmartHome") {
+          this.sendSocketNotification("Restart")
+        }
+        break
       /** Warn if not in db **/
       default:
         logGW("Sorry, i don't understand what is", noti, payload ? payload : "")
