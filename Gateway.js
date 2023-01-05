@@ -78,6 +78,7 @@ Module.register("Gateway", {
     this.GW["EXT-Spotify"].remote = false
     this.GW["EXT-Spotify"].play = false
     this.GW["EXT-Volume"].speaker = 0
+    this.GW["EXT-Volume"].isMuted = false
     this.GW["EXT-Volume"].recorder = 0
     this.GW["EXT-SpotifyCanvasLyrics"].forced = false
     this.GW["EXT-Pages"].actual = 0
@@ -126,9 +127,6 @@ Module.register("Gateway", {
         if (sender.name == "MMM-GoogleAssistant") {
           this.GW.ready = true
           logGW("Gateway is ready too!")
-          setInterval(() => {
-            this.sendNotification("EXT_GATEWAY-STATUS" , this.GW)
-          }, 1000)
         } else {
           console.error("[GATEWAY]", this.sender.name, "Don't try to enforce my rules!")
         }
@@ -768,14 +766,11 @@ Module.register("Gateway", {
         this.GW["EXT-UpdateNotification"].npm = payload
         this.sendSocketNotification("EXTStatus", this.GW)
         break
-      case "EXT_VOLUME-SPEAKER_GET":
+      case "EXT_VOLUME_GET":
         if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
-        this.GW["EXT-Volume"].speaker = payload
-        this.sendSocketNotification("EXTStatus", this.GW)
-        break
-      case "EXT_VOLUME-RECORDER_GET":
-        if (!this.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
-        this.GW["EXT-Volume"].recorder = payload
+        this.GW["EXT-Volume"].speaker = payload.Speaker
+        this.GW["EXT-Volume"].isMuted = payload.SpeakerIsMuted
+        this.GW["EXT-Volume"].recorder = payload.Recorder
         this.sendSocketNotification("EXTStatus", this.GW)
         break
       case "EXT_SPOTIFY-SCL_FORCED":
@@ -849,6 +844,7 @@ Module.register("Gateway", {
     if (plugin == "EXT-Background") this.sendNotification("GAv4_FORCE_FULLSCREEN")
     if (plugin == "EXT-Detector") setTimeout(() => this.sendNotification("EXT_DETECTOR-START") , 300)
     if (plugin == "EXT-Pages") this.sendNotification("EXT_PAGES-Gateway")
+    if (plugin == "EXT-SmartHome") setInterval(() => { this.sendNotification("EXT_GATEWAY-STATUS" , this.GW) }, 1000)
   },
 
   /** connected rules **/
