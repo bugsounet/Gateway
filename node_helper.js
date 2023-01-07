@@ -69,6 +69,9 @@ module.exports = NodeHelper.create({
       case "EXTStatus":
         if (this.initialized && payload) this.EXTStatus = payload
         break
+      case "Restart":
+        setTimeout(() => this.lib.tools.restartMM(this.config) , 8000)
+        break
     }
   },
 
