@@ -816,6 +816,11 @@ Module.register("Gateway", {
           this.sendSocketNotification("Restart")
         }
         break
+      case "EXT_SCREEN-GH_FORCE_WAKEUP":
+        // temp patch ... to do better
+        if (this.GW["EXT-Screen"].hello && this.hasPluginConnected(this.GW, "connected", true)) {
+          setTimeout(() => { this.sendNotification("EXT_SCREEN-LOCK") } , 250)
+        }
       /** Warn if not in db **/
       default:
         logGW("Sorry, i don't understand what is", noti, payload ? payload : "")
