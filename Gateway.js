@@ -141,10 +141,6 @@ Module.register("Gateway", {
           timer: (payload.timer && payload.timer !=0)  ? payload.timer : null
         })
         break
-      case "USER_PRESENCE":
-        if (!this.GW["EXT-Screen"].hello) return
-        this.GW["EXT-Screen"].power = payload ? true : false
-        break
     }
   },
 
