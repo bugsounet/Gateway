@@ -140,7 +140,6 @@
   bottom: 0;
   z-index: 1;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMS8xNEDQYmMAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAQ0lEQVQYlaXNMQoAIAxD0dT7H657l0KX3iJuUlBUNOsPPCGJm7VDp6ryeMxMuDsAQH7owW3pyn3RS26iKxERMLN3ugOaAkaL3sWVigAAAABJRU5ErkJggg==);
-  -webkit-transform: scaleX(1);
   transform: scaleX(1);
   cursor: se-resize;
 }
@@ -331,7 +330,6 @@
 }
 
 .ajs-no-selection, .ajs-no-selection * {
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -357,13 +355,9 @@
 }
 
 .alertify .ajs-dimmer, .alertify .ajs-modal {
-  -webkit-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
-  -webkit-transition-property: opacity,visibility;
   transition-property: opacity,visibility;
-  -webkit-transition-timing-function: linear;
   transition-timing-function: linear;
-  -webkit-transition-duration: 250ms;
   transition-duration: 250ms;
 }
 
@@ -373,21 +367,16 @@
 }
 
 .alertify.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-duration: .5s;
   animation-duration: .5s;
 }
 
 .alertify.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-duration: 250ms;
   animation-duration: 250ms;
 }
 
 .alertify .ajs-dialog.ajs-shake {
-  -webkit-animation-name: ajs-shake;
   animation-name: ajs-shake;
-  -webkit-animation-duration: .1s;
   animation-duration: .1s;
-  -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
 
@@ -407,66 +396,52 @@
 }
 
 .alertify.ajs-slide.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-name: ajs-slideIn;
   animation-name: ajs-slideIn;
-  -webkit-animation-timing-function: cubic-bezier(.175,.885,.32,1.275);
   animation-timing-function: cubic-bezier(.175,.885,.32,1.275);
 }
 
 .alertify.ajs-slide.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-name: ajs-slideOut;
   animation-name: ajs-slideOut;
-  -webkit-animation-timing-function: cubic-bezier(.6,-.28,.735,.045);
   animation-timing-function: cubic-bezier(.6,-.28,.735,.045);
 }
 
 .alertify.ajs-zoom.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-name: ajs-zoomIn;
   animation-name: ajs-zoomIn;
 }
 
 .alertify.ajs-zoom.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-name: ajs-zoomOut;
   animation-name: ajs-zoomOut;
 }
 
 .alertify.ajs-fade.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-name: ajs-fadeIn;
   animation-name: ajs-fadeIn;
 }
 
 .alertify.ajs-fade.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-name: ajs-fadeOut;
   animation-name: ajs-fadeOut;
 }
 
 .alertify.ajs-pulse.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-name: ajs-pulseIn;
   animation-name: ajs-pulseIn;
 }
 
 .alertify.ajs-pulse.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-name: ajs-pulseOut;
   animation-name: ajs-pulseOut;
 }
 
 .alertify.ajs-flipx.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-name: ajs-flipInX;
   animation-name: ajs-flipInX;
 }
 
 .alertify.ajs-flipx.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-name: ajs-flipOutX;
   animation-name: ajs-flipOutX;
 }
 
 .alertify.ajs-flipy.ajs-in:not(.ajs-hidden) .ajs-dialog {
-  -webkit-animation-name: ajs-flipInY;
   animation-name: ajs-flipInY;
 }
 
 .alertify.ajs-flipy.ajs-out.ajs-hidden .ajs-dialog {
-  -webkit-animation-name: ajs-flipOutY;
   animation-name: ajs-flipOutY;
 }
 
@@ -680,7 +655,6 @@
   width: 0;
   overflow: visible;
   z-index: 1982;
-  -webkit-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
 }
 
@@ -691,18 +665,13 @@
   padding: 0;
   opacity: 0;
   margin: 0;
-  -webkit-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
-  -webkit-transition-duration: 250ms;
   transition-duration: 250ms;
-  -webkit-transition-timing-function: linear;
   transition-timing-function: linear;
 }
 
 .alertify-notifier .ajs-message.ajs-visible {
-  -webkit-transition-duration: .5s;
   transition-duration: .5s;
-  -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1.275);
   transition-timing-function: cubic-bezier(.175,.885,.32,1.275);
   opacity: 1;
   max-height: 100%;
@@ -773,13 +742,11 @@
 }
 
 .alertify-notifier.ajs-center .ajs-message {
-  -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
 }
 
 .alertify-notifier.ajs-center .ajs-message.ajs-visible {
   left: 50%;
-  -webkit-transition-timing-function: cubic-bezier(.57,.43,.1,.65);
   transition-timing-function: cubic-bezier(.57,.43,.1,.65);
 }
 
@@ -800,33 +767,25 @@
 }
 
 .ajs-no-transition.alertify .ajs-dialog, .ajs-no-transition.alertify .ajs-dimmer, .ajs-no-transition.alertify .ajs-modal {
-  -webkit-transition: none!important;
   transition: none!important;
-  -webkit-animation: none!important;
   animation: none!important;
 }
 
 .ajs-no-transition.alertify-notifier .ajs-message {
-  -webkit-transition: none!important;
   transition: none!important;
-  -webkit-animation: none!important;
   animation: none!important;
 }
 
 @media (prefers-reduced-motion:reduce) {
   .alertify .ajs-dialog, .alertify .ajs-dimmer, .alertify .ajs-modal {
-    -webkit-transition: none!important;
     transition: none!important;
-    -webkit-animation: none!important;
     animation: none!important;
   }
 }
 
 @media (prefers-reduced-motion:reduce) {
   .alertify-notifier .ajs-message {
-    -webkit-transition: none!important;
     transition: none!important;
-    -webkit-animation: none!important;
     animation: none!important;
   }
 }

@@ -4,7 +4,6 @@ const util = require("util")
 const si = require('systeminformation')
 const pm2 = require('pm2')
 var spawn = require('child_process').spawn
-const { createUpnpClient } = require('@bugsounet/nat-api')
 var readline = require('readline')
 var Stream = require('stream')
 
@@ -583,88 +582,6 @@ function readAllMMLogs(logs) {
   })
 }
 
-async function portMapping(config,loginWarn) {
-  var result = {
-    ip: "0.0.0.0",
-    done: false
-  }
-  return new Promise(async resolve => {
-    try {
-      const client = await createUpnpClient()
-      const ip = await client.externalIp()
-      result.ip = ip
-      const currentMappings = await client.getMappings()
-      if (currentMappings.length) {
-        currentMappings.forEach(async mapping => {
-          if(mapping.description == "@bugsounet Gateway v2") {
-            console.log("[GATEWAY][UPNP] Found Gateway upnp config:")
-            if (mapping.public) {
-              if ((mapping.public.port == config.portMapping) && (mapping.private.port == config.port) && !config.noLogin && !loginWarn) {
-                // already set
-                console.log("[GATEWAY][UPNP] Already mapped: Internal", mapping.private.port, "-> External", mapping.public.port)
-                result.done = true
-                resolve(result)
-              }
-              else {
-                //delete old config
-                await client.unmap({ public: mapping.public.port })
-                console.log("[GATEWAY][UPNP] Unmapping: Internal", mapping.private.port, "-> External", mapping.public.port)
-              }
-            }
-          }
-        })
-      }
-      if (result.done) return
-      if (config.noLogin) {
-        // NEVER Enforce this RULES !!!
-        console.warn("[GATEWAY][UPNP][SECURITY] You can't MAPPING with noLogin feature!")
-        return resolve(result)
-      }
-      if (loginWarn) {
-        // NEVER Enforce this RULES !!!
-        console.warn("[GATEWAY][UPNP][SECURITY] You can't MAPPING with default credentials!")
-        return resolve(result)
-      }
-      // port Mapping
-      console.log("[GATEWAY][UPNP] Mapping port: Internal", config.port, "-> External", config.portMapping)
-      await client.map({
-        description: "@bugsounet Gateway v2",
-        protocol: 'tcp',
-        public: config.portMapping,
-        private: config.port,
-        ttl: 0
-      })
-      result.done = true
-      resolve(result)
-    } catch (e) {
-      console.log("[GATEWAY][UPNP] Return " + e)
-      resolve(result)
-    }
-  })
-}
-
-async function portMappingDelete() {
-  return new Promise(async resolve => {
-    try {
-      const client = await createUpnpClient()
-      const currentMappings = await client.getMappings()
-      if (currentMappings.length) {
-        currentMappings.forEach(async mapping => {
-          if(mapping.description == "@bugsounet Gateway v2") {
-            console.warn("[GATEWAY][UPNP][SECURITY] Found Gateway upnp config:")
-            await client.unmap({ public: mapping.public.port })
-            console.warn("[GATEWAY][UPNP][SECURITY] Unmapping: Internal", mapping.private.port, "-> External", mapping.public.port)
-          }
-        })
-      }
-      resolve()
-    } catch (e) {
-      console.log("[GATEWAY][UPNP] Return " + e)
-      resolve()
-    }
-  })
-}
-
 // Function() in config ?
 function replacer(key, value) {
   if (typeof value == "function") {
@@ -704,8 +621,6 @@ exports.setWebviewTag = setWebviewTag
 exports.deleteBackup = deleteBackup
 exports.makeSchemaTranslate = makeSchemaTranslate
 exports.readAllMMLogs = readAllMMLogs
-exports.portMapping = portMapping
-exports.portMappingDelete = portMappingDelete
 exports.readFreeteuseTV = readFreeteuseTV
 exports.readRadioRecipe = readRadioRecipe
 exports.transformExternalBackup = transformExternalBackup

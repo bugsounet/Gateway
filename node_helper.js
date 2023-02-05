@@ -40,7 +40,6 @@ module.exports = NodeHelper.create({
     this.initialized = false
     this.app = null
     this.server= null
-    this.noLogin = false
     this.translation = null
     this.schemaTranslatation = null
     this.language = null
@@ -50,7 +49,6 @@ module.exports = NodeHelper.create({
     this.lib = {}
     this.HyperWatch = null
     this.Mapping = null
-    this.loginWarn = false
   },
 
   socketNotificationReceived: async function (noti, payload) {
@@ -59,7 +57,6 @@ module.exports = NodeHelper.create({
         console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
         if (this.server) return
         this.config = payload
-        this.noLogin = this.config.noLogin
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
         this.sendSocketNotification("MMConfig")
         break
@@ -134,22 +131,19 @@ module.exports = NodeHelper.create({
   initialize: function () {
     console.log("[GATEWAY] Start app...")
     log("EXT plugins in database:", this.EXT.length)
-    if (this.noLogin) console.warn("[GATEWAY] WARN: You use noLogin feature (no login/password used)")
-    else {
-      if (!this.config.username && !this.config.password) {
-        console.error("[GATEWAY] Your have not defined user/password in config!")
-        console.error("[GATEWAY] Using default creadentials")
-      } else {
-        if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
-          console.warn("[GATEWAY] WARN: You are using default username or default password")
-          console.warn("[GATEWAY] WARN: Don't forget to change it!")
-          this.loginWarn = true
-        }
-        this.user.username = this.config.username
-        this.user.password = this.config.password
+    if (!this.config.username && !this.config.password) {
+      console.error("[GATEWAY] Your have not defined user/password in config!")
+      console.error("[GATEWAY] Using default creadentials")
+    } else {
+      if ((this.config.username == this.user.username) || (this.config.password == this.user.password)) {
+        console.warn("[GATEWAY] WARN: You are using default username or default password")
+        console.warn("[GATEWAY] WARN: Don't forget to change it!")
       }
-      this.passportConfig()
+      this.user.username = this.config.username
+      this.user.password = this.config.password
     }
+    this.passportConfig()
+
     this.app = express()
     this.server = http.createServer(this.app)
     this.EXTConfigured= this.lib.tools.searchConfigured(this.MMConfig, this.EXT)
@@ -186,10 +180,9 @@ module.exports = NodeHelper.create({
     this.app.use(bodyParser.urlencoded({ extended: true }))
 
     // Tells app to use password session
-    if (!this.noLogin) {
-      this.app.use(passport.initialize())
-      this.app.use(passport.session())
-    }
+    this.app.use(passport.initialize())
+    this.app.use(passport.session())
+
 
     var options = {
       dotfiles: 'ignore',
@@ -215,7 +208,7 @@ module.exports = NodeHelper.create({
       .use('/EXT_Tools.js', express.static(__dirname + '/tools/EXT_Tools.js'))
       .use('/assets', express.static(__dirname + '/admin/assets', options))
       .get('/', (req, res) => {
-        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/index.html")
+        if(req.user) res.sendFile(__dirname+ "/admin/index.html")
         else res.redirect('/login')
       })
 
@@ -247,12 +240,12 @@ module.exports = NodeHelper.create({
       })
 
       .get('/EXT', (req, res) => {
-        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EXT.html")
+        if(req.user) res.sendFile(__dirname+ "/admin/EXT.html")
         else res.redirect('/login')
       })
 
       .get('/login', (req, res) => {
-        if (req.user || this.noLogin) res.redirect('/')
+        if (req.user) res.redirect('/')
         res.sendFile(__dirname+ "/admin/login.html")
       })
 
@@ -260,66 +253,65 @@ module.exports = NodeHelper.create({
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         passport.authenticate('login', (err, user, info) => {
           if (err) {
-            console.log("[GATEWAY][" + ip + "] Error", err)
+            console.log("[GATEWAY] [" + ip + "] Error", err)
             return next(err)
           }
           if (!user) {
-            console.log("[GATEWAY][" + ip + "] Bad Login", info)
+            console.log("[GATEWAY] [" + ip + "] Bad Login", info)
             return res.send({ err: info })
           }
           req.logIn(user, err => {
             if (err) {
-              console.log("[GATEWAY][" + ip + "] Login error:", err)
+              console.log("[GATEWAY] [" + ip + "] Login error:", err)
               return res.send({ err: err })
             }
-            console.log("[GATEWAY][" + ip + "] Welcome " + user.username + ", happy to serve you!")
+            console.log("[GATEWAY] [" + ip + "] Welcome " + user.username + ", happy to serve you!")
             return res.send({ login: true })
           })
         })(req, res, next)
       })
 
       .get('/logout', (req, res) => {
-        if (!this.noLogin) req.logout(err => {
+        req.logout(err => {
           if (err) { return console.error("[GATEWAY] Logout:", err) }
           res.redirect('/')
         })
-        else res.status(404).sendFile(__dirname+ "/admin/404.html")
       })
 
       .get('/AllEXT', (req, res) => {
-        if(req.user || this.noLogin) res.send(this.EXT)
+        if(req.user) res.send(this.EXT)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/DescriptionEXT', (req, res) => {
-        if(req.user || this.noLogin) res.send(this.EXTDescription)
+        if(req.user) res.send(this.EXTDescription)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/InstalledEXT', (req, res) => {
-        if(req.user || this.noLogin) res.send(this.EXTInstalled)
+        if(req.user) res.send(this.EXTInstalled)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/ConfiguredEXT', (req, res) => {
-        if(req.user || this.noLogin) res.send(this.EXTConfigured)
+        if(req.user) res.send(this.EXTConfigured)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get('/GetMMConfig', (req, res) => {
-        if(req.user || this.noLogin) res.send(this.MMConfig)
+        if(req.user) res.send(this.MMConfig)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/Terminal" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           res.sendFile( __dirname+ "/admin/terminal.html")
           //var ioLogs = new Server(this.server)
           io.once('connection', async (socket) => {
-            log('[' + ip + '] Connected to Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+            log('[' + ip + '] Connected to Terminal Logs:', req.user.username)
             socket.on('disconnect', (err) => {
-              log('[' + ip + '] Disconnected from Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+              log('[' + ip + '] Disconnected from Terminal Logs:', req.user.username, err)
             })
             var pastLogs = await this.lib.tools.readAllMMLogs(this.HyperWatch.logs())
             io.emit("terminal.logs", pastLogs)
@@ -332,13 +324,13 @@ module.exports = NodeHelper.create({
       })
 
       .get("/ptyProcess" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           res.sendFile( __dirname+ "/admin/pty.html")
           io.once('connection', (client) => {
-            log('[' + ip + '] Connected to Terminal:', this.noLogin ? "noLogin" : req.user , client.id)
+            log('[' + ip + '] Connected to Terminal:', req.user.username)
             client.on('disconnect', (err) => {
-              log('[' + ip + '] Disconnected from Terminal:', this.noLogin ? "noLogin" : req.user, client.id, err)
+              log('[' + ip + '] Disconnected from Terminal:', req.user.username, err)
             })
             var cols = 80
             var rows = 24
@@ -364,14 +356,14 @@ module.exports = NodeHelper.create({
       })
 
       .get("/install" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) == -1 && this.EXT.indexOf(req.query.ext) > -1) {
             res.sendFile( __dirname+ "/admin/install.html")
             io.once('connection', async (socket) => {
-              log('[' + ip + '] Connected to installer Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+              log('[' + ip + '] Connected to installer Terminal Logs:', req.user.username)
               socket.on('disconnect', (err) => {
-                log('[' + ip + '] Disconnected from installer Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+                log('[' + ip + '] Disconnected from installer Terminal Logs:', req.user.username, err)
               })
               this.HyperWatch.stream().on('stdData', (data) => {
                 if (typeof data == "string") io.to(socket.id).emit("terminal.installer", data.replace(/\r?\n/g, "\r\n"))
@@ -384,7 +376,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTInstall" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) == -1 && this.EXT.indexOf(req.query.EXT) > -1) {
             console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
@@ -413,14 +405,14 @@ module.exports = NodeHelper.create({
       })
 
       .get("/delete" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           if (req.query.ext && this.EXTInstalled.indexOf(req.query.ext) > -1 && this.EXT.indexOf(req.query.ext) > -1) {
             res.sendFile( __dirname+ "/admin/delete.html")
             io.once('connection', async (socket) => {
-              log('[' + ip + '] Connected to uninstaller Terminal Logs:', this.noLogin ? "noLogin" : req.user , socket.id)
+              log('[' + ip + '] Connected to uninstaller Terminal Logs:', req.user.username)
               socket.on('disconnect', (err) => {
-                log('[' + ip + '] Disconnected from uninstaller Terminal Logs:', this.noLogin ? "noLogin" : req.user, socket.id, err)
+                log('[' + ip + '] Disconnected from uninstaller Terminal Logs:', req.user.username, err)
               })
               this.HyperWatch.stream().on('stdData', (data) => {
                 if (typeof data == "string") io.to(socket.id).emit("terminal.delete", data.replace(/\r?\n/g, "\r\n"))
@@ -433,7 +425,7 @@ module.exports = NodeHelper.create({
       })
       
       .get("/EXTDelete" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
           if (req.query.EXT && this.EXTInstalled.indexOf(req.query.EXT) > -1 && this.EXT.indexOf(req.query.EXT) > -1) {
             console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
@@ -461,12 +453,12 @@ module.exports = NodeHelper.create({
       })
 
       .get("/MMConfig" , (req,res) => {
-        if(req.user || this.noLogin) res.sendFile( __dirname+ "/admin/mmconfig.html")
+        if(req.user) res.sendFile( __dirname+ "/admin/mmconfig.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/EXTCreateConfig" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if (req.query.ext &&
             this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
             this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
@@ -480,7 +472,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTModifyConfig" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if (req.query.ext &&
             this.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
             this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
@@ -494,7 +486,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTDeleteConfig" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if (req.query.ext &&
             this.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
             this.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
@@ -508,7 +500,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTGetCurrentConfig" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           var index = this.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
           if (index > -1) {
@@ -521,7 +513,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTGetDefaultConfig" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = require("./config/"+req.query.ext+"/config.js")
           res.send(data.default)
@@ -530,7 +522,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTGetDefaultTemplate" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if(!req.query.ext) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = require("./config/"+req.query.ext+"/config.js")
           data.schema = this.lib.tools.makeSchemaTranslate(data.schema, this.schemaTranslatation)
@@ -540,7 +532,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EXTSaveConfig" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           if(!req.query.config) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           let data = req.query.config
           res.send(data)
@@ -577,22 +569,22 @@ module.exports = NodeHelper.create({
       })
 
       .get("/Tools" , (req,res) => {
-        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/tools.html")
+        if(req.user) res.sendFile(__dirname+ "/admin/tools.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/Setting" , (req,res) => {
-        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/setting.html")
+        if(req.user) res.sendFile(__dirname+ "/admin/setting.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
       
       .get("/getSetting", (req,res) => {
-        if(req.user || this.noLogin) res.send(this.config)
+        if(req.user) res.send(this.config)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
       
       .get("/Restart" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           res.sendFile(__dirname+ "/admin/restarting.html")
           setTimeout(() => this.lib.tools.restartMM(this.config) , 1000)
         }
@@ -600,7 +592,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/Die" , (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           res.sendFile(__dirname+ "/admin/die.html")
           setTimeout(() => this.lib.tools.doClose(this.config), 3000)
         }
@@ -608,12 +600,12 @@ module.exports = NodeHelper.create({
       })
 
       .get("/EditMMConfig" , (req,res) => {
-        if(req.user || this.noLogin) res.sendFile(__dirname+ "/admin/EditMMConfig.html")
+        if(req.user) res.sendFile(__dirname+ "/admin/EditMMConfig.html")
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/GetBackupName" , async (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           var names = await this.lib.tools.loadBackupNames()
           res.send(names)
         }
@@ -621,7 +613,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/GetBackupFile" , async (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.query.config
           var file = await this.lib.tools.loadBackupFile(data)
           res.send(file)
@@ -630,7 +622,7 @@ module.exports = NodeHelper.create({
       })
 
       .get("/GetRadioStations", (req,res) => {
-        if (req.user || this.noLogin) {
+        if (req.user) {
           if (!this.radio) return res.status(404).sendFile(__dirname+ "/admin/404.html")
           var allRadio = Object.keys(this.radio)
           res.send(allRadio)
@@ -677,12 +669,12 @@ module.exports = NodeHelper.create({
       })
 
       .get("/getWebviewTag", (req,res) => {
-        if(req.user || this.noLogin) res.send(this.webviewTag)
+        if(req.user) res.send(this.webviewTag)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .post("/setWebviewTag", async (req,res) => {
-        if(!this.webviewTag && (req.user || this.noLogin)) {
+        if(!this.webviewTag && req.user) {
           console.log("[Gateway] Receiving setWebviewTag demand...")
           let NewConfig = await this.lib.tools.setWebviewTag(this.MMConfig)
           var resultSaveConfig = await this.lib.tools.saveConfig(NewConfig)
@@ -698,17 +690,17 @@ module.exports = NodeHelper.create({
       })
 
       .get("/getGAVersion", (req,res) => {
-        if(req.user || this.noLogin) res.send(this.GACheck)
+        if(req.user) res.send(this.GACheck)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .get("/getEXTStatus", (req,res) => {
-        if(req.user || this.noLogin) res.send(this.EXTStatus)
+        if(req.user) res.send(this.EXTStatus)
         else res.status(403).sendFile(__dirname+ "/admin/403.html")
       })
 
       .post("/EXT-Screen", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (data == "OFF") {
             this.sendSocketNotification("SendNoti", "EXT_SCREEN-END")
@@ -724,7 +716,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-GAQuery", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
@@ -740,7 +732,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-AlertQuery", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
@@ -760,7 +752,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-VolumeSendSpeaker", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
@@ -773,7 +765,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-VolumeSendRecorder", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
@@ -786,7 +778,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-SpotifyQuery", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let result = req.body.data
           if (!result) return res.send("error")
           let query = req.body.data.query
@@ -807,7 +799,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-SpotifyPlay", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PLAY")
           res.send("ok")
         }
@@ -815,7 +807,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-SpotifyStop", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-STOP")
           res.send("ok")
         }
@@ -823,7 +815,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-SpotifyNext", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-NEXT")
           res.send("ok")
         }
@@ -831,7 +823,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-SpotifyPrevious", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PREVIOUS")
           res.send("ok")
         }
@@ -839,7 +831,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-UNUpdate", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           this.sendSocketNotification("SendNoti", "EXT_UPDATENOTIFICATION-UPDATE")
           res.send("ok")
         }
@@ -847,7 +839,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-YouTubeQuery", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send("error")
           if (this.EXTStatus["EXT-YouTube"].hello) {
@@ -864,7 +856,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-FreeboxTVQuery", (req, res) => {
-        if(req.user || this.noLogin || !this.freeteuse) {
+        if(req.user || !this.freeteuse) {
           let data = req.body.data
           if (!data) return res.send("error")
           this.sendSocketNotification("SendNoti", {
@@ -877,7 +869,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-RadioQuery", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send("error")
           try {
@@ -895,7 +887,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/EXT-StopQuery", (req, res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           this.sendSocketNotification("SendStop")
           this.sendSocketNotification("SendNoti", "EXT_STOP")
           res.send("ok")
@@ -904,7 +896,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/deleteBackup", async (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           console.log("[GATEWAY] Receiving delete backup demand...")
           var deleteBackup = await this.lib.tools.deleteBackup()
           console.log("[GATEWAY] Delete backup result:", deleteBackup)
@@ -914,7 +906,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/readExternalBackup", async (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send({error: "error"})
           console.log("[GATEWAY] Receiving External backup...")
@@ -925,7 +917,7 @@ module.exports = NodeHelper.create({
       })
 
       .post("/saveExternalBackup", async (req,res) => {
-        if(req.user || this.noLogin) {
+        if(req.user) {
           let data = req.body.data
           if (!data) return res.send({error: "error"})
           console.log("[GATEWAY] Receiving External backup...")
@@ -955,6 +947,10 @@ module.exports = NodeHelper.create({
         healthDownloader(req, res)
       })
 
+      .get("/robots.txt", (req,res) => {
+        res.sendFile(__dirname+ "/admin/robots.txt")
+      })
+
       .use("/jsoneditor" , express.static(__dirname + '/node_modules/jsoneditor'))
       .use("/xterm" , express.static(__dirname + '/node_modules/xterm'))
       .use("/xterm-addon-fit" , express.static(__dirname + '/node_modules/xterm-addon-fit'))
@@ -966,15 +962,8 @@ module.exports = NodeHelper.create({
 
     /** Create Server **/
     this.config.listening = await this.lib.tools.purposeIP()
-    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, async () => {
+    this.HyperWatch = hyperwatch(this.server.listen(this.config.port, this.config.listening, () => {
       console.log("[GATEWAY] Start listening on http://"+ this.config.listening + ":" + this.config.port)
-      if (this.config.useMapping) {
-        console.log("[GATEWAY][UPNP] Try to Mapping port with upnp")
-        this.Mapping = await this.lib.tools.portMapping(this.config, this.loginWarn)
-        if (this.Mapping.done) console.log("[GATEWAY][UPNP] Start listening on http://"+this.Mapping.ip+":" + this.config.portMapping)
-        else console.error("[GATEWAY][UPNP] Mapping error !")
-      }
-      else await this.lib.tools.portMappingDelete()
     }))
     this.initialized= true
   },

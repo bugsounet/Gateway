@@ -1,7 +1,7 @@
 {
   "name": "Gateway",
-  "version": "2.2.4",
-  "rev": "230113",
+  "version": "3.0.0",
+  "rev": "230104",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {
@@ -32,7 +32,6 @@
   },
   "homepage": "https://wiki.bugsounet.fr/en/Gateway",
   "dependencies": {
-    "@bugsounet/nat-api": "^1.0.2",
     "express-session": "^1.17.2",
     "jsoneditor": "^9.7.4",
     "magicmirror-rebuild": "^1.0.7",
