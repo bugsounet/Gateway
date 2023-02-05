@@ -127,12 +127,12 @@ function ActionsOnEXT(that,noti,payload,sender) {
       if (that.GW["EXT-GooglePhotos"].hello) that.sendNotification("EXT_GOOGLEPHOTOS-START")
       break
     case "EXT_UN-MODULE_UPDATE":
-      if (!that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+      if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
       that.GW["EXT-UpdateNotification"].module = payload
       that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_UN-NPM_UPDATE":
-      if (!that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+      if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
       that.GW["EXT-UpdateNotification"].npm = payload
       that.sendSocketNotification("EXTStatus", that.GW)
       break
