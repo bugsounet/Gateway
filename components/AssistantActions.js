@@ -9,7 +9,7 @@ function ActionsOnStatusOfGA(that, status) {
     case "ASSISTANT_LISTEN":
     case "ASSISTANT_THINK":
       if (that.GW["EXT-Detector"].hello) that.sendNotification("EXT_DETECTOR-STOP")
-      if(that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {
+      if (that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {
         if (!that.GW["EXT-Screen"].power) that.sendNotification("EXT_SCREEN-WAKEUP")
         that.sendNotification("EXT_SCREEN-LOCK", { show: true } )
         if (that.GW["EXT-Motion"].hello && that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-DESTROY")
@@ -24,7 +24,7 @@ function ActionsOnStatusOfGA(that, status) {
       break
     case "ASSISTANT_STANDBY":
       if (that.GW["EXT-Detector"].hello) that.sendNotification("EXT_DETECTOR-START")
-      if(that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {
+      if (that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {
         that.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
         if (that.GW["EXT-Motion"].hello && !that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-INIT")
         if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-RESTART")

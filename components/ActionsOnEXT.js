@@ -126,7 +126,7 @@ function ActionsOnEXT(that,noti,payload,sender) {
       if (that.GW["EXT-Spotify"].hello) that.sendNotification("EXT_SPOTIFY-MAIN_START")
       if (that.GW["EXT-GooglePhotos"].hello) that.sendNotification("EXT_GOOGLEPHOTOS-START")
       break
-    case "EXT_UN-MODULE_UPDATE":
+    case "EXT_UN-MODULE_UPDATE": /** Need UN review ! send info before init ! **/
       if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
       that.GW["EXT-UpdateNotification"].module = payload
       that.sendSocketNotification("EXTStatus", that.GW)
