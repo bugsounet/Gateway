@@ -1,8 +1,8 @@
 /** parse data from MagicMirror **/
-var _load = require("../components/loadSensibleLibrary.js")
+var _load = require("../components/loadLibraries.js")
 
 async function parse(that,data) {
-  let bugsounet = await _load.library(that)
+  let bugsounet = await _load.libraries(that)
   if (bugsounet) {
     console.error("[GATEWAY] Warning:", bugsounet, "needed library not loaded !")
     console.error("[GATEWAY] Try to solve it with `npm run rebuild` in Gateway directory")

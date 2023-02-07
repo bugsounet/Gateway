@@ -31,6 +31,9 @@ module.exports = NodeHelper.create({
       radio: null,
       freeteuse: {}
     }
+    this.SmartHome = {
+      
+    }
     this.lib = { error: 0 }
   },
 
@@ -45,9 +48,11 @@ module.exports = NodeHelper.create({
         break
       case "MMConfig":
         await parseData.parse(this,payload)
-        log("Libraries:", this.lib)
+        //log("Libraries:", this.lib)
         if (!this.lib.error) {
           this.lib.Gateway.initialize(this)
+          if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
+          else this.lib.SmartHome.disable(this)
           this.lib.Gateway.startServer(this)
         }
         break
@@ -58,7 +63,9 @@ module.exports = NodeHelper.create({
         }
         break
       case "Restart":
-        setTimeout(() => this.lib.tools.restartMM(this.config) , 8000)
+        if (this.Gateway.initialized) {
+          setTimeout(() => this.lib.tools.restartMM(this.config) , 8000)
+        }
         break
     }
   }
