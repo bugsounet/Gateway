@@ -4,7 +4,7 @@ function helloEXT(that, module) {
     case that.ExtDB.find(name => name === module): //read DB and find module
       that.GW[module].hello= true
       logGW("Hello,", module)
-      that.sendSocketNotification("EXTStatus", that.GW)
+      //that.sendSocketNotification("EXTStatus", that.GW)
       onStartPlugin(that, module)
       break
     default:
@@ -52,7 +52,7 @@ function connectEXT(that, extName) {
   logGW("Debug:", that.GW)
   that.GW[extName].connected = true
   lockPagesByGW(that, extName)
-  that.sendSocketNotification("EXTStatus", that.GW)
+  //that.sendSocketNotification("EXTStatus", that.GW)
 }
 
 /** disconnected rules **/
@@ -60,7 +60,7 @@ function disconnectEXT(that, extName) {
   if (!that.GW.ready) return console.error("[GATEWAY] MMM-GoogleAssistant is not ready")
   if (extName) that.GW[extName].connected = false
 
-  that.sendSocketNotification("EXTStatus", that.GW)
+  //that.sendSocketNotification("EXTStatus", that.GW)
   // sport time ... verify if there is again an EXT module connected !
   setTimeout(()=> { // wait 1 sec before scan ...
     if (that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {

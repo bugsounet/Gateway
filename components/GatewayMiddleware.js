@@ -13,66 +13,68 @@ const path = require("path")
 var exec = require("child_process").exec
 const fetch = require("node-fetch")
 
+/** @to debug: regarder si les check (res.user) sont placés (dans les .post) **/
+
 /** init function **/
 function initialize(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
 
   console.log("[GATEWAY] Init app...")
-  log("EXT plugins in database:", that.EXT.length)
+  log("EXT plugins in database:", that.Gateway.EXT.length)
   if (!that.config.username && !that.config.password) {
     console.error("[GATEWAY] Your have not defined user/password in config!")
     console.error("[GATEWAY] Using default creadentials")
   } else {
-    if ((that.config.username == that.user.username) || (that.config.password == that.user.password)) {
+    if ((that.config.username == that.Gateway.user.username) || (that.config.password == that.Gateway.user.password)) {
       console.warn("[GATEWAY] WARN: You are using default username or default password")
       console.warn("[GATEWAY] WARN: Don't forget to change it!")
     }
-    that.user.username = that.config.username
-    that.user.password = that.config.password
+    that.Gateway.user.username = that.config.username
+    that.Gateway.user.password = that.config.password
   }
   passportConfig(that)
 
-  that.app = express()
-  that.server = http.createServer(that.app)
-  that.EXTConfigured= that.lib.tools.searchConfigured(that.MMConfig, that.EXT)
-  that.EXTInstalled= that.lib.tools.searchInstalled(that.EXT)
-  log("Find", that.EXTInstalled.length , "installed plugins in MagicMirror")
-  log("Find", that.EXTConfigured.length, "configured plugins in config file")
-  if (that.GACheck.version && semver.gte(that.GACheck.version, '4.0.0')) {
-    that.GACheck.find = true
-    log("Find MMM-GoogleAssistant v" + that.GACheck.version)
+  that.Gateway.app = express()
+  that.Gateway.server = http.createServer(that.Gateway.app)
+  that.Gateway.EXTConfigured= that.lib.tools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
+  that.Gateway.EXTInstalled= that.lib.tools.searchInstalled(that.Gateway.EXT)
+  log("Find", that.Gateway.EXTInstalled.length , "installed plugins in MagicMirror")
+  log("Find", that.Gateway.EXTConfigured.length, "configured plugins in config file")
+  if (that.Gateway.GACheck.version && semver.gte(that.Gateway.GACheck.version, '4.0.0')) {
+    that.Gateway.GACheck.find = true
+    log("Find MMM-GoogleAssistant v" + that.Gateway.GACheck.version)
   }
   else console.warn("[GATEWAY] MMM-GoogleAssistant Not Found!")
-  if (Object.keys(that.GAConfig).length > 0) {
+  if (Object.keys(that.Gateway.GAConfig).length > 0) {
     log("Find MMM-GoogleAssistant configured in MagicMirror")
-    that.GACheck.configured = true
+    that.Gateway.GACheck.configured = true
   }
   else log("MMM-GoogleAssistant is not configured!")
-  log("webviewTag Configured:", that.webviewTag)
-  log("Language set", that.language)
-  create(that)
+  log("webviewTag Configured:", that.Gateway.webviewTag)
+  log("Language set", that.Gateway.language)
+  createGW(that)
 }
 
 /** Middleware **/
-async function create(that) {
+function createGW(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
 
   var Path = that.path
   var urlencodedParser = bodyParser.urlencoded({ extended: true })
-  log("Create all needed routes...")
-  that.app.use(session({
+  log("Create Gateway needed routes...")
+  that.Gateway.app.use(session({
     secret: 'some-secret',
     saveUninitialized: false,
     resave: true
   }))
 
   // For parsing post request's data/body
-  that.app.use(bodyParser.json())
-  that.app.use(bodyParser.urlencoded({ extended: true }))
+  that.Gateway.app.use(bodyParser.json())
+  that.Gateway.app.use(bodyParser.urlencoded({ extended: true }))
 
   // Tells app to use password session
-  that.app.use(passport.initialize())
-  that.app.use(passport.session())
+  that.Gateway.app.use(passport.initialize())
+  that.Gateway.app.use(passport.session())
 
   var options = {
     dotfiles: 'ignore',
@@ -90,9 +92,9 @@ async function create(that) {
     res.redirect('/')
   }
 
-  var io = new Server(that.server)
+  var io = new Server(that.Gateway.server)
 
-  that.app
+  that.Gateway.app
     .use(logRequest)
     .use(cors({ origin: '*' }))
     .use('/EXT_Tools.js', express.static(Path + '/tools/EXT_Tools.js'))
@@ -107,7 +109,7 @@ async function create(that) {
         var result = {
           v: require('../package.json').version,
           rev: require('../package.json').rev,
-          lang: that.language,
+          lang: that.Gateway.language,
           last: 0,
           needUpdate: false
         }
@@ -126,7 +128,7 @@ async function create(that) {
     })
 
     .get("/translation" , (req,res) => {
-        res.send(that.translation)
+        res.send(that.Gateway.translation)
     })
 
     .get('/EXT', (req, res) => {
@@ -169,32 +171,32 @@ async function create(that) {
     })
 
     .get('/AllEXT', (req, res) => {
-      if(req.user) res.send(that.EXT)
+      if (req.user) res.send(that.Gateway.EXT)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get('/DescriptionEXT', (req, res) => {
-      if(req.user) res.send(that.EXTDescription)
+      if (req.user) res.send(that.Gateway.EXTDescription)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get('/InstalledEXT', (req, res) => {
-      if(req.user) res.send(that.EXTInstalled)
+      if (req.user) res.send(that.Gateway.EXTInstalled)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get('/ConfiguredEXT', (req, res) => {
-      if(req.user) res.send(that.EXTConfigured)
+      if (req.user) res.send(that.Gateway.EXTConfigured)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get('/GetMMConfig', (req, res) => {
-      if(req.user) res.send(that.MMConfig)
+      if (req.user) res.send(that.Gateway.MMConfig)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/Terminal" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         res.sendFile( Path+ "/admin/terminal.html")
         //var ioLogs = new Server(that.server)
@@ -203,9 +205,9 @@ async function create(that) {
           socket.on('disconnect', (err) => {
             log('[' + ip + '] Disconnected from Terminal Logs:', req.user.username, "[" + err + "]")
           })
-          var pastLogs = await that.lib.tools.readAllMMLogs(that.HyperWatch.logs())
+          var pastLogs = await that.lib.tools.readAllMMLogs(that.Gateway.HyperWatch.logs())
           io.emit("terminal.logs", pastLogs)
-          that.HyperWatch.stream().on('stdData', (data) => {
+          that.Gateway.HyperWatch.stream().on('stdData', (data) => {
             if (typeof data == "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"))
           })
         })
@@ -214,7 +216,7 @@ async function create(that) {
     })
 
     .get("/ptyProcess" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         res.sendFile( Path+ "/admin/pty.html")
         io.once('connection', (client) => {
@@ -246,16 +248,16 @@ async function create(that) {
     })
 
     .get("/install" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.ext && that.EXTInstalled.indexOf(req.query.ext) == -1 && that.EXT.indexOf(req.query.ext) > -1) {
+        if (req.query.ext && that.Gateway.EXTInstalled.indexOf(req.query.ext) == -1 && that.Gateway.EXT.indexOf(req.query.ext) > -1) {
           res.sendFile( Path+ "/admin/install.html")
           io.once('connection', async (socket) => {
             log('[' + ip + '] Connected to installer Terminal Logs:', req.user.username)
             socket.on('disconnect', (err) => {
               log('[' + ip + '] Disconnected from installer Terminal Logs:', req.user.username, "[" + err + "]")
             })
-            that.HyperWatch.stream().on('stdData', (data) => {
+            that.Gateway.HyperWatch.stream().on('stdData', (data) => {
               if (typeof data == "string") io.to(socket.id).emit("terminal.installer", data.replace(/\r?\n/g, "\r\n"))
             })
           })
@@ -266,9 +268,9 @@ async function create(that) {
     })
 
     .get("/EXTInstall" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.EXT && that.EXTInstalled.indexOf(req.query.EXT) == -1 && that.EXT.indexOf(req.query.EXT) > -1) {
+        if (req.query.EXT && that.Gateway.EXTInstalled.indexOf(req.query.EXT) == -1 && that.Gateway.EXT.indexOf(req.query.EXT) > -1) {
           console.log("[GATEWAY]["+ip+"] Request installation:", req.query.EXT)
           var result = {
             error: false
@@ -281,7 +283,7 @@ async function create(that) {
               result.error = true
               console.error(`[GATEWAY][FATAL] exec error: ${error}`)
             } else {
-              that.EXTInstalled= that.lib.tools.searchInstalled(that.EXT)
+              that.Gateway.EXTInstalled= that.lib.tools.searchInstalled(that.Gateway.EXT)
               console.log("[GATEWAY][DONE]", req.query.EXT)
             }
             res.json(result)
@@ -295,16 +297,16 @@ async function create(that) {
     })
 
     .get("/delete" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.ext && that.EXTInstalled.indexOf(req.query.ext) > -1 && that.EXT.indexOf(req.query.ext) > -1) {
+        if (req.query.ext && that.Gateway.EXTInstalled.indexOf(req.query.ext) > -1 && that.Gateway.EXT.indexOf(req.query.ext) > -1) {
           res.sendFile( Path+ "/admin/delete.html")
           io.once('connection', async (socket) => {
             log('[' + ip + '] Connected to uninstaller Terminal Logs:', req.user.username)
             socket.on('disconnect', (err) => {
               log('[' + ip + '] Disconnected from uninstaller Terminal Logs:', req.user.username, "[" + err + "]")
             })
-            that.HyperWatch.stream().on('stdData', (data) => {
+            that.Gateway.HyperWatch.stream().on('stdData', (data) => {
               if (typeof data == "string") io.to(socket.id).emit("terminal.delete", data.replace(/\r?\n/g, "\r\n"))
             })
           })
@@ -315,9 +317,9 @@ async function create(that) {
     })
 
     .get("/EXTDelete" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        if (req.query.EXT && that.EXTInstalled.indexOf(req.query.EXT) > -1 && that.EXT.indexOf(req.query.EXT) > -1) {
+        if (req.query.EXT && that.Gateway.EXTInstalled.indexOf(req.query.EXT) > -1 && that.Gateway.EXT.indexOf(req.query.EXT) > -1) {
           console.log("[GATEWAY]["+ip+"] Request delete:", req.query.EXT)
           var result = {
             error: false
@@ -329,7 +331,7 @@ async function create(that) {
               result.error = true
               console.error(`[GATEWAY][FATAL] exec error: ${error}`)
             } else {
-              that.EXTInstalled= that.lib.tools.searchInstalled(that.EXT)
+              that.Gateway.EXTInstalled= that.lib.tools.searchInstalled(that.Gateway.EXT)
               console.log("[GATEWAY][DONE]", req.query.EXT)
             }
             res.json(result)
@@ -343,16 +345,16 @@ async function create(that) {
     })
 
     .get("/MMConfig" , (req,res) => {
-      if(req.user) res.sendFile( Path+ "/admin/mmconfig.html")
+      if (req.user) res.sendFile( Path+ "/admin/mmconfig.html")
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/EXTCreateConfig" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if (req.query.ext &&
-          that.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
-          that.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          that.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
+          that.Gateway.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+          that.Gateway.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+          that.Gateway.EXTConfigured.indexOf(req.query.ext) == -1 // is not configured
         ) {
           res.sendFile( Path+ "/admin/EXTCreateConfig.html")
         }
@@ -362,11 +364,11 @@ async function create(that) {
     })
 
     .get("/EXTModifyConfig" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if (req.query.ext &&
-          that.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
-          that.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          that.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+          that.Gateway.EXTInstalled.indexOf(req.query.ext) > -1 && // is installed
+          that.Gateway.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+          that.Gateway.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
         ) {
           res.sendFile( Path+ "/admin/EXTModifyConfig.html")
         }
@@ -376,11 +378,11 @@ async function create(that) {
     })
 
     .get("/EXTDeleteConfig" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if (req.query.ext &&
-          that.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
-          that.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
-          that.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
+          that.Gateway.EXTInstalled.indexOf(req.query.ext) == -1 && // is not installed
+          that.Gateway.EXT.indexOf(req.query.ext) > -1 &&  // is an EXT
+          that.Gateway.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
         ) {
           res.sendFile( Path+ "/admin/EXTDeleteConfig.html")
         }
@@ -390,11 +392,11 @@ async function create(that) {
     })
 
     .get("/EXTGetCurrentConfig" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if(!req.query.ext) return res.status(404).sendFile(Path+ "/admin/404.html")
-        var index = that.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
+        var index = that.Gateway.MMConfig.modules.map(e => { return e.module }).indexOf(req.query.ext)
         if (index > -1) {
-          let data = that.MMConfig.modules[index]
+          let data = that.Gateway.MMConfig.modules[index]
           return res.send(data)
         }
         res.status(404).sendFile(Path+ "/admin/404.html")
@@ -403,26 +405,26 @@ async function create(that) {
     })
 
     .get("/EXTGetDefaultConfig" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if(!req.query.ext) return res.status(404).sendFile(Path+ "/admin/404.html")
-        let data = require("./config/"+req.query.ext+"/config.js")
+        let data = require("../config/"+req.query.ext+"/config.js")
         res.send(data.default)
       }
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/EXTGetDefaultTemplate" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if(!req.query.ext) return res.status(404).sendFile(Path+ "/admin/404.html")
-        let data = require("./config/"+req.query.ext+"/config.js")
-        data.schema = that.lib.tools.makeSchemaTranslate(data.schema, that.schemaTranslatation)
+        let data = require("../config/"+req.query.ext+"/config.js")
+        data.schema = that.lib.tools.makeSchemaTranslate(data.schema, that.Gateway.schemaTranslatation)
         res.send(data.schema)
       }
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/EXTSaveConfig" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         if(!req.query.config) return res.status(404).sendFile(Path+ "/admin/404.html")
         let data = req.query.config
         res.send(data)
@@ -433,13 +435,13 @@ async function create(that) {
     .post("/writeEXT", async (req,res) => {
       console.log("[Gateway] Receiving EXT data ...")
       let data = JSON.parse(req.body.data)
-      var NewConfig = await that.lib.tools.configAddOrModify(data, that.MMConfig)
+      var NewConfig = await that.lib.tools.configAddOrModify(data, that.Gateway.MMConfig)
       var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.MMConfig = await that.lib.tools.readConfig()
-        that.EXTConfigured= that.lib.tools.searchConfigured(that.MMConfig, that.EXT)
+        that.Gateway.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.EXTConfigured= that.lib.tools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -447,34 +449,34 @@ async function create(that) {
     .post("/deleteEXT", async (req,res) => {
       console.log("[Gateway] Receiving EXT data ...", req.body)
       let EXTName = req.body.data
-      var NewConfig = await that.lib.tools.configDelete(EXTName, that.MMConfig)
+      var NewConfig = await that.lib.tools.configDelete(EXTName, that.Gateway.MMConfig)
       var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.MMConfig = await that.lib.tools.readConfig()
-        that.EXTConfigured= that.lib.tools.searchConfigured(that.MMConfig, that.EXT)
+        that.Gateway.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.EXTConfigured= that.lib.tools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
         console.log("[GATEWAY] Reload config")
       }
     })
 
     .get("/Tools" , (req,res) => {
-      if(req.user) res.sendFile(Path+ "/admin/tools.html")
+      if (req.user) res.sendFile(Path+ "/admin/tools.html")
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/Setting" , (req,res) => {
-      if(req.user) res.sendFile(Path+ "/admin/setting.html")
+      if (req.user) res.sendFile(Path+ "/admin/setting.html")
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/getSetting", (req,res) => {
-      if(req.user) res.send(that.config)
+      if (req.user) res.send(that.config)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/Restart" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         res.sendFile(Path+ "/admin/restarting.html")
         setTimeout(() => that.lib.tools.restartMM(that.config) , 1000)
       }
@@ -482,7 +484,7 @@ async function create(that) {
     })
 
     .get("/Die" , (req,res) => {
-      if(req.user) {
+      if (req.user) {
         res.sendFile(Path+ "/admin/die.html")
         setTimeout(() => that.lib.tools.doClose(that.config), 3000)
       }
@@ -490,12 +492,12 @@ async function create(that) {
     })
 
     .get("/EditMMConfig" , (req,res) => {
-      if(req.user) res.sendFile(Path+ "/admin/EditMMConfig.html")
+      if (req.user) res.sendFile(Path+ "/admin/EditMMConfig.html")
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/GetBackupName" , async (req,res) => {
-      if(req.user) {
+      if (req.user) {
         var names = await that.lib.tools.loadBackupNames()
         res.send(names)
       }
@@ -503,7 +505,7 @@ async function create(that) {
     })
 
     .get("/GetBackupFile" , async (req,res) => {
-      if(req.user) {
+      if (req.user) {
         let data = req.query.config
         var file = await that.lib.tools.loadBackupFile(data)
         res.send(file)
@@ -513,8 +515,8 @@ async function create(that) {
 
     .get("/GetRadioStations", (req,res) => {
       if (req.user) {
-        if (!that.radio) return res.status(404).sendFile(Path+ "/admin/404.html")
-        var allRadio = Object.keys(that.radio)
+        if (!that.Gateway.radio) return res.status(404).sendFile(Path+ "/admin/404.html")
+        var allRadio = Object.keys(that.Gateway.radio)
         res.send(allRadio)
       }
       else res.status(403).sendFile(Path+ "/admin/403.html")
@@ -528,7 +530,7 @@ async function create(that) {
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.MMConfig = await that.lib.tools.readConfig()
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -540,7 +542,7 @@ async function create(that) {
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.MMConfig = await that.lib.tools.readConfig()
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -548,31 +550,31 @@ async function create(that) {
     .post("/saveSetting", urlencodedParser, async (req,res) => {
       console.log("[Gateway] Receiving new Setting")
       let data = JSON.parse(req.body.data)
-      var NewConfig = await that.lib.tools.configAddOrModify(data, that.MMConfig)
+      var NewConfig = await that.lib.tools.configAddOrModify(data, that.Gateway.MMConfig)
       var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
       console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.MMConfig = await that.lib.tools.readConfig()
         console.log("[GATEWAY] Reload config")
       }
     })
 
     .get("/getWebviewTag", (req,res) => {
-      if(req.user) res.send(that.webviewTag)
+      if(req.user) res.send(that.Gateway.webviewTag)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .post("/setWebviewTag", async (req,res) => {
-      if(!that.webviewTag && req.user) {
+      if(!that.Gateway.webviewTag && req.user) {
         console.log("[Gateway] Receiving setWebviewTag demand...")
-        let NewConfig = await that.lib.tools.setWebviewTag(that.MMConfig)
+        let NewConfig = await that.lib.tools.setWebviewTag(that.Gateway.MMConfig)
         var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
         console.log("[GATEWAY] Write Gateway webview config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
-          that.webviewTag = true
-          that.MMConfig = await that.lib.tools.readConfig()
+          that.Gateway.webviewTag = true
+          that.Gateway.MMConfig = await that.lib.tools.readConfig()
           console.log("[GATEWAY] Reload config")
         }
       }
@@ -580,12 +582,12 @@ async function create(that) {
     })
 
     .get("/getGAVersion", (req,res) => {
-      if(req.user) res.send(that.GACheck)
+      if (req.user) res.send(that.Gateway.GACheck)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
     .get("/getEXTStatus", (req,res) => {
-      if(req.user) res.send(that.EXTStatus)
+      if (req.user) res.send(that.Gateway.EXTStatus)
       else res.status(403).sendFile(Path+ "/admin/403.html")
     })
 
@@ -732,7 +734,7 @@ async function create(that) {
       if(req.user) {
         let data = req.body.data
         if (!data) return res.send("error")
-        if (that.EXTStatus["EXT-YouTube"].hello) {
+        if (that.Gateway.EXTStatus["EXT-YouTube"].hello) {
           that.sendSocketNotification("SendNoti", {
             noti: "EXT_YOUTUBE-SEARCH",
             payload: data
@@ -746,7 +748,7 @@ async function create(that) {
     })
 
     .post("/EXT-FreeboxTVQuery", (req, res) => {
-      if(req.user || !that.freeteuse) {
+      if(req.user || !that.Gateway.freeteuse) {
         let data = req.body.data
         if (!data) return res.send("error")
         that.sendSocketNotification("SendNoti", {
@@ -763,7 +765,7 @@ async function create(that) {
         let data = req.body.data
         if (!data) return res.send("error")
         try {
-          var toListen= that.radio[data].notificationExec.payload()
+          var toListen= that.Gateway.radio[data].notificationExec.payload()
           that.sendSocketNotification("SendNoti", {
             noti: "EXT_RADIO-START",
             payload: toListen
@@ -844,28 +846,33 @@ async function create(that) {
     .use("/jsoneditor" , express.static(Path + '/node_modules/jsoneditor'))
     .use("/xterm" , express.static(Path + '/node_modules/xterm'))
     .use("/xterm-addon-fit" , express.static(Path + '/node_modules/xterm-addon-fit'))
+}
 
-    .use(function(req, res) {
-      console.warn("[GATEWAY] Don't find:", req.url)
-      res.status(404).sendFile(Path+ "/admin/404.html")
-    })
-
+/** Start Server **/
+async function startServer(that) {
   /** Create Server **/
   that.config.listening = await that.lib.tools.purposeIP()
-  that.HyperWatch = hyperwatch(that.server.listen(that.config.port, that.config.listening, () => {
+  that.Gateway.HyperWatch = hyperwatch(that.Gateway.server.listen(that.config.port, that.config.listening, () => {
     console.log("[GATEWAY] Start listening on http://"+ that.config.listening + ":" + that.config.port)
   }))
-  that.initialized= true
+  that.Gateway.initialized= true
+
+  /** Error 404 **/
+  that.Gateway.app
+    .use(function(req, res) {
+      console.warn("[GATEWAY] Don't find:", req.url)
+      res.status(404).sendFile(that.path+ "/admin/404.html")
+    })
 }
 
 /** passport local strategy with username/password defined on config **/
 function passportConfig(that) {
   passport.use('login', new LocalStrategy(
     (username, password, done) => {
-      if (username === that.user.username && password === that.user.password) {
-        return done(null, that.user)
+      if (username === that.Gateway.user.username && password === that.Gateway.user.password) {
+        return done(null, that.Gateway.user)
       }
-      else done(null, false, { message: that.translation["Login_Error"] })
+      else done(null, false, { message: that.Gateway.translation["Login_Error"] })
     }
   ))
 
@@ -874,7 +881,7 @@ function passportConfig(that) {
   })
 
   passport.deserializeUser((id, done) => {
-    done(null, that.user)
+    done(null, that.Gateway.user)
   })
 }
 
@@ -885,4 +892,4 @@ function logRequest(req, res, next) {
 }
 
 exports.initialize = initialize
-
+exports.startServer = startServer

@@ -6,7 +6,8 @@ function library(that) {
   let libraries= [
     // { "library to load" : [ "store library name" ] }
     { "node-pty": "pty" },
-    { "../tools/tools.js": "tools" }
+    { "../components/tools.js": "tools" },
+    { "../components/GatewayMiddleware.js": "Gateway"}
   ]
   let errors = 0
   return new Promise(resolve => {
@@ -24,6 +25,7 @@ function library(that) {
           console.error("[GATEWAY]", libraryToLoad, "Loading error!" , e.toString())
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
+          that.lib.error = errors
         }
       }
     })

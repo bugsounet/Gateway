@@ -8,19 +8,19 @@ async function parse(that,data) {
     console.error("[GATEWAY] Try to solve it with `npm run rebuild` in Gateway directory")
     return
   }
-  that.MMConfig = await that.lib.tools.readConfig()
-  if (!that.MMConfig) return console.error("[GATEWAY] Error: MagicMirror config.js file not found!")
-  that.language = that.MMConfig.language
-  that.webviewTag = that.lib.tools.checkElectronOptions(that.MMConfig)
-  that.EXT = data.DB.sort()
-  that.EXTDescription = data.Description
-  that.translation = data.Translate
-  that.schemaTranslatation = data.Schema
-  that.EXTStatus = data.EXTStatus
-  that.GACheck.version = that.lib.tools.searchGA()
-  that.GAConfig = that.lib.tools.getGAConfig(that.MMConfig)
-  that.freeteuse = await that.lib.tools.readFreeteuseTV()
-  that.radio= await that.lib.tools.readRadioRecipe(that.language)
+  that.Gateway.MMConfig = await that.lib.tools.readConfig()
+  if (!that.Gateway.MMConfig) return console.error("[GATEWAY] Error: MagicMirror config.js file not found!")
+  that.Gateway.language = that.Gateway.MMConfig.language
+  that.Gateway.webviewTag = that.lib.tools.checkElectronOptions(that.Gateway.MMConfig)
+  that.Gateway.EXT = data.DB.sort()
+  that.Gateway.EXTDescription = data.Description
+  that.Gateway.translation = data.Translate
+  that.Gateway.schemaTranslatation = data.Schema
+  that.Gateway.EXTStatus = data.EXTStatus
+  that.Gateway.GACheck.version = that.lib.tools.searchGA()
+  that.Gateway.GAConfig = that.lib.tools.getGAConfig(that.Gateway.MMConfig)
+  that.Gateway.freeteuse = await that.lib.tools.readFreeteuseTV()
+  that.Gateway.radio= await that.lib.tools.readRadioRecipe(that.Gateway.language)
 }
 
 exports.parse = parse

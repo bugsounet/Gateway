@@ -1,6 +1,6 @@
 /**
  ** Module : Gateway
- ** @bugsounet ©03-2022
+ ** @bugsounet ©02-2023
  ** support: https://forum.bugsounet.fr
  **/
 
