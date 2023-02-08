@@ -5,20 +5,8 @@ function initialize(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY] [SMARTHOME]", ...args) }
   let SHWebsiteDir =  that.lib.path.resolve(__dirname + "/../website/SmartHome")
   log("Create SmartHome needed routes...")
-  var options = {
-    dotfiles: 'ignore',
-    etag: false,
-    extensions: ["css", "js"],
-    index: false,
-    maxAge: '1d',
-    redirect: false,
-    setHeaders: function (res, path, stat) {
-      res.set('x-timestamp', Date.now())
-    }
-  }
 
   that.Gateway.app
-    //.use('/smarthome/assets', that.lib.express.static(SHWebsiteDir + '/assets', options))
     /** OAuth2 Server **/
     .get("/smarthome/login/", (req,res) => {
       res.sendFile(SHWebsiteDir+ "/login.html")
@@ -88,20 +76,7 @@ function disable(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY] [SMARTHOME]", ...args) }
   let SHWebsiteDir =  that.lib.path.resolve(__dirname + "/../website/SmartHome")
 
-  var options = {
-    dotfiles: 'ignore',
-    etag: false,
-    extensions: ["css", "js"],
-    index: false,
-    maxAge: '1d',
-    redirect: false,
-    setHeaders: function (res, path, stat) {
-      res.set('x-timestamp', Date.now())
-    }
-  }
-
   that.Gateway.app
-    .use("/smarthome/assets", that.lib.express.static(SHWebsiteDir + '/assets', options))
     .get("/smarthome/login/", (req,res) => {
       res.sendFile(SHWebsiteDir+ "/disabled.html")
     })
