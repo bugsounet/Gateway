@@ -18,7 +18,7 @@ function initialize(that) {
   }
 
   that.Gateway.app
-    .use('/smarthome/assets', that.lib.express.static(SHWebsiteDir + '/assets', options))
+    //.use('/smarthome/assets', that.lib.express.static(SHWebsiteDir + '/assets', options))
     /** OAuth2 Server **/
     .get("/smarthome/login/", (req,res) => {
       res.sendFile(SHWebsiteDir+ "/login.html")
@@ -101,7 +101,7 @@ function disable(that) {
   }
 
   that.Gateway.app
-    .use('/smarthome/assets', that.lib.express.static(SHWebsiteDir + '/assets', options))
+    .use("/smarthome/assets", that.lib.express.static(SHWebsiteDir + '/assets', options))
     .get("/smarthome/login/", (req,res) => {
       res.sendFile(SHWebsiteDir+ "/disabled.html")
     })

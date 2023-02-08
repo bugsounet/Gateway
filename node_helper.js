@@ -51,7 +51,7 @@ module.exports = NodeHelper.create({
         //log("Libraries:", this.lib)
         if (!this.lib.error) {
           this.lib.Gateway.initialize(this)
-          if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
+          if (!this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
           else this.lib.SmartHome.disable(this)
           this.lib.Gateway.startServer(this)
         }

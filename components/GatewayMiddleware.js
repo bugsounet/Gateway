@@ -84,7 +84,7 @@ function createGW(that) {
     .use(logRequest)
     .use(that.lib.cors({ origin: '*' }))
     .use('/EXT_Tools.js', that.lib.express.static(Path + '/tools/EXT_Tools.js'))
-    .use('/assets', that.lib.express.static(Path + '/website/Gateway/assets', options))
+    .use('/assets', that.lib.express.static(Path + '/website/assets', options))
     .get('/', (req, res) => {
       if(req.user) res.sendFile(Path+ "/website/Gateway/index.html")
       else res.redirect('/login')
