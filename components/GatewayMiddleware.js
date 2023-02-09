@@ -83,7 +83,7 @@ function createGW(that) {
   that.Gateway.app
     .use(logRequest)
     .use(that.lib.cors({ origin: '*' }))
-    .use('/EXT_Tools.js', that.lib.express.static(Path + '/GWTools/EXT_Tools.js'))
+    .use('/EXT_Tools.js', that.lib.express.static(Path + '/tools/EXT_Tools.js'))
     .use('/assets', that.lib.express.static(Path + '/website/assets', options))
     .get('/', (req, res) => {
       if(req.user) res.sendFile(Path+ "/website/Gateway/index.html")
@@ -447,7 +447,7 @@ function createGW(that) {
     })
 
     .get("/Tools" , (req,res) => {
-      if (req.user) res.sendFile(Path+ "/website/Gateway/GWTools.html")
+      if (req.user) res.sendFile(Path+ "/website/Gateway/tools.html")
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
