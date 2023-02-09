@@ -232,7 +232,7 @@ function gatewayEXT(that, response) {
 
 /** urls scan : dispatch url, youtube, spotify **/
 /** use the FIRST discover link only **/
-function urlsScan(that, url) {
+function urlsScan(that, urls) {
   var firstURL = urls.links.urls[0]
 
   /** YouTube RegExp **/
