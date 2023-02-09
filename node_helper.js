@@ -32,7 +32,10 @@ module.exports = NodeHelper.create({
       freeteuse: {}
     }
     this.SmartHome = {
-      
+      last_code: null,
+      last_code_user: null,
+      last_code_time: null,
+      homegraph: null
     }
     this.lib = { error: 0 }
   },
@@ -64,7 +67,7 @@ module.exports = NodeHelper.create({
         break
       case "Restart":
         if (this.Gateway.initialized) {
-          setTimeout(() => this.lib.tools.restartMM(this.config) , 8000)
+          setTimeout(() => this.lib.GWTools.restartMM(this) , 8000)
         }
         break
     }

@@ -1,17 +1,10 @@
-const path = require("path")
-const fs = require("fs")
-const util = require("util")
-const si = require('systeminformation')
-const pm2 = require('pm2')
-var spawn = require('child_process').spawn
-var readline = require('readline')
-var Stream = require('stream')
+/** Gateway Tools **/
 
-function readConfig() {
+function readConfig(that) {
   return new Promise(resolve => {
     var MMConfig = undefined
-    let file = path.resolve(__dirname, "../../../config/config.js")
-    if (fs.existsSync(file)) {
+    let file = that.lib.path.resolve(__dirname, "../../../config/config.js")
+    if (that.lib.fs.existsSync(file)) {
       MMConfig = require(file)
       MMConfig = configStartMerge(MMConfig)
     }
@@ -20,13 +13,13 @@ function readConfig() {
   })
 }
 
-function readTMPBackupConfig(file) {
+function readTMPBackupConfig(that,file) {
   return new Promise(resolve => {
     var TMPConfig = undefined
-    if (fs.existsSync(file)) {
+    if (that.lib.fs.existsSync(file)) {
       TMPConfig = require(file)
       TMPConfig = configStartMerge(TMPConfig)
-      fs.unlink(file, (err) => {
+      that.lib.fs.unlink(file, (err) => {
         if (err) {
           //resolve({error: "Error when deleting file" })
           return console.error("[GATEWAY] error", err)
@@ -38,21 +31,22 @@ function readTMPBackupConfig(file) {
 }
 
 /** read streamsConfig.json of EXT-FreeboxTV**/
-function readFreeteuseTV() {
+function readFreeteuseTV(that) {
   return new Promise(resolve => {
     var streamsConfig = undefined
-    let file = path.resolve(__dirname, "../../EXT-FreeboxTV/streamsConfig.json")
-    if (fs.existsSync(file)) streamsConfig = require(file)
+    let file = that.lib.path.resolve(__dirname, "../../EXT-FreeboxTV/streamsConfig.json")
+    if (that.lib.fs.existsSync(file)) streamsConfig = require(file)
     resolve(streamsConfig)
   })
 }
 
-function readRadioRecipe(lang) {
+function readRadioRecipe(that) {
   return new Promise(resolve => {
     var RadioResult = undefined
-    let file = path.resolve(__dirname, "../../EXT-RadioPlayer/recipe/EXT-RadioPlayer."+lang+".js")
+    var lang = that.Gateway.language
+    let file = that.lib.path.resolve(__dirname, "../../EXT-RadioPlayer/recipe/EXT-RadioPlayer."+lang+".js")
     try {
-      if (fs.existsSync(file)) RadioResult = require(file).recipe.commands
+      if (that.lib.fs.existsSync(file)) RadioResult = require(file).recipe.commands
     } catch (e) {
       resolve(RadioResult)
       console.error("[GATEWAY][Radio] error when loading file", file)
@@ -76,11 +70,12 @@ function searchConfigured (config,ext) {
 }
 
 /** search installed EXT **/
-function searchInstalled (ext) {
+function searchInstalled (that) {
   var Installed = []
+  var ext= that.Gateway.EXT
   ext.find(m => {
-    if (fs.existsSync(path.resolve(__dirname + "/../../" + m + "/package.json"))) {
-      let name = require((path.resolve(__dirname + "/../../" + m + "/package.json"))).name
+    if (that.lib.fs.existsSync(that.lib.path.resolve(__dirname + "/../../" + m + "/package.json"))) {
+      let name = require((that.lib.path.resolve(__dirname + "/../../" + m + "/package.json"))).name
       if (name == m) Installed.push(m)
       else console.warn("[GATEWAY] Found:", m, "but in package.json name is not the same:", name)
     }
@@ -89,12 +84,12 @@ function searchInstalled (ext) {
 }
 
 /** search if GA installed **/
-function searchGA () {
+function searchGA (that) {
   var version = 0
-  if (fs.existsSync(path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))) {
-    let name = require((path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))).name
+  if (that.lib.fs.existsSync(that.lib.path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))) {
+    let name = require((that.lib.path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))).name
     if (name == "MMM-GoogleAssistant") {
-      version = require((path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))).version
+      version = require((that.lib.path.resolve(__dirname + "/../../MMM-GoogleAssistant/package.json"))).version
     }
     else console.warn("[GATEWAY] Found: MMM-GoogleAssistant but in package.json name is not the same:", name)
   }
@@ -118,20 +113,20 @@ function timeStamp() {
 }
 
 /** Save MagicMirror config with backup **/
-function saveConfig(MMConfig) {
+function saveConfig(that,MMConfig) {
   return new Promise(resolve => {
-    var configPath = path.resolve(__dirname, "../../../config/config.js")
-    var configPathTMP = path.resolve(__dirname, "../../../config/configTMP.js")
-    let backupPath = path.resolve(__dirname, "../backup/config.js.GW." + timeStamp())
-    var source = fs.createReadStream(configPath)
-    var destination = fs.createWriteStream(backupPath)
+    var configPath = that.path.resolve(__dirname, "../../../config/config.js")
+    var configPathTMP = that.path.resolve(__dirname, "../../../config/configTMP.js")
+    let backupPath = that.path.resolve(__dirname, "../backup/config.js.GW." + timeStamp())
+    var source = that.lib.fs.createReadStream(configPath)
+    var destination = that.lib.fs.createWriteStream(backupPath)
 
     source.pipe(destination, { end: false })
     source.on("end", () => {
       var header = "/*** GENERATED BY @bugsounet Gateway v" + require("../package.json").version + " ***/\n/*** https://forum.bugsounet.fr **/\n\nvar config = "
       var footer = "\n\n/*************** DO NOT EDIT THE LINE BELOW ***************/\nif (typeof module !== 'undefined') {module.exports = config;}\n"
 
-      fs.writeFile(configPathTMP, header + util.inspect(MMConfig, {
+      that.lib.fs.writeFile(configPathTMP, header + that.lib.util.inspect(MMConfig, {
           showHidden: false,
           depth: null,
           maxArrayLength: null,
@@ -147,18 +142,18 @@ function saveConfig(MMConfig) {
           console.log("[GATEWAY] Gateway check Function in config and revive it...")
           var FunctionSearch = new RegExp(/(.*)(`|')\[FUNCTION\](.*)(`|')/, "g")
           function readFileLineByLine(inputFile, outputFile) {
-            fs.unlink(outputFile, (err) => {
+            that.lib.fs.unlink(outputFile, (err) => {
               if (err) {
                 resolve({error: "Error when deleting file" })
                 return console.error("[GATEWAY] error", err)
               }
             })
-            var instream = fs.createReadStream(inputFile)
-            var outstream = new Stream()
+            var instream = that.lib.fs.createReadStream(inputFile)
+            var outstream = new that.lib.Stream()
             outstream.readable = true
             outstream.writable = true
 
-            var rl = readline.createInterface({
+            var rl = that.lib.readline.createInterface({
               input: instream,
               output: outstream,
               terminal: false
@@ -169,12 +164,12 @@ function saveConfig(MMConfig) {
               if (Search) {
                 var reviverFunction = reviver(Search)
                 line = reviverFunction
-                return fs.appendFileSync(outputFile, line + '\n')
+                return that.lib.fs.appendFileSync(outputFile, line + '\n')
               }
-              fs.appendFileSync(outputFile, line + '\n')
+              that.lib.fs.appendFileSync(outputFile, line + '\n')
             })
             instream.on("end", () => {
-              fs.unlink(inputFile, (err) => {
+              that.lib.fs.unlink(inputFile, (err) => {
                 if (err) {
                   resolve({error: "Error when deleting file" })
                   return console.error("[GATEWAY] error", err)
@@ -194,16 +189,16 @@ function saveConfig(MMConfig) {
   })
 }
 
-function saveExternalConfig(Config) {
+function saveExternalConfig(that,Config) {
   return new Promise(resolve => {
     var time = Date.now()
-    var configPathTMP = path.resolve(__dirname, "../tmp/configTMP.js")
-    var configPathOut = path.resolve(__dirname, "../download/" + time + ".js")
+    var configPathTMP = that.lib.path.resolve(__dirname, "../tmp/configTMP.js")
+    var configPathOut = that.lib.path.resolve(__dirname, "../download/" + time + ".js")
 
     var header = "/*** GENERATED BY @bugsounet Gateway v" + require("../package.json").version + " ***/\n/*** https://forum.bugsounet.fr **/\n\nvar config = "
     var footer = "\n\n/*************** DO NOT EDIT THE LINE BELOW ***************/\nif (typeof module !== 'undefined') {module.exports = config;}\n"
 
-    fs.writeFile(configPathTMP, header + util.inspect(Config, {
+    that.lib.fs.writeFile(configPathTMP, header + that.lib.util.inspect(Config, {
         showHidden: false,
         depth: null,
         maxArrayLength: null,
@@ -217,12 +212,12 @@ function saveExternalConfig(Config) {
 
         var FunctionSearch = new RegExp(/(.*)(`|')\[FUNCTION\](.*)(`|')/, "g")
         function readFileLineByLine(inputFile, outputFile) {
-          var instream = fs.createReadStream(inputFile)
-          var outstream = new Stream()
+          var instream = that.lib.fs.createReadStream(inputFile)
+          var outstream = new that.lib.Stream()
           outstream.readable = true
           outstream.writable = true
 
-          var rl = readline.createInterface({
+          var rl = that.lib.readline.createInterface({
             input: instream,
             output: outstream,
             terminal: false
@@ -233,13 +228,13 @@ function saveExternalConfig(Config) {
             if (Search) {
               var reviverFunction = reviver(Search)
               line = reviverFunction
-              return fs.appendFileSync(outputFile, line + '\n')
+              return that.lib.fs.appendFileSync(outputFile, line + '\n')
             }
-            fs.appendFileSync(outputFile, line + '\n')
+            that.lib.fs.appendFileSync(outputFile, line + '\n')
           })
           instream.on("end", () => {
             console.log("[GATEWAY] Gateway saved new backup configuration for downloading !")
-            fs.unlink(inputFile, (err) => {
+            that.lib.fs.unlink(inputFile, (err) => {
               if (err) {
                 resolve({error: "Error when deleting file" })
                 return console.error("[GATEWAY] error", err)
@@ -254,9 +249,9 @@ function saveExternalConfig(Config) {
   })
 }
 
-function deleteDownload(file) {
-  var inputFile = path.resolve(__dirname, "../download/" + file + ".js")
-  fs.unlink(inputFile, (err) => {
+function deleteDownload(that,file) {
+  var inputFile = that.lib.path.resolve(__dirname, "../download/" + file + ".js")
+  that.lib.fs.unlink(inputFile, (err) => {
     if (err) {
       return console.error("[GATEWAY] error", err)
     }
@@ -264,15 +259,15 @@ function deleteDownload(file) {
   })
 }
 
-function transformExternalBackup(backup) {
+function transformExternalBackup(that,backup) {
   return new Promise(resolve => {
-    var tmpFile = path.resolve(__dirname, "../tmp/config.tmp" + timeStamp())
-    fs.writeFile(tmpFile, backup, async (err) => {
+    var tmpFile = that.lib.path.resolve(__dirname, "../tmp/config.tmp" + timeStamp())
+    that.lib.fs.writeFile(tmpFile, backup, async (err) => {
       if (err) {
         console.log("[GATEWAY][externalBackup]", err)
         resolve({error: "Error when writing external tmp backup file" })
       } else {
-        result = await readTMPBackupConfig(tmpFile)
+        result = await readTMPBackupConfig(that,tmpFile)
         resolve(result)
       }
     })
@@ -301,11 +296,11 @@ function configDelete(EXT, MMConfig) {
 }
 
 /** list of all backups **/
-function loadBackupNames() {
+function loadBackupNames(that) {
   return new Promise(resolve => {
     const regex = "config.js.GW"
     var List = []
-    var FileList = fs.readdirSync(path.resolve(__dirname, "../backup/"))
+    var FileList = that.lib.fs.readdirSync(that.lib.path.resolve(__dirname, "../backup/"))
     FileList.forEach((file) => {
       const testFile = file.match(regex)
       if (testFile) List.push(file)
@@ -317,16 +312,16 @@ function loadBackupNames() {
 }
 
 /** delete all backups **/
-function deleteBackup() {
+function deleteBackup(that) {
   return new Promise(resolve => {
     const regex = "config.js.GW"
-    var FileList = fs.readdirSync(path.resolve(__dirname, "../backup/"))
+    var FileList = that.lib.fs.readdirSync(that.lib.path.resolve(__dirname, "../backup/"))
     FileList.forEach((file) => {
       const testFile = file.match(regex)
       if (testFile) {
-        pathFile= path.resolve(__dirname, "../backup/"+file)
+        pathFile= that.lib.path.resolve(__dirname, "../backup/"+file)
         try {
-          fs.unlinkSync(pathFile)
+          that.lib.fs.unlinkSync(pathFile)
           //console.log("[GATEWAY] Removed:", file)
         } catch (e) {
           console.error("[GATEWAY] Error occurred while trying to remove this file:", file)
@@ -338,11 +333,11 @@ function deleteBackup() {
 }
 
 /** read and send bakcup **/
-function loadBackupFile(file) {
+function loadBackupFile(that,file) {
   return new Promise(resolve => {
     var BackupConfig = {}
-    let filePath = path.resolve(__dirname, "../backup/" + file)
-    if (fs.existsSync(filePath)) {
+    let filePath = that.lib.path.resolve(__dirname, "../backup/" + file)
+    if (that.lib.fs.existsSync(filePath)) {
       BackupConfig = require(filePath)
       BackupConfig = configStartMerge(BackupConfig)
     }
@@ -351,11 +346,11 @@ function loadBackupFile(file) {
 }
 
 /** get default ip address **/
-function getIP () {
+function getIP (that) {
   return new Promise((resolve) => {
-    si.networkInterfaceDefault()
+    that.lib.si.networkInterfaceDefault()
       .then(defaultInt=> {
-        si.networkInterfaces().then(data => {
+        that.lib.si.networkInterfaces().then(data => {
           var Interfaces= []
           var int =0
           data.forEach(interface => {
@@ -392,8 +387,8 @@ function getIP () {
 }
 
 /** search and purpose and ip address **/
-async function purposeIP() {
-  var IP = await getIP()
+async function purposeIP(that) {
+  var IP = await getIP(that)
   var found = 0
   return new Promise(resolve => {
     IP.forEach(network => {
@@ -491,32 +486,32 @@ function setWebviewTag(MMConfig) {
 
 /** Part of EXT-UpdateNotification **/
 // MagicMirror restart and stop
-function restartMM (config) {
-  if (config.usePM2) {
+function restartMM (that) {
+  if (that.config.usePM2) {
     console.log("[GATEWAY] PM2 will restarting MagicMirror...")
-    pm2.restart(config.PM2Id, (err, proc) => {
+    that.lib.pm2.restart(that.config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }
     })
   }
-  else doRestart()
+  else doRestart(that)
 }
 
-function doRestart () {
+function doRestart (that) {
   console.log("[GATEWAY] Restarting MagicMirror...")
-  var MMdir = path.normalize(__dirname + "/../../../")
+  var MMdir = that.lib.path.normalize(__dirname + "/../../../")
   const out = process.stdout
   const err = process.stderr
-  const subprocess = spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+  const subprocess = this.lib.childProcess.spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
   subprocess.unref()
   process.exit()
 }
 
-function doClose (config) {
+function doClose (that) {
   console.log("[GATEWAY] Closing MagicMirror...")
-  if (config.usePM2) {
-    pm2.stop(config.PM2Id, (err, proc) => {
+  if (that.config.usePM2) {
+    that.lib.pm2.stop(config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }

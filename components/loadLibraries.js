@@ -5,11 +5,12 @@ function libraries(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
   let libraries= [
     // { "library to load" : "store library name" }
-    { "node-pty": "pty" },
-    { "../components/tools.js": "tools" },
+    { "../components/GWTools.js": "GWTools" },
+    { "../components/SHTools.js": "SHTools" },
     { "../components/GatewayMiddleware.js": "Gateway"},
     { "../components/hyperwatch.js": "hyperwatch" },
     { "../components/SmartHomeMiddleware.js": "SmartHome" },
+    { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
     { "semver": "semver" },
@@ -21,7 +22,13 @@ function libraries(that) {
     { "cors": "cors" },
     { "path": "path" },
     { "child_process": "childProcess" },
-    { "node-fetch": "fetch" }
+    { "node-fetch": "fetch" },
+    { "fs": "fs" },
+    { "util": "util" },
+    { "systeminformation": "si" },
+    { "pm2": "pm2" },
+    { "readline": "readline" },
+    { "stream": "Stream" }
   ]
   let errors = 0
   return new Promise(resolve => {

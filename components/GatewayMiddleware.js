@@ -5,7 +5,7 @@ var log = (...args) => { /* do nothing */ }
 function initialize(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
 
-  console.log("[GATEWAY] Init app...")
+  console.log("[GATEWAY] Init Gateway App...")
   log("EXT plugins in database:", that.Gateway.EXT.length)
   if (!that.config.username && !that.config.password) {
     console.error("[GATEWAY] Your have not defined user/password in config!")
@@ -22,8 +22,8 @@ function initialize(that) {
 
   that.Gateway.app = that.lib.express()
   that.Gateway.server = that.lib.http.createServer(that.Gateway.app)
-  that.Gateway.EXTConfigured= that.lib.tools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
-  that.Gateway.EXTInstalled= that.lib.tools.searchInstalled(that.Gateway.EXT)
+  that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
+  that.Gateway.EXTInstalled= that.lib.GWTools.searchInstalled(that)
   log("Find", that.Gateway.EXTInstalled.length , "installed plugins in MagicMirror")
   log("Find", that.Gateway.EXTConfigured.length, "configured plugins in config file")
   if (that.Gateway.GACheck.version && that.lib.semver.gte(that.Gateway.GACheck.version, '4.0.0')) {
@@ -83,7 +83,7 @@ function createGW(that) {
   that.Gateway.app
     .use(logRequest)
     .use(that.lib.cors({ origin: '*' }))
-    .use('/EXT_Tools.js', that.lib.express.static(Path + '/tools/EXT_Tools.js'))
+    .use('/EXT_Tools.js', that.lib.express.static(Path + '/GWTools/EXT_Tools.js'))
     .use('/assets', that.lib.express.static(Path + '/website/assets', options))
     .get('/', (req, res) => {
       if(req.user) res.sendFile(Path+ "/website/Gateway/index.html")
@@ -191,7 +191,7 @@ function createGW(that) {
           socket.on('disconnect', (err) => {
             log('[' + ip + '] Disconnected from Terminal Logs:', req.user.username, "[" + err + "]")
           })
-          var pastLogs = await that.lib.tools.readAllMMLogs(that.Gateway.HyperWatch.logs())
+          var pastLogs = await that.lib.GWTools.readAllMMLogs(that.Gateway.HyperWatch.logs())
           io.emit("terminal.logs", pastLogs)
           that.Gateway.HyperWatch.stream().on('stdData', (data) => {
             if (typeof data == "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"))
@@ -269,7 +269,7 @@ function createGW(that) {
               result.error = true
               console.error(`[GATEWAY][FATAL] exec error: ${error}`)
             } else {
-              that.Gateway.EXTInstalled= that.lib.tools.searchInstalled(that.Gateway.EXT)
+              that.Gateway.EXTInstalled= that.lib.GWTools.searchInstalled(that)
               console.log("[GATEWAY][DONE]", req.query.EXT)
             }
             res.json(result)
@@ -317,7 +317,7 @@ function createGW(that) {
               result.error = true
               console.error(`[GATEWAY][FATAL] exec error: ${error}`)
             } else {
-              that.Gateway.EXTInstalled= that.lib.tools.searchInstalled(that.Gateway.EXT)
+              that.Gateway.EXTInstalled= that.lib.GWTools.searchInstalled(that)
               console.log("[GATEWAY][DONE]", req.query.EXT)
             }
             res.json(result)
@@ -403,7 +403,7 @@ function createGW(that) {
       if (req.user) {
         if(!req.query.ext) return res.status(404).sendFile(Path+ "/website/Gateway/404.html")
         let data = require("../config/"+req.query.ext+"/config.js")
-        data.schema = that.lib.tools.makeSchemaTranslate(data.schema, that.Gateway.schemaTranslatation)
+        data.schema = that.lib.GWTools.makeSchemaTranslate(data.schema, that.Gateway.schemaTranslatation)
         res.send(data.schema)
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
@@ -421,13 +421,13 @@ function createGW(that) {
     .post("/writeEXT", async (req,res) => {
       console.log("[Gateway] Receiving EXT data ...")
       let data = JSON.parse(req.body.data)
-      var NewConfig = await that.lib.tools.configAddOrModify(data, that.Gateway.MMConfig)
-      var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
+      var NewConfig = await that.lib.GWTools.configAddOrModify(data, that.Gateway.MMConfig)
+      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.tools.readConfig()
-        that.Gateway.EXTConfigured= that.lib.tools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -435,19 +435,19 @@ function createGW(that) {
     .post("/deleteEXT", async (req,res) => {
       console.log("[Gateway] Receiving EXT data ...", req.body)
       let EXTName = req.body.data
-      var NewConfig = await that.lib.tools.configDelete(EXTName, that.Gateway.MMConfig)
-      var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
+      var NewConfig = await that.lib.GWTools.configDelete(EXTName, that.Gateway.MMConfig)
+      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.tools.readConfig()
-        that.Gateway.EXTConfigured= that.lib.tools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
         console.log("[GATEWAY] Reload config")
       }
     })
 
     .get("/Tools" , (req,res) => {
-      if (req.user) res.sendFile(Path+ "/website/Gateway/tools.html")
+      if (req.user) res.sendFile(Path+ "/website/Gateway/GWTools.html")
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
@@ -464,7 +464,7 @@ function createGW(that) {
     .get("/Restart" , (req,res) => {
       if (req.user) {
         res.sendFile(Path+ "/website/Gateway/restarting.html")
-        setTimeout(() => that.lib.tools.restartMM(that.config) , 1000)
+        setTimeout(() => that.lib.GWTools.restartMM(that) , 1000)
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
@@ -472,7 +472,7 @@ function createGW(that) {
     .get("/Die" , (req,res) => {
       if (req.user) {
         res.sendFile(Path+ "/website/Gateway/die.html")
-        setTimeout(() => that.lib.tools.doClose(that.config), 3000)
+        setTimeout(() => that.lib.GWTools.doClose(that), 3000)
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
@@ -484,7 +484,7 @@ function createGW(that) {
 
     .get("/GetBackupName" , async (req,res) => {
       if (req.user) {
-        var names = await that.lib.tools.loadBackupNames()
+        var names = await that.lib.GWTools.loadBackupNames(that)
         res.send(names)
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
@@ -493,7 +493,7 @@ function createGW(that) {
     .get("/GetBackupFile" , async (req,res) => {
       if (req.user) {
         let data = req.query.config
-        var file = await that.lib.tools.loadBackupFile(data)
+        var file = await that.lib.GWTools.loadBackupFile(that,data)
         res.send(file)
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
@@ -511,12 +511,12 @@ function createGW(that) {
     .post("/loadBackup", async (req,res) => {
       console.log("[Gateway] Receiving backup data ...")
       let file = req.body.data
-      var loadFile = await that.lib.tools.loadBackupFile(file)
-      var resultSaveConfig = await that.lib.tools.saveConfig(loadFile)
+      var loadFile = await that.lib.GWTools.loadBackupFile(file)
+      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,loadFile)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -524,11 +524,11 @@ function createGW(that) {
     .post("/writeConfig", async (req,res) => {
       console.log("[Gateway] Receiving config data ...")
       let data = JSON.parse(req.body.data)
-      var resultSaveConfig = await that.lib.tools.saveConfig(data)
+      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,data)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -536,12 +536,12 @@ function createGW(that) {
     .post("/saveSetting", urlencodedParser, async (req,res) => {
       console.log("[Gateway] Receiving new Setting")
       let data = JSON.parse(req.body.data)
-      var NewConfig = await that.lib.tools.configAddOrModify(data, that.Gateway.MMConfig)
-      var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
+      var NewConfig = await that.lib.GWTools.configAddOrModify(data, that.Gateway.MMConfig)
+      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
       console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.tools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -554,13 +554,13 @@ function createGW(that) {
     .post("/setWebviewTag", async (req,res) => {
       if(!that.Gateway.webviewTag && req.user) {
         console.log("[Gateway] Receiving setWebviewTag demand...")
-        let NewConfig = await that.lib.tools.setWebviewTag(that.Gateway.MMConfig)
-        var resultSaveConfig = await that.lib.tools.saveConfig(NewConfig)
+        let NewConfig = await that.lib.GWTools.setWebviewTag(that.Gateway.MMConfig)
+        var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
         console.log("[GATEWAY] Write Gateway webview config result:", resultSaveConfig)
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
           that.Gateway.webviewTag = true
-          that.Gateway.MMConfig = await that.lib.tools.readConfig()
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
           console.log("[GATEWAY] Reload config")
         }
       }
@@ -620,7 +620,7 @@ function createGW(that) {
             message: data,
             sender: req.user ? req.user.username : 'Gateway',
             timer: 30 * 1000,
-            sound: "modules/Gateway/tools/message.mp3",
+            sound: "modules/Gateway/GWTools/message.mp3",
             icon: "modules/Gateway/website/Gateway/assets/img/gateway.jpg"
           }
         })
@@ -776,7 +776,7 @@ function createGW(that) {
     .post("/deleteBackup", async (req,res) => {
       if(req.user) {
         console.log("[GATEWAY] Receiving delete backup demand...")
-        var deleteBackup = await that.lib.tools.deleteBackup()
+        var deleteBackup = await that.lib.GWTools.deleteBackup(that)
         console.log("[GATEWAY] Delete backup result:", deleteBackup)
         res.send(deleteBackup)
       }
@@ -788,7 +788,7 @@ function createGW(that) {
         let data = req.body.data
         if (!data) return res.send({error: "error"})
         console.log("[GATEWAY] Receiving External backup...")
-        var transformExternalBackup = await that.lib.tools.transformExternalBackup(data)
+        var transformExternalBackup = await that.lib.GWTools.transformExternalBackup(that,data)
         res.send({ data: transformExternalBackup })
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
@@ -799,7 +799,7 @@ function createGW(that) {
         let data = req.body.data
         if (!data) return res.send({error: "error"})
         console.log("[GATEWAY] Receiving External backup...")
-        var linkExternalBackup = await that.lib.tools.saveExternalConfig(data)
+        var linkExternalBackup = await that.lib.GWTools.saveExternalConfig(that,data)
         if (linkExternalBackup.data) {
           console.log("[GATEWAY] Generate link number:", linkExternalBackup.data)
           healthDownloader = (req_, res_) => {
@@ -809,7 +809,7 @@ function createGW(that) {
                 res_.redirect('/')
               }
               setTimeout(() => {
-                that.lib.tools.deleteDownload(linkExternalBackup.data)
+                that.lib.GWTools.deleteDownload(that,linkExternalBackup.data)
               }, 1000 * 10)
             } else {
               res_.redirect('/')
@@ -837,7 +837,7 @@ function createGW(that) {
 /** Start Server **/
 async function startServer(that) {
   /** Create Server **/
-  that.config.listening = await that.lib.tools.purposeIP()
+  that.config.listening = await that.lib.GWTools.purposeIP(that)
   that.Gateway.HyperWatch = that.lib.hyperwatch(that.Gateway.server.listen(that.config.port, that.config.listening, () => {
     console.log("[GATEWAY] Start listening on http://"+ that.config.listening + ":" + that.config.port)
   }))
