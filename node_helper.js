@@ -32,10 +32,24 @@ module.exports = NodeHelper.create({
       freeteuse: {}
     }
     this.SmartHome = {
+      lang: "en",
+      use: false,
+      init: false,
       last_code: null,
       last_code_user: null,
       last_code_time: null,
-      homegraph: null
+      user: {
+        "user": "admin",
+        "password": "admin",
+        "devices": [
+         "MMM-GoogleAssistant"
+        ]
+      },
+      actions: null,
+      device: {},
+      EXT: {},
+      smarthome: {},
+      oldSmartHome: {}
     }
     this.lib = { error: 0 }
   },
@@ -52,17 +66,20 @@ module.exports = NodeHelper.create({
       case "MMConfig":
         await parseData.parse(this,payload)
         //log("Libraries:", this.lib)
-        if (!this.lib.error) {
-          this.lib.Gateway.initialize(this)
-          if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
-          else this.lib.SmartHome.disable(this)
-          this.lib.Gateway.startServer(this)
-        }
+        if (this.lib.error) return
+        this.lib.Gateway.initialize(this)
+        if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
+        else this.lib.SmartHome.disable(this)
+        this.lib.Gateway.startServer(this)
         break
       case "EXTStatus":
         if (this.Gateway.initialized && payload) {
           this.Gateway.EXTStatus = payload
-          //log(this.Gateway.EXTStatus)
+          if (this.SmartHome.use) {
+            if (this.SmartHome.init) {
+              this.lib.Device.refreshData(this)
+            }
+          }
         }
         break
       case "Restart":

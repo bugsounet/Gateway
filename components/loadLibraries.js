@@ -10,6 +10,8 @@ function libraries(that) {
     { "../components/GatewayMiddleware.js": "Gateway"},
     { "../components/hyperwatch.js": "hyperwatch" },
     { "../components/SmartHomeMiddleware.js": "SmartHome" },
+    { "../components/actionsOnGoogle.js": "ActionsOnGoogle" },
+    { "../components/DeviceManagement.js": "Device" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -28,7 +30,8 @@ function libraries(that) {
     { "systeminformation": "si" },
     { "pm2": "pm2" },
     { "readline": "readline" },
-    { "stream": "Stream" }
+    { "stream": "Stream" },
+    { "actions-on-google": "actions" }
   ]
   let errors = 0
   return new Promise(resolve => {
@@ -43,7 +46,7 @@ function libraries(that) {
             log("Loaded:", libraryToLoad, "->", "this.lib."+libraryName)
           }
         } catch (e) {
-          console.error("[GATEWAY]", libraryToLoad, "Loading error!" , e.toString())
+          console.error("[GATEWAY]", libraryToLoad, "Loading error!" , e.toString(), e)
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
           that.lib.error = errors
