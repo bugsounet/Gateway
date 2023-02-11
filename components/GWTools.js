@@ -115,9 +115,9 @@ function timeStamp() {
 /** Save MagicMirror config with backup **/
 function saveConfig(that,MMConfig) {
   return new Promise(resolve => {
-    var configPath = that.path.resolve(__dirname, "../../../config/config.js")
-    var configPathTMP = that.path.resolve(__dirname, "../../../config/configTMP.js")
-    let backupPath = that.path.resolve(__dirname, "../backup/config.js.GW." + timeStamp())
+    var configPath = that.lib.path.resolve(__dirname, "../../../config/config.js")
+    var configPathTMP = that.lib.path.resolve(__dirname, "../../../config/configTMP.js")
+    let backupPath = that.lib.path.resolve(__dirname, "../backup/config.js.GW." + timeStamp())
     var source = that.lib.fs.createReadStream(configPath)
     var destination = that.lib.fs.createWriteStream(backupPath)
 
