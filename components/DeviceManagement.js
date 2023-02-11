@@ -172,6 +172,12 @@ function init(that) {
     that.SmartHome.device.attributes.availableInputs.push(SCL)
   }
   if (that.config.dev) log("Your device is now:", that.SmartHome.device)
+  if (that.config.useHomeGraph) {
+    that.lib.homegraph.init(that)
+    that.lib.homegraph.requestSync(that)
+  } else {
+    console.log("[GATEWAY] [SMARTHOME] [SERVER] HomeGraph is disabled.")
+  }
   that.SmartHome.init = true
 }
 

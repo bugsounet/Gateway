@@ -13,11 +13,7 @@ module.exports = NodeHelper.create({
       EXTConfigured: [], // configured EXT in config
       EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
-      user: {
-        _id: 1,
-        username: 'admin',
-        password: 'admin'
-      },
+      user: { _id: 1, username: 'admin', password: 'admin' },
       initialized: false,
       app: null,
       server: null,
@@ -38,18 +34,13 @@ module.exports = NodeHelper.create({
       last_code: null,
       last_code_user: null,
       last_code_time: null,
-      user: {
-        "user": "admin",
-        "password": "admin",
-        "devices": [
-         "MMM-GoogleAssistant"
-        ]
-      },
+      user: { user: "admin", password: "admin", devices: [ "MMM-GoogleAssistant" ] },
       actions: null,
       device: {},
       EXT: {},
       smarthome: {},
-      oldSmartHome: {}
+      oldSmartHome: {},
+      homegraph: null
     }
     this.lib = { error: 0 }
   },
@@ -78,6 +69,7 @@ module.exports = NodeHelper.create({
           if (this.SmartHome.use) {
             if (this.SmartHome.init) {
               this.lib.Device.refreshData(this)
+              this.lib.homegraph.updateGraph(this)
             }
           }
         }

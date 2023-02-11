@@ -12,7 +12,8 @@ function initialize(that) {
   that.Gateway.app
     /** OAuth2 Server **/
     .get("/smarthome/login/", (req,res) => {
-      res.sendFile(SHWebsiteDir+ "/login.html")
+      if (that.SmartHome.init) res.sendFile(SHWebsiteDir+ "/login.html")
+      else res.sendFile(SHWebsiteDir+ "/disabled.html")
     })
 
     .post("/smarthome/login/", (req,res) => {
@@ -64,12 +65,8 @@ function initialize(that) {
 
     /** Display current google graph in console **/
     .get("/smarthome/graph",(req,res) => {
-      if (that.SmartHome.homegraph) that.SmartHome.homegraph.queryGraph()
+      if (that.SmartHome.homegraph) that.lib.homegraph.queryGraph(that)
       res.status(404).sendFile(SHWebsiteDir+ "/404.html")
-    })
-
-    .get("/robots.txt", (req,res) => {
-      res.sendFile(SHWebsiteDir+ "/robots.txt")
     })
 }
 

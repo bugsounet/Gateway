@@ -12,6 +12,8 @@ function libraries(that) {
     { "../components/SmartHomeMiddleware.js": "SmartHome" },
     { "../components/actionsOnGoogle.js": "ActionsOnGoogle" },
     { "../components/DeviceManagement.js": "Device" },
+    { "../components/SHCallbacks.js": "callback" },
+    { "../components/homegraph.js": "homegraph" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -31,7 +33,10 @@ function libraries(that) {
     { "pm2": "pm2" },
     { "readline": "readline" },
     { "stream": "Stream" },
-    { "actions-on-google": "actions" }
+    { "actions-on-google": "actions" },
+    { "googleapis": "googleapis" },
+    { "google-auth-library": "GoogleAuthLibrary" },
+    { "lodash": "_" }
   ]
   let errors = 0
   return new Promise(resolve => {

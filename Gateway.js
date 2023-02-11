@@ -51,7 +51,8 @@ Module.register("Gateway", {
       "/modules/Gateway/components/AssistantActions.js",
       "/modules/Gateway/components/ActionsOnEXT.js",
       "/modules/Gateway/components/OthersRules.js",
-      "/modules/Gateway/components/GWDatabase.js"
+      "/modules/Gateway/components/GWDatabase.js",
+      "/modules/Gateway/components/callbacks.js"
     ]
   },
 
@@ -91,6 +92,7 @@ Module.register("Gateway", {
   },
 
   socketNotificationReceived: async function(noti,payload) {
+    if (noti.startsWith("CB_")) return SH_Callbacks(this,noti,payload)
     switch(noti) {
       case "MMConfig":
         var GWTranslate = await LoadGWTranslation(this)
