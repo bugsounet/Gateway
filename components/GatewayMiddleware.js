@@ -426,7 +426,7 @@ function createGW(that) {
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
         that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
         console.log("[GATEWAY] Reload config")
       }
@@ -440,7 +440,7 @@ function createGW(that) {
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
         that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
         console.log("[GATEWAY] Reload config")
       }
@@ -516,7 +516,7 @@ function createGW(that) {
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -528,7 +528,7 @@ function createGW(that) {
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -541,7 +541,7 @@ function createGW(that) {
       console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
       res.send(resultSaveConfig)
       if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
         console.log("[GATEWAY] Reload config")
       }
     })
@@ -560,7 +560,7 @@ function createGW(that) {
         res.send(resultSaveConfig)
         if (resultSaveConfig.done) {
           that.Gateway.webviewTag = true
-          that.Gateway.MMConfig = await that.lib.GWTools.readConfig()
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
           console.log("[GATEWAY] Reload config")
         }
       }
