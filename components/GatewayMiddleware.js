@@ -838,9 +838,9 @@ function createGW(that) {
 async function startServer(that) {
   /** Create Server **/
   that.config.listening = await that.lib.GWTools.purposeIP(that)
-  that.Gateway.HyperWatch = that.lib.hyperwatch(that.Gateway.server.listen(that.config.port, "0.0.0.0", () => {
-    console.log("[GATEWAY] Start listening on port", that.config.port)
-    console.log("[GATEWAY] Available on http://"+ that.config.listening + ":" + that.config.port)
+  that.Gateway.HyperWatch = that.lib.hyperwatch(that.Gateway.server.listen(5000, "0.0.0.0", () => {
+    console.log("[GATEWAY] Start listening on port 5000", that.config.port)
+    console.log("[GATEWAY] Available locally at http://"+ that.config.listening + ":5000")
   }))
 
   /** Error 404 **/

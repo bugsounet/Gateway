@@ -1489,7 +1489,7 @@ function GatewaySetting() {
   $('#wait').text(translation.Wait)
   $('#restart').text(translation.Tools_Restart)
   $('#credentials').text(translation.Setting_Credentials)
-  $('#credentials-check').prop('title', translation.Setting_Credentials_tooltip)
+  //$('#credentials-check').prop('title', translation.Setting_Credentials_tooltip)
   $('#usernameField').text(translation.Setting_Credentials_username)
   $('#passwordField').text(translation.Setting_Credentials_password)
   $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
@@ -1501,15 +1501,15 @@ function GatewaySetting() {
   $('#server').text(translation.Setting_Server)
   $('#debugHeader').text(translation.Setting_Server_debug)
   $('#pm2Header').text(translation.Setting_Server_usePM2)
-  $('#portHeader').text(translation.Setting_Server_port)
+  //$('#portHeader').text(translation.Setting_Server_port)
   $('#pm2idHeader').text(translation.Setting_Server_PM2Id)
   $('#byHeader').text(translation.Setting_Info_by)
   $('#SupportHeader').text(translation.Setting_Info_Support)
   $('#DonateHeader').text(translation.Setting_Info_Donate)
   $('#DonateText').text(translation.Setting_Info_Donate_Text)
   $('#VersionHeader').text(translation.Setting_Info_About)
-  $('#upnpHeader').text(translation.Setting_Server_useMapping)
-  $('#upnpPortHeader').text(translation.Setting_Server_portMapping)
+  //$('#upnpHeader').text(translation.Setting_Server_useMapping)
+  //$('#upnpPortHeader').text(translation.Setting_Server_portMapping)
   for (let tr = 1; tr <= 10; tr++) {
     let trans = "Setting_Info_Translator"+tr
     if (tr == 1 && translation[trans]) {
@@ -1524,98 +1524,62 @@ function GatewaySetting() {
   $('#buttonGrp').removeClass('invisible')
 
   $('#update').css("display", "block")
-  
-  $("#login").prop("checked", !actualSetting.noLogin)
-  $("input.grplogin").prop("disabled", actualSetting.noLogin)
-  if (!actualSetting.noLogin) {
-    $("#username").val(actualSetting.username)
-    $("#password").val(actualSetting.password)
-  }
+
+  $("#username").val(actualSetting.username)
+  $("#password").val(actualSetting.password)
+
   $("#debug").prop("checked", actualSetting.debug)
   $("#pm2").prop("checked", actualSetting.usePM2)
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
   $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
-  $("#port option[value='" + actualSetting.port + "']").prop('selected', true)
-
-  $("#upnp").prop("checked", actualSetting.useMapping)
-  $("select.grpupnp").prop("disabled", !actualSetting.useMapping)
-  if (actualSetting.noLogin) {
-    $("#upnp").prop("disabled", true)
-    $("#upnp").prop("checked", false)
-    $("select.grpupnp").prop("disabled", true)
-  }
-  $("#upnpPort option[value='" + actualSetting.portMapping + "']").prop('selected', true)
-
-  document.getElementById('login').onclick = function () {
-    $("input.grplogin").prop("disabled", !this.checked)
-    $("#upnp").prop("disabled", !this.checked)
-    $("#upnp").prop("checked", false)
-    $("select.grpupnp").prop("disabled", true)
-  }
 
   document.getElementById('pm2').onclick = function () {
     $("select.grppm2").prop("disabled", !this.checked)
-  }
-
-  document.getElementById('upnp').onclick = function () {
-    $("select.grpupnp").prop("disabled", !this.checked)
   }
   
   $("#GatewaySetting").submit(function(event) {
     var newGatewayConfig= {
       module: "Gateway",
       config: {
-        debug: true,
-        port: 8081,
+        debug: false,
         username: "admin",
         password: "admin",
-        noLogin: false,
         usePM2: false,
-        PM2Id: 0,
-        useMapping: false,
-        portMapping: 8081
+        PM2Id: 0
       }
     }
     event.preventDefault()
-    var login = $( "input[type=checkbox][name=login]:checked" ).val()
-    if (login) {
-      var username = $( "input[type=text][name=username]").val()
-      var password = $( "input[type=password][name=password]" ).val()
-      var confirm = $( "input[type=password][name=confirmpwd]" ).val()
-      if (!username) {
-        $('#alert').removeClass('invisible')
-        $('#alert').removeClass('alert-success')
-        $('#alert').addClass('alert-danger')
-        $('#messageText').text(translation.Setting_Credentials_username_placeholder)
-        return
-      }
-      if (!password) {
-        $('#alert').removeClass('invisible')
-        $('#alert').removeClass('alert-success')
-        $('#alert').addClass('alert-danger')
-        $('#messageText').text(translation.Setting_Credentials_password_placeholder)
-        return
-      }
-      if (password != confirm) {
-        $('#alert').removeClass('invisible')
-        $('#alert').removeClass('alert-success')
-        $('#alert').addClass('alert-danger')
-        $('#messageText').text(translation.Setting_Credentials_confirmpwd_placeholder)
-        return
-      }
-      newGatewayConfig.config.noLogin = false
-      newGatewayConfig.config.username = username
-      newGatewayConfig.config.password = password
-    } else {
-      newGatewayConfig.config.noLogin = true
-      newGatewayConfig.config.username = "admin"
-      newGatewayConfig.config.password = "admin"
+    var username = $( "input[type=text][name=username]").val()
+    var password = $( "input[type=password][name=password]" ).val()
+    var confirm = $( "input[type=password][name=confirmpwd]" ).val()
+    if (!username) {
+      $('#alert').removeClass('invisible')
+      $('#alert').removeClass('alert-success')
+      $('#alert').addClass('alert-danger')
+      $('#messageText').text(translation.Setting_Credentials_username_placeholder)
+      return
     }
+    if (!password) {
+      $('#alert').removeClass('invisible')
+      $('#alert').removeClass('alert-success')
+      $('#alert').addClass('alert-danger')
+      $('#messageText').text(translation.Setting_Credentials_password_placeholder)
+      return
+    }
+    if (password != confirm) {
+      $('#alert').removeClass('invisible')
+      $('#alert').removeClass('alert-success')
+      $('#alert').addClass('alert-danger')
+      $('#messageText').text(translation.Setting_Credentials_confirmpwd_placeholder)
+      return
+    }
+    newGatewayConfig.config.username = username
+    newGatewayConfig.config.password = password
+
     var debug = $( "input[type=checkbox][name=debug]:checked" ).val()
     if (debug) newGatewayConfig.config.debug = true
     else newGatewayConfig.config.debug = false
-    var port = Number($( "select#port" ).val())
-    newGatewayConfig.config.port = port
+
     var pm2 = $( "input[type=checkbox][name=pm2]:checked" ).val()
     var pm2id = Number($( "select#pm2id" ).val())
     if (pm2) {
@@ -1625,16 +1589,6 @@ function GatewaySetting() {
     else {
       newGatewayConfig.config.usePM2 = false
       newGatewayConfig.config.PM2Id = 0
-    }
-    var useMapping = $( "input[type=checkbox][name=upnp]:checked" ).val()
-    var portMapping = Number($( "select#upnpPort" ).val())
-    if (useMapping) {
-      newGatewayConfig.config.useMapping = true
-      newGatewayConfig.config.portMapping = portMapping
-    }
-    else {
-      newGatewayConfig.config.useMapping = false
-      newGatewayConfig.config.portMapping = portMapping
     }
 
     $('#alert').removeClass('invisible')

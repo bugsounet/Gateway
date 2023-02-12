@@ -87,36 +87,35 @@
                                     <div class="card-body">
                                         <div class="row gutters">
                                             <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-check" id="credentials-check"><input class="form-check-input" type="checkbox" id="login" name="login"><label class="form-check-label fw-bold mb-2 text-primary" id="credentials" style="font-family: &quot;Open Sans&quot;;" for="login">&nbsp;</label></div>
+                                                <h6 id="credentials" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
                                             </div>
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label" id="usernameField">&nbsp;</label><input class="form-control grplogin" type="text" id="username" placeholder="" name="username"></div>
+                                                <div class="form-group"><label class="form-label" id="usernameField">&nbsp;</label><input class="form-control" type="text" id="username" placeholder="" name="username"></div>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group"><label class="form-label" id="passwordField">&nbsp;</label><input class="form-control grplogin" type="password" id="password" placeholder="" name="password"></div>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label" id="confirmpwdField">&nbsp;</label><input class="form-control grplogin" type="password" id="confirmpwd" placeholder="" name="confirmpwd"></div>
+                                                <div class="form-group"><label class="form-label" id="confirmpwdField">&nbsp;</label><input class="form-control" type="password" id="confirmpwd" placeholder="" name="confirmpwd"></div>
                                             </div>
                                         </div>
+                                        <div class="form-group"><label class="form-label" id="ClientIDField">actions Client ID</label><input class="form-control" type="text" id="ClientID" placeholder="" name="ClientID"></div>
                                         <div class="row gutters">
                                             <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <h6 class="d-xl-flex mt-3 mb-2 text-primary" id="Server" style="padding: 5px;"><strong>&nbsp;</strong><br></h6>
+                                                <h6 class="d-xl-flex mt-3 mb-2 text-primary" id="Server"><strong>&nbsp;</strong><br></h6>
+                                            </div>
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h6 id="credentials-1" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">Options</h6>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="debug" name="debug"><label class="form-check-label" id="debugHeader" for="debug">&nbsp;</label></div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label text-nowrap d-xl-flex" id="portHeader" for="port">&nbsp;</label><select class="form-select form-control" id="port" name="port">
-                                                        <option value="3000">3000</option>
-                                                        <option value="8081">8081</option>
-                                                        <option value="8082">8082</option>
-                                                        <option value="8083">8083</option>
-                                                        <option value="8085">8084</option>
-                                                        <option value="8085">8085</option>
-                                                    </select></div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="homegraph" name="homegraph"><label class="form-check-label" id="homegraphHeader" for="homegraph">Use HomeGraph</label></div>
+                                                </div>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
@@ -136,22 +135,6 @@
                                                         <option value="8">8</option>
                                                         <option value="9">9</option>
                                                         <option value="10">10</option>
-                                                    </select></div>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group">
-                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="upnp" name="upnp"><label class="form-check-label" id="upnpHeader" for="upnp">&nbsp;</label></div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label text-nowrap d-xl-flex" id="upnpPortHeader" for="upnpPublic">&nbsp;</label><select class="form-select form-control grpupnp" id="upnpPort" name="upnpPublic" disabled="">
-                                                        <option value="3000" selected="">3000</option>
-                                                        <option value="8081">8081</option>
-                                                        <option value="8082">8082</option>
-                                                        <option value="8083">8083</option>
-                                                        <option value="8084">8084</option>
-                                                        <option value="8085">8085</option>
-                                                        <option value="9000">9000</option>
                                                     </select></div>
                                             </div>
                                         </div>
