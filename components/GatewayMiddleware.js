@@ -840,7 +840,7 @@ async function startServer(that) {
   /** Create Server **/
   that.config.listening = await that.lib.GWTools.purposeIP(that)
   that.Gateway.HyperWatch = that.lib.hyperwatch(that.Gateway.server.listen(5000, "0.0.0.0", () => {
-    console.log("[GATEWAY] Start listening on port 5000", that.config.port)
+    console.log("[GATEWAY] Start listening on port 5000")
     console.log("[GATEWAY] Available locally at http://"+ that.config.listening + ":5000")
   }))
 
