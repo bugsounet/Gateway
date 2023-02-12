@@ -27,7 +27,6 @@ function ExtDB() {
     "EXT-SelfiesFlash",
     "EXT-SelfiesSender",
     "EXT-SelfiesViewer",
-    "EXT-SmartHome",
     "EXT-Spotify",
     "EXT-SpotifyCanvasLyrics",
     "EXT-StreamDeck",

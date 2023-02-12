@@ -9,7 +9,7 @@ function initialize(that) {
   log("EXT plugins in database:", that.Gateway.EXT.length)
   if (!that.config.username && !that.config.password) {
     console.error("[GATEWAY] Your have not defined user/password in config!")
-    console.error("[GATEWAY] Using default creadentials")
+    console.error("[GATEWAY] Using default credentials")
   } else {
     if ((that.config.username == that.Gateway.user.username) || (that.config.password == that.Gateway.user.password)) {
       console.warn("[GATEWAY] WARN: You are using default username or default password")

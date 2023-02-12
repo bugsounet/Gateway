@@ -21,8 +21,7 @@ Module.register("Gateway", {
     usePM2: false,
     PM2Id: 0,
     useHomeGraph: false,
-    CLIENT_ID: null,
-    CLIENT_SECRET: null
+    CLIENT_ID: null
   },
 
   start: async function () {
@@ -126,31 +125,5 @@ Module.register("Gateway", {
         ActionsOnEXT(this, "EXT_STOP")
         break
     }
-  },
-
-  /***************/
-  /**** Tools ****/
-  /***************/
-
-  /** hasPluginConnected(obj, key, value)
-   * obj: object to check
-   * key: key to check in deep
-   * value: value to check with associated key
-   * @bugsounet 09/01/2022
-  **/
-  hasPluginConnected: function(obj, key, value) {
-    if (typeof obj === 'object' && obj !== null) {
-      if (obj.hasOwnProperty(key)) return true
-      for (var p in obj) {
-        if (obj.hasOwnProperty(p) && this.hasPluginConnected(obj[p], key, value)) {
-          //logGW("check", key+":"+value, "in", p)
-          if (obj[p][key] == value) {
-            logGW(p, "is connected")
-            return true
-          }
-        }
-      }
-    }
-    return false
   }
 })

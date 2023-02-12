@@ -41,7 +41,7 @@ function send(that, name, values) {
       break
     case "Reboot":
       log("Send Reboot")
-      that.sendSocketNotification("CB_REBOOT")
+      setTimeout(() => that.lib.GWTools.restartMM(that) , 8000)
       break
     case "Locate":
       log("Send Locate")

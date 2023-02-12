@@ -36,9 +36,6 @@ function SH_Callbacks(that,noti,payload) {
         timer: 5000
       })
       break
-    case "CB_REBOOT": //to see
-      //that.sendNotification("EXT_GATEWAY-REBOOT")
-      break
     case "CB_LOCATE":
       that.sendNotification("EXT_ALERT", {
         message: "Hey, I'm here !",
@@ -59,7 +56,8 @@ function SH_Callbacks(that,noti,payload) {
     case "CB_SPOTIFY-NEXT":
       that.sendNotification("EXT_SPOTIFY-NEXT")
       break
-    case "CB_STOP": // to see
+    case "CB_STOP":
+      that.notificationReceived("EXT_STOP")
       that.sendNotification("EXT_STOP")
       break
     case "CB_TV-PLAY":

@@ -1,8 +1,8 @@
 "use strict"
 
-var NodeHelper = require("node_helper")
 var log = (...args) => { /* do nothing */ }
 var parseData = require("./components/parseData.js")
+var NodeHelper = require("node_helper")
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -56,7 +56,6 @@ module.exports = NodeHelper.create({
         break
       case "MMConfig":
         await parseData.parse(this,payload)
-        //log("Libraries:", this.lib)
         if (this.lib.error) return
         this.lib.Gateway.initialize(this)
         if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
@@ -72,11 +71,6 @@ module.exports = NodeHelper.create({
               this.lib.homegraph.updateGraph(this)
             }
           }
-        }
-        break
-      case "Restart":
-        if (this.Gateway.initialized) {
-          setTimeout(() => this.lib.GWTools.restartMM(this) , 8000)
         }
         break
     }

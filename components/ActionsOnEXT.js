@@ -16,17 +16,15 @@ function ActionsOnEXT(that,noti,payload,sender) {
     case "EXT_SCREEN-OFF":
       if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
       that.GW["EXT-Screen"].power = false
-      //that.sendSocketNotification("EXTStatus", that.GW)
       if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-PAUSE")
       break
     case "EXT_SCREEN-ON":
       if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
       that.GW["EXT-Screen"].power = true
-      //that.sendSocketNotification("EXTStatus", that.GW)
       if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-RESUME")
       break
     case "EXT_STOP":
-      if (that.GW["EXT-Alert"].hello && that.hasPluginConnected(that.GW, "connected", true)) {
+      if (that.GW["EXT-Alert"].hello && hasPluginConnected(that.GW, "connected", true)) {
         that.sendNotification("EXT_ALERT", {
           type: "information",
           message: that.translate("EXTStop")
@@ -53,18 +51,15 @@ function ActionsOnEXT(that,noti,payload,sender) {
       if (!that.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
       that.GW["EXT-Spotify"].remote = true
       if (that.GW["EXT-SpotifyCanvasLyrics"].hello && that.GW["EXT-SpotifyCanvasLyrics"].forced) connectEXT(that,"EXT-SpotifyCanvasLyrics")
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_SPOTIFY-DISCONNECTED":
       if (!that.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
       that.GW["EXT-Spotify"].remote = false
       if (that.GW["EXT-SpotifyCanvasLyrics"].hello && that.GW["EXT-SpotifyCanvasLyrics"].forced) disconnectEXT(that,"EXT-SpotifyCanvasLyrics")
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_SPOTIFY-PLAYING":
       if (!that.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
       that.GW["EXT-Spotify"].play = payload
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_SPOTIFY-PLAYER_CONNECTED":
       if (!that.GW["EXT-Spotify"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
@@ -129,19 +124,16 @@ function ActionsOnEXT(that,noti,payload,sender) {
     case "EXT_UN-MODULE_UPDATE": /** Need UN review ! send info before init ! **/
       if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
       that.GW["EXT-UpdateNotification"].module = payload
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_UN-NPM_UPDATE":
       if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
       that.GW["EXT-UpdateNotification"].npm = payload
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_VOLUME_GET":
       if (!that.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
       that.GW["EXT-Volume"].speaker = payload.Speaker
       that.GW["EXT-Volume"].isMuted = payload.SpeakerIsMuted
       that.GW["EXT-Volume"].recorder = payload.Recorder
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_SPOTIFY-SCL_FORCED":
       if (!that.GW["EXT-SpotifyCanvasLyrics"].hello) return console.error("[GATEWAY] Warn Spotify don't say to me HELLO!")
@@ -179,7 +171,6 @@ function ActionsOnEXT(that,noti,payload,sender) {
       if (!that.GW["EXT-Pages"].hello) return console.error("[GATEWAY] Warn Pages don't say to me HELLO!")
       that.GW["EXT-Pages"].actual = payload.Actual
       that.GW["EXT-Pages"].total = payload.Total
-      //that.sendSocketNotification("EXTStatus", that.GW)
       break
     case "EXT_GATEWAY-REBOOT": // only available with EXT-SmarHome
       if (!that.GW["EXT-SmartHome"].hello) return
@@ -189,7 +180,7 @@ function ActionsOnEXT(that,noti,payload,sender) {
       break
     case "EXT_SCREEN-GH_FORCE_WAKEUP":
       // temp patch ... to do better
-      if (that.GW["EXT-Screen"].hello && that.hasPluginConnected(that.GW, "connected", true)) {
+      if (that.GW["EXT-Screen"].hello && hasPluginConnected(that.GW, "connected", true)) {
         setTimeout(() => { that.sendNotification("EXT_SCREEN-LOCK") } , 500)
       }
     /** Warn if not in db **/

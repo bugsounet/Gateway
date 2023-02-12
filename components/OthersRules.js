@@ -4,7 +4,6 @@ function helloEXT(that, module) {
     case that.ExtDB.find(name => name === module): //read DB and find module
       that.GW[module].hello= true
       logGW("Hello,", module)
-      //that.sendSocketNotification("EXTStatus", that.GW)
       onStartPlugin(that, module)
       break
     default:
@@ -19,13 +18,12 @@ function onStartPlugin(that, plugin) {
   if (plugin == "EXT-Background") that.sendNotification("GAv4_FORCE_FULLSCREEN")
   if (plugin == "EXT-Detector") setTimeout(() => that.sendNotification("EXT_DETECTOR-START") , 300)
   if (plugin == "EXT-Pages") that.sendNotification("EXT_PAGES-Gateway")
-  if (plugin == "EXT-SmartHome") setInterval(() => { that.sendNotification("EXT_GATEWAY-STATUS" , that.GW) }, 1000)
 }
 
 /** Connect rules **/
 function connectEXT(that, extName) {
   if (!that.GW.ready) return console.error("[GATEWAY] Hey!,", extName, "MMM-GoogleAssistant is not ready")
-  if(that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {
+  if(that.GW["EXT-Screen"].hello && !hasPluginConnected(that.GW, "connected", true)) {
     if (!that.GW["EXT-Screen"].power) that.sendNotification("EXT_SCREEN-WAKEUP")
     that.sendNotification("EXT_SCREEN-LOCK")
     if (that.GW["EXT-Motion"].hello && that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-DESTROY")
@@ -52,7 +50,6 @@ function connectEXT(that, extName) {
   logGW("Debug:", that.GW)
   that.GW[extName].connected = true
   lockPagesByGW(that, extName)
-  //that.sendSocketNotification("EXTStatus", that.GW)
 }
 
 /** disconnected rules **/
@@ -60,16 +57,15 @@ function disconnectEXT(that, extName) {
   if (!that.GW.ready) return console.error("[GATEWAY] MMM-GoogleAssistant is not ready")
   if (extName) that.GW[extName].connected = false
 
-  //that.sendSocketNotification("EXTStatus", that.GW)
   // sport time ... verify if there is again an EXT module connected !
   setTimeout(()=> { // wait 1 sec before scan ...
-    if (that.GW["EXT-Screen"].hello && !that.hasPluginConnected(that.GW, "connected", true)) {
+    if (that.GW["EXT-Screen"].hello && !hasPluginConnected(that.GW, "connected", true)) {
       that.sendNotification("EXT_SCREEN-UNLOCK")
       if (that.GW["EXT-Motion"].hello && !that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-INIT")
       if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-RESTART")
       if (that.GW["EXT-StreamDeck"].hello) that.sendNotification("EXT_STREAMDECK-OFF")
     }
-    if (that.GW["EXT-Pages"].hello && !that.hasPluginConnected(that.GW, "connected", true)) that.sendNotification("EXT_PAGES-UNLOCK")
+    if (that.GW["EXT-Pages"].hello && !hasPluginConnected(that.GW, "connected", true)) that.sendNotification("EXT_PAGES-UNLOCK")
     logGW("Disconnected:", extName)
   }, 1000)
 }
@@ -90,6 +86,28 @@ function browserOrPhotoIsConnected(that) {
     (that.GW["EXT-Photos"].hello && that.GW["EXT-Photos"].connected)) {
       logGW("browserOrPhoto", true)
       return true
+  }
+  return false
+}
+
+/** hasPluginConnected(obj, key, value)
+ * obj: object to check
+ * key: key to check in deep
+ * value: value to check with associated key
+ * @bugsounet 09/01/2022
+**/
+function hasPluginConnected(obj, key, value) {
+  if (typeof obj === 'object' && obj !== null) {
+    if (obj.hasOwnProperty(key)) return true
+    for (var p in obj) {
+      if (obj.hasOwnProperty(p) && hasPluginConnected(obj[p], key, value)) {
+        //logGW("check", key+":"+value, "in", p)
+        if (obj[p][key] == value) {
+          //logGW(p, "is connected")
+          return true
+        }
+      }
+    }
   }
   return false
 }

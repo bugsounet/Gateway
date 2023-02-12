@@ -503,7 +503,7 @@ function doRestart (that) {
   var MMdir = that.lib.path.normalize(__dirname + "/../../../")
   const out = process.stdout
   const err = process.stderr
-  const subprocess = this.lib.childProcess.spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+  const subprocess = that.lib.childProcess.spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
   subprocess.unref()
   process.exit()
 }

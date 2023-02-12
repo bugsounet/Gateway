@@ -19,7 +19,7 @@ function init(that) {
 }
 
 async function requestSync(that) {
-  log("[RequestSync] in Progress...", that.SmartHome.user.user)
+  log("[RequestSync] in Progress...")
   that.lib.callback.send(that, "Done", "Sync with Google Graph in Progress...")
   let body = {
     requestBody: {
