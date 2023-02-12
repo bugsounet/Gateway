@@ -6,43 +6,10 @@ var NodeHelper = require("node_helper")
 
 module.exports = NodeHelper.create({
   start: function () {
-    this.Gateway = {
-      MMConfig: null, // real config file (config.js)
-      EXT: null, // EXT plugins list
-      EXTDescription: {}, // description of EXT
-      EXTConfigured: [], // configured EXT in config
-      EXTInstalled: [], // installed EXT in MM
-      EXTStatus: {}, // status of EXT
-      user: { _id: 1, username: 'admin', password: 'admin' },
-      initialized: false,
-      app: null,
-      server: null,
-      translation: null,
-      schemaTranslatation: null,
-      language: null,
-      webviewTag: false,
-      GACheck: { find: false, version: 0, configured: false },
-      GAConfig: {},
-      HyperWatch: null,
-      radio: null,
-      freeteuse: {}
-    }
-    this.SmartHome = {
-      lang: "en",
-      use: false,
-      init: false,
-      last_code: null,
-      last_code_user: null,
-      last_code_time: null,
-      user: { user: "admin", password: "admin", devices: [ "MMM-GoogleAssistant" ] },
-      actions: null,
-      device: {},
-      EXT: {},
-      smarthome: {},
-      oldSmartHome: {},
-      homegraph: null
-    }
+    this.Gateway = {}
+    this.SmartHome = {}
     this.lib = { error: 0 }
+    parseData.init(this)
   },
 
   socketNotificationReceived: async function (noti, payload) {
