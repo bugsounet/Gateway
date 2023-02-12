@@ -1489,27 +1489,26 @@ function GatewaySetting() {
   $('#wait').text(translation.Wait)
   $('#restart').text(translation.Tools_Restart)
   $('#credentials').text(translation.Setting_Credentials)
-  //$('#credentials-check').prop('title', translation.Setting_Credentials_tooltip)
   $('#usernameField').text(translation.Setting_Credentials_username)
   $('#passwordField').text(translation.Setting_Credentials_password)
   $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
+  $('#clientIDField').text(translation.Setting_Credentials_clientID)
   $('#username').prop('placeholder', translation.Setting_Credentials_username_placeholder)
-  $('#passwordField').text(translation.Setting_Credentials_password)
   $('#password').prop('placeholder', translation.Setting_Credentials_password_placeholder)
-  $('#confirmpwdField').text(translation.Setting_Credentials_confirmpwd)
   $('#confirmpwd').prop('placeholder', translation.Setting_Credentials_confirmpwd_placeholder)
-  $('#server').text(translation.Setting_Server)
-  $('#debugHeader').text(translation.Setting_Server_debug)
-  $('#pm2Header').text(translation.Setting_Server_usePM2)
-  //$('#portHeader').text(translation.Setting_Server_port)
-  $('#pm2idHeader').text(translation.Setting_Server_PM2Id)
+  $('#clientID').prop('placeholder', translation.Setting_Credentials_clientID_placeholder)
+
+  $('#options').text(translation.Setting_Options)
+  $('#debugHeader').text(translation.Setting_Options_debug)
+  $('#homegraphHeader').text(translation.Setting_Options_homegraph)
+  $('#pm2Header').text(translation.Setting_Options_usePM2)
+  $('#pm2idHeader').text(translation.Setting_Options_PM2Id)
   $('#byHeader').text(translation.Setting_Info_by)
   $('#SupportHeader').text(translation.Setting_Info_Support)
   $('#DonateHeader').text(translation.Setting_Info_Donate)
   $('#DonateText').text(translation.Setting_Info_Donate_Text)
   $('#VersionHeader').text(translation.Setting_Info_About)
-  //$('#upnpHeader').text(translation.Setting_Server_useMapping)
-  //$('#upnpPortHeader').text(translation.Setting_Server_portMapping)
+
   for (let tr = 1; tr <= 10; tr++) {
     let trans = "Setting_Info_Translator"+tr
     if (tr == 1 && translation[trans]) {
@@ -1528,7 +1527,10 @@ function GatewaySetting() {
   $("#username").val(actualSetting.username)
   $("#password").val(actualSetting.password)
 
+  $("#clientID").val(actualSetting.CLIENT_ID)
+
   $("#debug").prop("checked", actualSetting.debug)
+  $("#homegraph").prop("checked", actualSetting.useHomeGraph)
   $("#pm2").prop("checked", actualSetting.usePM2)
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
   $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
@@ -1545,13 +1547,16 @@ function GatewaySetting() {
         username: "admin",
         password: "admin",
         usePM2: false,
-        PM2Id: 0
+        PM2Id: 0,
+        useHomeGraph: false,
+        CLIENT_ID: null
       }
     }
     event.preventDefault()
     var username = $( "input[type=text][name=username]").val()
     var password = $( "input[type=password][name=password]" ).val()
     var confirm = $( "input[type=password][name=confirmpwd]" ).val()
+    var clientID = $( "input[type=text][name=clientID]" ).val()
     if (!username) {
       $('#alert').removeClass('invisible')
       $('#alert').removeClass('alert-success')
@@ -1575,21 +1580,20 @@ function GatewaySetting() {
     }
     newGatewayConfig.config.username = username
     newGatewayConfig.config.password = password
+    newGatewayConfig.config.CLIENT_ID = clientID
+
+    newGatewayConfig.config.CLIENT_ID = clientID || null
 
     var debug = $( "input[type=checkbox][name=debug]:checked" ).val()
-    if (debug) newGatewayConfig.config.debug = true
-    else newGatewayConfig.config.debug = false
+    newGatewayConfig.config.debug = debug ? true : false
+
+    var homeGraph = $( "input[type=checkbox][name=homegraph]:checked" ).val()
+    newGatewayConfig.config.useHomeGraph = homeGraph ? true : false
 
     var pm2 = $( "input[type=checkbox][name=pm2]:checked" ).val()
     var pm2id = Number($( "select#pm2id" ).val())
-    if (pm2) {
-      newGatewayConfig.config.usePM2 = true
-      newGatewayConfig.config.PM2Id = pm2id
-    }
-    else {
-      newGatewayConfig.config.usePM2 = false
-      newGatewayConfig.config.PM2Id = 0
-    }
+    newGatewayConfig.config.usePM2 = pm2 ? true : false
+    newGatewayConfig.config.PM2Id = pm2 ? pm2id : 0
 
     $('#alert').removeClass('invisible')
     $('#alert').removeClass('alert-danger')
@@ -1609,7 +1613,7 @@ function GatewaySetting() {
           $('#restart').css("display", "none")
           $('#wait').css("display", "none")
           $('#update').css("display", "block")
-        } else { 
+        } else {
           $('#alert').removeClass('invisible')
           $('#alert').removeClass('alert-danger')
           $('#alert').addClass('alert-success')

@@ -14,11 +14,13 @@ function init(that) {
       })
     })
   } else {
-    that.lib.callback.send(that, "Alert", "Hey! credentials.json: file not found!")
+    console.error("[GATEWAY] [SMARTHOME] [HOMEGRAPH] credentials.json: file not found!")
+    that.lib.callback.send(that, "Alert", "[HOMEGRAPH] Hey! credentials.json: file not found!")
   }
 }
 
 async function requestSync(that) {
+  if (!that.SmartHome.homegraph) return
   log("[RequestSync] in Progress...")
   that.lib.callback.send(that, "Done", "Sync with Google Graph in Progress...")
   let body = {
@@ -43,6 +45,7 @@ async function requestSync(that) {
 }
 
 async function queryGraph(that) {
+  if (!that.SmartHome.homegraph) return
   let query = {
     requestBody: {
       requestId: "Gateway-"+Date.now(),
@@ -69,10 +72,7 @@ async function queryGraph(that) {
 }
 
 async function updateGraph(that) {
-  if (!that.SmartHome.homegraph) {
-    log("[updateGraph] HomeGraph is disabled")
-    return
-  }
+  if (!that.SmartHome.homegraph) return
   let EXT = that.SmartHome.EXT
   let current = that.SmartHome.smarthome
   let old = that.SmartHome.oldSmartHome

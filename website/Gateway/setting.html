@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Gateway</title>
-    <link rel="icon" type="image/png" sizes="42x42" href="/assets/img/Gaterway.png">
+    <link rel="icon" type="image/png" sizes="42x42" href="/assets/img/Gateway.png">
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&amp;display=swap">
@@ -86,44 +86,41 @@
                                 <form id="GatewaySetting">
                                     <div class="card-body">
                                         <div class="row gutters">
-                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 10px;">
                                                 <h6 id="credentials" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
                                             </div>
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label" id="usernameField">&nbsp;</label><input class="form-control" type="text" id="username" placeholder="" name="username"></div>
+                                                <div class="form-group" style="margin-bottom: 15px;"><label class="form-label" id="usernameField">&nbsp;</label><input class="form-control" type="text" id="username" placeholder="" name="username"></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 15px;">
+                                                <div class="form-group"><label class="form-label" id="passwordField">&nbsp;</label><input class="form-control" type="password" id="password" placeholder="" name="password"></div>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label" id="passwordField">&nbsp;</label><input class="form-control grplogin" type="password" id="password" placeholder="" name="password"></div>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label" id="confirmpwdField">&nbsp;</label><input class="form-control" type="password" id="confirmpwd" placeholder="" name="confirmpwd"></div>
+                                                <div class="form-group" style="margin-bottom: 15px;"><label class="form-label" id="confirmpwdField">&nbsp;</label><input class="form-control" type="password" id="confirmpwd" placeholder="" name="confirmpwd"></div>
                                             </div>
                                         </div>
-                                        <div class="form-group"><label class="form-label" id="ClientIDField">actions Client ID</label><input class="form-control" type="text" id="ClientID" placeholder="" name="ClientID"></div>
+                                        <div class="form-group"><label class="form-label" id="clientIDField">&nbsp;</label><input class="form-control" type="text" id="clientID" placeholder="" name="clientID" style="margin-bottom: 15px;"></div>
                                         <div class="row gutters">
-                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <h6 class="d-xl-flex mt-3 mb-2 text-primary" id="Server"><strong>&nbsp;</strong><br></h6>
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 10px;">
+                                                <h6 id="options" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
                                             </div>
-                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <h6 id="credentials-1" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">Options</h6>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
                                                 <div class="form-group">
                                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="debug" name="debug"><label class="form-check-label" id="debugHeader" for="debug">&nbsp;</label></div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
                                                 <div class="form-group">
-                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="homegraph" name="homegraph"><label class="form-check-label" id="homegraphHeader" for="homegraph">Use HomeGraph</label></div>
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="homegraph" name="homegraph"><label class="form-check-label" id="homegraphHeader" for="homegraph">&nbsp;</label></div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
                                                 <div class="form-group">
                                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="pm2" name="pm2"><label class="form-check-label" id="pm2Header" for="pm2">&nbsp;</label></div>
                                                 </div>
                                             </div>
                                             <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"><label class="form-label text-nowrap d-xl-flex" id="pm2idHeader" for="id">&nbsp;</label><select class="form-select form-control grppm2" id="pm2id" name="id" disabled="">
+                                                <div class="form-group" style="margin-bottom: 5px;"><label class="form-label text-nowrap d-xl-flex" id="pm2idHeader" for="id">&nbsp;</label><select class="form-select form-control grppm2" id="pm2id" name="id" disabled="">
                                                         <option value="0" selected="">0</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
