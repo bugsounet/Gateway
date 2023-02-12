@@ -1,5 +1,3 @@
-//'use strict';
-
 /** Launch an app, Logs all std in an Array **/
 /** emit event "stdData" on new entry **/
 /** based From @thlorenz/hyperwatch github **/
@@ -46,30 +44,30 @@ function destroyBufferButOne() {
 }()
 
 function HyperWatch(app) {
-  console.log("[HyperWatch] Logger is", enabled ? "enabled" : "disabled")
+  console.log("[GATEWAY] [HyperWatch] Logger is", enabled ? "enabled" : "disabled")
   return {
     disable: function () {
-      if (!enabled) console.log("[HyperWatch] Logger is already disabled")
+      if (!enabled) console.log("[GATEWAY] [HyperWatch] Logger is already disabled")
       else {
-        console.log("[HyperWatch] Logger is now disabled")
+        console.log("[GATEWAY] [HyperWatch] Logger is now disabled")
         destroyBufferButOne()
         enabled = false
       }
     },
     enable: function () {
-      if (enabled) console.log("[HyperWatch] Logger is already enabled")
+      if (enabled) console.log("[GATEWAY] [HyperWatch] Logger is already enabled")
       else {
         enabled = true
-        console.log("[HyperWatch] Logger is now enabled")
+        console.log("[GATEWAY] [HyperWatch] Logger is now enabled")
       }
     },
     scrollback: function (n) {
-      if (!n || n == 0) return console.log("[HyperWatch] scrollback can't be null")
-      if (n < 50) return console.log("[HyperWatch] scrollback must be > 50")
-      if (n == maxbuflen) console.log("[HyperWatch] scrollback already", maxbuflen)
+      if (!n || n == 0) return console.log("[GATEWAY] [HyperWatch] scrollback can't be null")
+      if (n < 50) return console.log("[GATEWAY] [HyperWatch] scrollback must be > 50")
+      if (n == maxbuflen) console.log("[GATEWAY] [HyperWatch] scrollback already", maxbuflen)
       else {
         maxbuflen = n
-        console.log("[HyperWatch] scrollback is now", maxbuflen)
+        console.log("[GATEWAY] [HyperWatch] scrollback is now", maxbuflen)
       }
     },
     stream: function () {
