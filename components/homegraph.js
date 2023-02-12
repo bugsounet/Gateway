@@ -5,18 +5,33 @@ var log = () => { /* do nothing */ }
 function init(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY] [SMARTHOME] [HOMEGRAPH]", ...args) }
   let file = that.lib.path.resolve(__dirname, "../credentials.json")
-  if (that.lib.fs.existsSync(file)) {
-    that.SmartHome.homegraph = that.lib.googleapis.google.homegraph({
-      version: 'v1',
-      auth: new that.lib.GoogleAuthLibrary.GoogleAuth({
-        keyFile: file,
-        scopes: ['https://www.googleapis.com/auth/homegraph']
+  that.lib.fs.readFile(file, 'utf8', (err, data) => {
+    let content
+    if (!data) {
+      console.error("[GATEWAY] [SMARTHOME] [HOMEGRAPH] credentials.json: file not found!")
+      that.lib.callback.send(that, "Alert", "[HOMEGRAPH] Hey! credentials.json: file not found!")
+      return
+    }
+    try {
+      content = JSON.parse(data)
+    } catch (e) {
+      console.error("[GATEWAY] [SMARTHOME] [HOMEGRAPH] credentials.json: corrupt!")
+      that.lib.callback.send(that, "Alert", "[HOMEGRAPH] credentials.json: corrupt!")
+      return
+    }
+    if (content.type && content.type == "service_account") {
+      that.SmartHome.homegraph = that.lib.googleapis.google.homegraph({
+        version: 'v1',
+        auth: new that.lib.GoogleAuthLibrary.GoogleAuth({
+          keyFile: file,
+          scopes: ['https://www.googleapis.com/auth/homegraph']
+        })
       })
-    })
-  } else {
-    console.error("[GATEWAY] [SMARTHOME] [HOMEGRAPH] credentials.json: file not found!")
-    that.lib.callback.send(that, "Alert", "[HOMEGRAPH] Hey! credentials.json: file not found!")
-  }
+    } else {
+      console.error("[GATEWAY] [SMARTHOME] [HOMEGRAPH] credentials.json: bad format!")
+      that.lib.callback.send(that, "Alert", "[HOMEGRAPH] credentials.json: bad format!")
+    }
+  })
 }
 
 async function requestSync(that) {
