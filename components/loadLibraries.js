@@ -59,7 +59,7 @@ function libraries(that) {
       }
     })
     resolve(errors)
-    log("All libraries loaded!")
+    console.log("[GATEWAY] [LIB] All libraries loaded!")
   })
 }
 
