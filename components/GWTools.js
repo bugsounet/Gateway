@@ -49,7 +49,7 @@ function readRadioRecipe(that) {
       if (that.lib.fs.existsSync(file)) RadioResult = require(file).recipe.commands
     } catch (e) {
       resolve(RadioResult)
-      console.error("[GATEWAY][Radio] error when loading file", file)
+      console.error("[GATEWAY] [Radio] error when loading file", file)
     }
     resolve(RadioResult)
   })

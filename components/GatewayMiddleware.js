@@ -540,7 +540,6 @@ function createGW(that) {
       var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
       console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
       res.send(resultSaveConfig)
-      res.send({done: "ok" })
       if (resultSaveConfig.done) {
         that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
         console.log("[GATEWAY] Reload config")

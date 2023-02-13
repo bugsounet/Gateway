@@ -61,7 +61,7 @@ async function parse(that,data) {
   that.Gateway.freeteuse = await that.lib.GWTools.readFreeteuseTV(that)
   that.Gateway.radio= await that.lib.GWTools.readRadioRecipe(that)
   if (that.config.CLIENT_ID) {
-    that.SmartHome.lang = that.config.lang
+    that.SmartHome.lang = that.lib.SHTools.SHLanguage(that.Gateway.language)
     that.SmartHome.use = true
     that.SmartHome.user.user = that.config.username
     that.SmartHome.user.password = that.config.password

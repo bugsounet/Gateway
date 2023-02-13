@@ -65,7 +65,6 @@ Module.register("Gateway", {
     if (noti.startsWith("EXT_")) return ActionsOnEXT(this,noti,payload,sender)
     switch(noti) {
       case "DOM_OBJECTS_CREATED":
-        this.config.lang = getGWLanguageBeforeInit()
         this.sendSocketNotification("INIT", this.config)
         break
       case "GAv4_READY":

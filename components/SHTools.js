@@ -83,6 +83,43 @@ function serialize(obj) {
   return str
 }
 
+function SHLanguage(language) {
+  let lang = "en"
+
+  switch (language) {
+    case "da":
+    case "nl":
+    case "en":
+    case "fr":
+    case "de":
+    case "hi":
+    case "id":
+    case "it":
+    case "ja":
+    case "ko":
+    case "es":
+    case "sv":
+      lang = language
+      break
+    case "pt":
+    case "pt-br":
+      lang = "pt-BR"
+      break
+    case "zh-tw":
+      lang = "zh-TW"
+      break
+    case "nb":
+    case "nn":
+      lang = "no"
+      break
+    //case "th": ?? Thaï (th)
+    default:
+      lang = "en"
+      break
+  }
+  return lang
+}
+
 exports.get_user = get_user
 exports.get_userOnly = get_userOnly
 exports.get_device = get_device
@@ -91,3 +128,4 @@ exports.delete_token = delete_token
 exports.get_token = get_token
 exports.random_string = random_string
 exports.serialize = serialize
+exports.SHLanguage = SHLanguage

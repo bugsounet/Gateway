@@ -2,7 +2,7 @@
 var log = (...args) => { /* do nothing */ }
 
 function libraries(that) {
-  if (that.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
+  if (that.config.debug) log = (...args) => { console.log("[GATEWAY] [LIB]", ...args) }
   let libraries= [
     // { "library to load" : "store library name" }
     { "../components/GWTools.js": "GWTools" },
@@ -51,7 +51,7 @@ function libraries(that) {
             log("Loaded:", libraryToLoad, "->", "this.lib."+libraryName)
           }
         } catch (e) {
-          console.error("[GATEWAY]", libraryToLoad, "Loading error!" , e.toString(), e)
+          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString(), e)
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
           that.lib.error = errors
