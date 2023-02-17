@@ -20,6 +20,11 @@ Installer_dir="$(Installer_get_current_dir)"
 cd "$Installer_dir"
 source utils.sh
 
+Installer_info "Minify Main code"
+node minify.js
+Installer_success "Done"
+echo
+
 # Go back to module root
 cd ..
 
