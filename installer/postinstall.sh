@@ -20,7 +20,7 @@ Installer_dir="$(Installer_get_current_dir)"
 cd "$Installer_dir"
 source utils.sh
 
-Installer_info "Minify Main code"
+Installer_info "Minify Main code..."
 node minify.js
 Installer_success "Done"
 echo
@@ -28,7 +28,11 @@ echo
 # Go back to module root
 cd ..
 
-MagicMirror-rebuild
+# execute rebuld for node-pty
+Installer_info "Rebuild MagicMirror..."
+MagicMirror-rebuild 2>/dev/null
+Installer_success "Done"
+
 echo
 # module name
 Installer_module="$(grep -Eo '\"name\"[^,]*' ./package.json | grep -Eo '[^:]*$' | awk  -F'\"' '{print $2}')"

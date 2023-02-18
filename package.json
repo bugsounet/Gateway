@@ -1,7 +1,7 @@
 {
   "name": "Gateway",
   "version": "3.0.0",
-  "rev": "230217",
+  "rev": "230218",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "jsoneditor": "^9.7.4",
     "lodash": "^4.17.21",
     "magicmirror-rebuild": "^1.0.7",
-    "minify": "^7.0.2",
+    "minify": "^9.2.0",
     "node-pty": "^0.10.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
