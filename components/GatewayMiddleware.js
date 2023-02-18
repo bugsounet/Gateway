@@ -5,7 +5,6 @@ var log = (...args) => { /* do nothing */ }
 function initialize(that) {
   if (that.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
 
-  console.log("[GATEWAY] Init Gateway App...")
   log("EXT plugins in database:", that.Gateway.EXT.length)
   if (!that.config.username && !that.config.password) {
     console.error("[GATEWAY] Your have not defined user/password in config!")
@@ -836,13 +835,6 @@ function createGW(that) {
 
 /** Start Server **/
 async function startServer(that) {
-  /** Create Server **/
-  that.config.listening = await that.lib.GWTools.purposeIP(that)
-  that.Gateway.HyperWatch = that.lib.hyperwatch(that.Gateway.server.listen(5000, "0.0.0.0", () => {
-    console.log("[GATEWAY] Start listening on port 5000")
-    console.log("[GATEWAY] Available locally at http://"+ that.config.listening + ":5000")
-  }))
-
   /** Error 404 **/
   that.Gateway.app
     .get("/smarthome/*", (req, res) => {
@@ -854,7 +846,30 @@ async function startServer(that) {
       console.warn("[GATEWAY] Don't find:", req.url)
       res.status(404).sendFile(that.path+ "/website/Gateway/404.html")
     })
-  that.Gateway.initialized= true
+
+  /** Create Server **/
+  that.config.listening = await that.lib.GWTools.purposeIP(that)
+  that.Gateway.HyperWatch = that.lib.hyperwatch(
+    that.Gateway.server
+      .listen(5000, "0.0.0.0", () => {
+        console.log("[GATEWAY] Start listening on port 5000")
+        console.log("[GATEWAY] Available locally at http://"+ that.config.listening + ":5000")
+        that.Gateway.initialized= true
+      })
+      .on("error", err => {
+        console.error("[GATEWAY] Can't start Gateway server!")
+        console.error("[GATEWAY] Error:",err.message)
+        that.sendSocketNotification("SendNoti", {
+          noti: "EXT_ALERT",
+          payload: {
+            type: "error",
+            message: "Can't start Gateway server!",
+            timer: 10000
+          }
+        })
+        that.Gateway.initialized= false
+      })
+  )
 }
 
 /** passport local strategy with username/password defined on config **/

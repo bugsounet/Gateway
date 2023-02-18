@@ -45,8 +45,13 @@ function create(that) {
         "swVersion": require('../package.json').rev
     }
   }
-  log("Collecting all EXTs installed...")
-  setTimeout(() => { init(that) }, 1000*10 )
+
+  setTimeout(() => {
+    if (that.Gateway.initialized) {
+      log("Collecting all EXTs installed...")
+      init(that)
+    }
+  }, 1000*10 )
 }
 
 function init(that) {
