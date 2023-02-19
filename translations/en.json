@@ -216,6 +216,8 @@
   "VAL_EXT-Detector_Engine": "Array of detectors",
   "VAL_EXT-Detector_Keyword": "Keyword name",
   "VAL_EXT-Detector_Sensitivity": "Sensitivity of detection of the keyword",
+  "VAL_EXT-Detector_AccessKey": "Picovoice Access Key",
+  "VAL_EXT-Detector_CustomModel": "Porcupine custom model filename",
   "VAL_EXT-GooglePhotos_Type": "How displaying Google Photos? (0: in Fullscreen, 1: in MagicMirror position)",
   "VAL_EXT-GooglePhotos_Delay": "Delay before displaying next photo in the iframe (default is 10 secs)",
   "VAL_EXT-GooglePhotos_Infos": "Displaying name of the album and photo time",

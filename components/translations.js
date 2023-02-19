@@ -232,6 +232,8 @@ function LoadGWTrSchemaValidation(that) {
     Tr["EXT-Detector_Engine"] = that.translate("VAL_EXT-Detector_Engine")
     Tr["EXT-Detector_Keyword"] = that.translate("VAL_EXT-Detector_Keyword")
     Tr["EXT-Detector_Sensitivity"] = that.translate("VAL_EXT-Detector_Sensitivity")
+    Tr["EXT-Detector_AccessKey"] = that.translate("VAL_EXT-Detector_AccessKey")
+    Tr["EXT-Detector_CustomModel"] = that.translate("VAL_EXT-Detector_CustomModel")
     Tr["EXT-GooglePhotos_Type"] = that.translate("VAL_EXT-GooglePhotos_Type")
     Tr["EXT-GooglePhotos_Delay"] = that.translate("VAL_EXT-GooglePhotos_Delay")
     Tr["EXT-GooglePhotos_Infos"] = that.translate("VAL_EXT-GooglePhotos_Infos")

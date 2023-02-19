@@ -1252,7 +1252,7 @@ async function EXTConfigJSEditor() {
       /** Special rules for EXT-Detector **/
       if (EXT == "EXT-Detector" && json && json.config && Array.isArray(json.config.detectors)) {
         var SnowboyValidator = [ "smart_mirror", "jarvis", "computer", "snowboy", "subex", "neo_ya", "hey_extreme", "view_glass" ]
-        var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator" ]
+        var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator", "custom" ]
         json.config.detectors.forEach((detector, index) => {
           if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
             errors.push({
@@ -1348,7 +1348,7 @@ async function EXTModifyConfigJSEditor() {
       /** Special rules for EXT-Detector **/
       if (EXT == "EXT-Detector" && json && json.config && Array.isArray(json.config.detectors)) {
         var SnowboyValidator = [ "smart_mirror", "jarvis", "computer", "snowboy", "subex", "neo_ya", "hey_extreme", "view_glass" ]
-        var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator" ]
+        var PorcupineValidator = [ "jarvis", "americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "hey google", "hey siri", "ok google", "picovoice", "porcupine", "terminator", "custom" ]
         json.config.detectors.forEach((detector, index) => {
           if (detector.detector == "Snowboy" && SnowboyValidator.indexOf(detector.Model) == -1) {
             errors.push({

@@ -86,6 +86,16 @@ var schema = {
           "title": "{EXT-Detector_Touch}",
           "default": false
         },
+        "accessKey": {
+          "type": "string",
+          "title": "{EXT-Detector_AccessKey}",
+          "default": null
+        },
+        "customModel": {
+          "type": "string",
+          "title": "{EXT-Detector_CustomModel}",
+          "default": null
+        },
         "detectors": {
           "type": "array",
           "title": "{EXT-Detector_Detector}",
@@ -122,7 +132,8 @@ var schema = {
                   "ok google",
                   "picovoice",
                   "porcupine",
-                  "terminator"
+                  "terminator",
+                  "custom"
                 ]
               },
               "Sensitivity": {
