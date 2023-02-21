@@ -25,8 +25,13 @@ Module.register("Gateway", {
 
   start: async function () {
     if (this.config.debug) logGW = (...args) => { console.log("[GATEWAY]", ...args) }
-    this.ExtDB = ExtDB()
-    this.GW = await createGW(this)
+    this.callbacks = new callbacks()
+    this.AssistantActions = new AssistantActions()
+    this.ActionsOnEXT = new ActionsOnEXT()
+    this.OthersRules = new OthersRules()
+    let GWDB = new GWDatabase()
+    this.ExtDB = GWDB.ExtDB()
+    this.GW = await GWDB.createGW(this)
   },
 
   getTranslations: function() {
@@ -61,8 +66,8 @@ Module.register("Gateway", {
   },
 
   notificationReceived: function(noti, payload, sender) {
-    if (noti.startsWith("ASSISTANT_")) return ActionsOnStatusOfGA(this,noti)
-    if (noti.startsWith("EXT_")) return ActionsOnEXT(this,noti,payload,sender)
+    if (noti.startsWith("ASSISTANT_")) return this.AssistantActions.Actions(this,noti)
+    if (noti.startsWith("EXT_")) return this.ActionsOnEXT.Actions(this,noti,payload,sender)
     switch(noti) {
       case "DOM_OBJECTS_CREATED":
         this.sendSocketNotification("INIT", this.config)
@@ -89,12 +94,13 @@ Module.register("Gateway", {
   },
 
   socketNotificationReceived: async function(noti,payload) {
-    if (noti.startsWith("CB_")) return SH_Callbacks(this,noti,payload)
+    if (noti.startsWith("CB_")) return this.callbacks.cb(this,noti,payload)
     switch(noti) {
       case "MMConfig":
-        var GWTranslate = await LoadGWTranslation(this)
-        var EXTDescription = await LoadGWDescription(this)
-        var VALTranslate = await LoadGWTrSchemaValidation(this)
+        let LoadTranslate = new GWTranslations()
+        let GWTranslate = await LoadTranslate.LoadGWTranslation(this)
+        let EXTDescription = await LoadTranslate.LoadGWDescription(this)
+        let VALTranslate = await LoadTranslate.LoadGWTrSchemaValidation(this)
         this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate, EXTStatus: this.GW } )
         break
       case "WARNING":
@@ -120,7 +126,7 @@ Module.register("Gateway", {
         this.sendNotification(payload)
         break
       case "SendStop":
-        ActionsOnEXT(this, "EXT_STOP")
+        this.ActionsOnEXT.Actions(this, "EXT_STOP")
         break
     }
   }
