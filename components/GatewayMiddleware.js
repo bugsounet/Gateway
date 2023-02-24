@@ -510,7 +510,7 @@ function createGW(that) {
     .post("/loadBackup", async (req,res) => {
       console.log("[Gateway] Receiving backup data ...")
       let file = req.body.data
-      var loadFile = await that.lib.GWTools.loadBackupFile(file)
+      var loadFile = await that.lib.GWTools.loadBackupFile(that,file)
       var resultSaveConfig = await that.lib.GWTools.saveConfig(that,loadFile)
       console.log("[GATEWAY] Write config result:", resultSaveConfig)
       res.send(resultSaveConfig)
