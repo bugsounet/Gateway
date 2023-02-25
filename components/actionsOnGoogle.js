@@ -101,7 +101,7 @@ function query(SmartHome) {
 }
 
 function execute(that, command, params) {
-  let data = that.SmartHome
+  let data = that.SmartHome.smarthome
   switch (command) {
     case "action.devices.commands.OnOff":
       if (params['on']) that.lib.callback.send(that, "screen", "ON")
