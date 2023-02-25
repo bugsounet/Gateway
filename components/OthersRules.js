@@ -28,6 +28,11 @@ class OthersRules {
   /** Connect rules **/
   connectEXT(that, extName) {
     if (!that.GW.ready) return console.error("[GATEWAY] Hey!,", extName, "MMM-GoogleAssistant is not ready")
+
+    if (that.GW[extName].connected) {  // already connected ?
+      return logGW("Already Connected:", extName)
+    }
+
     if(that.GW["EXT-Screen"].hello && !this.hasPluginConnected(that.GW, "connected", true)) {
       if (!that.GW["EXT-Screen"].power) that.sendNotification("EXT_SCREEN-WAKEUP")
       that.sendNotification("EXT_SCREEN-LOCK")
