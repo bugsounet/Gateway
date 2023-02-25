@@ -141,7 +141,6 @@ function execute(that, command, params) {
       } else if (input == "EXT-SpotifyCanvasLyrics") {
         if (!data.LyricsIsForced && !data.Lyrics) that.lib.callback.send(that, "SpotifyLyricsOn")
         else if (data.LyricsIsForced) {
-          console.log("Set Lyrics off", data)
           that.lib.callback.send(that, "SpotifyLyricsOff")
         }
         if (!data.SpotifyIsPlaying) that.lib.callback.send(that, "SpotifyPlay")
