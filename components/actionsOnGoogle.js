@@ -139,12 +139,12 @@ function execute(that, command, params) {
         that.lib.callback.send(that, "TVPlay")
         params.newInput = input
       } else if (input == "EXT-SpotifyCanvasLyrics") {
-        if (!data.LyricsIsForced && !data.Lyrics) that.lib.callback.send.SpotifyLyricsOn()
+        if (!data.LyricsIsForced && !data.Lyrics) that.lib.callback.send(that, "SpotifyLyricsOn")
         else if (data.LyricsIsForced) {
           console.log("Set Lyrics off", data)
           that.lib.callback.send(that, "SpotifyLyricsOff")
         }
-        if (!data.SpotifyIsPlaying) that.lib.callback.send.SpotifyPlay()
+        if (!data.SpotifyIsPlaying) that.lib.callback.send(that, "SpotifyPlay")
         params.newInput = input
       } else {
         that.lib.callback.send(that,"setPage",input[1])
