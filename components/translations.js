@@ -2,7 +2,7 @@
 
 class GWTranslations {
   constructor () {
-    console.log("|GATEWAY] Translator Ready")
+    console.log("[GATEWAY] Translator Ready")
   }
 
   LoadGWTranslation(that) {

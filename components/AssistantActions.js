@@ -3,7 +3,7 @@
 /***********************/
 class AssistantActions {
   constructor () {
-    console.log("|GATEWAY] AssistantActions Ready")
+    console.log("[GATEWAY] AssistantActions Ready")
   }
 
   Actions(that, status) {

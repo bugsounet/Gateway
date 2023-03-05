@@ -1,6 +1,6 @@
 /**
  ** Module : Gateway
- ** @bugsounet ©02-2023
+ ** @bugsounet ©03-2023
  ** support: https://forum.bugsounet.fr
  **/
 
@@ -72,7 +72,7 @@ Module.register("Gateway", {
       case "DOM_OBJECTS_CREATED":
         this.sendSocketNotification("INIT", this.config)
         break
-      case "GAv4_READY":
+      case "GAv5_READY":
         if (sender.name == "MMM-GoogleAssistant") {
           this.GW.ready = true
           logGW("Gateway is ready too!")

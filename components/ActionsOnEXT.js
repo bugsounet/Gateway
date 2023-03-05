@@ -4,7 +4,7 @@
 
 class ActionsOnEXT {
   constructor () {
-    console.log("|GATEWAY] ActionsOnEXT Ready")
+    console.log("[GATEWAY] ActionsOnEXT Ready")
   }
 
   Actions(that,noti,payload,sender) {
@@ -210,7 +210,8 @@ class ActionsOnEXT {
       links: {
         urls: response.urls && response.urls.length ?  response.urls : [],
         length: response.urls && response.urls.length ? response.urls.length : 0
-      }
+      },
+      youtube: response.youtube
     }
 
     // the show must go on !
@@ -222,6 +223,9 @@ class ActionsOnEXT {
     }
     else if (urls.links.length > 0) {
       this.urlsScan(that, urls)
+    } else if (urls.youtube && that.GW["EXT-YouTube"].hello) {
+      that.sendNotification("EXT_YOUTUBE-SEARCH", urls.youtube)
+      logGW("Sended to YT", urls.youtube)
     }
     logGW("Response Structure:", urls)
   }

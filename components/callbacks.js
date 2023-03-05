@@ -1,6 +1,6 @@
 class callbacks {
   constructor () {
-    console.log("|GATEWAY] callbacks Ready")
+    console.log("[GATEWAY] callbacks Ready")
   }
 
   cb(that,noti,payload) {

@@ -2,7 +2,7 @@
 
 class GWDatabase {
   constructor () {
-    console.log("|GATEWAY] Database Ready")
+    console.log("[GATEWAY] Database Ready")
   }
 
   ExtDB() {
