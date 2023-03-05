@@ -597,7 +597,7 @@ function createGW(that) {
         let data = req.body.data
         if (!data) return res.send("error")
         that.sendSocketNotification("SendNoti", {
-          noti: "GAv4_ACTIVATE",
+          noti: "GAv5_ACTIVATE",
           payload: {
             type: "TEXT",
             key: data
