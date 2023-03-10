@@ -37,7 +37,6 @@ function init(that) {
 async function requestSync(that) {
   if (!that.SmartHome.homegraph) return
   log("[RequestSync] in Progress...")
-  that.lib.callback.send(that, "Done", "Sync with Google Graph in Progress...")
   let body = {
     requestBody: {
       agentUserId: that.SmartHome.user.user,
@@ -47,7 +46,6 @@ async function requestSync(that) {
   try {
     const res = await that.SmartHome.homegraph.devices.requestSync(body)
     log("[RequestSync] Done.", res.statusText)
-    that.lib.callback.send(that, "Done","Sync with Google Graph is now activated!")
   } catch (e) {
     if (e.code) {
       console.error("[GATEWAY] [SMARTHOME] [HOMEGRAPH] [RequestSync] Error:", e.code , e.errors)
