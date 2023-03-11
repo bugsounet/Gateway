@@ -44,13 +44,15 @@ Gateway is a real conductor 🙂
   * ...
 
   Gateway have also an embedded smarthome controler !
-  * controling MagicMirror from GoogleHome app from smartphone
+   
+  * Able to control:
     - EXT-Screean
     - EXT-Pages
     - EXT-Spotify
     - EXT-Volume
     - ...
-  * controling Magicmirror from any google assistant
+  * Controling MagicMirror from GoogleHome app from smartphone
+  * Controling Magicmirror from any google assistant
 
 # Installation / update / configuration
 
