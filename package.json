@@ -1,7 +1,7 @@
 {
   "name": "Gateway",
   "version": "3.0.0",
-  "rev": "230310",
+  "rev": "230311",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {
@@ -10,7 +10,9 @@
     "update": "installer/update.sh",
     "rebuild": "installer/rebuild.sh",
     "smarthome": "sudo node installer/setup && npm run certbot",
-    "certbot": "sudo installer/certbot.sh"
+    "certbot": "sudo installer/certbot.sh",
+    "reset": "git reset --hard",
+    "clean": "rm -rf node_modules package-lock.json"
   },
   "keywords": [
     "magic mirror",

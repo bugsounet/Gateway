@@ -8,8 +8,8 @@ class GWTranslations {
   LoadGWTranslation(that) {
     return new Promise(resolve => {
       var Tr = {}
-      Tr.Rotate_Msg = that.translate("GW_Rotate_Msg"),
-      Tr.Rotate_Continue = that.translate("GW_Rotate_Continue"),
+      Tr.Rotate_Msg = that.translate("GW_Rotate_Msg")
+      Tr.Rotate_Continue = that.translate("GW_Rotate_Continue")
 
       Tr.Login_Welcome = that.translate("GW_Login_Welcome")
       Tr.Login_Username = that.translate("GW_Login_Username")
@@ -194,6 +194,7 @@ class GWTranslations {
       desc["EXT-Spotify"] = that.translate("EXT-Spotify")
       desc["EXT-SpotifyCanvasLyrics"] = that.translate("EXT-SpotifyCanvasLyrics")
       desc["EXT-StreamDeck"] = that.translate("EXT-StreamDeck")
+      desc["EXT-TelegramBot"] = that.translate("EXT-TelegramBot")
       desc["EXT-UpdateNotification"] = that.translate("EXT-UpdateNotification")
       desc["EXT-Volume"] = that.translate("EXT-Volume")
       desc["EXT-Welcome"] = that.translate("EXT-Welcome")
@@ -366,6 +367,19 @@ class GWTranslations {
       Tr["EXT-StreamDeck_ecobrightness"] = that.translate("VAL_EXT-StreamDeck_ecobrightness")
       Tr["EXT-StreamDeck_ecotime"] = that.translate("VAL_EXT-StreamDeck_ecotime")
       Tr["EXT-StreamDeck_logo"] = that.translate("VAL_EXT-StreamDeck_logo")
+      Tr["EXT-TelegramBot_telegramAPIKey"] = that.translate("VAL_EXT-TelegramBot_telegramAPIKey")
+      Tr["EXT-TelegramBot_adminChatId"] = that.translate("VAL_EXT-TelegramBot_adminChatId")
+      Tr["EXT-TelegramBot_allowedUser"] = that.translate("VAL_EXT-TelegramBot_allowedUser")
+      Tr["EXT-TelegramBot_commandAllowed"] = that.translate("VAL_EXT-TelegramBot_commandAllowed")
+      Tr["EXT-TelegramBot_useWelcomeMessage"] = that.translate("VAL_EXT-TelegramBot_useWelcomeMessage")
+      Tr["EXT-TelegramBot_useSoundNotification"] = that.translate("VAL_EXT-TelegramBot_useSoundNotification")
+      Tr["EXT-TelegramBot_TelegramBotServiceAlerte"] = that.translate("VAL_EXT-TelegramBot_TelegramBotServiceAlerte")
+      Tr["EXT-TelegramBot_favourites"] = that.translate("VAL_EXT-TelegramBot_favourites")
+      Tr["EXT-TelegramBot_telecast"] = that.translate("VAL_EXT-TelegramBot_telecast")
+      Tr["EXT-TelegramBot_telecastLife"] = that.translate("VAL_EXT-TelegramBot_telecastLife")
+      Tr["EXT-TelegramBot_telecastHideOverflow"] = that.translate("VAL_EXT-TelegramBot_telecastHideOverflow")
+      Tr["EXT-TelegramBot_telecastContainer"] = that.translate("VAL_EXT-TelegramBot_telecastContainer")
+      Tr["EXT-TelegramBot_dateFormat"] = that.translate("VAL_EXT-TelegramBot_dateFormat")
       Tr["EXT-UpdateNotification_Interval"] = that.translate("VAL_EXT-UpdateNotification_Interval")
       Tr["EXT-UpdateNotification_Delay"] = that.translate("VAL_EXT-UpdateNotification_Delay")
       Tr["EXT-UpdateNotification_Ignore"] = that.translate("VAL_EXT-UpdateNotification_Ignore")

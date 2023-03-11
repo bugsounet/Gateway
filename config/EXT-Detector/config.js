@@ -7,6 +7,8 @@ var defaultConfig = {
     debug: false,
     useIcon: true,
     touchOnly: false,
+    porcupineAccessKey: null,
+    porcupineCustomModel: null,
     detectors: [
       {
         detector: "Snowboy",
@@ -86,13 +88,13 @@ var schema = {
           "title": "{EXT-Detector_Touch}",
           "default": false
         },
-        "accessKey": {
-          "type": "string",
+        "porcupineAccessKey": {
+          "type": ["string", "null" ],
           "title": "{EXT-Detector_AccessKey}",
           "default": null
         },
-        "customModel": {
-          "type": "string",
+        "porcupineCustomModel": {
+          "type": ["string", "null" ],
           "title": "{EXT-Detector_CustomModel}",
           "default": null
         },
@@ -172,10 +174,11 @@ var schema = {
             }
           }
         }
-      }
+      },
+      "required": ["porcupineAccessKey"]
     }
   },
-  "required": ["module", "position", "config"]
+  "required": ["module", "position", "config", "configDeepMerge"]
 }
 
 exports.default = defaultConfig
