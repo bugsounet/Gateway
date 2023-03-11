@@ -28,7 +28,7 @@ All name of `MMM-GoogleAssistant` plugins start with `EXT` and the `Gateway` wil
 
 Gateway is a real conductor 🙂
 
-# Gateway v2.x.x now has an app
+# Gateway v3.x.x now has an app
   Gateway has an embedded application.<br>
   This application is available directly through your browser.<br>
   It can be used locally or remotely over the internet.<br>
@@ -42,6 +42,15 @@ Gateway is a real conductor 🙂
   * Allows you to manually restart or stop MagicMirror
   * Allows you to turn off or turn on your screen
   * ...
+
+  Gateway have also an embedded smarthome controler !
+  * controling MagicMirror from GoogleHome app from smartphone
+    - EXT-Screean
+    - EXT-Pages
+    - EXT-Spotify
+    - EXT-Volume
+    - ...
+  * controling Magicmirror from any google assistant
 
 # Installation / update / configuration
 
