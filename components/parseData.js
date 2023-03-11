@@ -67,6 +67,9 @@ async function parse(that,data) {
     that.SmartHome.user.password = that.config.password
     if (that.config.useHomeGraph) that.lib.homegraph.init(that)
     that.lib.Device.create(that)
+  } else {
+    console.log("[GATEWAY] no CLIENT_ID found in your config!")
+    console.warn("[GATEWAY] SmartHome functionality is disabled")
   }
 }
 
