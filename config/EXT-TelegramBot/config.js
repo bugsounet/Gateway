@@ -118,7 +118,7 @@ var schema = {
           "default": 1000 * 60 * 60 * 6
         },
         "telecastLimit": {
-          "title": "telecastLimit",
+          "title": "{EXT-TelegramBot_telecastLimit}",
           "type": "number",
           "default": 5
         },

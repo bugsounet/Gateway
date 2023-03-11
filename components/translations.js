@@ -377,6 +377,7 @@ class GWTranslations {
       Tr["EXT-TelegramBot_favourites"] = that.translate("VAL_EXT-TelegramBot_favourites")
       Tr["EXT-TelegramBot_telecast"] = that.translate("VAL_EXT-TelegramBot_telecast")
       Tr["EXT-TelegramBot_telecastLife"] = that.translate("VAL_EXT-TelegramBot_telecastLife")
+      Tr["EXT-TelegramBot_telecastLimit"] = that.translate("VAL_EXT-TelegramBot_telecastLimit")
       Tr["EXT-TelegramBot_telecastHideOverflow"] = that.translate("VAL_EXT-TelegramBot_telecastHideOverflow")
       Tr["EXT-TelegramBot_telecastContainer"] = that.translate("VAL_EXT-TelegramBot_telecastContainer")
       Tr["EXT-TelegramBot_dateFormat"] = that.translate("VAL_EXT-TelegramBot_dateFormat")
