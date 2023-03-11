@@ -51,7 +51,7 @@ Gateway is a real conductor 🙂
     - EXT-Spotify
     - EXT-Volume
     - ...
-  * Controling MagicMirror from GoogleHome app from smartphone
+  * Controling MagicMirror from GoogleHome app (smartphone)
   * Controling Magicmirror from any google assistant
 
 # Installation / update / configuration
