@@ -13,6 +13,7 @@
 logGW = (...args) => { /* do nothing */ }
 
 Module.register("Gateway", {
+  requiresVersion: "2.22.0",
   defaults: {
     debug: false,
     username: "admin",
