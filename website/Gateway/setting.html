@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Gateway</title>
+    <link rel="icon" type="image/png" sizes="42x42" href="/assets/img/Gateway.png">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora&amp;display=swap">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/alertify-bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/alertify.min.css">
+    <link rel="stylesheet" href="/assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="/assets/css/Navbar.css">
+    <link rel="stylesheet" href="/assets/css/setting.css">
+    <link rel="stylesheet" href="/assets/css/tools.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, black, var(--bs-blue) 70%);">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-google"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light invisible" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i><span id="Home">Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/EXT"><i class="fa fa-plug"></i><span id="Plugins">EXT Plugins</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Terminal"><i class="fa fa-terminal"></i><span id="Terminal">Terminal Output</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/MMConfig"><i class="fa fa-code"></i><span id="Configuration">MagicMirror Configuration</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Tools"><i class="fas fa-tools"></i><span id="Tools">Tools</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Setting"><i class="fa fa-cogs"></i><span id="Setting">Setting</span></a></li>
+                    <li class="nav-item"><a class="nav-link" id="logout" href="/logout"><i class="fa fa-sign-out"></i><span id="Logout">Logout</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div class="container">
+                            <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
+                        </div>
+                    </div>
+                </nav>
+                <div class="container">
+                    <h3 class="text-center bounce animated" id="setting_title">Loading...</h3>
+                    <div class="row gutters">
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="account-settings">
+                                        <div class="user-profile">
+                                            <div class="user-avatar"><img src="/assets/img/gateway.jpg" alt="Maxwell Admin">
+                                                <h5 class="user-name"><strong>Gateway</strong></h5>
+                                                <h6 id="byHeader" class="user-email"><strong>by @bugsounet</strong></h6>
+                                            </div>
+                                            <div class="about">
+                                                <h5 id="SupportHeader">&nbsp;</h5><a class="text-nowrap fs-6 fw-light link-dark" href="https://forum.bugsounet.fr" target="_blank">forum.bugsounet.fr</a>
+                                            </div>
+                                            <div class="about">
+                                                <h5 id="DonateHeader">&nbsp;</h5><a class="text-nowrap fs-6 fw-light link-dark" id="DonateText" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=TTHRH94Y4KL36&amp;source=url" target="_blank">&nbsp;</a>
+                                            </div>
+                                            <div class="about">
+                                                <h5 id="VersionHeader">&nbsp;</h5>
+                                            </div><span>Gateway: v</span><span id="version">3</span>
+                                            <header></header><span>Code Revision:&nbsp;</span><span id="rev">&nbsp;</span>
+                                            <header></header><span>Language Database:&nbsp;</span><span id="language">&nbsp;</span>
+                                            <header></header>
+                                            <div class="d-flex flex-column" id="translatorsBox" style="display: none !important;"><span id="Translators">Translators:&nbsp;</span><span id="translator-1"></span><span id="translator-2"></span><span id="translator-3"></span><span id="translator-4"></span><span id="translator-5"></span><span id="translator-6"></span><span id="translator-7"></span><span id="translator-8"></span><span id="translator-9"></span><span id="translator-10"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                            <div class="card h-100">
+                                <form id="GatewaySetting">
+                                    <div class="card-body">
+                                        <div class="row gutters">
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 10px;">
+                                                <h6 id="credentials" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-12">
+                                                <div class="form-group" style="margin-bottom: 15px;"><label class="form-label" id="usernameField">&nbsp;</label><input class="form-control" type="text" id="username" placeholder="" name="username"></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 15px;">
+                                                <div class="form-group"><label class="form-label" id="passwordField">&nbsp;</label><input class="form-control" type="password" id="password" placeholder="" name="password"></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group" style="margin-bottom: 15px;"><label class="form-label" id="confirmpwdField">&nbsp;</label><input class="form-control" type="password" id="confirmpwd" placeholder="" name="confirmpwd"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><label class="form-label" id="clientIDField">&nbsp;</label><input class="form-control" type="text" id="clientID" placeholder="" name="clientID" style="margin-bottom: 15px;"></div>
+                                        <div class="row gutters">
+                                            <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 10px;">
+                                                <h6 id="options" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
+                                                <div class="form-group">
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="debug" name="debug"><label class="form-check-label" id="debugHeader" for="debug">&nbsp;</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
+                                                <div class="form-group">
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="homegraph" name="homegraph"><label class="form-check-label" id="homegraphHeader" for="homegraph">&nbsp;</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
+                                                <div class="form-group">
+                                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="pm2" name="pm2"><label class="form-check-label" id="pm2Header" for="pm2">&nbsp;</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group" style="margin-bottom: 5px;"><label class="form-label text-nowrap d-xl-flex" id="pm2idHeader" for="id">&nbsp;</label><select class="form-select form-control grppm2" id="pm2id" name="id" disabled="">
+                                                        <option value="0" selected="">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                    </select></div>
+                                            </div>
+                                        </div>
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="text-right" style="padding: 5px;">
+                                                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px;"><button class="btn btn-primary" id="update" type="submit" style="padding: 6px 12px;border-radius: 5.6px;" name="submit">Update</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="restart" style="margin: 0px;border-radius: 5.6px;" href="/Restart">Restart</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © bugsounet.fr 2023</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/bs-init.js"></script>
+    <script src="/EXT_Tools.js" crossorigin="anonymous"></script>
+    <script src="/assets/js/alertify.min.js"></script>
+    <script src="/assets/js/aos.min.js"></script>
+    <script src="/assets/js/pleaserotate.min.js"></script>
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

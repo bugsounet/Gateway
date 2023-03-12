@@ -1,6 +1,6 @@
 # Gateway
 
-`MMM-GoogleAssistant` v4 need an gateway for comunicate with plugins.<br>
+`MMM-GoogleAssistant` v5 need an gateway for comunicate with plugins.<br>
 So `Gateway` will doing this job !
 
 # Why `Gateway` is needed ?
@@ -24,11 +24,11 @@ All name of `MMM-GoogleAssistant` plugins start with `EXT` and the `Gateway` wil
 
 `Gateway` have a database of ALL `EXT` plugins for apply self rules.
 
-`MMM-GoogleAssistant` v4 💭 -> Gateway 🎼 <-> EXT plugins 🎹
+`MMM-GoogleAssistant` v5 💭 -> Gateway 🎼 <-> EXT plugins 🎹
 
 Gateway is a real conductor 🙂
 
-# Gateway v2.x.x now has an app
+# Gateway v3.x.x
   Gateway has an embedded application.<br>
   This application is available directly through your browser.<br>
   It can be used locally or remotely over the internet.<br>
@@ -42,6 +42,17 @@ Gateway is a real conductor 🙂
   * Allows you to manually restart or stop MagicMirror
   * Allows you to turn off or turn on your screen
   * ...
+
+  Gateway have also an embedded smarthome controler !
+
+  * Able to control:
+    - EXT-Screen
+    - EXT-Pages
+    - EXT-Spotify
+    - EXT-Volume
+    - ...
+  * Controling MagicMirror from GoogleHome app (smartphone)
+  * Controling Magicmirror from any google assistant
 
 # Installation / update / configuration
 

@@ -7,6 +7,8 @@ var defaultConfig = {
     debug: false,
     useIcon: true,
     touchOnly: false,
+    porcupineAccessKey: null,
+    porcupineCustomModel: null,
     detectors: [
       {
         detector: "Snowboy",
@@ -86,6 +88,16 @@ var schema = {
           "title": "{EXT-Detector_Touch}",
           "default": false
         },
+        "porcupineAccessKey": {
+          "type": ["string", "null" ],
+          "title": "{EXT-Detector_AccessKey}",
+          "default": null
+        },
+        "porcupineCustomModel": {
+          "type": ["string", "null" ],
+          "title": "{EXT-Detector_CustomModel}",
+          "default": null
+        },
         "detectors": {
           "type": "array",
           "title": "{EXT-Detector_Detector}",
@@ -122,7 +134,8 @@ var schema = {
                   "ok google",
                   "picovoice",
                   "porcupine",
-                  "terminator"
+                  "terminator",
+                  "custom"
                 ]
               },
               "Sensitivity": {
@@ -161,10 +174,11 @@ var schema = {
             }
           }
         }
-      }
+      },
+      "required": ["porcupineAccessKey"]
     }
   },
-  "required": ["module", "position", "config"]
+  "required": ["module", "position", "config", "configDeepMerge"]
 }
 
 exports.default = defaultConfig

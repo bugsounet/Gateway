@@ -52,7 +52,7 @@ if  [ "$platform" == "osx" ]; then
   echo
   exit 255
 else
-  if  [ "$os_name" == "raspbian" ] && [ "$os_version" -lt 10 ]; then
+  if  [ "$os_name" == "raspbian" ] && [ "$os_version" -lt 11 ]; then
     Installer_error "OS Detected: $OSTYPE ($os_name $os_version $arch)"
     Installer_error "Unfortunately, this module is not compatible with your OS"
     Installer_error "Try to update your OS to the lasted version of raspbian"
@@ -64,33 +64,11 @@ else
 fi
 
 echo
-# Required packages on Debian based systems
-deb_dependencies=(python3 make build-essential)
-# Required packages on RPM based systems
-rpm_dependencies=(file-libs wget autoconf automake binutils bison flex gcc gcc-c++ glibc-devel libtool make pkgconf strace byacc ccache cscope ctags elfutils indent ltrace perf valgrind)
-# Check dependencies
-if [ "${debian}" ]
-then
-  dependencies=( "${deb_dependencies[@]}" )
-else
-  if [ "${have_dnf}" ]
-  then
-    dependencies=( "${rpm_dependencies[@]}" )
-  else
-    if [ "${have_yum}" ]
-    then
-      dependencies=( "${rpm_dependencies[@]}" )
-    else
-      dependencies=( "${deb_dependencies[@]}" )
-    fi
-  fi
-fi
-
-[ "${__NO_DEP_CHECK__}" ] || {
-  Installer_info "Checking all dependencies..."
-  Installer_update_dependencies
-  Installer_success "All Dependencies needed are installed !"
-}
+#check dependencies
+dependencies=(nginx certbot python3 python-is-python3 python3-certbot-nginx make build-essential)
+Installer_info "Checking all dependencies..."
+Installer_update_dependencies
+Installer_success "All Dependencies needed are installed !"
 
 echo
 Installer_info "Installing all npm libraries..."
