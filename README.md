@@ -28,7 +28,7 @@ All name of `MMM-GoogleAssistant` plugins start with `EXT` and the `Gateway` wil
 
 Gateway is a real conductor 🙂
 
-# Gateway v3.x.x now has an app
+# Gateway v3.x.x
   Gateway has an embedded application.<br>
   This application is available directly through your browser.<br>
   It can be used locally or remotely over the internet.<br>
@@ -44,9 +44,9 @@ Gateway is a real conductor 🙂
   * ...
 
   Gateway have also an embedded smarthome controler !
-   
+
   * Able to control:
-    - EXT-Screean
+    - EXT-Screen
     - EXT-Pages
     - EXT-Spotify
     - EXT-Volume
