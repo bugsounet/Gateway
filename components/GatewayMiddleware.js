@@ -852,7 +852,7 @@ async function startServer(that) {
   that.Gateway.HyperWatch = that.lib.hyperwatch(
     that.Gateway.server
       .listen(8081, "0.0.0.0", () => {
-        console.log("[GATEWAY] Start listening on port 5000")
+        console.log("[GATEWAY] Start listening on port 8081")
         console.log("[GATEWAY] Available locally at http://"+ that.config.listening + ":8081")
         that.Gateway.initialized= true
       })
