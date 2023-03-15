@@ -12,7 +12,8 @@
     "smarthome": "sudo node installer/setup && npm run certbot",
     "certbot": "sudo installer/certbot.sh",
     "reset": "git reset --hard",
-    "clean": "rm -rf node_modules package-lock.json"
+    "clean": "rm -rf node_modules package-lock.json",
+    "project": "installer/check_ProjectID.sh"
   },
   "keywords": [
     "magic mirror",
