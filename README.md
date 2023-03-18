@@ -1,6 +1,6 @@
 # Gateway
 
-`MMM-GoogleAssistant` v5 need an gateway for comunicate with plugins.<br>
+`MMM-GoogleAssistant` need an gateway for comunicate with plugins.<br>
 So `Gateway` will doing this job !
 
 # Why `Gateway` is needed ?
@@ -24,7 +24,7 @@ All name of `MMM-GoogleAssistant` plugins start with `EXT` and the `Gateway` wil
 
 `Gateway` have a database of ALL `EXT` plugins for apply self rules.
 
-`MMM-GoogleAssistant` v5 💭 -> Gateway 🎼 <-> EXT plugins 🎹
+`MMM-GoogleAssistant` 💭 -> Gateway 🎼 <-> EXT plugins 🎹
 
 Gateway is a real conductor 🙂
 
