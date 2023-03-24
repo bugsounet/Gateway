@@ -47,7 +47,8 @@ class GWDatabase {
   
   async createGW(that) {
     let GW = {
-      ready: false
+      GA_Ready: false,
+      GW_Ready: false
     }
   
     await Promise.all(that.ExtDB.map(Ext=> {

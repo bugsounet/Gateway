@@ -20,7 +20,7 @@ class OthersRules {
   /** Rule when a plugin send Hello **/
   onStartPlugin(that, plugin) {
     if (!plugin) return
-    if (plugin == "EXT-Background") that.sendNotification("GAv5_FORCE_FULLSCREEN")
+    if (plugin == "EXT-Background") that.sendNotification("GA_FORCE_FULLSCREEN")
     if (plugin == "EXT-Detector") setTimeout(() => that.sendNotification("EXT_DETECTOR-START") , 300)
     if (plugin == "EXT-Pages") that.sendNotification("EXT_PAGES-Gateway")
   }

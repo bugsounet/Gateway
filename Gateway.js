@@ -71,15 +71,14 @@ Module.register("Gateway", {
     if (noti.startsWith("EXT_")) return this.ActionsOnEXT.Actions(this,noti,payload,sender)
     switch(noti) {
       case "DOM_OBJECTS_CREATED":
-        this.sendSocketNotification("INIT", this.config)
         break
-      case "GAv5_READY":
+      case "GA_READY":
         if (sender.name == "MMM-GoogleAssistant") {
-          this.GW.ready = true
-          logGW("Gateway is ready too!")
-        } else {
-          console.error("[GATEWAY]", this.sender.name, "Don't try to enforce my rules!")
+          this.GW.GA_Ready = true
+          logGW("Hello, MMM-GoogleAssistant")
+          this.sendSocketNotification("INIT", this.config)
         }
+        else console.error("[GATEWAY]", this.sender.name, "Don't try to enforce my rules!")
         break
       case "SHOW_ALERT": // trigger Alert to EXT-Alert module
         if (!this.GW["EXT-Alert"].hello) return
@@ -119,6 +118,11 @@ Module.register("Gateway", {
             timer: 10000
           })
         }
+        break
+      case "INITIALIZED":
+        logGW("I'm Ready!")
+        this.GW.GW_Ready = true
+        this.sendNotification("GW_READY")
         break
       case "SendNoti":
         if (payload.payload && payload.noti) {

@@ -8,6 +8,8 @@ class ActionsOnEXT {
   }
 
   Actions(that,noti,payload,sender) {
+    if (!that.GW.GA_Ready) return console.log("[GATEWAY] MMM-GoogleAssistant is not ready")
+    if (!that.GW.GW_Ready) return console.log("[GATEWAY] Gateway is not ready")
     switch(noti) {
       case "EXT_HELLO":
         that.OthersRules.helloEXT(that, payload)
@@ -179,9 +181,7 @@ class ActionsOnEXT {
         break
       case "EXT_GATEWAY-REBOOT": // only available with EXT-SmarHome
         if (!that.GW["EXT-SmartHome"].hello) return
-        if (sender.name == "EXT-SmartHome") {
-          that.sendSocketNotification("Restart")
-        }
+        if (sender.name == "EXT-SmartHome") that.sendSocketNotification("Restart")
         break
       case "EXT_SCREEN-GH_FORCE_WAKEUP":
         // temp patch ... to do better

@@ -7,7 +7,8 @@ class AssistantActions {
   }
 
   Actions(that, status) {
-    if (!that.GW.ready) return console.log("[GATEWAY] MMM-GoogleAssistant is not ready")
+    if (!that.GW.GA_Ready) return console.log("[GATEWAY] MMM-GoogleAssistant is not ready")
+    if (!that.GW.GW_Ready) return console.log("[GATEWAY] Gateway is not ready")
     logGW("Received GA status:", status)
     switch(status) {
       case "ASSISTANT_LISTEN":
