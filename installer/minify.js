@@ -1,28 +1,21 @@
+/** Code minifier v1.2 **/
+/** 2023/02/28 **/
+/** @busgounet **/
+
 const check = require("check-node-version")
 const fs = require('fs')
+const { globSync } = require('glob')
 
-const files= [
- "../node_helper.js",
- "../Gateway.js",
- "../components/ActionsOnEXT.js",
- "../components/actionsOnGoogle.js",
- "../components/AssistantActions.js",
- "../components/callbacks.js",
- "../components/DeviceManagement.js",
- "../components/GatewayMiddleware.js",
- "../components/GWDatabase.js",
- "../components/GWTools.js",
- "../components/homegraph.js",
- "../components/hyperwatch.js",
- "../components/loadLibraries.js",
- "../components/OthersRules.js",
- "../components/parseData.js",
- "../components/SHCallbacks.js",
- "../components/SHTools.js",
- "../components/SmartHomeMiddleware.js",
- "../components/translations.js",
- "../tools/EXT_Tools.js"
+var files = [
+  "../" + require("../package.json").main,
+  "../node_helper.js",
 ]
+
+function searchFiles() {
+  let components = globSync('../components/*.js')
+  files = files.concat(components)
+  console.log("Found: " + files.length + " files to minify\n")
+}
 
 // import minify
 async function loadMinify() {
@@ -33,6 +26,7 @@ async function loadMinify() {
 // minify files array
 async function minifyFiles() {
   const {minify} = await loadMinify()
+  searchFiles()
   files.forEach(file => {
     new Promise(resolve => {
       minify(file)
@@ -63,7 +57,7 @@ check(
     if (!result.isSatisfied) {
       console.error("Warn: Master code optimization error!");
       console.error("Needed node >= 14.0");
-      console.error("If you want to optimize really Gateway, you have use node v14.0 (or more)");
+      console.error("If you want to optimize really, you have use node v14.0 (or more)");
       console.error("Info: Don't worry, this step is not compulsory!")
     } else {
       minifyFiles()
