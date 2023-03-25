@@ -23,6 +23,7 @@ class OthersRules {
     if (plugin == "EXT-Background") that.sendNotification("GA_FORCE_FULLSCREEN")
     if (plugin == "EXT-Detector") setTimeout(() => that.sendNotification("EXT_DETECTOR-START") , 300)
     if (plugin == "EXT-Pages") that.sendNotification("EXT_PAGES-Gateway")
+    if (plugin == "EXT-Pir") that.sendNotification("EXT_PIR-START")
   }
 
   /** Connect rules **/
@@ -72,7 +73,7 @@ class OthersRules {
       if (that.GW["EXT-Screen"].hello && !this.hasPluginConnected(that.GW, "connected", true)) {
         that.sendNotification("EXT_SCREEN-UNLOCK")
         if (that.GW["EXT-Motion"].hello && !that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-INIT")
-        if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-RESTART")
+        if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-START")
         if (that.GW["EXT-StreamDeck"].hello) that.sendNotification("EXT_STREAMDECK-OFF")
       }
       if (that.GW["EXT-Pages"].hello && !this.hasPluginConnected(that.GW, "connected", true)) that.sendNotification("EXT_PAGES-UNLOCK")
