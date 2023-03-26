@@ -103,21 +103,12 @@ Module.register("Gateway", {
         let VALTranslate = await LoadTranslate.LoadGWTrSchemaValidation(this)
         this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate, EXTStatus: this.GW } )
         break
-      case "WARNING":
-        if (this.GW["EXT-Alert"].hello) {
-          this.sendNotification("EXT_ALERT", {
-            type: "warning",
-            message: "Error When Loading: " + payload.library + ". Try to solve it with `npm run rebuild` in Gateway directory",
-            timer: 10000
-          })
-        } else {
-          this.sendNotification("SHOW_ALERT", {
-            type: "notification",
-            message: "Error When Loading: " + payload.library + ". Try to solve it with `npm run rebuild` in Gateway directory",
-            title: "Gateway",
-            timer: 10000
-          })
-        }
+      case "WARNING": // EXT-Alert is unlocked for receive all alerts
+        this.sendNotification("EXT_ALERT", {
+          type: "warning",
+          message: "Error When Loading: " + payload.library + ". Try to solve it with `npm run rebuild` in Gateway directory",
+          timer: 10000
+        })
         break
       case "INITIALIZED":
         logGW("I'm Ready!")
