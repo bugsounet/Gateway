@@ -51,7 +51,7 @@ function libraries(that) {
             log("Loaded:", libraryToLoad, "->", "this.lib."+libraryName)
           }
         } catch (e) {
-          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString(), e)
+          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString())
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
           that.lib.error = errors
@@ -59,7 +59,7 @@ function libraries(that) {
       }
     })
     resolve(errors)
-    console.log("[GATEWAY] [LIB] All libraries loaded!")
+    if (!errors) console.log("[GATEWAY] [LIB] All libraries loaded!")
   })
 }
 
