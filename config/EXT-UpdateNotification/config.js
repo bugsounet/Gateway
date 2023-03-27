@@ -8,7 +8,6 @@ var defaultConfig = {
     updateInterval: 10 * 60 * 1000, // every 10 minutes
     startDelay: 60 * 1000, // delay before 1st scan
     ignoreModules: [],
-    updateCommands: [],
     notification: {
       useTelegramBot: true,
       sendReady: true,
@@ -20,7 +19,6 @@ var defaultConfig = {
       autoRestart: true,
       usePM2: false,
       PM2Name: "0",
-      defaultCommand: "git --reset hard && git pull && npm install",
       logToConsole: true,
       timeout: 2*60*1000
     }
@@ -94,37 +92,6 @@ var schema = {
             "type": "string"
           }
         },
-        "updateCommands": {
-          "type": "array",
-          "title": "{EXT-UpdateNotification_Commands}",
-          "default": [],
-          "minItems": 0,
-          "items": {
-            "properties": {
-              "module" : {
-                "type": "string",
-                "title": "{EXT-UpdateNotification_Module}"
-              },
-              "command": {
-                "type": "string",
-                "title": "{EXT-UpdateNotification_Command}"
-              }
-            },
-            "minProperties": 2,
-            "maxProperties": 2,
-            "additionalProperties": false
-          },
-          "additionalItems": {
-            "properties": {
-              "module" : {
-                "type": "string"
-              },
-              "command": {
-                "type": "string"
-              }
-            }
-          }
-        },
         "notification": {
           "type": "object",
           "title": "{EXT-UpdateNotification_Notification}",
@@ -169,11 +136,6 @@ var schema = {
               "type": ["string", "number"],
               "title": "{EXT-UpdateNotification_PM2}",
               "default": 0
-            },
-            "defaultCommand": {
-              "type": "string",
-              "title": "{EXT-UpdateNotification_DefaultCommand}",
-              "default": "git reset --hard && git pull && npm install"
             },
             "logToConsole": {
               "type": "boolean",
