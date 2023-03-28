@@ -7,7 +7,8 @@ class AssistantActions {
   }
 
   Actions(that, status) {
-    if (!that.GW.ready) return console.log("[GATEWAY] MMM-GoogleAssistant is not ready")
+    if (!that.GW.GA_Ready) return console.log("[GATEWAY] MMM-GoogleAssistant is not ready")
+    if (!that.GW.GW_Ready) return console.log("[GATEWAY] Gateway is not ready")
     logGW("Received GA status:", status)
     switch(status) {
       case "ASSISTANT_LISTEN":
@@ -31,7 +32,7 @@ class AssistantActions {
         if (that.GW["EXT-Screen"].hello && !that.OthersRules.hasPluginConnected(that.GW, "connected", true)) {
           that.sendNotification("EXT_SCREEN-UNLOCK", { show: true } )
           if (that.GW["EXT-Motion"].hello && !that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-INIT")
-          if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-RESTART")
+          if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-START")
           if (that.GW["EXT-StreamDeck"].hello) that.sendNotification("EXT_STREAMDECK-OFF")
         }
         if (that.GW["EXT-Pages"].hello && !that.OthersRules.hasPluginConnected(that.GW, "connected", true)) that.sendNotification("EXT_PAGES-RESUME")

@@ -27,7 +27,12 @@ module.exports = NodeHelper.create({
         this.lib.Gateway.initialize(this)
         if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
         else this.lib.SmartHome.disable(this)
-        this.lib.Gateway.startServer(this)
+        this.lib.Gateway.startServer(this, cb => {
+          if (cb) {
+            console.log("[GATEWAY] Gateway Ready!")
+            this.sendSocketNotification("INITIALIZED")
+          }
+        })
         break
       case "EXTStatus":
         if (this.Gateway.initialized && payload) {

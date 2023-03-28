@@ -597,7 +597,7 @@ function createGW(that) {
         let data = req.body.data
         if (!data) return res.send("error")
         that.sendSocketNotification("SendNoti", {
-          noti: "GAv5_ACTIVATE",
+          noti: "GA_ACTIVATE",
           payload: {
             type: "TEXT",
             key: data
@@ -619,8 +619,8 @@ function createGW(that) {
             message: data,
             sender: req.user ? req.user.username : 'Gateway',
             timer: 30 * 1000,
-            sound: "modules/Gateway/GWTools/message.mp3",
-            icon: "modules/Gateway/website/Gateway/assets/img/gateway.jpg"
+            sound: "modules/Gateway/tools/message.mp3",
+            icon: "modules/Gateway/website/assets/img/gateway.jpg"
           }
         })
         res.send("ok")
@@ -834,7 +834,7 @@ function createGW(that) {
 }
 
 /** Start Server **/
-async function startServer(that) {
+async function startServer(that,callback = () => {}) {
   /** Error 404 **/
   that.Gateway.app
     .get("/smarthome/*", (req, res) => {
@@ -855,6 +855,7 @@ async function startServer(that) {
         console.log("[GATEWAY] Start listening on port 8081")
         console.log("[GATEWAY] Available locally at http://"+ that.config.listening + ":8081")
         that.Gateway.initialized= true
+        callback(true)
       })
       .on("error", err => {
         console.error("[GATEWAY] Can't start Gateway server!")
@@ -868,6 +869,7 @@ async function startServer(that) {
           }
         })
         that.Gateway.initialized= false
+        callback(false)
       })
   )
 }
