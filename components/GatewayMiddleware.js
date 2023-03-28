@@ -619,8 +619,8 @@ function createGW(that) {
             message: data,
             sender: req.user ? req.user.username : 'Gateway',
             timer: 30 * 1000,
-            sound: "modules/Gateway/GWTools/message.mp3",
-            icon: "modules/Gateway/website/Gateway/assets/img/gateway.jpg"
+            sound: "modules/Gateway/tools/message.mp3",
+            icon: "modules/Gateway/website/assets/img/gateway.jpg"
           }
         })
         res.send("ok")
