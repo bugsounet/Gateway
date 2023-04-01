@@ -20,7 +20,6 @@ Module.register("Gateway", {
     password: "admin",
     usePM2: false,
     PM2Id: 0,
-    useHomeGraph: false,
     CLIENT_ID: null
   },
 

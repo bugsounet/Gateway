@@ -36,7 +36,7 @@ function create(that) {
         }
       ]
     },
-    "willReportState": that.config.useHomeGraph,
+    "willReportState": true,
     "roomHint": "MMM-GoogleAssistant",
     "deviceInfo": {
         "manufacturer": "@bugsounet",
@@ -177,7 +177,7 @@ function init(that) {
     that.SmartHome.device.attributes.availableInputs.push(SCL)
   }
   if (that.config.dev) log("Your device is now:", that.SmartHome.device)
-  if (that.config.useHomeGraph && that.SmartHome.homegraph) {
+  if (that.SmartHome.homegraph) {
     that.lib.homegraph.requestSync(that)
   } else {
     console.log("[GATEWAY] [SMARTHOME] [DEVICE] HomeGraph is disabled.")

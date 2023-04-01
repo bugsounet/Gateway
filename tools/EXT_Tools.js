@@ -1530,7 +1530,7 @@ function GatewaySetting() {
   $("#clientID").val(actualSetting.CLIENT_ID)
 
   $("#debug").prop("checked", actualSetting.debug)
-  $("#homegraph").prop("checked", actualSetting.useHomeGraph)
+  $("#homegraph").prop("checked", actualSetting.useHomeGraph) // to delete
   $("#pm2").prop("checked", actualSetting.usePM2)
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
   $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
