@@ -108,7 +108,6 @@
   "GW_Setting_Credentials_clientID_placeholder": "Entrez votre identifiant Google Action",
   "GW_Setting_Options": "Options",
   "GW_Setting_Options_debug": "Mode débogage",
-  "GW_Setting_Options_homegraph": "Utiliser Google HomeGraph",
   "GW_Setting_Options_usePM2": "Utiliser l'application PM2",
   "GW_Setting_Options_PM2Id": "Numéro de processus PM2",
   "GW_Setting_Info_by": "par @bugsounet",
