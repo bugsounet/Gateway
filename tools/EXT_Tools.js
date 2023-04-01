@@ -765,7 +765,7 @@ async function doTools() {
   }
 
   // GoogleAssistant Query
-  if (versionGA.find && versionGA.configured) {
+  if (versionGA.find && versionGA.configured && versionGA.ready) {
     $('#GoogleAssistant-Text').text(translation.Tools_GoogleAssistant_Text)
     $('#GoogleAssistant-Query').prop('placeholder', translation.Tools_GoogleAssistant_Query)
     $('#GoogleAssistant-Send').text(translation.Send)

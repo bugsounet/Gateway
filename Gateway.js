@@ -33,6 +33,7 @@ Module.register("Gateway", {
     let GWDB = new GWDatabase()
     this.ExtDB = GWDB.ExtDB()
     this.GW = await GWDB.createGW(this)
+    this.awaitGATimer = null
   },
 
   getTranslations: function() {
@@ -71,12 +72,12 @@ Module.register("Gateway", {
     if (noti.startsWith("EXT_")) return this.ActionsOnEXT.Actions(this,noti,payload,sender)
     switch(noti) {
       case "DOM_OBJECTS_CREATED":
+        this.sendSocketNotification("INIT", this.config)
         break
       case "GA_READY":
         if (sender.name == "MMM-GoogleAssistant") {
           this.GW.GA_Ready = true
           logGW("Hello, MMM-GoogleAssistant")
-          this.sendSocketNotification("INIT", this.config)
         }
         else console.error("[GATEWAY]", this.sender.name, "Don't try to enforce my rules!")
         break
@@ -111,15 +112,11 @@ Module.register("Gateway", {
         })
         break
       case "INITIALIZED":
-        logGW("I'm Ready!")
-        this.GW.GW_Ready = true
-        this.sendNotification("GW_READY")
+        this.OthersRules.awaitGATimer(this)
         break
       case "SendNoti":
-        if (payload.payload && payload.noti) {
-           return this.sendNotification(payload.noti, payload.payload)
-        }
-        this.sendNotification(payload)
+        if (payload.payload && payload.noti) this.sendNotification(payload.noti, payload.payload)
+        else sendNotification(payload)
         break
       case "SendStop":
         this.ActionsOnEXT.Actions(this, "EXT_STOP")

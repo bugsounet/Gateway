@@ -17,7 +17,7 @@ async function init(that) {
     schemaTranslatation: null,
     language: null,
     webviewTag: false,
-    GACheck: { find: false, version: 0, configured: false },
+    GACheck: { find: false, version: 0, configured: false, ready: false },
     GAConfig: {},
     HyperWatch: null,
     radio: null,
