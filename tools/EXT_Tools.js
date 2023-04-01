@@ -765,7 +765,7 @@ async function doTools() {
   }
 
   // GoogleAssistant Query
-  if (versionGA.find && versionGA.configured) {
+  if (versionGA.find && versionGA.configured && versionGA.ready) {
     $('#GoogleAssistant-Text').text(translation.Tools_GoogleAssistant_Text)
     $('#GoogleAssistant-Query').prop('placeholder', translation.Tools_GoogleAssistant_Query)
     $('#GoogleAssistant-Send').text(translation.Send)
@@ -1500,7 +1500,6 @@ function GatewaySetting() {
 
   $('#options').text(translation.Setting_Options)
   $('#debugHeader').text(translation.Setting_Options_debug)
-  $('#homegraphHeader').text(translation.Setting_Options_homegraph)
   $('#pm2Header').text(translation.Setting_Options_usePM2)
   $('#pm2idHeader').text(translation.Setting_Options_PM2Id)
   $('#byHeader').text(translation.Setting_Info_by)
@@ -1530,7 +1529,6 @@ function GatewaySetting() {
   $("#clientID").val(actualSetting.CLIENT_ID)
 
   $("#debug").prop("checked", actualSetting.debug)
-  $("#homegraph").prop("checked", actualSetting.useHomeGraph)
   $("#pm2").prop("checked", actualSetting.usePM2)
   $("select.grppm2").prop("disabled", !actualSetting.usePM2)
   $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
@@ -1548,7 +1546,6 @@ function GatewaySetting() {
         password: "admin",
         usePM2: false,
         PM2Id: 0,
-        useHomeGraph: false,
         CLIENT_ID: null
       }
     }
@@ -1586,9 +1583,6 @@ function GatewaySetting() {
 
     var debug = $( "input[type=checkbox][name=debug]:checked" ).val()
     newGatewayConfig.config.debug = debug ? true : false
-
-    var homeGraph = $( "input[type=checkbox][name=homegraph]:checked" ).val()
-    newGatewayConfig.config.useHomeGraph = homeGraph ? true : false
 
     var pm2 = $( "input[type=checkbox][name=pm2]:checked" ).val()
     var pm2id = Number($( "select#pm2id" ).val())

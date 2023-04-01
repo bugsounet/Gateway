@@ -1,6 +1,7 @@
 class OthersRules {
   constructor() {
     console.log("[GATEWAY] OthersRules Ready")
+    //this.awaitGATimer = null
   }
 
   /** Activate automaticaly any plugins **/
@@ -130,5 +131,18 @@ class OthersRules {
       }
     }
     return false
+  }
+
+  awaitGATimer(that) {
+    clearInterval(that.awaitGATimer)
+    that.awaitGATimer = null
+    if (that.GW.GA_Ready) {
+      logGW("I'm Ready!")
+      that.GW.GW_Ready = true
+      that.sendNotification("GW_READY")
+    } else {
+      console.log("[GATEWAY] Waiting GA response")
+      that.awaitGATimer = setInterval(() => {this.awaitGATimer(that)}, 1000)
+    }
   }
 }

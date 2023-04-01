@@ -25,7 +25,7 @@ function initialize(that) {
   that.Gateway.EXTInstalled= that.lib.GWTools.searchInstalled(that)
   log("Find", that.Gateway.EXTInstalled.length , "installed plugins in MagicMirror")
   log("Find", that.Gateway.EXTConfigured.length, "configured plugins in config file")
-  if (that.Gateway.GACheck.version && that.lib.semver.gte(that.Gateway.GACheck.version, '4.0.0')) {
+  if (that.Gateway.GACheck.version && that.lib.semver.gte(that.Gateway.GACheck.version, '5.1.0')) {
     that.Gateway.GACheck.find = true
     log("Find MMM-GoogleAssistant v" + that.Gateway.GACheck.version)
   }
@@ -567,7 +567,10 @@ function createGW(that) {
     })
 
     .get("/getGAVersion", (req,res) => {
-      if (req.user) res.send(that.Gateway.GACheck)
+      if (req.user) {
+        if (that.Gateway.EXTStatus.GA_Ready) that.Gateway.GACheck.ready = true
+        res.send(that.Gateway.GACheck)
+      }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
