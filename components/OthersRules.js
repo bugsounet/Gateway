@@ -133,10 +133,12 @@ class OthersRules {
     return false
   }
 
-  awaitGATimer(that) {
+  async awaitGATimer(that) {
     clearInterval(that.awaitGATimer)
     that.awaitGATimer = null
     if (that.GW.GA_Ready) {
+      let check = await this.checkModules()
+      if (check) return that.socketNotificationReceived("ERROR", "You Can't start Gateway with MMM-TelegramBot and EXT-TelegramBot!")
       logGW("I'm Ready!")
       that.GW.GW_Ready = true
       that.sendNotification("GW_READY")
@@ -144,5 +146,16 @@ class OthersRules {
       console.log("[GATEWAY] Waiting GA response")
       that.awaitGATimer = setInterval(() => {this.awaitGATimer(that)}, 1000)
     }
+  }
+
+  checkModules() {
+    return new Promise(resolve => {
+      var nb=0
+      MM.getModules().withClass("EXT-Telegrambot MMM-TelegramBot").enumerate((module)=> {
+        nb++
+        if (nb >= 2) resolve(true)
+      })
+      resolve(false)
+    })
   }
 }
