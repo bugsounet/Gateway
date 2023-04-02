@@ -110,6 +110,13 @@ Module.register("Gateway", {
           timer: 10000
         })
         break
+      case "ERROR": // EXT-Alert is unlocked for receive all alerts
+        this.sendNotification("EXT_ALERT", {
+          type: "error",
+          message: "Error: " + payload,
+          timer: 60000
+        })
+        break
       case "INITIALIZED":
         this.OthersRules.awaitGATimer(this)
         break
