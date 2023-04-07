@@ -194,6 +194,7 @@ class ActionsOnEXT {
         break
     }
     that.sendSocketNotification("EXTStatus", that.GW)
+    //console.log("!!EXTs Status", that.GW)
   }
 
   /**********************/

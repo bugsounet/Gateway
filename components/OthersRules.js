@@ -1,7 +1,6 @@
 class OthersRules {
   constructor() {
     console.log("[GATEWAY] OthersRules Ready")
-    //this.awaitGATimer = null
   }
 
   /** Activate automaticaly any plugins **/
@@ -31,10 +30,7 @@ class OthersRules {
   /** Connect rules **/
   connectEXT(that, extName) {
     if (!that.GW.GA_Ready) return console.error("[GATEWAY] Hey " + extName + "!, MMM-GoogleAssistant is not ready")
-
-    if (that.GW[extName].connected) {  // already connected ?
-      return logGW("Already Connected:", extName)
-    }
+    if (!that.GW[extName] || that.GW[extName].connected) return
 
     if(that.GW["EXT-Screen"].hello && !this.hasPluginConnected(that.GW, "connected", true)) {
       if (!that.GW["EXT-Screen"].power) that.sendNotification("EXT_SCREEN-WAKEUP")
@@ -42,10 +38,7 @@ class OthersRules {
       if (that.GW["EXT-Motion"].hello && that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-DESTROY")
       if (that.GW["EXT-Pir"].hello && that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-STOP")
       if (that.GW["EXT-StreamDeck"].hello) that.sendNotification("EXT_STREAMDECK-ON")
-      if (that.GW["EXT-Bring"].hello) {
-        console.log("send stop")
-        that.sendNotification("EXT_BRING-STOP")
-      }
+      if (that.GW["EXT-Bring"].hello) that.sendNotification("EXT_BRING-STOP")
     }
 
     if (this.browserOrPhotoIsConnected(that)) {
@@ -72,7 +65,8 @@ class OthersRules {
   /** disconnected rules **/
   disconnectEXT(that, extName) {
     if (!that.GW.GA_Ready) return console.error("[GATEWAY] MMM-GoogleAssistant is not ready")
-    if (extName) that.GW[extName].connected = false
+    if (!that.GW[extName] || !that.GW[extName].connected) return
+    that.GW[extName].connected = false
 
     // sport time ... verify if there is again an EXT module connected !
     setTimeout(()=> { // wait 1 sec before scan ...
@@ -81,10 +75,7 @@ class OthersRules {
         if (that.GW["EXT-Motion"].hello && !that.GW["EXT-Motion"].started) that.sendNotification("EXT_MOTION-INIT")
         if (that.GW["EXT-Pir"].hello && !that.GW["EXT-Pir"].started) that.sendNotification("EXT_PIR-START")
         if (that.GW["EXT-StreamDeck"].hello) that.sendNotification("EXT_STREAMDECK-OFF")
-        if (that.GW["EXT-Bring"].hello) {
-          console.log("send start")
-          that.sendNotification("EXT_BRING-START")
-        }
+        if (that.GW["EXT-Bring"].hello) that.sendNotification("EXT_BRING-START")
       }
       if (that.GW["EXT-Pages"].hello && !this.hasPluginConnected(that.GW, "connected", true)) that.sendNotification("EXT_PAGES-UNLOCK")
       logGW("Disconnected:", extName)
