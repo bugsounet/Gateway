@@ -511,7 +511,7 @@ function doRestart (that) {
 function doClose (that) {
   console.log("[GATEWAY] Closing MagicMirror...")
   if (that.config.usePM2) {
-    that.lib.pm2.stop(config.PM2Id, (err, proc) => {
+    that.lib.pm2.stop(that.config.PM2Id, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }

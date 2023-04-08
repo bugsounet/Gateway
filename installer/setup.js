@@ -31,7 +31,7 @@ var server = `server {
 
 async function main() {
   this.domain = await promptDomain()
-  saveDomain()
+  await saveDomain()
   await nginx()
 }
 
@@ -63,13 +63,16 @@ function promptDomain() {
 }
 
 function saveDomain() {
-  console.log("[SMARTHOME] " + colors.cyan("Writing your domain name: ") + colors.blue(this.domain))
-  fs.writeFile(__dirname+"/DomainName", this.domain, (err, data) => {
-    if (err) {
-      console.error("[SMARTHOME] " + colors.red("Error:" + err.message))
-      return process.exit(255)
-    }
-    console.log("[SMARTHOME] " + colors.green("OK\n"))
+  return new Promise(resolve => {
+    console.log("[SMARTHOME] " + colors.cyan("Writing your domain name: ") + colors.blue(this.domain))
+    fs.writeFile(__dirname+"/DomainName", this.domain, (err, data) => {
+      if (err) {
+        console.error("[SMARTHOME] " + colors.red("Error:" + err.message))
+        return process.exit(255)
+      }
+      console.log("[SMARTHOME] " + colors.green("OK\n"))
+      resolve()
+    })
   })
 }
 
