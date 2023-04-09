@@ -122,7 +122,7 @@ Module.register("Gateway", {
         break
       case "SendNoti":
         if (payload.payload && payload.noti) this.sendNotification(payload.noti, payload.payload)
-        else sendNotification(payload)
+        else this.sendNotification(payload)
         break
       case "SendStop":
         this.ActionsOnEXT.Actions(this, "EXT_STOP")
