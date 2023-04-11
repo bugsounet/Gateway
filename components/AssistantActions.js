@@ -25,7 +25,8 @@ class AssistantActions {
         if (that.GW["EXT-Spotify"].hello && that.GW["EXT-Spotify"].connected) that.sendNotification("EXT_SPOTIFY-VOLUME_MIN")
         if (that.GW["EXT-RadioPlayer"].hello && that.GW["EXT-RadioPlayer"].connected) that.sendNotification("EXT_RADIO-VOLUME_MIN")
         if (that.GW["EXT-MusicPlayer"].hello && that.GW["EXT-MusicPlayer"].connected) that.sendNotification("EXT_MUSIC-VOLUME_MIN")
-        if (that.GW["EXT-FreeboxTV"].hello && that.GW["EXT-FreeboxTV"].connected) that.sendNotification("EXT-FREEBOXTV-VOLUME_MIN")
+        if (that.GW["EXT-FreeboxTV"].hello && that.GW["EXT-FreeboxTV"].connected) that.sendNotification("EXT_FREEBOXTV-VOLUME_MIN")
+        if (that.GW["EXT-YouTube"].hello && that.GW["EXT-YouTube"].connected) that.sendNotification("EXT_YOUTUBE-VOLUME_MIN")
         break
       case "ASSISTANT_STANDBY":
         if (that.GW["EXT-Detector"].hello) that.sendNotification("EXT_DETECTOR-START")
@@ -39,7 +40,8 @@ class AssistantActions {
         if (that.GW["EXT-Spotify"].hello && that.GW["EXT-Spotify"].connected) that.sendNotification("EXT_SPOTIFY-VOLUME_MAX")
         if (that.GW["EXT-RadioPlayer"].hello && that.GW["EXT-RadioPlayer"].connected) that.sendNotification("EXT_RADIO-VOLUME_MAX")
         if (that.GW["EXT-MusicPlayer"].hello && that.GW["EXT-MusicPlayer"].connected) that.sendNotification("EXT_MUSIC-VOLUME_MAX")
-        if (that.GW["EXT-FreeboxTV"].hello && that.GW["EXT-FreeboxTV"].connected) that.sendNotification("EXT-FREEBOXTV-VOLUME_MAX")
+        if (that.GW["EXT-FreeboxTV"].hello && that.GW["EXT-FreeboxTV"].connected) that.sendNotification("EXT_FREEBOXTV-VOLUME_MAX")
+        if (that.GW["EXT-YouTube"].hello && that.GW["EXT-YouTube"].connected) that.sendNotification("EXT_YOUTUBE-VOLUME_MAX")
         break
       case "ASSISTANT_REPLY":
       case "ASSISTANT_CONTINUE":

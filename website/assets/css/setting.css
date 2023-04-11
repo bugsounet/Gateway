@@ -11,6 +11,7 @@
 .account-settings .user-profile .user-avatar img {
   width: 90px;
   height: 90px;
+  -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
   border-radius: 100px;
 }
@@ -42,6 +43,7 @@
 
 .form-control {
   border: 1px solid #cfd1d8;
+  -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   font-size: .825rem;
@@ -51,6 +53,7 @@
 
 .card {
   background: #ffffff;
+  -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   border: 0;
