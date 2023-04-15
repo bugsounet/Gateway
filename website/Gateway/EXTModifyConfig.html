@@ -18,13 +18,14 @@
     <link rel="stylesheet" href="/assets/css/alertify-bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/alertify.min.css">
     <link rel="stylesheet" href="/assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="/assets/css/jseditor-dark.css">
     <link rel="stylesheet" href="/assets/css/Navbar.css">
     <link rel="stylesheet" href="/assets/css/tools.css">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, black, var(--bs-blue) 70%);">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, #212121, #191919 80%);">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-google"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
@@ -43,8 +44,8 @@
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
+            <div id="content" style="background-color: #212121;">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, #212121, #191919 90%);">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <div class="container">
                             <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
@@ -53,16 +54,16 @@
                 </nav>
                 <div class="container-fluid">
                     <div class="d-flex flex-row justify-content-lg-center align-items-lg-center">
-                        <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true" id="title">Loading</h3>
+                        <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true" id="title" style="color: #ffffff !important;">Loading</h3>
                         <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true">&nbsp;</h3>
-                        <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true" id="EXTName">...</h3>
+                        <h3 class="text-dark bounce animated mb-4" data-bss-disabled-mobile="true" id="EXTName" style="color: #ffffff !important;">...</h3>
                     </div>
                     <div id="jsoneditor" style="height: 65vh;"></div>
-                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px;"><button class="btn btn-success" id="save" type="button" style="padding: 6px 12px;border-radius: 5.6px;">Save</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="done" style="margin: 0px;border-radius: 5.6px;" href="/Tools">Done</a><a class="btn btn-danger flash animated" role="button" id="error" style="margin: 0px;border-radius: 5.6px;" href="/Terminal">Error</a><a class="btn btn-danger flash animated infinite" role="button" id="configError" style="margin: 0px;border-radius: 5.6px;">Error</a></div>
-                    <div class="btn-group invisible" role="group" id="buttonGrp2" style="padding: 10px 0px;margin: 0px;margin-left: 5px;"><button class="btn btn-primary" id="loadDefault" type="button" style="padding: 6px 12px;border-radius: 5.6px;">Reload default</button><button class="btn btn-secondary" id="mergeDefault" type="button" style="margin: 0px;border-radius: 5.6px;padding-right: 12px;margin-left: 5px;">Merge with default</button></div>
+                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px;"><button class="btn btn-success" id="save" type="button" style="padding: 6px 12px;border-radius: 5.6px;background-color: #3cba54;">Save</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;background-color: #f4c20d;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="done" style="margin: 0px;border-radius: 5.6px;background-color: #3cba54;" href="/Tools">Done</a><a class="btn btn-danger flash animated" role="button" id="error" style="margin: 0px;border-radius: 5.6px;background-color: #db3236;" href="/Terminal">Error</a><a class="btn btn-danger flash animated infinite" role="button" id="configError" style="margin: 0px;border-radius: 5.6px;background-color: #db3236;">Error</a></div>
+                    <div class="btn-group invisible" role="group" id="buttonGrp2" style="padding: 10px 0px;margin: 0px;margin-left: 5px;"><button class="btn btn-primary" id="loadDefault" type="button" style="padding: 6px 12px;border-radius: 5.6px;background-color: #4885ed;">Reload default</button><button class="btn btn-secondary" id="mergeDefault" type="button" style="margin: 0px;border-radius: 5.6px;padding-right: 12px;margin-left: 5px;">Merge with default</button></div>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer">
+            <footer class="bg-white sticky-footer" style="background-color: #212121 !important;">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © bugsounet.fr 2023</span></div>
                 </div>
