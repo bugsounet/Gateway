@@ -62,13 +62,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pricing-area ul {
-  background: #fafafa;
+  background: #212121;
   margin: 0;
   padding: 0;
 }
 
 .pricing-area li {
-  background: #fafafa;
+  background: #191919;
 }
 
 .pricing-area .heading {
@@ -99,7 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pricing-area ul li:nth-child(2n) {
-  background: #f5f5f5 none repeat scroll 0 0;
+  background: #191919 none repeat scroll 0 0;
 }
 
 .plan-action {
@@ -107,12 +107,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pricing-area .price.red .heading, .pricing-area .price.red .plan-action .btn {
-  background: #e24f43 none repeat scroll 0 0;
+  background: #db3236 none repeat scroll 0 0;
   color: #ffffff;
 }
 
 .pricing-area .price.green .heading, .pricing-area .price.green .plan-action .btn {
-  background: #27ae60 none repeat scroll 0 0;
+  background: #3cba54 none repeat scroll 0 0;
   color: #ffffff;
 }
 
@@ -127,7 +127,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pricing-area .price.yellow .heading, .pricing-area .price.yellow .plan-action .btn {
-  background: #f39c12 none repeat scroll 0 0;
+  background: #f4c20d none repeat scroll 0 0;
   color: #ffffff;
 }
 
@@ -153,5 +153,15 @@ h1, h2, h3, h4, h5, h6 {
   right: 15px;
   top: 0;
   z-index: 1;
+}
+
+.error:before {
+  color: #fff;
+  background: #212121;
+}
+
+.error:after {
+  color: #fff;
+  background: #212121;
 }
 

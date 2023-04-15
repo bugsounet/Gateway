@@ -24,7 +24,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, black, var(--bs-blue) 70%);">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, #212121, #191919 80%);">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-google"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
@@ -42,9 +42,9 @@
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
-        <div class="d-flex flex-column" id="content-wrapper">
+        <div class="d-flex flex-column" id="content-wrapper" style="background-color: #212121;">
             <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, #212121, #191919 90%);">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <div class="container">
                             <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
@@ -52,10 +52,10 @@
                     </div>
                 </nav>
                 <div class="container">
-                    <h3 class="text-center bounce animated" id="setting_title">Loading...</h3>
+                    <h3 class="text-center bounce animated" id="setting_title" style="color: #ffffff;">Loading...</h3>
                     <div class="row gutters">
                         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                            <div class="card h-100">
+                            <div class="card h-100" style="background-color: #191919;">
                                 <div class="card-body">
                                     <div class="account-settings">
                                         <div class="user-profile">
@@ -64,13 +64,13 @@
                                                 <h6 id="byHeader" class="user-email"><strong>by @bugsounet</strong></h6>
                                             </div>
                                             <div class="about">
-                                                <h5 id="SupportHeader">&nbsp;</h5><a class="text-nowrap fs-6 fw-light link-dark" href="https://forum.bugsounet.fr" target="_blank">forum.bugsounet.fr</a>
+                                                <h5 id="SupportHeader" style="color: #4885ed;">&nbsp;</h5><a class="text-nowrap fs-6 fw-light link-dark" href="https://forum.bugsounet.fr" target="_blank" style="color: #3cba54 !important;">forum.bugsounet.fr</a>
                                             </div>
                                             <div class="about">
-                                                <h5 id="DonateHeader">&nbsp;</h5><a class="text-nowrap fs-6 fw-light link-dark" id="DonateText" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=TTHRH94Y4KL36&amp;source=url" target="_blank">&nbsp;</a>
+                                                <h5 id="DonateHeader" style="color: #4885ed;">&nbsp;</h5><a class="text-nowrap fs-6 fw-light link-dark" id="DonateText" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=TTHRH94Y4KL36&amp;source=url" target="_blank" style="color: #db3236 !important;">&nbsp;</a>
                                             </div>
                                             <div class="about">
-                                                <h5 id="VersionHeader">&nbsp;</h5>
+                                                <h5 id="VersionHeader" style="color: #4885ed;">&nbsp;</h5>
                                             </div><span>Gateway: v</span><span id="version">3</span>
                                             <header></header><span>Code Revision:&nbsp;</span><span id="rev">&nbsp;</span>
                                             <header></header><span>Language Database:&nbsp;</span><span id="language">&nbsp;</span>
@@ -82,12 +82,12 @@
                             </div>
                         </div>
                         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-                            <div class="card h-100">
+                            <div class="card h-100" style="background-color: #191919;">
                                 <form id="GatewaySetting">
                                     <div class="card-body">
                                         <div class="row gutters">
                                             <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 10px;">
-                                                <h6 id="credentials" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
+                                                <h6 id="credentials" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;color: #4885ed !important;">&nbsp;</h6>
                                             </div>
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-12">
                                                 <div class="form-group" style="margin-bottom: 15px;"><label class="form-label" id="usernameField">&nbsp;</label><input class="form-control" type="text" id="username" placeholder="" name="username"></div>
@@ -102,7 +102,7 @@
                                         <div class="form-group"><label class="form-label" id="clientIDField">&nbsp;</label><input class="form-control" type="text" id="clientID" placeholder="" name="clientID" style="margin-bottom: 15px;"></div>
                                         <div class="row gutters">
                                             <div class="d-flex align-items-baseline col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 10px;">
-                                                <h6 id="options" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;">&nbsp;</h6>
+                                                <h6 id="options" class="mb-2 text-primary fw-bold" style="font-family: &quot;Open Sans&quot;;color: #4885ed !important;">&nbsp;</h6>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" style="margin-bottom: 5px;">
                                                 <div class="form-group">
@@ -133,7 +133,7 @@
                                         <div class="row gutters">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="text-right" style="padding: 5px;">
-                                                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px;"><button class="btn btn-primary" id="update" type="submit" style="padding: 6px 12px;border-radius: 5.6px;" name="submit">Update</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="restart" style="margin: 0px;border-radius: 5.6px;" href="/Restart">Restart</a></div>
+                                                    <div class="btn-group invisible" role="group" id="buttonGrp" style="padding: 10px 0px;"><button class="btn btn-primary" id="update" type="submit" style="padding: 6px 12px;border-radius: 5.6px;background-color: #4885ed;" name="submit">Update</button><button class="btn btn-warning rubberBand animated" id="wait" type="button" style="margin: 0px;border-radius: 5.6px;background-color: #f4c20d;">Please wait...</button><a class="btn btn-success tada animated" role="button" id="restart" style="margin: 0px;border-radius: 5.6px;background-color: #3cba54;" href="/Restart">Restart</a></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,7 +144,7 @@
                     </div>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer">
+            <footer class="bg-white sticky-footer" style="background-color: #212121 !important;">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © bugsounet.fr 2023</span></div>
                 </div>

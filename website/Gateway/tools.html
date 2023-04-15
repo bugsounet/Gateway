@@ -24,7 +24,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, black, var(--bs-blue) 70%);">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(0deg, #212121, #191919 80%);">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-google"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
@@ -43,8 +43,8 @@
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, black, var(--bs-blue) 70%);">
+            <div id="content" style="background-color: #212121;">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, #212121, #191919 90%);">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <div class="container">
                             <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
@@ -55,7 +55,7 @@
                     <section class="pricing-table" style="padding: 0px;">
                         <div class="container">
                             <div class="center">
-                                <h2 class="bounce animated" id="title">Loading...</h2>
+                                <h2 class="bounce animated" id="title" style="color: #ffffff;">Loading...</h2>
                                 <p class="lead" id="subtitle">&nbsp;</p>
                             </div>
                             <div class="pricing-area text-center">
@@ -78,15 +78,6 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Restart" class="btn" href="/Restart" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price grey wow col-md-6" id="Stop-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);"><strong>Plugins</strong></h2><span class="price">Stop</span>
-                                            </li>
-                                            <li class="list-group-item"><span id="Stop-Text">&nbsp;</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="Stop-Send" class="btn">&nbsp;&nbsp;<br></a></li>
-                                        </ul>
-                                    </div>
                                     <div class="col-sm-6 col-md-3 bounce animated plan price blue wow col-md-6" id="webview-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
@@ -97,7 +88,17 @@
                                             <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="webviewbtn-Apply" class="btn">&nbsp; &nbsp; &nbsp;&nbsp;<br></a><a class="flash animated infinite btn" id="webviewbtn-Error" style="display: none;">Error<br></a><a class="tada animated btn" id="webviewbtn-Done" style="display: none;">Done<br></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-4 bounce animated plan price yellow wow col-sm-6" id="Update-Box" style="display: none;">
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price yellow wow col-md-6" id="GoogleAssistant-Box" style="display: none;">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">Google Assistant</h2><span class="price">Request</span>
+                                            </li>
+                                            <li class="list-group-item"><span id="GoogleAssistant-Text">&nbsp; &nbsp;&nbsp;</span></li>
+                                            <li class="list-group-item"><input type="text" id="GoogleAssistant-Query" placeholder="" style="width: 95%;"></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="GoogleAssistant-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-4 bounce animated plan price green wow col-sm-6" id="Update-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">Update</h2><span class="price">Control</span>
@@ -108,7 +109,7 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Update-Confirm" class="btn" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price grey wow col-md-6" id="backup-Box" style="display: none;">
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="backup-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">MagicMirror</h2><span class="price">Config Backup</span>
@@ -118,13 +119,13 @@
                                             <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="backup-Delete" class="btn">&nbsp; &nbsp; &nbsp;&nbsp;<br></a><a class="flash animated infinite btn" id="backup-Error" style="display: none;">Error<br></a><a class="tada animated btn" id="backup-Done" style="display: none;">Done<br></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Screen-Box" style="display: none;">
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price grey wow col-md-6" id="Stop-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">EXT-Screen</h2><span class="price">Control</span>
+                                                <h2 style="color: var(--bs-light);"><strong>Plugins</strong></h2><span class="price">Stop</span>
                                             </li>
-                                            <li class="list-group-item"><span id="Screen-Text">&nbsp; &nbsp;&nbsp;</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="Screen-Control" class="btn"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
+                                            <li class="list-group-item"><span id="Stop-Text">&nbsp;</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="Stop-Send" class="btn">&nbsp;&nbsp;<br></a></li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Alert-Box" style="display: none;">
@@ -135,6 +136,15 @@
                                             <li class="list-group-item"><span id="Alert-Text">&nbsp; &nbsp;&nbsp;</span></li>
                                             <li class="list-group-item"><input type="text" id="Alert-Query" placeholder="" style="width: 95%;"></li>
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="Alert-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Screen-Box" style="display: none;">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">EXT-Screen</h2><span class="price">Control</span>
+                                            </li>
+                                            <li class="list-group-item"><span id="Screen-Text">&nbsp; &nbsp;&nbsp;</span></li>
+                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="Screen-Control" class="btn"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Volume-Box" style="display: none;">
@@ -242,51 +252,6 @@
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="Radio-Send" class="btn">&nbsp; &nbsp;<br></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-4 bounce animated plan price yellow wow col-sm-6" id="Recipes-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Recipes</h2><span class="price">MMM-GoogleAssistant</span>
-                                            </li>
-                                            <li class="list-group-item"><span>Modify or add new recipe</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a class="btn" style="margin-top: 5px;"><strong>Not Yet Coded</strong></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 plan price grey wow col-md-6" id="Librespot-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Librespot</h2><span class="price">Setup</span>
-                                            </li>
-                                            <li class="list-group-item"><span>Install Librespot app</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#">Not Yet Coded</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 plan price grey wow col-md-6" id="Raspotify-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Raspotify</h2><span class="price">Setup</span>
-                                            </li>
-                                            <li class="list-group-item"><span>Install Raspotify app</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="YoutubeToken-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Token</h2><span class="price">EXT-YouTube</span>
-                                            </li>
-                                            <li class="list-group-item"><span>Create or renew token</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="GooglePhotosToken-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Token</h2><span class="price">EXT-GooglePhotos</span>
-                                            </li>
-                                            <li class="list-group-item"><span>Create or renew token</span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a class="btn" href="#"><strong>Not Yet Coded</strong><br></a></li>
-                                        </ul>
-                                    </div>
                                     <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="SpotifyToken-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
@@ -299,21 +264,11 @@
                                     <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="YouTube-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">YouTube</h2><span class="price">Request</span>
+                                                <h2 style="color: var(--bs-light);">EXT-YouTube</h2><span class="price">Request</span>
                                             </li>
                                             <li class="list-group-item"><span id="YouTube-Text">&nbsp; &nbsp;&nbsp;</span></li>
                                             <li class="list-group-item"><input type="text" id="YouTube-Query" placeholder="" style="width: 95%;"></li>
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="YouTube-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price yellow wow col-md-6" id="GoogleAssistant-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Google Assistant</h2><span class="price">Request</span>
-                                            </li>
-                                            <li class="list-group-item"><span id="GoogleAssistant-Text">&nbsp; &nbsp;&nbsp;</span></li>
-                                            <li class="list-group-item"><input type="text" id="GoogleAssistant-Query" placeholder="" style="width: 95%;"></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="GoogleAssistant-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6 col-md-3 bounce animated plan price green wow col-md-6" id="Spotify-Box" style="display: none;">
@@ -346,7 +301,7 @@
                     </section>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer">
+            <footer class="bg-white sticky-footer" style="background-color: #212121 !important;">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © bugsounet.fr 2023</span></div>
                 </div>

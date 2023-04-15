@@ -378,13 +378,6 @@ async function doTools() {
   $('#Die').text(translation.Confirm)
   $('#Restart').text(translation.Confirm)
 
-  // MMM-GoogleAssistant recipes
-  /* Will be not coded for first release
-  if (versionGA.find && versionGA.configured) {
-    $('#Recipes-Box').css("display", "block")
-  }
-  */
-
   // backups
   var allBackup = await loadBackupNames()
   if (allBackup.length > 5) {
@@ -911,7 +904,7 @@ async function createEXTTable() {
   if (!Object.keys(DescEXT).length) DescEXT = await loadDataDescriptionEXT()
   if (!InstEXT.length) InstEXT = await loadDataInstalledEXT()
   if (!ConfigEXT.length) ConfigEXT = await loadDataConfiguredEXT()
-  var Content = `<div id="TableSorterCard" class="card" id="TableSorterCard"><div class="row table-topper align-items-center"><div class="col-4 text-start" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="padding: 5px;margin: 2px;">${translation.Plugins_Table_Reset}</button></div><div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;"><h6 id="counter" style="margin: 0px;">${translation.Plugins_Table_Showing}<strong id="rowCount">${AllEXT.length}</strong>${translation.Plugins_Table_Plugins}</h6></div></div><div class="row"><div class="col-12"><div>`
+  var Content = `<div id="TableSorterCard" class="card"><div class="row table-topper align-items-center"><div class="col-4 text-start" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="padding: 5px;margin: 2px;">${translation.Plugins_Table_Reset}</button></div><div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;"><h6 id="counter" style="margin: 0px;">${translation.Plugins_Table_Showing}<strong id="rowCount">${AllEXT.length}</strong>${translation.Plugins_Table_Plugins}</h6></div></div><div class="row"><div class="col-12"><div>`
   
   Content +=`<table id="ipi-table" class="table table tablesorter"><thead class="thead-dark"><tr><th>${translation.Plugins_Table_Name}</th><th class="sorter-false">${translation.Plugins_Table_Description}</th><th class="filter-false">${translation.Plugins_Table_Actions}</th><th class="filter-false">${translation.Plugins_Table_Configuration}</th></tr></thead><tbody id="EXT">`
   
