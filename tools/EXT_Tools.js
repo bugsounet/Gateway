@@ -22,6 +22,7 @@ var EXTStatus = {}
 var ErrEXTStatus = 0
 var System = {}
 var SystemInterval = null
+var SystemFirstScan = true
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -388,7 +389,55 @@ async function doSystem() {
   $('#SPEED').text(system.CPU.speed)
   $('#USAGE').text(system.CPU.usage + "%")
   $('#GOVERNOR').text(system.CPU.governor)
-  $('#TEMP').text(system.CPU.temp.C +"°c")
+
+  if (system.CPU.temp.C <= 50) {
+    $("#TempDisplay").removeClass("bg-warning", "bg-danger")
+    $("#TempDisplay").addClass("bg-success")
+  } else if (system.CPU.temp.C > 50 && system.CPU.temp.C <= 80) {
+    $("#TempDisplay").removeClass("bg-success", "bg-danger")
+    $("#TempDisplay").addClass("bg-warning")
+  } else {
+    $("#TempDisplay").removeClass("bg-success", "bg-warning")
+    $("#TempDisplay").addClass("bg-danger")
+  }
+
+  $('#MemoryTotal').text(system.MEMORY.total)
+  if (system.MEMORY.percent <= 50) {
+    $("#MemoryDisplay").removeClass("bg-warning", "bg-danger")
+    $("#MemoryDisplay").addClass("bg-success")
+  } else if (system.MEMORY.percent > 50 && system.MEMORY.percent <= 80) {
+    $("#MemoryDisplay").removeClass("bg-success", "bg-danger")
+    $("#MemoryDisplay").addClass("bg-warning")
+  } else {
+    $("#MemoryDisplay").removeClass("bg-success", "bg-warning")
+    $("#MemoryDisplay").addClass("bg-danger")
+  }
+
+
+  if (SystemFirstScan) {
+    this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
+    this.makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
+  } else {
+    this.makeRefresh(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
+    this.makeRefresh(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
+  }
+  SystemFirstScan = false
+}
+
+function makeProgress(Value, Progress, Text, Display, i=0) {
+  if (i < Value) {
+    i = i + 1
+    $(Progress).css("width", i + "%")
+    $(Text).text(Display)
+    setTimeout(() => {
+      this.makeProgress(Value, Progress, Text, Display, i)
+    },10)
+  }
+}
+
+function makeRefresh(Value, Progress, Text, Display) {
+  $(Progress).css("width", Value + "%")
+  $(Text).text(Display)
 }
 
 async function doTools() {
