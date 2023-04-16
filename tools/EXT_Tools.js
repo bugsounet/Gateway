@@ -387,7 +387,7 @@ async function doSystem() {
   //CPU
   $('#CPU').text(system.CPU.type)
   $('#SPEED').text(system.CPU.speed)
-  $('#USAGE').text(system.CPU.usage + "%")
+  //$('#USAGE').text(system.CPU.usage + "%")
   $('#GOVERNOR').text(system.CPU.governor)
 
   if (system.CPU.temp.C <= 50) {
@@ -412,14 +412,27 @@ async function doSystem() {
     $("#MemoryDisplay").removeClass("bg-success", "bg-warning")
     $("#MemoryDisplay").addClass("bg-danger")
   }
+  
+  if (system.CPU.usage <= 50) {
+    $("#LoadDisplay").removeClass("bg-warning", "bg-danger")
+    $("#LoadDisplay").addClass("bg-success")
+  } else if (system.CPU.usage > 50 && system.CPU.usage <= 80) {
+    $("#LoadDisplay").removeClass("bg-success", "bg-danger")
+    $("#LoadDisplay").addClass("bg-warning")
+  } else {
+    $("#LoadDisplay").removeClass("bg-success", "bg-warning")
+    $("#LoadDisplay").addClass("bg-danger")
+  }
 
 
   if (SystemFirstScan) {
     this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
     this.makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
+    this.makeProgress(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   } else {
     this.makeRefresh(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
     this.makeRefresh(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
+    this.makeRefresh(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   }
   SystemFirstScan = false
 }
