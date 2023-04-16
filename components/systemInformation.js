@@ -52,7 +52,7 @@ class systemInfo {
 
   async Get() {
     await this.getData()
-    console.log("[GATEWAY] [SYSTEMINFO]", this.System)
+    //console.log("[GATEWAY] [SYSTEMINFO]", this.System)
     return this.System
   }
 
@@ -72,7 +72,7 @@ class systemInfo {
             this.System["HOSTNAME"] = data.osInfo.hostname
           }
 
-          if (data.system.raspberry) this.System['CPU'].type = "Raspberry Pi " + data.system.raspberry.type + " (" + data.system.raspberry.revision + ")"
+          if (data.system.raspberry) this.System['CPU'].type = "Raspberry Pi " + data.system.raspberry.type + " (rev" + data.system.raspberry.revision + ")"
           else this.System['CPU'].type = data.cpu.manufacturer + " " + data.cpu.brand
 
           if (data.versions) {
