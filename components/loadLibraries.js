@@ -14,6 +14,7 @@ function libraries(that) {
     { "../components/DeviceManagement.js": "Device" },
     { "../components/SHCallbacks.js": "callback" },
     { "../components/homegraph.js": "homegraph" },
+    { "../components/systemInformation.js": "SystemInformation" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -51,7 +52,7 @@ function libraries(that) {
             log("Loaded:", libraryToLoad, "->", "this.lib."+libraryName)
           }
         } catch (e) {
-          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString())
+          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString(), e)
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
           that.lib.error = errors

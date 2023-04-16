@@ -20,6 +20,8 @@ var webviewTag = false
 var versionGA = {}
 var EXTStatus = {}
 var ErrEXTStatus = 0
+var System = {}
+var SystemInterval = null
 
 // Load rules
 window.addEventListener("load", async event => {
@@ -73,6 +75,9 @@ window.addEventListener("load", async event => {
       break
     case "/Tools":
       doTools()
+      break
+    case "/System":
+      doSystem()
       break
     case "/Setting":
       GatewaySetting()
@@ -357,6 +362,33 @@ async function doTerminal() {
     console.log("Socket Error:", data)
     socketPTY.close()
   });
+}
+
+async function doSystem() {
+  clearInterval(SystemInterval)
+  SystemInterval = null
+  system = await checkSystem()
+
+  SystemInterval = setInterval(async() => {
+    console.log("refresh")
+    doSystem()
+  }, 15000)
+
+  console.log(system)
+  $('#HOSTNAME').text(system.HOSTNAME)
+  // versions
+  $('#MMVersion').text(system.VERSION.MagicMirror)
+  $('#NODEMM').text(system.VERSION.NODEMM)
+  $('#NODECORE').text(system.VERSION.NODECORE)
+  $('#NPM').text(system.VERSION.NPM)
+  $('#OS').text(system.VERSION.OS)
+  $('#KERNEL').text(system.VERSION.KERNEL)
+  //CPU
+  $('#CPU').text(system.CPU.type)
+  $('#SPEED').text(system.CPU.speed)
+  $('#USAGE').text(system.CPU.usage + "%")
+  $('#GOVERNOR').text(system.CPU.governor)
+  $('#TEMP').text(system.CPU.temp.C +"°c")
 }
 
 async function doTools() {
@@ -1676,6 +1708,18 @@ function loadPluginCurrentConfig(plugin) {
     .fail(function(err) {
       if (!err.status) alertify.error("Connexion Lost!")
       else alertify.warning("[loadPluginCurrentConfig] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
+  })
+}
+
+function checkSystem() {
+  return new Promise(resolve => {
+    $.getJSON("/systemInformation" , (system) => {
+      resolve(system)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[systemInformation] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
     })
   })
 }

@@ -112,8 +112,15 @@ function createGW(that) {
 
     })
 
+    .get("/systemInformation" , async (req, res) => {
+      if (req.user) {
+        that.Gateway.systemInformation.result = await that.Gateway.systemInformation.lib.Get()
+        res.send(that.Gateway.systemInformation.result)
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
     .get("/translation" , (req,res) => {
-        res.send(that.Gateway.translation)
+      res.send(that.Gateway.translation)
     })
 
     .get('/EXT', (req, res) => {
@@ -447,6 +454,11 @@ function createGW(that) {
 
     .get("/Tools" , (req,res) => {
       if (req.user) res.sendFile(Path+ "/website/Gateway/tools.html")
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
+    .get("/System" , (req,res) => {
+      if (req.user) res.sendFile(Path+ "/website/Gateway/system.html")
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
