@@ -5,7 +5,7 @@
 // rotate rules
 
 PleaseRotateOptions = {
-    startOnPageLoad: false
+  startOnPageLoad: false
 }
 
 // define all vars
@@ -91,7 +91,7 @@ window.addEventListener("load", async event => {
     forcePortrait: false,
     message: translation.Rotate_Msg,
     subMessage: translation.Rotate_Continue,
-    allowClickBypass: true,
+    allowClickBypass: false,
     onlyMobile: true
   }
   PleaseRotate.start(Options)
@@ -423,7 +423,6 @@ async function doSystem() {
     $("#LoadDisplay").removeClass("bg-success", "bg-warning")
     $("#LoadDisplay").addClass("bg-danger")
   }
-
 
   if (SystemFirstScan) {
     this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
