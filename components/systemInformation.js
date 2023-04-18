@@ -123,10 +123,10 @@ class systemInfo {
           if (data.mem) {
             this.System['MEMORY'].total = this.convert(data.mem.total,0)
             this.System['MEMORY'].used = this.convert(data.mem.used,2)
-            this.System['MEMORY'].percent = (data.mem.used/data.mem.total*100).toFixed(0)
+            this.System['MEMORY'].percent = (data.mem.used/data.mem.total*100).toFixed(2)
             this.System['MEMORY'].swapTotal = this.convert(data.mem.swaptotal,0)
             this.System['MEMORY'].swapUsed = this.convert(data.mem.swapused,2)
-            this.System['MEMORY'].swapPercent = (data.mem.swapused/data.mem.swaptotal*100).toFixed(0)
+            this.System['MEMORY'].swapPercent = (data.mem.swapused/data.mem.swaptotal*100).toFixed(2)
           }
 
           if (data.versions) {
