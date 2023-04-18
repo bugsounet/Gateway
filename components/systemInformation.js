@@ -20,7 +20,10 @@ class systemInfo {
       MEMORY: {
         total: 0,
         used: 0,
-        percent: 0
+        percent: 0,
+        swapTotal: 0,
+        swapUsed: 0,
+        swapPercent: 0
       },
       STORAGE: [],
       CPU: {
@@ -95,7 +98,7 @@ class systemInfo {
     var valueObject = {
       cpu: 'speed,governor',
       networkInterfaces: "type,ip4,default,iface",
-      mem: "total,used,buffcache",
+      mem: "total,used,swaptotal,swapused",
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
       cpuTemperature: "main"
@@ -119,8 +122,11 @@ class systemInfo {
 
           if (data.mem) {
             this.System['MEMORY'].total = this.convert(data.mem.total,0)
-            this.System['MEMORY'].used = this.convert(data.mem.used-data.mem.buffcache,2)
-            this.System['MEMORY'].percent = ((data.mem.used-data.mem.buffcache)/data.mem.total*100).toFixed(0)
+            this.System['MEMORY'].used = this.convert(data.mem.used,2)
+            this.System['MEMORY'].percent = (data.mem.used/data.mem.total*100).toFixed(0)
+            this.System['MEMORY'].swapTotal = this.convert(data.mem.swaptotal,0)
+            this.System['MEMORY'].swapUsed = this.convert(data.mem.swapused,2)
+            this.System['MEMORY'].swapPercent = (data.mem.swapused/data.mem.swaptotal*100).toFixed(0)
           }
 
           if (data.versions) {
@@ -160,6 +166,7 @@ class systemInfo {
 
   convert(octet,FixTo) {
     octet = Math.abs(parseInt(octet, 10))
+    if (!octet) return "0b"
     var def = [[1, 'b'], [1024, 'Kb'], [1024*1024, 'Mb'], [1024*1024*1024, 'Gb'], [1024*1024*1024*1024, 'Tb']]
     for(var i=0; i<def.length; i++){
       if(octet<def[i][0]) return (octet/def[i-1][0]).toFixed(FixTo)+def[i-1][1]

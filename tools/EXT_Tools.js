@@ -375,6 +375,7 @@ async function doSystem() {
   })
 
   system = await checkSystem()
+  //console.log(system)
 
   SystemInterval = setInterval(async() => {
     doSystem()
@@ -393,7 +394,6 @@ async function doSystem() {
   //CPU
   $('#CPU').text(system.CPU.type)
   $('#SPEED').text(system.CPU.speed)
-  //$('#USAGE').text(system.CPU.usage + "%")
   $('#GOVERNOR').text(system.CPU.governor)
 
   $("#TempText").text(system.CPU.temp.C +"°c")
@@ -451,6 +451,34 @@ async function doSystem() {
     $("#MemoryText").addClass("text-danger")
   }
 
+  $("#SwapText").text(system.MEMORY.swapUsed)
+  $('#SwapTotal').text(system.MEMORY.swapTotal)
+  if (system.MEMORY.swapPercent <= 50) {
+    $("#SwapDisplay").removeClass("bg-warning")
+    $("#SwapDisplay").removeClass("bg-danger")
+    $("#SwapDisplay").addClass("bg-success")
+
+    $("#SwapText").removeClass("text-warning")
+    $("#SwapText").removeClass("text-danger")
+    $("#SwapText").addClass("text-success")
+  } else if (system.MEMORY.swapPercent > 50 && system.MEMORY.swapPercent <= 80) {
+    $("#SwapDisplay").removeClass("bg-success")
+    $("#SwapDisplay").removeClass("bg-danger")
+    $("#SwapDisplay").addClass("bg-warning")
+
+    $("#SwapText").removeClass("text-success")
+    $("#SwapText").removeClass("text-danger")
+    $("#SwapText").addClass("text-warning")
+  } else if (system.MEMORY.swapPercent > 80) {
+    $("#SwapDisplay").removeClass("bg-success")
+    $("#SwapDisplay").removeClass("bg-warning")
+    $("#SwapDisplay").addClass("bg-danger")
+
+    $("#SwapText").removeClass("text-success")
+    $("#SwapText").removeClass("text-warning")
+    $("#SwapText").addClass("text-danger")
+  }
+
   $("#LoadText").text(system.CPU.usage +"%")
   if (system.CPU.usage <= 50) {
     $("#LoadDisplay").removeClass("bg-warning")
@@ -481,17 +509,19 @@ async function doSystem() {
   if (SystemFirstScan) {
     this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
     this.makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
+    this.makeProgress(system.MEMORY.swapPercent, "#SwapDisplay", "#SwapPercent", system.MEMORY.swapUsed)
     this.makeProgress(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   } else {
     this.makeRefresh(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
     this.makeRefresh(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
+    this.makeRefresh(system.MEMORY.swapPercent, "#SwapDisplay", "#SwapPercent", system.MEMORY.swapUsed)
     this.makeRefresh(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   }
   SystemFirstScan = false
 }
 
 function makeProgress(Value, Progress, Text, Display, i=0) {
-  if (i < Value) {
+  if (i <= Value) {
     i = i + 1
     $(Progress).css("width", i + "%")
     $(Text).text(Display)
@@ -512,21 +542,27 @@ function progressOrText() {
     // hide progress
     $("#Load").addClass("visually-hidden")
     $("#Memory").addClass("visually-hidden")
+    $("#Swap").addClass("visually-hidden")
     $("#Temp").addClass("visually-hidden")
     // display Text
     $("#LoadText").removeClass("visually-hidden")
     $("#MemoryText").removeClass("visually-hidden")
     $("#MemoryText2").removeClass("visually-hidden")
+    $("#SwapText").removeClass("visually-hidden")
+    $("#SwapText2").removeClass("visually-hidden")
     $("#TempText").removeClass("visually-hidden")
   } else {
     // display Progress
     $("#Load").removeClass("visually-hidden")
     $("#Memory").removeClass("visually-hidden")
+    $("#Swap").removeClass("visually-hidden")
     $("#Temp").removeClass("visually-hidden")
     // hide Text
     $("#LoadText").addClass("visually-hidden")
     $("#MemoryText").addClass("visually-hidden")
     $("#MemoryText2").addClass("visually-hidden")
+    $("#SwapText").addClass("visually-hidden")
+    $("#SwapText2").addClass("visually-hidden")
     $("#TempText").addClass("visually-hidden")
   }
 }
