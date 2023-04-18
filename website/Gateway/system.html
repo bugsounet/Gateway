@@ -90,6 +90,7 @@
                                             <li class="list-group-item">
                                                 <div class="mx-3">
                                                     <div class="text-lg-start"><span>MagicMirror:&nbsp;<span id="MMVersion">&nbsp;</span></span></div>
+                                                    <div class="text-lg-start"><span>Electron:&nbsp;<span id="ElectronVersion">&nbsp;</span></span></div>
                                                     <div class="text-lg-start"><span>MagicMirror Node Version:&nbsp;<span id="NODEMM">&nbsp;</span></span></div>
                                                     <div class="text-lg-start"><span>Node Version:&nbsp;<span id="NODECORE">&nbsp;</span></span></div>
                                                     <div class="text-lg-start"><span>NPM Version:&nbsp;<span id="NPM">&nbsp;</span></span></div>
@@ -108,18 +109,17 @@
                                                 <div class="mx-3">
                                                     <div class="text-lg-start"><span>CPU:&nbsp;<span id="CPU">&nbsp;</span></span></div>
                                                     <div class="text-lg-start"><span>Speed:&nbsp;<span id="SPEED">&nbsp;</span></span></div>
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Current Load:&nbsp;</span>
-                                                        <div class="flex-fill progress" style="background: #212121;">
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Current Load:&nbsp;</span><span id="LoadText"></span>
+                                                        <div class="flex-fill progress" id="Load" style="background: #212121;">
                                                             <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="LoadValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
                                                     <div class="text-lg-start"><span>Governor:&nbsp;<span id="GOVERNOR">&nbsp;</span></span></div>
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Temperature:&nbsp;</span>
-                                                        <div class="flex-fill progress" style="background: #212121;">
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Temperature:&nbsp;</span><span id="TempText"></span>
+                                                        <div class="flex-fill progress" id="Temp" style="background: #212121;">
                                                             <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="TempValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex align-items-xl-center text-lg-start"></div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -131,8 +131,8 @@
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="mx-3">
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start">
-                                                        <div class="flex-fill progress" style="background: #212121;">
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="MemoryText"></span><span id="MemoryText2">&nbsp; /</span>
+                                                        <div class="flex-fill progress" id="Memory" style="background: #212121;">
                                                             <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="MemoryPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="MemoryTotal">0gb&nbsp;</span>
                                                     </div>

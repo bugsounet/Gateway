@@ -4,6 +4,7 @@ class systemInfo {
     this.System = {
       VERSION: {
         MagicMirror: require('../../../package.json').version,
+        ELECTRON: "unknow",
         NODEMM: "unknow",
         NODECORE: "unknow",
         NPM: "unknow",
@@ -76,6 +77,7 @@ class systemInfo {
           else this.System['CPU'].type = data.cpu.manufacturer + " " + data.cpu.brand
 
           if (data.versions) {
+            this.System["VERSION"].ELECTRON = process.versions.electron
             this.System["VERSION"].KERNEL = data.versions.kernel
             this.System["VERSION"].NPM = data.versions.npm
             this.System["VERSION"].NODEMM = data.versions.node

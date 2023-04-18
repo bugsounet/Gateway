@@ -368,17 +368,23 @@ async function doTerminal() {
 async function doSystem() {
   clearInterval(SystemInterval)
   SystemInterval = null
+
+  progressOrText()
+  window.addEventListener('resize', function() {
+    progressOrText()
+  })
+
   system = await checkSystem()
 
   SystemInterval = setInterval(async() => {
-    console.log("refresh")
     doSystem()
   }, 15000)
 
-  console.log(system)
+  //console.log(system)
   $('#HOSTNAME').text(system.HOSTNAME)
   // versions
   $('#MMVersion').text(system.VERSION.MagicMirror)
+  $('#ElectronVersion').text(system.VERSION.ELECTRON)
   $('#NODEMM').text(system.VERSION.NODEMM)
   $('#NODECORE').text(system.VERSION.NODECORE)
   $('#NPM').text(system.VERSION.NPM)
@@ -390,38 +396,86 @@ async function doSystem() {
   //$('#USAGE').text(system.CPU.usage + "%")
   $('#GOVERNOR').text(system.CPU.governor)
 
+  $("#TempText").text(system.CPU.temp.C +"°c")
   if (system.CPU.temp.C <= 50) {
-    $("#TempDisplay").removeClass("bg-warning", "bg-danger")
+    $("#TempDisplay").removeClass("bg-warning")
+    $("#LoadDisplay").removeClass("bg-danger")
     $("#TempDisplay").addClass("bg-success")
+
+    $("#TempText").removeClass("text-warning")
+    $("#TempText").removeClass("text-danger")
+    $("#TempText").addClass("text-success")
   } else if (system.CPU.temp.C > 50 && system.CPU.temp.C <= 80) {
-    $("#TempDisplay").removeClass("bg-success", "bg-danger")
+    $("#TempDisplay").removeClass("bg-success")
+    $("#TempDisplay").removeClass("bg-danger")
     $("#TempDisplay").addClass("bg-warning")
-  } else {
-    $("#TempDisplay").removeClass("bg-success", "bg-warning")
+
+    $("#TempText").removeClass("text-success")
+    $("#TempText").removeClass("text-danger")
+    $("#TempText").addClass("text-warning")
+  } else if (system.CPU.temp.C > 80) {
+    $("#TempDisplay").removeClass("bg-success")
+    $("#TempDisplay").removeClass("bg-warning")
     $("#TempDisplay").addClass("bg-danger")
+
+    $("#TempText").removeClass("text-success")
+    $("#TempText").removeClass("text-warning")
+    $("#TempText").addClass("text-danger")
   }
 
+  $("#MemoryText").text(system.MEMORY.used)
   $('#MemoryTotal').text(system.MEMORY.total)
   if (system.MEMORY.percent <= 50) {
-    $("#MemoryDisplay").removeClass("bg-warning", "bg-danger")
+    $("#MemoryDisplay").removeClass("bg-warning")
+    $("#MemoryDisplay").removeClass("bg-danger")
     $("#MemoryDisplay").addClass("bg-success")
+
+    $("#MemoryText").removeClass("text-warning")
+    $("#MemoryText").removeClass("text-danger")
+    $("#MemoryText").addClass("text-success")
   } else if (system.MEMORY.percent > 50 && system.MEMORY.percent <= 80) {
-    $("#MemoryDisplay").removeClass("bg-success", "bg-danger")
+    $("#MemoryDisplay").removeClass("bg-success")
+    $("#MemoryDisplay").removeClass("bg-danger")
     $("#MemoryDisplay").addClass("bg-warning")
-  } else {
-    $("#MemoryDisplay").removeClass("bg-success", "bg-warning")
+
+    $("#MemoryText").removeClass("text-success")
+    $("#MemoryText").removeClass("text-danger")
+    $("#MemoryText").addClass("text-warning")
+  } else if (system.MEMORY.percent > 80) {
+    $("#MemoryDisplay").removeClass("bg-success")
+    $("#MemoryDisplay").removeClass("bg-warning")
     $("#MemoryDisplay").addClass("bg-danger")
+
+    $("#MemoryText").removeClass("text-success")
+    $("#MemoryText").removeClass("text-warning")
+    $("#MemoryText").addClass("text-danger")
   }
-  
+
+  $("#LoadText").text(system.CPU.usage +"%")
   if (system.CPU.usage <= 50) {
-    $("#LoadDisplay").removeClass("bg-warning", "bg-danger")
+    $("#LoadDisplay").removeClass("bg-warning")
+    $("#LoadDisplay").removeClass("bg-danger")
     $("#LoadDisplay").addClass("bg-success")
+
+    $("#LoadText").removeClass("text-warning")
+    $("#LoadText").removeClass("text-danger")
+    $("#LoadText").addClass("text-success")
   } else if (system.CPU.usage > 50 && system.CPU.usage <= 80) {
-    $("#LoadDisplay").removeClass("bg-success", "bg-danger")
+    $("#LoadDisplay").removeClass("bg-success")
+    $("#LoadDisplay").removeClass("bg-danger")
     $("#LoadDisplay").addClass("bg-warning")
-  } else {
-    $("#LoadDisplay").removeClass("bg-success", "bg-warning")
+
+    $("#LoadText").removeClass("text-success")
+    $("#LoadText").removeClass("text-danger")
+    $("#LoadText").addClass("text-warning")
+  } else if (system.CPU.usage > 80) {
+    $("#LoadDisplay").removeClass("bg-success")
+    $("#LoadDisplay").removeClass("bg-warning")
     $("#LoadDisplay").addClass("bg-danger")
+
+    $("#LoadText").removeClass("text-success")
+    $("#LoadText").removeClass("text-warning")
+    $("#LoadText").addClass("text-danger")
   }
 
   if (SystemFirstScan) {
@@ -450,6 +504,31 @@ function makeProgress(Value, Progress, Text, Display, i=0) {
 function makeRefresh(Value, Progress, Text, Display) {
   $(Progress).css("width", Value + "%")
   $(Text).text(Display)
+}
+
+function progressOrText() {
+  var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+  if (vw < 768) {
+    // hide progress
+    $("#Load").addClass("visually-hidden")
+    $("#Memory").addClass("visually-hidden")
+    $("#Temp").addClass("visually-hidden")
+    // display Text
+    $("#LoadText").removeClass("visually-hidden")
+    $("#MemoryText").removeClass("visually-hidden")
+    $("#MemoryText2").removeClass("visually-hidden")
+    $("#TempText").removeClass("visually-hidden")
+  } else {
+    // display Progress
+    $("#Load").removeClass("visually-hidden")
+    $("#Memory").removeClass("visually-hidden")
+    $("#Temp").removeClass("visually-hidden")
+    // hide Text
+    $("#LoadText").addClass("visually-hidden")
+    $("#MemoryText").addClass("visually-hidden")
+    $("#MemoryText2").addClass("visually-hidden")
+    $("#TempText").addClass("visually-hidden")
+  }
 }
 
 async function doTools() {
