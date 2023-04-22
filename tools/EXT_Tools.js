@@ -369,13 +369,14 @@ async function doSystem() {
   clearInterval(SystemInterval)
   SystemInterval = null
 
-  progressOrText()
+  system = await checkSystem()
+
+  progressOrText(system)
   window.addEventListener('resize', function() {
-    progressOrText()
+    progressOrText(system)
   })
 
-  system = await checkSystem()
-  //console.log(system)
+  console.log(system)
 
   SystemInterval = setInterval(async() => {
     doSystem()
@@ -506,6 +507,63 @@ async function doSystem() {
     $("#LoadText").addClass("text-danger")
   }
 
+  // try to create proper storage
+  system.STORAGE.forEach((partition, id) => {
+    for (let [name, values] of Object.entries(partition)) {
+      if ($("#Storage-Part"+id).html()) {
+        this.checkPartColor(id, values.use)
+        this.makeRefresh(values.use, "#StorageDisplay"+ id, "#StorageUsed"+ id, values.use+"%")
+        continue
+      }
+      var tr = document.createElement("tr")
+      tr.id = "Storage-Part"+id
+
+      var label = document.createElement("td")
+      label.textContent = name
+
+      var used = document.createElement("td")
+      used.textContent = values.used
+
+      var percent = document.createElement("td")
+      percent.colSpan = 10
+      percent.style.verticalAlign= "middle"
+
+      var text = document.createElement("div")
+      text.id = "StorageText"+id
+      text.className = "visually-hidden"
+      text.textContent = values.use + "%"
+      percent.appendChild(text)
+
+      var container = document.createElement("div")
+      container.id = "Storage"+id
+      container.className = "flex-fill progress"
+      container.style.background = "#212121"
+        var progress = document.createElement("div")
+        progress.id = "StorageDisplay"+ id
+        progress.className= "progress-bar progress-bar-striped progress-bar-animated bg-success"
+        //progress.setAttribute("style", "width:" + values.use + "%")
+        this.checkPartColor(id, values.use)
+      container.appendChild(progress)
+          var usedValue = document.createElement("span")
+          usedValue.id = "StorageUsed"+ id
+          usedValue.setAttribute("style", "color: #000;font-weight: bold;text-align: right;margin-right: 5px;")
+          //usedValue.textContent= values.use + "%"
+          progress.appendChild(usedValue)
+      percent.appendChild(container)
+
+      var size = document.createElement("td")
+      size.textContent = values.size
+
+      tr.appendChild(label)
+      tr.appendChild(used)
+      tr.appendChild(percent)
+      tr.appendChild(size)
+      $("#Storage").append(tr)
+      this.checkPartColor(id, values.use)
+      this.makeProgress(values.use, "#StorageDisplay"+ id, "#StorageUsed"+ id, values.use+"%")
+    }
+  })
+
   if (SystemFirstScan) {
     this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
     this.makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
@@ -518,6 +576,45 @@ async function doSystem() {
     this.makeRefresh(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   }
   SystemFirstScan = false
+}
+
+function checkPartColor(id, value) {
+  var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+  if (vw < 768) {
+    $("#Storage"+id).addClass("visually-hidden")
+    $("#StorageText"+id).removeClass("visually-hidden")
+  } else {
+    $("#Storage"+id).removeClass("visually-hidden")
+    $("#StorageText"+id).addClass("visually-hidden")
+  }
+
+  if (value <= 50) {
+    $("#StorageDisplay"+id).removeClass("bg-warning")
+    $("#StorageDisplay"+id).removeClass("bg-danger")
+    $("#StorageDisplay"+id).addClass("bg-success")
+
+    $("#StorageText"+id).removeClass("text-warning")
+    $("#StorageText"+id).removeClass("text-danger")
+    $("#StorageText"+id).addClass("text-success")
+
+  } else if (value > 50 && value <= 80) {
+    $("#StorageDisplay"+id).removeClass("bg-success")
+    $("#StorageDisplay"+id).removeClass("bg-danger")
+    $("#StorageDisplay"+id).addClass("bg-warning")
+
+    $("#StorageText"+id).removeClass("text-success")
+    $("#StorageText"+id).removeClass("text-danger")
+    $("#StorageText"+id).addClass("text-warning")
+
+  } else if (value > 80) {
+    $("#StorageDisplay"+id).removeClass("bg-success")
+    $("#StorageDisplay"+id).removeClass("bg-warning")
+    $("#StorageDisplay"+id).addClass("bg-danger")
+
+    $("#StorageText"+id).removeClass("text-success")
+    $("#StorageText"+id).removeClass("text-warning")
+    $("#StorageText"+id).addClass("text-danger")
+  }
 }
 
 function makeProgress(Value, Progress, Text, Display, i=0) {
@@ -536,7 +633,7 @@ function makeRefresh(Value, Progress, Text, Display) {
   $(Text).text(Display)
 }
 
-function progressOrText() {
+function progressOrText(system) {
   var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
   if (vw < 768) {
     // hide progress
@@ -551,6 +648,10 @@ function progressOrText() {
     $("#SwapText").removeClass("visually-hidden")
     $("#SwapText2").removeClass("visually-hidden")
     $("#TempText").removeClass("visually-hidden")
+    system.STORAGE.forEach((partition, id) => {
+      $("#Storage"+id).addClass("visually-hidden")
+      $("#StorageText"+id).removeClass("visually-hidden")
+    })
   } else {
     // display Progress
     $("#Load").removeClass("visually-hidden")
@@ -564,6 +665,10 @@ function progressOrText() {
     $("#SwapText").addClass("visually-hidden")
     $("#SwapText2").addClass("visually-hidden")
     $("#TempText").addClass("visually-hidden")
+    system.STORAGE.forEach((partition, id) => {
+      $("#Storage"+id).removeClass("visually-hidden")
+      $("#StorageText"+id).addClass("visually-hidden")
+    })
   }
 }
 

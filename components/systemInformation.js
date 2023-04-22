@@ -35,6 +35,24 @@ class systemInfo {
         },
         speed: "unknow",
         governor: "unknow"
+      },
+      UPTIME: {
+        current: 0,
+        recordCurrent: 0,
+        MM: 0,
+        recordMM: 0
+      }
+    },
+
+    // tmp translate
+    this.config = {
+      uptime: {
+        days: "days",
+        day: "day",
+        hours: "hours",
+        hour: "hour",
+        minutes: "minutes",
+        minute: "minute"
       }
     }
   }
@@ -51,6 +69,7 @@ class systemInfo {
       })
     })
     await this.getStaticData()
+    setInterval(async () => { await this.uptimed() }, 5000)
     console.log("[GATEWAY] [SYSTEMINFO] Initialized")
   }
 
@@ -101,7 +120,7 @@ class systemInfo {
       mem: "total,used,swaptotal,swapused",
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
-      cpuTemperature: "main"
+      cpuTemperature: "main",
     }
     return new Promise((resolve) => {
       this.lib.si.get(valueObject)
@@ -143,9 +162,9 @@ class systemInfo {
               info[part] = {
                 "size": this.convert(partition.size,0),
                 "used": this.convert(partition.used,2),
-                "use": partition.use,
+                "use": partition.use
               }
-              if (info[part].size) this.System['STORAGE'].push(info)
+              if (info[part].use) this.System['STORAGE'].push(info)
             })
           }
 
@@ -171,6 +190,44 @@ class systemInfo {
     for(var i=0; i<def.length; i++){
       if(octet<def[i][0]) return (octet/def[i-1][0]).toFixed(FixTo)+def[i-1][1]
     }
+  }
+
+  getDHM(seconds) {
+    if (seconds == 0) return "Loading..."
+    var days = Math.floor(seconds / 86400);
+    seconds = seconds - (days*86400);
+    var hours = Math.floor(seconds / 3600);
+    seconds = seconds - (hours*3600);
+    var minutes = Math.floor(seconds / 60)
+    if (days > 0) {
+     if (days >1) days = days + " " + this.config.uptime.days + " "
+      else days = days + " " + this.config.uptime.day + " "
+    }
+    else days = ""
+    if (hours > 0) {
+     if (hours > 1) hours = hours + " " + this.config.uptime.hours + " "
+      else hours = hours + " " + this.config.uptime.hour + " "
+    }
+    else hours = ""
+    if (minutes > 1) minutes = minutes + " " + this.config.uptime.minutes
+    else minutes = minutes + " " + this.config.uptime.minute
+    return days + hours + minutes
+  }
+
+
+  uptimed() {
+    return new Promise((resolve) => {
+      this.lib.si.get( { time: "uptime" } )
+        .then(data => {
+          if (data.time) {
+            this.System["UPTIME"].current = data.time.uptime
+            this.System["UPTIME"].currentDHM = this.getDHM(data.time.uptime)
+            this.System["UPTIME"].MM = process.uptime()
+            this.System["UPTIME"].MMDHM = this.getDHM(process.uptime())
+          }
+          resolve()
+        })
+    })
   }
 }
 

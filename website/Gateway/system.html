@@ -87,7 +87,7 @@
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">Version</h2>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item text-start">
                                                 <div class="mx-3">
                                                     <div class="text-lg-start"><span>MagicMirror:&nbsp;<span id="MMVersion">&nbsp;</span></span></div>
                                                     <div class="text-lg-start"><span>Electron:&nbsp;<span id="ElectronVersion">&nbsp;</span></span></div>
@@ -105,19 +105,19 @@
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">CPU</h2>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item text-start">
                                                 <div class="mx-3">
                                                     <div class="text-lg-start"><span>CPU:&nbsp;<span id="CPU">&nbsp;</span></span></div>
                                                     <div class="text-lg-start"><span>Speed:&nbsp;<span id="SPEED">&nbsp;</span></span></div>
                                                     <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Current Load:&nbsp;</span><span id="LoadText"></span>
                                                         <div class="flex-fill progress" id="Load" style="background: #212121;">
-                                                            <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="LoadValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                            <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="LoadValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
                                                     <div class="text-lg-start"><span>Governor:&nbsp;<span id="GOVERNOR">&nbsp;</span></span></div>
                                                     <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Temperature:&nbsp;</span><span id="TempText"></span>
                                                         <div class="flex-fill progress" id="Temp" style="background: #212121;">
-                                                            <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="TempValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                            <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="TempValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -129,18 +129,18 @@
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">Memory</h2>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item text-start">
                                                 <div class="mx-3">
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Memory:&nbsp;</span><span id="MemoryText"></span><span id="MemoryText2">&nbsp; /</span>
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Memory:&nbsp;</span><span id="MemoryText"></span><span id="MemoryText2" class="visually-hidden">&nbsp; /</span>
                                                         <div class="flex-fill progress" id="Memory" style="background: #212121;">
-                                                            <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="MemoryPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                            <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="MemoryPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="MemoryTotal">0gb&nbsp;</span>
                                                     </div>
                                                 </div>
                                                 <div class="mx-3">
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Swap:&nbsp;</span><span id="SwapText"></span><span id="SwapText2">&nbsp; /</span>
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Swap:&nbsp;</span><span id="SwapText"></span><span id="SwapText2" class="visually-hidden">&nbsp; /</span>
                                                         <div class="flex-fill progress" id="Swap" style="background: #212121;">
-                                                            <div id="SwapDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;"><span id="SwapPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                            <div id="SwapDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="SwapPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="SwapTotal">0gb&nbsp;</span>
                                                     </div>
                                                 </div>
@@ -160,7 +160,29 @@
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">Storage</h2>
                                             </li>
-                                            <li class="list-group-item"><span id="Storage-Text">&nbsp;Place to display Storage info</span></li>
+                                            <li class="list-group-item">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
+                                                        <thead class="table-dark">
+                                                            <tr>
+                                                                <th style="width: 80px;">Mount</th>
+                                                                <th style="width: 100px;">Used</th>
+                                                                <th colspan="10">Percent</th>
+                                                                <th style="width: 100px;">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider" id="Storage"></tbody>
+                                                    </table>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Uptime">
+                                        <ul class="list-group">
+                                            <li class="list-group-item heading" style="margin-left: 0px;">
+                                                <h2 style="color: var(--bs-light);">Uptime</h2>
+                                            </li>
+                                            <li class="list-group-item"><span id="Uptime-Text">&nbsp;Place to display uptime info</span></li>
                                         </ul>
                                     </div>
                                 </div>
