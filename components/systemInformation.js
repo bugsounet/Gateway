@@ -38,9 +38,13 @@ class systemInfo {
       },
       UPTIME: {
         current: 0,
+        currentDHM: "unknow",
         recordCurrent: 0,
+        recordCurrentDHM: "unknow",
         MM: 0,
-        recordMM: 0
+        MMDHM: "unknow",
+        recordMM: 0,
+        recordMMDHM: "unknow"
       }
     },
 
@@ -69,6 +73,7 @@ class systemInfo {
       })
     })
     await this.getStaticData()
+    await this.getUptimeRecord()
     setInterval(async () => { await this.uptimed() }, 5000)
     console.log("[GATEWAY] [SYSTEMINFO] Initialized")
   }
@@ -214,19 +219,84 @@ class systemInfo {
     return days + hours + minutes
   }
 
-
   uptimed() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.lib.si.get( { time: "uptime" } )
-        .then(data => {
+        .then(async data => {
           if (data.time) {
             this.System["UPTIME"].current = data.time.uptime
             this.System["UPTIME"].currentDHM = this.getDHM(data.time.uptime)
-            this.System["UPTIME"].MM = process.uptime()
-            this.System["UPTIME"].MMDHM = this.getDHM(process.uptime())
+          }
+          this.System["UPTIME"].MM = process.uptime()
+          this.System["UPTIME"].MMDHM = this.getDHM(process.uptime())
+          if ((this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) || (this.System["UPTIME"].MM > this.System["UPTIME"].recordMM)) {
+            await this.writeUptimeRecord()
           }
           resolve()
         })
+    })
+  }
+
+  getUptimeRecord() {
+    return new Promise((resolve) => {
+      var uptimeFilePath = this.lib.path.resolve(__dirname, "../tools/.uptimed")
+        if (this.lib.fs.existsSync(uptimeFilePath)) {
+          var readFile = this.lib.fs.readFile(uptimeFilePath, 'utf8',  (error, data) => {
+            if (error) {
+              console.log("[GATEWAY] [SYSTEMINFO] readFile uptimed error!", error)
+              return resolve()
+            }
+            var data = JSON.parse(data)
+            console.log("[GATEWAY] [SYSTEMINFO] Read Uptimed")
+            this.System["UPTIME"].recordCurrent = data.system
+            this.System["UPTIME"].recordMM = data.MM
+            this.System["UPTIME"].recordCurrentDHM = this.getDHM(data.system)
+            this.System["UPTIME"].recordMMDHM = this.getDHM(data.MM)
+            console.log("data", this.System["UPTIME"])
+            resolve()
+          })
+        } else {
+          let uptime = {
+            system: 1,
+            MM: 1
+          }
+          var recordFile = this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
+            if (error) {
+              console.log("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
+            } else {
+              console.log("[GATEWAY] [SYSTEMINFO] Create Uptimed")
+            }
+            resolve()
+          })
+        }
+    })
+  }
+
+  writeUptimeRecord() {
+    return new Promise(resolve => {
+      var uptimeFilePath = this.lib.path.resolve(__dirname, "../tools/.uptimed")
+      if (this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) {
+        this.System["UPTIME"].recordCurrent = this.System["UPTIME"].current
+        this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent)
+      }
+
+      if (this.System["UPTIME"].MM > this.System["UPTIME"].recordMM) {
+        this.System["UPTIME"].recordMM = this.System["UPTIME"].MM
+        this.System["UPTIME"].recordMMDHM = this.getDHM(this.System["UPTIME"].recordMM)
+      }
+
+      let uptime = {
+        system: this.System["UPTIME"].recordCurrent,
+        MM: this.System["UPTIME"].recordMM
+      }
+      this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
+        if (error) {
+          console.log("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
+        } else {
+          console.log("[GATEWAY] [SYSTEMINFO] Yeah! It's a new record!")
+        }
+        resolve()
+      })
     })
   }
 }

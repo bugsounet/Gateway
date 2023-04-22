@@ -564,6 +564,11 @@ async function doSystem() {
     }
   })
 
+  $('#SysUptime').text(system.UPTIME.currentDHM)
+  $('#MMUptime').text(system.UPTIME.MMDHM)
+  $('#SysUptimeRecord').text(system.UPTIME.recordCurrentDHM)
+  $('#MMUptimeRecord').text(system.UPTIME.recordMMDHM)
+
   if (SystemFirstScan) {
     this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
     this.makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
@@ -654,6 +659,12 @@ function progressOrText(system) {
       $("#Storage"+id).addClass("visually-hidden")
       $("#StorageText"+id).removeClass("visually-hidden")
     })
+    $("#Version-Box").addClass("col-md-12")
+    $("#Version-Box").removeClass("col-md-6")
+    $("#Version-Box").css("width", "100%")
+    $("#Uptime-Box").addClass("col-md-12")
+    $("#Uptime-Box").removeClass("col-md-6")
+    $("#Uptime-Box").css("width", "100%")
   } else {
     // display Progress
     $("#Load").removeClass("visually-hidden")
@@ -671,6 +682,12 @@ function progressOrText(system) {
       $("#Storage"+id).removeClass("visually-hidden")
       $("#StorageText"+id).addClass("visually-hidden")
     })
+    $("#Version-Box").removeClass("col-md-12")
+    $("#Version-Box").addClass("col-md-6")
+    $("#Version-Box").css("width", "50%")
+    $("#Uptime-Box").removeClass("col-md-12")
+    $("#Uptime-Box").addClass("col-md-6")
+    $("#Uptime-Box").css("width", "50%")
   }
 }
 
