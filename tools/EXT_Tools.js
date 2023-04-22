@@ -579,15 +579,6 @@ async function doSystem() {
 }
 
 function checkPartColor(id, value) {
-  var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-  if (vw < 768) {
-    $("#Storage"+id).addClass("visually-hidden")
-    $("#StorageText"+id).removeClass("visually-hidden")
-  } else {
-    $("#Storage"+id).removeClass("visually-hidden")
-    $("#StorageText"+id).addClass("visually-hidden")
-  }
-
   if (value <= 50) {
     $("#StorageDisplay"+id).removeClass("bg-warning")
     $("#StorageDisplay"+id).removeClass("bg-danger")
@@ -648,10 +639,6 @@ function progressOrText(system) {
     $("#SwapText").removeClass("visually-hidden")
     $("#SwapText2").removeClass("visually-hidden")
     $("#TempText").removeClass("visually-hidden")
-    system.STORAGE.forEach((partition, id) => {
-      $("#Storage"+id).addClass("visually-hidden")
-      $("#StorageText"+id).removeClass("visually-hidden")
-    })
   } else {
     // display Progress
     $("#Load").removeClass("visually-hidden")
@@ -665,10 +652,6 @@ function progressOrText(system) {
     $("#SwapText").addClass("visually-hidden")
     $("#SwapText2").addClass("visually-hidden")
     $("#TempText").addClass("visually-hidden")
-    system.STORAGE.forEach((partition, id) => {
-      $("#Storage"+id).removeClass("visually-hidden")
-      $("#StorageText"+id).addClass("visually-hidden")
-    })
   }
 }
 
