@@ -292,8 +292,6 @@ class systemInfo {
       this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
         if (error) {
           console.log("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
-        } else {
-          console.log("[GATEWAY] [SYSTEMINFO] Yeah! It's a new record!")
         }
         resolve()
       })
