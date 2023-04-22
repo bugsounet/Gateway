@@ -283,7 +283,7 @@
   "VAL_EXT-UpdateNotification_Log": "Esta característica la necesitan los usuarios que no usan PM2 ! Grabar proceso y resultados en la consola",
   "VAL_EXT-UpdateNotification_Timeout": "Tiempo máximo de ejecución de una actualización en ms (defecto: 2 mins)",
   "VAL_EXT-Volume_Start": "Define start volume [0-100]",
-  "VAL_EXT-Volume_Script": "Script propio para el control del volumen",
+  "VAL_EXT-Volume_Sync": "Sync volume with external mixer",
   "VAL_EXT-Welcome_Welcome": "Tu bienvenida para el asistente",
   "VAL_EXT-YouTube_Fullscreen": "Activar video en pantalla completa (por defecto en ventana)",
   "VAL_EXT-YouTube_Width": "Ancho de la pantalla de Youtube (puede ser un valor px tambien)",
