@@ -206,7 +206,6 @@ class systemInfo {
             this.System["NETWORK"].signalLevel = mesure.signalLevel
             this.System["NETWORK"].barLevel = mesure.barLevel
             this.System["NETWORK"].frequency = mesure.frequency
-            console.log(mesure)
           }
           resolve()
         })
