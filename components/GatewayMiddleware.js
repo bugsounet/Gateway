@@ -488,6 +488,22 @@ function createGW(that) {
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
+    .get("/SystemRestart" , (req,res) => {
+      if (req.user) {
+        res.sendFile(Path+ "/website/Gateway/restarting.html")
+        setTimeout(() => that.lib.GWTools.SystemRestart(that) , 1000)
+      }
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
+    .get("/SystemDie" , (req,res) => {
+      if (req.user) {
+        res.sendFile(Path+ "/website/Gateway/die.html")
+        setTimeout(() => that.lib.GWTools.SystemDie(that), 3000)
+      }
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
     .get("/EditMMConfig" , (req,res) => {
       if (req.user) res.sendFile(Path+ "/website/Gateway/EditMMConfig.html")
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")

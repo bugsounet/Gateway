@@ -520,6 +520,21 @@ function doClose (that) {
   else process.exit()
 }
 
+/** Restart or Die the Pi **/
+function SystemRestart (that) {
+  console.log("[GATEWAY] Restarting OS...")
+  that.lib.childProcess.exec("sudo restart now", (err,stdout,stderr) => {
+    if (err) console.error("[GATEWAY] Error when restarting OS!")
+  })
+}
+
+function SystemDie (that) {
+  console.log("[GATEWAY] Shutdown OS...")
+  that.lib.childProcess.exec("sudo Shutdown now", (err,stdout,stderr) => {
+    if (err) console.error("[GATEWAY] Error when Shutdown OS!")
+  })
+}
+
 /** read and search GA config **/
 function getGAConfig (config) {
   var index = config.modules.map(e => { return e.module }).indexOf("MMM-GoogleAssistant")
@@ -621,3 +636,5 @@ exports.readRadioRecipe = readRadioRecipe
 exports.transformExternalBackup = transformExternalBackup
 exports.saveExternalConfig = saveExternalConfig
 exports.deleteDownload = deleteDownload
+exports.SystemRestart = SystemRestart
+exports.SystemDie = SystemDie
