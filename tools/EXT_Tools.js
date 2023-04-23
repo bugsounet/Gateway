@@ -581,6 +581,39 @@ async function doSystem() {
     this.makeRefresh(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   }
   SystemFirstScan = false
+
+  if (system.NETWORK.type == "wireless") {
+    $("#wired-icon").addClass("visually-hidden")
+    $("#wireless-icon").removeClass("visually-hidden")
+    $("#wirelessSignal").removeClass("visually-hidden")
+    $("#wireless").removeClass("signal-0")
+    $("#wireless").removeClass("signal-1")
+    $("#wireless").removeClass("signal-2")
+    $("#wireless").removeClass("signal-3")
+    $("#wireless").removeClass("signal-4")
+    $("#wireless").addClass("signal-"+system.NETWORK.barLevel)
+    $("#wirelessInfo").removeClass("visually-hidden")
+    $('#ssid').text(system.NETWORK.ssid)
+    $('#rate').text(system.NETWORK.bitRate)
+    $('#txPower').text(system.NETWORK.txPower)
+    $('#quality').text(system.NETWORK.linkQuality)
+    $('#qualityMax').text(system.NETWORK.maxLinkQuality)
+    $('#signalLevel').text(system.NETWORK.signalLevel)
+    $('#frequency').text(system.NETWORK.frequency)
+  } else if (system.NETWORK.type == "wired") {
+    $("#wirelessSignal").addClass("visually-hidden")
+    $("#wired-icon").removeClass("visually-hidden")
+    $("#wireless-icon").addClass("visually-hidden")
+    $("#wirelessInfo").addClass("visually-hidden")
+  } else {
+    $("#wirelessSignal").addClass("visually-hidden")
+    $("#wired-icon").addClass("visually-hidden")
+    $("#wireless-icon").addClass("visually-hidden")
+    $("#wirelessInfo").addClass("visually-hidden")
+  }
+  $('#IP').text(system.NETWORK.ip)
+  $('#interface').text(system.NETWORK.name)
+
 }
 
 function checkPartColor(id, value) {

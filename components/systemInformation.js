@@ -15,7 +15,16 @@ class systemInfo {
       NETWORK: {
         type: "unknow",
         ip: "unknow",
-        name: "unknow"
+        name: "unknow",
+        ssid: "unknow",
+        bitRate: "unknow",
+        frequency: "unknow",
+        txPower: "unknow",
+        powerManagement: "unknow",
+        linkQuality: "unknow",
+        maxLinkQuality: "unknow",
+        signalLevel: "unknow",
+        barLevel: "unknow"
       },
       MEMORY: {
         total: 0,
@@ -129,12 +138,23 @@ class systemInfo {
     }
     return new Promise((resolve) => {
       this.lib.si.get(valueObject)
-        .then(data => {
+        .then(async data => {
           this.System['CPU'].usage= data.currentLoad.currentLoad.toFixed(0)
           this.System['CPU'].speed= data.cpu.speed + " Ghz"
           this.System['CPU'].governor= data.cpu.governor
 
           if (data.networkInterfaces) {
+            this.System["NETWORK"].type = "unknow"
+            this.System["NETWORK"].ip = "unknow"
+            this.System["NETWORK"].name = "unknow"
+            this.System["NETWORK"].ssid = "unknow"
+            this.System["NETWORK"].bitRate = "unknow"
+            this.System["NETWORK"].txPower = "unknow"
+            this.System["NETWORK"].powerManagement = "unknow"
+            this.System["NETWORK"].linkQuality = "unknow"
+            this.System["NETWORK"].maxLinkQuality = "unknow"
+            this.System["NETWORK"].signalLevel = "unknow"
+            this.System["NETWORK"].barLevel = "unknow"
             data.networkInterfaces.forEach(Interface => {
               if (Interface.default) {
                 this.System["NETWORK"].type = Interface.type
@@ -151,12 +171,6 @@ class systemInfo {
             this.System['MEMORY'].swapTotal = this.convert(data.mem.swaptotal,0)
             this.System['MEMORY'].swapUsed = this.convert(data.mem.swapused,2)
             this.System['MEMORY'].swapPercent = (data.mem.swapused/data.mem.swaptotal*100).toFixed(2)
-          }
-
-          if (data.versions) {
-            this.System["VERSION"].KERNEL = data.versions.kernel
-            this.System["VERSION"].NPM = data.versions.npm
-            this.System["VERSION"].NODE = data.versions.node
           }
 
           if (data.fsSize) {
@@ -179,10 +193,25 @@ class systemInfo {
             this.System['CPU'].temp.F = tempF.toFixed(1)
             this.System['CPU'].temp.C = tempC.toFixed(1)
           }
+          
+          let mesure = await this.takeMesure(this.System["NETWORK"].name)
+          if (mesure) {
+            this.System["NETWORK"].type = "wireless"
+            this.System["NETWORK"].ssid = mesure.ssid
+            this.System["NETWORK"].bitRate = mesure.bitRate
+            this.System["NETWORK"].txPower = mesure.txPower
+            this.System["NETWORK"].powerManagement = mesure.powerManagement
+            this.System["NETWORK"].linkQuality = mesure.linkQuality
+            this.System["NETWORK"].maxLinkQuality = mesure.maxLinkQuality
+            this.System["NETWORK"].signalLevel = mesure.signalLevel
+            this.System["NETWORK"].barLevel = mesure.barLevel
+            this.System["NETWORK"].frequency = mesure.frequency
+            console.log(mesure)
+          }
           resolve()
         })
         .catch (e => {
-          console.log("Error", e)
+          console.error("[GATEWAY] [SYSTEMINFO] Error", e)
           resolve()
         })
     })
@@ -243,7 +272,7 @@ class systemInfo {
         if (this.lib.fs.existsSync(uptimeFilePath)) {
           var readFile = this.lib.fs.readFile(uptimeFilePath, 'utf8',  (error, data) => {
             if (error) {
-              console.log("[GATEWAY] [SYSTEMINFO] readFile uptimed error!", error)
+              console.error("[GATEWAY] [SYSTEMINFO] readFile uptimed error!", error)
               return resolve()
             }
             var data = JSON.parse(data)
@@ -252,7 +281,6 @@ class systemInfo {
             this.System["UPTIME"].recordMM = data.MM
             this.System["UPTIME"].recordCurrentDHM = this.getDHM(data.system)
             this.System["UPTIME"].recordMMDHM = this.getDHM(data.MM)
-            console.log("data", this.System["UPTIME"])
             resolve()
           })
         } else {
@@ -262,7 +290,7 @@ class systemInfo {
           }
           var recordFile = this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
             if (error) {
-              console.log("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
+              console.error("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
             } else {
               console.log("[GATEWAY] [SYSTEMINFO] Create Uptimed")
             }
@@ -291,9 +319,38 @@ class systemInfo {
       }
       this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
         if (error) {
-          console.log("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
+          console.error("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
         }
         resolve()
+      })
+    })
+  }
+
+  takeMesure(iface){
+    return new Promise(resolve => {
+      this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
+        if (err) return resolve()
+        var ssid = /ESSID:"(.+)"/.exec(stdout)
+        var power = /Bit Rate=(\d+\.?\d+) +Mb\/s +Tx\-Power=([0-9]+) dBm/.exec(stdout)
+        var power_management = /Power Management:(.+)\n/.exec(stdout)
+        var quality = /Link Quality=([0-9]+)\/([0-9]+) +Signal level=(\-?[0-9]+) dBm/.exec(stdout)
+        var frequency = /Frequency:(\d+\.?\d+)/.exec(stdout)
+        let result = {
+          ssid: ssid[1],
+          frequency: frequency[1],
+          bitRate: power[1],
+          txPower: power[2],
+          powerManagement: power_management[1],
+          linkQuality: quality[1],
+          maxLinkQuality: quality[2],
+          signalLevel: quality[3],
+          barLevel: 0 
+        }
+        if (result.signalLevel >= -50) result.barLevel = 4
+        else if (result.signalLevel < -50 && result.signalLevel >= -60) result.barLevel = 3
+        else if (result.signalLevel < -60 && result.signalLevel >= -67) result.barLevel = 2
+        else if (result.signalLevel < -67 && result.signalLevel >= -70) result.barLevel = 1
+        resolve(result)
       })
     })
   }
