@@ -57,9 +57,11 @@ window.addEventListener("load", async event => {
       EXTModifyConfigJSEditor()
       break
     case "/Restart":
+    case "/SystemRestart":
       doRestart()
       break
     case "/Die":
+    case "/SystemDie":
       doDie()
       break
     case "/Terminal":
