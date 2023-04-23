@@ -523,15 +523,15 @@ function doClose (that) {
 /** Restart or Die the Pi **/
 function SystemRestart (that) {
   console.log("[GATEWAY] Restarting OS...")
-  that.lib.childProcess.exec("sudo restart now", (err,stdout,stderr) => {
-    if (err) console.error("[GATEWAY] Error when restarting OS!")
+  that.lib.childProcess.exec("sudo reboot now", (err,stdout,stderr) => {
+    if (err) console.error("[GATEWAY] Error when restarting OS!", err)
   })
 }
 
 function SystemDie (that) {
   console.log("[GATEWAY] Shutdown OS...")
-  that.lib.childProcess.exec("sudo Shutdown now", (err,stdout,stderr) => {
-    if (err) console.error("[GATEWAY] Error when Shutdown OS!")
+  that.lib.childProcess.exec("sudo shutdown now", (err,stdout,stderr) => {
+    if (err) console.error("[GATEWAY] Error when Shutdown OS!", err)
   })
 }
 
