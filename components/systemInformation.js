@@ -16,6 +16,8 @@ class systemInfo {
         type: "unknow",
         ip: "unknow",
         name: "unknow",
+        speed: "unknow",
+        duplex: "unknow",
         ssid: "unknow",
         bitRate: "unknow",
         frequency: "unknow",
@@ -130,7 +132,7 @@ class systemInfo {
   getData() {
     var valueObject = {
       cpu: 'speed,governor',
-      networkInterfaces: "type,ip4,default,iface",
+      networkInterfaces: "type,ip4,default,iface,speed,duplex",
       mem: "total,used,swaptotal,swapused",
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
@@ -155,11 +157,15 @@ class systemInfo {
             this.System["NETWORK"].maxLinkQuality = "unknow"
             this.System["NETWORK"].signalLevel = "unknow"
             this.System["NETWORK"].barLevel = "unknow"
+            this.System["NETWORK"].speed = "unknow"
+            this.System["NETWORK"].duplex = "unknow"
             data.networkInterfaces.forEach(Interface => {
               if (Interface.default) {
                 this.System["NETWORK"].type = Interface.type
                 this.System["NETWORK"].ip = Interface.ip4
                 this.System["NETWORK"].name = Interface.iface
+                this.System["NETWORK"].speed = Interface.speed
+                this.System["NETWORK"].duplex = Interface.duplex
               }
             })
           }

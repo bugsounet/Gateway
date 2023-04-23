@@ -583,6 +583,8 @@ async function doSystem() {
   SystemFirstScan = false
 
   if (system.NETWORK.type == "wireless") {
+    $("#SpeedArea").addClass("visually-hidden")
+    $("#DuplexArea").addClass("visually-hidden")
     $("#wired-icon").addClass("visually-hidden")
     $("#wireless-icon").removeClass("visually-hidden")
     $("#wirelessSignal").removeClass("visually-hidden")
@@ -601,11 +603,17 @@ async function doSystem() {
     $('#signalLevel').text(system.NETWORK.signalLevel)
     $('#frequency').text(system.NETWORK.frequency)
   } else if (system.NETWORK.type == "wired") {
+    $("#SpeedArea").removeClass("visually-hidden")
+    $("#DuplexArea").removeClass("visually-hidden")
     $("#wirelessSignal").addClass("visually-hidden")
     $("#wired-icon").removeClass("visually-hidden")
     $("#wireless-icon").addClass("visually-hidden")
     $("#wirelessInfo").addClass("visually-hidden")
+    $('#speed').text(system.NETWORK.speed)
+    $('#duplex').text(system.NETWORK.duplex)
   } else {
+    $("#SpeedArea").addClass("visually-hidden")
+    $("#DuplexArea").addClass("visually-hidden")
     $("#wirelessSignal").addClass("visually-hidden")
     $("#wired-icon").addClass("visually-hidden")
     $("#wireless-icon").addClass("visually-hidden")
