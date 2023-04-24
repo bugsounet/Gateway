@@ -780,14 +780,14 @@ function doSpeedTest() {
 
   let downOpts = {
     id: "ST_Download",
-    max: 1000,
+    max: system.NETWORK.speed || system.NETWORK.bitRate,
     title: "Download",
     symbol: " Mbps"
   }
 
   let upOpts = {
     id: "ST_Upload",
-    max: 1000,
+    max: system.NETWORK.speed || system.NETWORK.bitRate,
     title: "Upload",
     symbol: " Mbps"
   }
