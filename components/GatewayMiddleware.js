@@ -458,8 +458,11 @@ function createGW(that) {
     })
 
     .get("/System" , (req,res) => {
-      if (req.user) res.sendFile(Path+ "/website/Gateway/system.html")
-      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+      if (req.user) {
+        res.sendFile(Path+ "/website/Gateway/system.html")
+        let ST = new that.lib.speedtest(that.lib, io, req, that.Gateway, that.config.debug)
+        ST.init()
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .get("/Setting" , (req,res) => {

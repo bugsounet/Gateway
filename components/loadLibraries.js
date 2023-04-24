@@ -15,6 +15,7 @@ function libraries(that) {
     { "../components/SHCallbacks.js": "callback" },
     { "../components/homegraph.js": "homegraph" },
     { "../components/systemInformation.js": "SystemInformation" },
+    { "../components/speedtest.js": "speedtest" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -37,7 +38,9 @@ function libraries(that) {
     { "actions-on-google": "actions" },
     { "googleapis": "googleapis" },
     { "google-auth-library": "GoogleAuthLibrary" },
-    { "lodash": "_" }
+    { "lodash": "_" },
+    { "speedtest-net": "speedtest-net" },
+    { "moment": "moment" }
   ]
   let errors = 0
   return new Promise(resolve => {
@@ -52,7 +55,7 @@ function libraries(that) {
             log("Loaded:", libraryToLoad, "->", "this.lib."+libraryName)
           }
         } catch (e) {
-          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString(), e)
+          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , that.config.debug ? e : e.toString())
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
           that.lib.error = errors

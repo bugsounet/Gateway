@@ -56,7 +56,8 @@ class systemInfo {
         MMDHM: "unknow",
         recordMM: 0,
         recordMMDHM: "unknow"
-      }
+      },
+      SpeedTest: null
     },
 
     // tmp translate
