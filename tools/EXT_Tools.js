@@ -80,7 +80,7 @@ window.addEventListener("load", async event => {
       doTools()
       break
     case "/System":
-      doSystem()
+      doSystem(()=> { doSpeedTest() })
       break
     case "/Setting":
       GatewaySetting()
@@ -367,7 +367,7 @@ async function doTerminal() {
   });
 }
 
-async function doSystem() {
+async function doSystem(cb= null) {
   clearInterval(SystemInterval)
   SystemInterval = null
 
@@ -543,13 +543,11 @@ async function doSystem() {
         var progress = document.createElement("div")
         progress.id = "StorageDisplay"+ id
         progress.className= "progress-bar progress-bar-striped progress-bar-animated bg-success"
-        //progress.setAttribute("style", "width:" + values.use + "%")
         this.checkPartColor(id, values.use)
       container.appendChild(progress)
           var usedValue = document.createElement("span")
           usedValue.id = "StorageUsed"+ id
           usedValue.setAttribute("style", "color: #000;font-weight: bold;text-align: right;margin-right: 5px;")
-          //usedValue.textContent= values.use + "%"
           progress.appendChild(usedValue)
       percent.appendChild(container)
 
@@ -623,7 +621,20 @@ async function doSystem() {
   }
   $('#IP').text(system.NETWORK.ip)
   $('#interface').text(system.NETWORK.name)
-
+  if (system.SpeedTest) {
+    $("#SpeedTestResult").removeClass("visually-hidden")
+    $("#ST_Date").text(system.SpeedTest.timeLocale)
+    $("#ST_DownloadResult").text(system.SpeedTest.download.bandwidth)
+    $("#ST_UploadResult").text(system.SpeedTest.upload.bandwidth)
+    $("#ST_PingResult").text(system.SpeedTest.ping.latency)
+    $("#ST_JitterResult").text(system.SpeedTest.ping.jitter)
+    $("#ST_PacketLostResult").text(system.SpeedTest.packetLoss)
+    $("#ST_ISPResult").text(system.SpeedTest.isp)
+    $("#ST_ServerResult").text(system.SpeedTest.server.host)
+    $("#ST_NameResult").text(system.SpeedTest.server.name)
+    $("#ST_LocationResult").text(system.SpeedTest.server.location + " ("+ system.SpeedTest.server.country + ")")
+  }
+  if (cb) cb()
 }
 
 function checkPartColor(id, value) {
@@ -739,6 +750,84 @@ function progressOrText(system) {
     $("#Uptime-Box").css("width", "50%")
   }
 }
+
+function doSpeedTest() {
+  var socketSystem = io()
+  socketSystem.on("connect", () => {
+    console.log("Connected!")
+  })
+
+  socketSystem.on("HELLO", () => {
+    $("#ST_Start").removeClass("disabled")
+  })
+
+  socketSystem.on("disconnect", (reason) => {
+    console.log("disconnect:", reason)
+    $("#ST_Start").addClass("disabled")
+  })
+
+  // part of MMM-Speedtest !
+  let opts = {
+    value: 0,
+    min: 0,
+    refreshAnimationType: "linear",
+    gaugeWidthScale: "0.8",
+    valueFontColor: "#fff",
+    valueFontFamily: "Roboto Condensed",
+    titleFontFamily: "Roboto Condensed",
+    titleFontColor: "#aaa",
+  }
+
+  let downOpts = {
+    id: "ST_Download",
+    max: system.NETWORK.speed || system.NETWORK.bitRate,
+    title: "Download",
+    symbol: " Mbps"
+  }
+
+  let upOpts = {
+    id: "ST_Upload",
+    max: system.NETWORK.speed || system.NETWORK.bitRate,
+    title: "Upload",
+    symbol: " Mbps"
+  }
+
+  let pingOpts = {
+    id: "ST_Ping",
+    max: 80,
+    title: "Ping",
+    symbol: " ms"
+  }
+  downOpts = Object.assign({}, opts, downOpts)
+  this.download = new JustGage(downOpts)
+  upOpts = Object.assign({}, opts, upOpts)
+  this.upload = new JustGage(upOpts)
+  pingOpts = Object.assign({}, opts, pingOpts)
+  this.ping = new JustGage(pingOpts)
+
+  document.getElementById('ST_Start').onclick = () => {
+    this.download.refresh("0")
+    this.upload.refresh("0")
+    this.ping.refresh("0")
+    socketSystem.emit("ST_Start")
+    $("#ST_Start").addClass("visually-hidden")
+  }
+
+  socketSystem.on("DOWNLOAD", (arg) => {
+    this.download.refresh(arg)
+  })
+  socketSystem.on("UPLOAD", (arg) => {
+    this.upload.refresh(arg)
+  })
+  socketSystem.on("PING", (arg) => {
+    this.ping.refresh(arg)
+  })
+
+  socketSystem.on("RESULT", () => {
+    $("#ST_Start").removeClass("visually-hidden")
+  })
+}
+
 
 async function doTools() {
   // translate
