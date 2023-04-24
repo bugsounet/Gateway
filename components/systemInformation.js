@@ -134,7 +134,7 @@ class systemInfo {
     var valueObject = {
       cpu: 'speed,governor',
       networkInterfaces: "type,ip4,default,iface,speed,duplex",
-      mem: "total,used,swaptotal,swapused",
+      mem: "total,active,swaptotal,swapused",
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
       cpuTemperature: "main",
@@ -173,8 +173,8 @@ class systemInfo {
 
           if (data.mem) {
             this.System['MEMORY'].total = this.convert(data.mem.total,0)
-            this.System['MEMORY'].used = this.convert(data.mem.used,2)
-            this.System['MEMORY'].percent = (data.mem.used/data.mem.total*100).toFixed(2)
+            this.System['MEMORY'].used = this.convert(data.mem.active,2)
+            this.System['MEMORY'].percent = (data.mem.active/data.mem.total*100).toFixed(2)
             this.System['MEMORY'].swapTotal = this.convert(data.mem.swaptotal,0)
             this.System['MEMORY'].swapUsed = this.convert(data.mem.swapused,2)
             this.System['MEMORY'].swapPercent = (data.mem.swapused/data.mem.swaptotal*100).toFixed(2)
