@@ -804,8 +804,11 @@ function doSpeedTest() {
   this.upload = new JustGage(upOpts)
   pingOpts = Object.assign({}, opts, pingOpts)
   this.ping = new JustGage(pingOpts)
-  //$("#ST_Download")
-  document.getElementById('ST_Start').onclick = function () {
+
+  document.getElementById('ST_Start').onclick = () => {
+    this.download.refresh("0")
+    this.upload.refresh("0")
+    this.ping.refresh("0")
     socketSystem.emit("ST_Start")
     $("#ST_Start").addClass("visually-hidden")
   }
