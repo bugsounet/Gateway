@@ -57,6 +57,28 @@ class systemInfo {
         recordMM: 0,
         recordMMDHM: "unknow"
       },
+      PROCESS: {
+        nginx: {
+          pid: 0,
+          cpu: 0,
+          mem: 0
+        },
+        electron: {
+          pid: 0,
+          cpu: 0,
+          mem: 0
+        },
+        librespot: {
+          pid: 0,
+          cpu: 0,
+          mem: 0
+        },
+        pm2: {
+          pid: 0,
+          cpu: 0,
+          mem: 0
+        }
+      },
       SpeedTest: null
     },
 
@@ -138,6 +160,7 @@ class systemInfo {
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
       cpuTemperature: "main",
+      processLoad: "(nginx, electron, librespot, pm2) proc,pid,cpu,mem",
     }
     return new Promise((resolve) => {
       this.lib.si.get(valueObject)
@@ -199,6 +222,16 @@ class systemInfo {
             let tempF = (tempC * (9 / 5)) + 32
             this.System['CPU'].temp.F = tempF.toFixed(1)
             this.System['CPU'].temp.C = tempC.toFixed(1)
+          }
+
+          if (data.processLoad) {
+            data.processLoad.forEach(process => {
+              this.System["PROCESS"][process.proc] = {
+                pid: process.pid,
+                cpu: +process.cpu.toFixed(2),
+                mem: +process.mem.toFixed(2)
+              }
+            })
           }
           
           let mesure = await this.takeMesure(this.System["NETWORK"].name)

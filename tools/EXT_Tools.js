@@ -634,6 +634,53 @@ async function doSystem(cb= null) {
     $("#ST_NameResult").text(system.SpeedTest.server.name)
     $("#ST_LocationResult").text(system.SpeedTest.server.location + " ("+ system.SpeedTest.server.country + ")")
   }
+
+  $("#ElectronOK").removeClass("visually-hidden")
+  $("#ElectronNOK").addClass("visually-hidden")
+  $("#ElectronValues").removeClass("visually-hidden")
+  $("#ElectronPid").text(system.PROCESS.electron.pid)
+  $("#ElectronCPU").text(system.PROCESS.electron.cpu)
+  $("#ElectronMemory").text(system.PROCESS.electron.mem)
+
+  if (system.PROCESS.nginx.pid) {
+    $("#nginxValues").removeClass("visually-hidden")
+    $("#nginxOK").removeClass("visually-hidden")
+    $("#nginxNOK").addClass("visually-hidden")
+    $("#nginxPid").text(system.PROCESS.nginx.pid)
+    $("#nginxCPU").text(system.PROCESS.nginx.cpu)
+    $("#nginxMemory").text(system.PROCESS.nginx.mem)
+  } else {
+    $("#nginxValues").addClass("visually-hidden")
+    $("#nginxOK").addClass("visually-hidden")
+    $("#nginxNOK").removeClass("visually-hidden")
+  }
+
+  if (system.PROCESS.librespot.pid) {
+    $("#LibrespotValues").removeClass("visually-hidden")
+    $("#LibrespotOK").removeClass("visually-hidden")
+    $("#LibrespotNOK").addClass("visually-hidden")
+    $("#LibrespotPid").text(system.PROCESS.librespot.pid)
+    $("#LibrespotCPU").text(system.PROCESS.librespot.cpu)
+    $("#LibrespotMemory").text(system.PROCESS.librespot.mem)
+  } else {
+    $("#LibrespotValues").addClass("visually-hidden")
+    $("#LibrespotOK").addClass("visually-hidden")
+    $("#LibrespotNOK").removeClass("visually-hidden")
+  }
+
+  if (system.PROCESS.pm2.pid) {
+    $("#pm2Values").removeClass("visually-hidden")
+    $("#pm2OK").removeClass("visually-hidden")
+    $("#pm2NOK").addClass("visually-hidden")
+    $("#pm2Pid").text(system.PROCESS.pm2.pid)
+    $("#pm2CPU").text(system.PROCESS.pm2.cpu)
+    $("#pm2Memory").text(system.PROCESS.pm2.mem)
+  } else {
+    $("#pm2Values").addClass("visually-hidden")
+    $("#pm2OK").addClass("visually-hidden")
+    $("#pm2NOK").removeClass("visually-hidden")
+  }
+
   if (cb) cb()
 }
 
