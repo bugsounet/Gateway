@@ -314,7 +314,12 @@ class systemInfo {
               console.error("[GATEWAY] [SYSTEMINFO] readFile uptimed error!", error)
               return resolve()
             }
-            var data = JSON.parse(data)
+            try {
+              var data = JSON.parse(data)
+            } catch (e) {
+              console.error("[GATEWAY] [SYSTEMINFO] readFile data error!", e.toString())
+              return resolve()
+            }
             console.log("[GATEWAY] [SYSTEMINFO] Read Uptimed")
             this.System["UPTIME"].recordCurrent = data.system
             this.System["UPTIME"].recordMM = data.MM
