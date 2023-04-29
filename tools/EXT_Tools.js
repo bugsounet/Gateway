@@ -25,29 +25,7 @@ window.addEventListener("load", async event => {
   $('html').prop("lang", versionGW.lang)
   doTools()
 
-  var Options = {
-    forcePortrait: false,
-    message: translation.Rotate_Msg,
-    subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
-    onlyMobile: true
-  }
-  PleaseRotate.start(Options)
-
-  $('#Home').text(translation.Home)
-  $('#Plugins').text(translation.Plugins)
-  $('#Terminal').text(translation.Terminal)
-  $('#Configuration').text(translation.Configuration)
-  $('#Tools').text(translation.Tools)
-  $('#Setting').text(translation.Setting)
-  $('#Logout').text(translation.Logout)
-  
-  $('#accordionSidebar').removeClass("invisible")
-  $('li.active').removeClass('active')
-  var path=location.pathname
-
-  if (path == "/Die" || path == "/Restart") path = "/Tools"
-  $('a[href="' + path + '"]').closest('a').addClass('active')
+  doTranslateNavBar()
 })
 
 async function doTools() {

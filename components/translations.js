@@ -133,6 +133,12 @@ class GWTranslations {
       Tr.Setting_Info_Translator9 = that.translate("GW_Setting_Info_Translator9")
       Tr.Setting_Info_Translator10 = that.translate("GW_Setting_Info_Translator10")
 
+      Tr.System = that.translate("GW_System")
+      Tr.System_Box_Shutdown = that.translate("GW_System_Box_Shutdown")
+      Tr.System_Shutdown = that.translate("GW_System_Shutdown")
+      Tr.System_Box_Restart = that.translate("GW_System_Box_Restart")
+      Tr.System_Restart = that.translate("GW_System_Restart")
+
       Tr.Logout = that.translate("GW_Logout")
 
       Tr.Delete = that.translate("GW_Delete"),

@@ -33,28 +33,7 @@ window.addEventListener("load", async event => {
       break
   }
 
-  var Options = {
-    forcePortrait: false,
-    message: translation.Rotate_Msg,
-    subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
-    onlyMobile: true
-  }
-  PleaseRotate.start(Options)
-
-  $('#Home').text(translation.Home)
-  $('#Plugins').text(translation.Plugins)
-  $('#Terminal').text(translation.Terminal)
-  $('#Configuration').text(translation.Configuration)
-  $('#Tools').text(translation.Tools)
-  $('#Setting').text(translation.Setting)
-  $('#Logout').text(translation.Logout)
-  
-  $('#accordionSidebar').removeClass("invisible")
-  $('li.active').removeClass('active')
-  var path=location.pathname
-  if (path == "/SystemDie" || path == "/SystemRestart") path = "/System"
-  $('a[href="' + path + '"]').closest('a').addClass('active')
+  doTranslateNavBar()
 })
 
 function doRestart() {
@@ -99,19 +78,23 @@ async function doSystem(cb= null) {
   SystemInterval = null
 
   system = await checkSystem()
+  console.log(translation)
+  $("#ShutdownSystem").text(translation.System_Box_Shutdown)
+  $("#Shutdown").text(translation.System_Shutdown)
+  $("#RestartSystem").text(translation.System_Box_Restart)
+  $("#Restart").text(translation.System_Restart)
 
   progressOrText(system)
   window.addEventListener('resize', function() {
     progressOrText(system)
   })
 
-  console.log(system)
+  //console.log(system)
 
   SystemInterval = setInterval(async() => {
     doSystem()
   }, 15000)
 
-  //console.log(system)
   $('#HOSTNAME').text(system.HOSTNAME)
   // versions
   $('#MMVersion').text(system.VERSION.MagicMirror)

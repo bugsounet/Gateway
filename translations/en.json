@@ -127,6 +127,12 @@
   "GW_Setting_Info_Translator9": 0,
   "GW_Setting_Info_Translator10": 0,
 
+  "GW_System": "System",
+  "GW_System_Box_Shutdown": "Shutdown your system",
+  "GW_System_Shutdown": "Shutdown",
+  "GW_System_Box_Restart": "Restart your system",
+  "GW_System_Restart": "Restart",
+
   "GW_Logout": "Logout",
 
   "GW_Delete": "Delete",

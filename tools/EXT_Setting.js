@@ -18,31 +18,11 @@ window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
 
-  if (window.location.pathname != "/login") actualSetting = await getGatewaySetting()
+  actualSetting = await getGatewaySetting()
   $('html').prop("lang", versionGW.lang)
   GatewaySetting()
 
-  var Options = {
-    forcePortrait: false,
-    message: translation.Rotate_Msg,
-    subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
-    onlyMobile: true
-  }
-  PleaseRotate.start(Options)
-
-  $('#Home').text(translation.Home)
-  $('#Plugins').text(translation.Plugins)
-  $('#Terminal').text(translation.Terminal)
-  $('#Configuration').text(translation.Configuration)
-  $('#Tools').text(translation.Tools)
-  $('#Setting').text(translation.Setting)
-  $('#Logout').text(translation.Logout)
-
-  $('#accordionSidebar').removeClass("invisible")
-  $('li.active').removeClass('active')
-  var path=location.pathname
-  $('a[href="' + path + '"]').closest('a').addClass('active')
+  doTranslateNavBar()
 })
 
 function GatewaySetting() {

@@ -10,23 +10,13 @@ PleaseRotateOptions = {
 
 // define all vars
 var translation= {}
-var actualSetting = {}
-var AllEXT = []
-var DescEXT = {}
-var InstEXT = []
-var ConfigEXT = []
 var versionGW = {}
-var webviewTag = false
-var versionGA = {}
-var EXTStatus = {}
-var ErrEXTStatus = 0
 
 // Load rules
 window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
 
-  await getGatewaySetting()
   $('html').prop("lang", versionGW.lang)
   switch (window.location.pathname) {
     case "/Terminal":
@@ -37,35 +27,7 @@ window.addEventListener("load", async event => {
       break
   }
 
-  var Options = {
-    forcePortrait: false,
-    message: translation.Rotate_Msg,
-    subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
-    onlyMobile: true
-  }
-  PleaseRotate.start(Options)
-
-  $('#Home').text(translation.Home)
-  $('#Plugins').text(translation.Plugins)
-  $('#Terminal').text(translation.Terminal)
-  $('#Configuration').text(translation.Configuration)
-  $('#Tools').text(translation.Tools)
-  $('#Setting').text(translation.Setting)
-  $('#Logout').text(translation.Logout)
-
-  $('#accordionSidebar').removeClass("invisible")
-  $('li.active').removeClass('active')
-  var path=location.pathname
-  if (path == "/install" ||
-      path == "/delete" ||
-      path == "/EXTModifyConfig" ||
-      path == "/EXTCreateConfig"
-  ) path = "/EXT"
-  if (path == "/EditMMConfig") path = "/MMConfig"
-  if (path == "/Die" || path == "/Restart") path = "/Tools"
-  if (path == "/ptyProcess") path = "/Terminal"
-  $('a[href="' + path + '"]').closest('a').addClass('active')
+  doTranslateNavBar()
 })
 
 async function doTerminalLogs() {

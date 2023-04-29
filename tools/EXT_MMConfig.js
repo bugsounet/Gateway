@@ -27,28 +27,7 @@ window.addEventListener("load", async event => {
       break
   }
 
-  var Options = {
-    forcePortrait: false,
-    message: translation.Rotate_Msg,
-    subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
-    onlyMobile: true
-  }
-  PleaseRotate.start(Options)
-
-  $('#Home').text(translation.Home)
-  $('#Plugins').text(translation.Plugins)
-  $('#Terminal').text(translation.Terminal)
-  $('#Configuration').text(translation.Configuration)
-  $('#Tools').text(translation.Tools)
-  $('#Setting').text(translation.Setting)
-  $('#Logout').text(translation.Logout)
-
-  $('#accordionSidebar').removeClass("invisible")
-  $('li.active').removeClass('active')
-  var path=location.pathname
-  if (path == "/EditMMConfig") path = "/MMConfig"
-  $('a[href="' + path + '"]').closest('a').addClass('active')
+  doTranslateNavBar()
 })
 
 //make viewJSEditor
@@ -201,7 +180,7 @@ async function EditMMConfigJSEditor() {
               } else {
                 editor.update(back.data)
                 editor.refresh()
-                alertify.sucess("External Config Loaded !" + back.error)
+                alertify.success("External Config Loaded !")
               }
             })
             .fail(function(err) {
