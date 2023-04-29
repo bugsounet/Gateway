@@ -75,6 +75,7 @@
   "GW_Tools_GoogleAssistant_Query": "Haz tu petición",
   "GW_Tools_Alert_Text": "Enviar un mensaje a tu mirror",
   "GW_Tools_Alert_Query": "Escribe tu mensaje",
+  "GW_Tools_Volume_Text_Record": "Define the microphone level of your mirror",
   "GW_Tools_Volume_Text": "Define el volumen del mirror",
   "GW_Tools_Volume_Text2": "Nivel Actual:",
   "GW_Tools_Volume_Text3": "Configurado a",
@@ -100,9 +101,11 @@
   "GW_Setting_Credentials_username": "Nombre de usuario",
   "GW_Setting_Credentials_password": "Contraseña",
   "GW_Setting_Credentials_confirmpwd": "Confirmar Contraseña",
+  "GW_Setting_Credentials_clientID": "Google Action CLIENT_ID",
   "GW_Setting_Credentials_username_placeholder": "Introduce nombre de usuario",
   "GW_Setting_Credentials_password_placeholder": "Introduce contraseña",
   "GW_Setting_Credentials_confirmpwd_placeholder": "Confirmar la contraseña",
+  "GW_Setting_Credentials_clientID_placeholder": "Entrer your Google Action ID",
   "GW_Setting_Options": "Options",
   "GW_Setting_Options_debug": "Modo Desarrollador",
   "GW_Setting_Options_usePM2": "Usa PM2",
@@ -123,6 +126,12 @@
   "GW_Setting_Info_Translator8": 0,
   "GW_Setting_Info_Translator9": 0,
   "GW_Setting_Info_Translator10": 0,
+
+  "GW_System": "System",
+  "GW_System_Box_Shutdown": "Shutdown your system",
+  "GW_System_Shutdown": "Shutdown",
+  "GW_System_Box_Restart": "Restart your system",
+  "GW_System_Restart": "Restart",
 
   "GW_Logout": "Desconectar",
 

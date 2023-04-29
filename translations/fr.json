@@ -127,6 +127,12 @@
   "GW_Setting_Info_Translator9": 0,
   "GW_Setting_Info_Translator10": 0,
 
+  "GW_System": "Système",
+  "GW_System_Box_Shutdown": "Eteindre votre système",
+  "GW_System_Shutdown": "Eteindre",
+  "GW_System_Box_Restart": "Redémarrer votre système",
+  "GW_System_Restart": "Redémarrer",
+
   "GW_Logout": "Déconnexion",
 
   "GW_Delete": "Supprimer",
