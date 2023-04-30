@@ -16,6 +16,7 @@ function libraries(that) {
     { "../components/homegraph.js": "homegraph" },
     { "../components/systemInformation.js": "SystemInformation" },
     { "../components/speedtest.js": "speedtest" },
+    { "../components/speedtest-net.js": "speedtest-net" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -39,7 +40,6 @@ function libraries(that) {
     { "googleapis": "googleapis" },
     { "google-auth-library": "GoogleAuthLibrary" },
     { "lodash": "_" },
-    { "speedtest-net": "speedtest-net" },
     { "moment": "moment" }
   ]
   let errors = 0
