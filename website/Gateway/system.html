@@ -100,7 +100,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="CPU-Box">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="CPU-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 id="CPUSystem" style="color: var(--bs-light);">&nbsp;</h2>
@@ -124,7 +124,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Memory-Box">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Memory-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 id="MemorySystem" style="color: var(--bs-light);">&nbsp;</h2>
@@ -147,7 +147,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Network-Box">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Network-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <div class="d-flex flex-wrap h2" style="font-family: &quot;Open Sans&quot;;">
@@ -180,20 +180,20 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Storage-Box">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Storage-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Storage</h2>
+                                                <h2 id="StorageSystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="table-responsive">
                                                     <table class="table table-sm">
                                                         <thead class="table-dark">
                                                             <tr>
-                                                                <th style="width: 80px;">Mount</th>
-                                                                <th style="width: 100px;">Used</th>
-                                                                <th colspan="10">Percent</th>
-                                                                <th style="width: 100px;">Total</th>
+                                                                <th id="MountStorage" style="width: 80px;">&nbsp;</th>
+                                                                <th id="UsedStorage" style="width: 100px;">&nbsp;</th>
+                                                                <th id="PercentStorage" colspan="10">&nbsp;</th>
+                                                                <th id="TotalStorage" style="width: 100px;">&nbsp;</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="table-group-divider" id="Storage"></tbody>
@@ -202,28 +202,28 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Uptime-Box">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Uptime-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Uptime</h2>
+                                                <h2 id="UptimeSystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item text-start">
-                                                <div class="mx-3"><span class="fw-bold text-primary">Current Uptime</span></div>
+                                                <div class="mx-3"><span class="fw-bold text-primary" id="CurrentUptime">&nbsp;</span></div>
                                                 <div class="mx-5">
-                                                    <div class="text-lg-start"><span>System:&nbsp;<span id="SysUptime">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>MagicMirror:&nbsp;<span id="MMUptime">&nbsp;</span></span></div>
+                                                    <div class="text-lg-start"><span id="SysCurrent">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="SysUptime">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span>MagicMirror²:&nbsp;</span><span id="MMUptime">&nbsp;</span></div>
                                                 </div>
-                                                <div class="mx-3"><span class="fw-bold text-primary">Record Uptime</span></div>
+                                                <div class="mx-3"><span class="fw-bold text-primary" id="RecordUptime">&nbsp;</span></div>
                                                 <div class="mx-5">
                                                     <div class="text-lg-start">
-                                                        <div class="text-lg-start"><span>System:&nbsp;<span id="SysUptimeRecord">&nbsp;</span></span></div>
+                                                        <div class="text-lg-start"><span id="SysRecord">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="SysUptimeRecord">&nbsp;</span></div>
                                                     </div>
-                                                    <div class="text-lg-start"><span>MagicMirror:&nbsp;<span id="MMUptimeRecord">&nbsp;</span></span></div>
+                                                    <div class="text-lg-start"><span>MagicMirror²:&nbsp;</span><span id="MMUptimeRecord">&nbsp;</span></div>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="SpeedTest">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="SpeedTest">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">SpeedTest</h2>
@@ -234,10 +234,10 @@
                                                 <div id="ST_Ping"></div>
                                                 <div id="ST_Data"></div>
                                             </li>
-                                            <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><button class="btn btn-primary btn disabled" id="ST_Start" type="button">Start</button></li>
+                                            <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><button class="btn btn-primary btn disabled" id="ST_Start" type="button">&nbsp;</button></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6 visually-hidden" id="SpeedTestResult">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6 visually-hidden" id="SpeedTestResult">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 style="color: var(--bs-light);">SpeedTest Result</h2><span id="ST_Date"></span>
@@ -257,10 +257,10 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Uptime-Box-1">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Process-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Process</h2>
+                                                <h2 id="ProcessSystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item text-start">
                                                 <div id="electron">
@@ -272,11 +272,9 @@
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
                                                         </svg><span class="fw-bold text-primary">&nbsp;electron</span></div>
                                                     <div id="ElectronValues" class="mx-5 visually-hidden">
-                                                        <div class="text-lg-start">
-                                                            <div class="text-lg-start"><span>pid:&nbsp;<span id="ElectronPid">&nbsp;</span></span></div>
-                                                        </div>
-                                                        <div class="text-lg-start"><span>cpu:&nbsp;<span id="ElectronCPU">&nbsp;</span><span>%</span></span></div>
-                                                        <div class="text-lg-start"><span>memory:&nbsp;<span id="ElectronMemory">&nbsp;</span><span>%</span></span></div>
+                                                        <div class="text-lg-start"><span>pid:&nbsp;</span><span id="ElectronPid">&nbsp;</span></div>
+                                                        <div class="text-lg-start"><span id="ElectronCPUProcess">&nbsp;</span><span>&nbsp;</span><span id="ElectronCPU">&nbsp;</span><span>%</span></div>
+                                                        <div class="text-lg-start"><span id="ElectronMemoryProcess">&nbsp;</span><span>&nbsp;</span><span id="ElectronMemory">&nbsp;</span><span>%</span></div>
                                                     </div>
                                                 </div>
                                                 <div id="nginx">
@@ -288,9 +286,9 @@
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
                                                         </svg><span class="fw-bold text-primary">&nbsp;nginx</span></div>
                                                     <div id="nginxValues" class="mx-5 visually-hidden">
-                                                        <div class="text-lg-start"><span>pid:&nbsp;<span id="nginxPid">&nbsp;</span></span></div>
-                                                        <div class="text-lg-start"><span>cpu:&nbsp;<span id="nginxCPU">&nbsp;</span><span>%</span></span></div>
-                                                        <div class="text-lg-start"><span>memory:&nbsp;</span><span id="nginxMemory">&nbsp;</span><span>%</span></div>
+                                                        <div class="text-lg-start"><span>pid:&nbsp;</span><span id="nginxPid">&nbsp;</span></div>
+                                                        <div class="text-lg-start"><span id="NginxCPUProcess">&nbsp;</span><span>&nbsp;</span><span id="nginxCPU">&nbsp;</span><span>%</span></div>
+                                                        <div class="text-lg-start"><span id="NginxMemoryProcess">&nbsp;</span><span>&nbsp;</span><span id="nginxMemory">&nbsp;</span><span>%</span></div>
                                                     </div>
                                                 </div>
                                                 <div id="librespot">
@@ -302,11 +300,9 @@
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
                                                         </svg><span class="fw-bold text-primary">&nbsp;librespot</span></div>
                                                     <div id="LibrespotValues" class="mx-5 visually-hidden">
-                                                        <div class="text-lg-start">
-                                                            <div class="text-lg-start"><span>pid:&nbsp;<span id="LibrespotPid">&nbsp;</span></span></div>
-                                                        </div>
-                                                        <div class="text-lg-start"><span>cpu:&nbsp;<span id="LibrespotCPU">&nbsp;</span><span>%</span></span></div>
-                                                        <div class="text-lg-start"><span>memory:&nbsp;<span id="LibrespotMemory">&nbsp;</span><span>%</span></span></div>
+                                                        <div class="text-lg-start"><span>pid:&nbsp;</span><span id="LibrespotPid">&nbsp;</span></div>
+                                                        <div class="text-lg-start"><span id="LibrespotCPUProcess">&nbsp;</span><span>&nbsp;</span><span id="LibrespotCPU">&nbsp;</span><span>%</span></div>
+                                                        <div class="text-lg-start"><span id="LibrespotMemoryProcess">&nbsp;</span><span>&nbsp;</span><span id="LibrespotMemory">&nbsp;</span><span>%</span></div>
                                                     </div>
                                                 </div>
                                                 <div id="PM2">
@@ -318,11 +314,9 @@
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
                                                         </svg><span class="fw-bold text-primary">&nbsp;pm2</span></div>
                                                     <div id="pm2Values" class="mx-5 visually-hidden">
-                                                        <div class="text-lg-start">
-                                                            <div class="text-lg-start"><span>pid:&nbsp;<span id="pm2Pid">&nbsp;</span></span></div>
-                                                        </div>
-                                                        <div class="text-lg-start"><span>cpu:&nbsp;</span><span id="pm2CPU">&nbsp;</span><span>%</span></div>
-                                                        <div class="text-lg-start"><span>memory:&nbsp;</span><span id="pm2Memory">&nbsp;</span><span>%</span></div>
+                                                        <div class="text-lg-start"><span>pid:&nbsp;</span><span id="pm2Pid">&nbsp;</span></div>
+                                                        <div class="text-lg-start"><span id="PM2CPUProcess">&nbsp;</span><span>&nbsp;</span><span id="pm2CPU">&nbsp;</span><span>%</span></div>
+                                                        <div class="text-lg-start"><span id="PM2MemoryProcess">&nbsp;</span><span>&nbsp;</span><span id="pm2Memory">&nbsp;</span><span>%</span></div>
                                                     </div>
                                                 </div>
                                             </li>

@@ -158,6 +158,24 @@
   "GW_System_TxPowerNetwork": "Puissance:",
   "GW_System_QualityNetwork": "Qualité:",
   "GW_System_SignalNetwork": "Signal:",
+  "GW_System_StorageSystem": "Stockage",
+  "GW_System_MountStorage": "Montage",
+  "GW_System_UsedStorage": "Utilisation",
+  "GW_System_PercentStorage": "Pourcentage",
+  "GW_System_TotalStorage": "Total",
+  "GW_System_UptimeSystem": "Disponibilité",
+  "GW_System_CurrentUptime": "Actuelle",
+  "GW_System_System": "Système:",
+  "GW_System_RecordUptime": "Record",
+  "GW_System_DAY" : "jour",
+  "GW_System_DAYS" : "jours",
+  "GW_System_HOUR" : "heure",
+  "GW_System_HOURS" : "heures",
+  "GW_System_MINUTE" : "minute",
+  "GW_System_MINUTES" : "minutes",
+  "GW_System_ProcessSystem": "Processus",
+  "GW_System_CPU": "processeur:",
+  "GW_System_Memory": "mémoire:",
 
   "GW_Logout": "Déconnexion",
 
@@ -183,6 +201,8 @@
   "GW_RequestDone": "La commande a été envoyée avec succès",
   "GW_Listen": "Ecouter",
   "GW_Update": "Une mise à jour est disponible",
+  "GW_Start": "Démarrer",
+
 
   "EXT-Alert": "Affichez tout avertissement, information ou erreur sur votre écran.",
   "EXT-Background": "Modifiez l'arrière-plan par défaut de l'assistant Google par le vôtre ou avec des gifs animés pour chaque statut de l'assistant.",

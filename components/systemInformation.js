@@ -1,6 +1,7 @@
 class systemInfo {
-  constructor(lib) {
+  constructor(lib,translate) {
     this.lib = lib
+    this.translate = translate
     this.System = {
       VERSION: {
         MagicMirror: require('../../../package.json').version,
@@ -267,23 +268,24 @@ class systemInfo {
 
   getDHM(seconds) {
     if (seconds == 0) return "Loading..."
-    var days = Math.floor(seconds / 86400);
+    var days = Math.floor(seconds / 86400)
     seconds = seconds - (days*86400);
-    var hours = Math.floor(seconds / 3600);
+    var hours = Math.floor(seconds / 3600)
     seconds = seconds - (hours*3600);
     var minutes = Math.floor(seconds / 60)
+
     if (days > 0) {
-     if (days >1) days = days + " " + this.config.uptime.days + " "
-      else days = days + " " + this.config.uptime.day + " "
+     if (days >1) days = days + " " + this.translate.System_DAYS + " "
+      else days = days + " " + this.translate.System_DAY + " "
     }
     else days = ""
     if (hours > 0) {
-     if (hours > 1) hours = hours + " " + this.config.uptime.hours + " "
-      else hours = hours + " " + this.config.uptime.hour + " "
+     if (hours > 1) hours = hours + " " + this.translate.System_HOURS + " "
+      else hours = hours + " " + this.translate.System_HOUR + " "
     }
     else hours = ""
-    if (minutes > 1) minutes = minutes + " " + this.config.uptime.minutes
-    else minutes = minutes + " " + this.config.uptime.minute
+    if (minutes > 1) minutes = minutes + " " + this.translate.System_MINUTES
+    else minutes = minutes + " " + this.translate.System_MINUTE
     return days + hours + minutes
   }
 
