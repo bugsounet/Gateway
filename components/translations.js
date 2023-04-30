@@ -164,8 +164,24 @@ class GWTranslations {
       Tr.System_TxPowerNetwork = that.translate("GW_System_TxPowerNetwork")
       Tr.System_QualityNetwork = that.translate("GW_System_QualityNetwork")
       Tr.System_SignalNetwork = that.translate("GW_System_SignalNetwork")
-      
-
+      Tr.System_StorageSystem = that.translate("GW_System_StorageSystem")
+      Tr.System_MountStorage = that.translate("GW_System_MountStorage")
+      Tr.System_UsedStorage = that.translate("GW_System_UsedStorage")
+      Tr.System_PercentStorage = that.translate("GW_System_PercentStorage")
+      Tr.System_TotalStorage = that.translate("GW_System_TotalStorage")
+      Tr.System_UptimeSystem = that.translate("GW_System_UptimeSystem")
+      Tr.System_CurrentUptime = that.translate("GW_System_CurrentUptime")
+      Tr.System_System = that.translate("GW_System_System")
+      Tr.System_RecordUptime = that.translate("GW_System_RecordUptime")
+      Tr.System_DAY = that.translate("GW_System_DAY")
+      Tr.System_DAYS = that.translate("GW_System_DAYS")
+      Tr.System_HOUR = that.translate("GW_System_HOUR")
+      Tr.System_HOURS = that.translate("GW_System_HOURS")
+      Tr.System_MINUTE = that.translate("GW_System_MINUTE")
+      Tr.System_MINUTES = that.translate("GW_System_MINUTES")
+      Tr.System_ProcessSystem = that.translate("GW_System_ProcessSystem")
+      Tr.System_CPU = that.translate("GW_System_CPU")
+      Tr.System_Memory = that.translate("GW_System_Memory")
 
       Tr.Logout = that.translate("GW_Logout")
 
@@ -191,6 +207,8 @@ class GWTranslations {
       Tr.RequestDone = that.translate("GW_RequestDone")
       Tr.Listen = that.translate("GW_Listen")
       Tr.Update = that.translate("GW_Update")
+      Tr.Start = that.translate("GW_Start")
+
       resolve(Tr)
     })
   }

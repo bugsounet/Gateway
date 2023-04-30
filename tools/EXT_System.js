@@ -322,9 +322,9 @@ async function doSystem(cb= null) {
     $("#ST_Date").text(system.SpeedTest.timeLocale)
     $("#ST_DownloadResult").text(system.SpeedTest.download.bandwidth)
     $("#ST_UploadResult").text(system.SpeedTest.upload.bandwidth)
-    $("#ST_PingResult").text(system.SpeedTest.ping.latency)
-    $("#ST_JitterResult").text(system.SpeedTest.ping.jitter)
-    $("#ST_PacketLostResult").text(system.SpeedTest.packetLoss)
+    $("#ST_PingResult").text(+system.SpeedTest.ping.latency.toFixed(2))
+    $("#ST_JitterResult").text(+system.SpeedTest.ping.jitter.toFixed(1))
+    $("#ST_PacketLostResult").text(+system.SpeedTest.packetLoss.toFixed(1))
     $("#ST_ISPResult").text(system.SpeedTest.isp)
     $("#ST_ServerResult").text(system.SpeedTest.server.host)
     $("#ST_NameResult").text(system.SpeedTest.server.name)
@@ -621,6 +621,30 @@ function doStatic() {
   $("#TxPowerNetwork").text(translation.System_TxPowerNetwork)
   $("#QualityNetwork").text(translation.System_QualityNetwork)
   $("#SignalNetwork").text(translation.System_SignalNetwork)
+
+  $("#StorageSystem").text(translation.System_StorageSystem)
+  $("#MountStorage").text(translation.System_MountStorage)
+  $("#UsedStorage").text(translation.System_UsedStorage)
+  $("#PercentStorage").text(translation.System_PercentStorage)
+  $("#TotalStorage").text(translation.System_TotalStorage)
+
+  $("#UptimeSystem").text(translation.System_UptimeSystem)
+  $("#CurrentUptime").text(translation.System_CurrentUptime)
+  $("#SysCurrent").text(translation.System_System)
+  $("#RecordUptime").text(translation.System_RecordUptime)
+  $("#SysRecord").text(translation.System_System)
+
+  $("#ST_Start").text(translation.Start)
+  
+  $("#ProcessSystem").text(translation.System_ProcessSystem)
+  $("#ElectronCPUProcess").text(translation.System_CPU)
+  $("#ElectronMemoryProcess").text(translation.System_Memory)
+  $("#NginxCPUProcess").text(translation.System_CPU)
+  $("#NginxMemoryProcess").text(translation.System_Memory)
+  $("#LibrespotCPUProcess").text(translation.System_CPU)
+  $("#LibrespotMemoryProcess").text(translation.System_Memory)
+  $("#PM2CPUProcess").text(translation.System_CPU)
+  $("#PM2MemoryProcess").text(translation.System_Memory)
 
   $("#SystemDisplayer").removeClass("visually-hidden")
 }
