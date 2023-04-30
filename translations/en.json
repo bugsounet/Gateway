@@ -177,7 +177,7 @@
   "GW_System_CPU": "cpu:",
   "GW_System_Memory": "memory:",
 
-  "GW_System_Logout": "Logout",
+  "GW_Logout": "Logout",
 
   "GW_Delete": "Delete",
   "GW_Install": "Install",
