@@ -25,23 +25,23 @@ class speedtest {
 
   async start(client) {
     log("Check SpeedTest")
-    try {
-      var Check = await this.lib["speedtest-net"]({
+    var ST = new this.lib["speedtest-net"]({
         "serverId": null,
         "acceptLicense": true,
         "acceptGdpr": true,
         "progress": (data) => this.progress(data, client)
-      })
+    }, this.lib)
+    try {
+      var Check = await ST.start()
     } catch (err) {
-      console.log("[GATEWAY] [SPEED]", err.message)
+      console.error("[GATEWAY] [SPEED]", err.message)
     } finally {
       if (Check) {
-        //Check.timestamp = Date.now()
-        Check.timeLocale= this.lib.moment(Date.now()).format("lll")
+        Check.timeLocale = this.lib.moment(Date.now()).format("lll")
         Check.download.bandwidth = this.oToMbps(Check.download.bandwidth)
         Check.upload.bandwidth = this.oToMbps(Check.upload.bandwidth)
         log("Result:", Check)
-        this.Gateway.systemInformation.result.SpeedTest= Check
+        this.Gateway.systemInformation.result.SpeedTest = Check
         client.emit("RESULT")
         log("Done")
       }

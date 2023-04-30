@@ -40,7 +40,17 @@ function libraries(that) {
     { "googleapis": "googleapis" },
     { "google-auth-library": "GoogleAuthLibrary" },
     { "lodash": "_" },
-    { "moment": "moment" }
+    { "moment": "moment" },
+    { "mkdirp": "mkdirp" },
+    { "https": "https" },
+    { "decompress" : "decompress" },
+    { "decompress-tar" : "decompressTar" },
+    { "decompress-tarbz2" : "decompressTarbz2" },
+    { "decompress-targz" : "decompressTargz" },
+    { "decompress-unzip": "decompressUnzip" },
+    { "@felipecrs/decompress-tarxz": "decompressTarXz" },
+    { "tree-kill": "kill" },
+    { "sha256-file": "sha256_file" }
   ]
   let errors = 0
   return new Promise(resolve => {
