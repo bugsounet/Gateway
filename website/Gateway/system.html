@@ -14,9 +14,7 @@
     <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/fonts/material-icons.min.css">
     <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="/assets/css/aos.min.css">
     <link rel="stylesheet" href="/assets/css/animate.min.css">
-    <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
     <link rel="stylesheet" href="/assets/css/alertify-bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/alertify.min.css">
     <link rel="stylesheet" href="/assets/css/Animated-Type-Heading.css">
@@ -64,9 +62,9 @@
                             <div class="center">
                                 <h2 class="bounce animated" id="HOSTNAME" style="color: #ffffff;">Loading...</h2>
                             </div>
-                            <div class="pricing-area text-center">
+                            <div id="SystemDisplayer" class="pricing-area text-center visually-hidden">
                                 <div class="row">
-                                    <div class="col-sm-4 plan price red wow col-sm-6" data-aos="zoom-in" id="Die-Box">
+                                    <div class="col-sm-4 plan price red wow col-sm-6" id="Die-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 id="ShutdownSystem" style="color: var(--bs-light);">&nbsp;</h2>
@@ -75,7 +73,7 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Shutdown" class="btn" href="/SystemDie" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-4 plan price green wow col-sm-6" data-aos="zoom-in" id="Restart-Box">
+                                    <div class="col-sm-4 plan price green wow col-sm-6" id="Restart-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
                                                 <h2 id="RestartSystem" style="color: var(--bs-light);">&nbsp;</h2>
@@ -84,20 +82,20 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Restart" class="btn" href="/SystemRestart" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Version-Box">
+                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Version-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Version</h2>
+                                                <h2 id="VersionSystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item text-start">
                                                 <div class="mx-3">
-                                                    <div class="text-lg-start"><span>MagicMirror:&nbsp;<span id="MMVersion">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>Electron:&nbsp;<span id="ElectronVersion">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>MagicMirror Node Version:&nbsp;<span id="NODEMM">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>Node Version:&nbsp;<span id="NODECORE">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>NPM Version:&nbsp;<span id="NPM">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>OS:&nbsp;<span id="OS">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>Kernel:&nbsp;<span id="KERNEL">&nbsp;</span></span></div>
+                                                    <div class="text-lg-start"><span>MagicMirror²:&nbsp;</span><span id="MMVersion">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span>Electron:&nbsp;</span><span id="ElectronVersion">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span>MagicMirror² Node:&nbsp;</span><span id="NODEMM">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span id="NodeVersion">&nbsp; &nbsp;</span><span>&nbsp;</span><span id="NODECORE">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span id="NPMVersion">&nbsp; &nbsp;</span><span>&nbsp;</span><span id="NPM">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span id="OSVersion">&nbsp; &nbsp;</span><span>&nbsp;</span><span id="OS">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span id="KernelVersion">&nbsp; &nbsp;</span><span>&nbsp;</span><span id="KERNEL">&nbsp;</span></div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -105,19 +103,19 @@
                                     <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="CPU-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">CPU</h2>
+                                                <h2 id="CPUSystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item text-start">
                                                 <div class="mx-3">
-                                                    <div class="text-lg-start"><span>CPU:&nbsp;<span id="CPU">&nbsp;</span></span></div>
-                                                    <div class="text-lg-start"><span>Speed:&nbsp;<span id="SPEED">&nbsp;</span></span></div>
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Current Load:&nbsp;</span><span id="LoadText"></span>
+                                                    <div class="text-lg-start"><span id="TypeCPU">&nbsp; &nbsp;</span><span>&nbsp;</span><span id="CPU">&nbsp;</span></div>
+                                                    <div class="text-lg-start"><span id="SpeedCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="SPEED">&nbsp;</span></div>
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="CurrentLoadCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="LoadText"></span>
                                                         <div class="flex-fill progress" id="Load" style="background: #212121;">
                                                             <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="LoadValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
-                                                    <div class="text-lg-start"><span>Governor:&nbsp;<span id="GOVERNOR">&nbsp;</span></span></div>
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Temperature:&nbsp;</span><span id="TempText"></span>
+                                                    <div class="text-lg-start"><span id="GovernorCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="GOVERNOR">&nbsp;</span></div>
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="TempCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="TempText"></span>
                                                         <div class="flex-fill progress" id="Temp" style="background: #212121;">
                                                             <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="TempValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
@@ -129,18 +127,18 @@
                                     <div class="col-sm-6 col-md-3 bounce animated plan price default wow col-md-6" id="Memory-Box">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Memory</h2>
+                                                <h2 id="MemorySystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item text-start">
                                                 <div class="mx-3">
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Memory:&nbsp;</span><span id="MemoryText"></span><span id="MemoryText2" class="visually-hidden">&nbsp; /</span>
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="TypeMemory">&nbsp;</span><span>&nbsp;</span><span id="MemoryText"></span><span id="MemoryText2" class="visually-hidden">&nbsp; /</span>
                                                         <div class="flex-fill progress" id="Memory" style="background: #212121;">
                                                             <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="MemoryPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="MemoryTotal">0gb&nbsp;</span>
                                                     </div>
                                                 </div>
                                                 <div class="mx-3">
-                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span>Swap:&nbsp;</span><span id="SwapText"></span><span id="SwapText2" class="visually-hidden">&nbsp; /</span>
+                                                    <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="SwapMemory">&nbsp;</span><span>&nbsp;</span><span id="SwapText"></span><span id="SwapText2" class="visually-hidden">&nbsp; /</span>
                                                         <div class="flex-fill progress" id="Swap" style="background: #212121;">
                                                             <div id="SwapDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="SwapPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="SwapTotal">0gb&nbsp;</span>
@@ -159,24 +157,24 @@
 	<span class="bar-3"></span>
 	<span class="bar-4"></span>
 </i></div>
-                                                    <div class="flex-fill align-self-center"><span><strong><span style="color: var(--bs-light);">Network</span></strong></span></div>
+                                                    <div class="flex-fill align-self-center" style="font-weight: bold;color: rgb(248,249,252);"><span id="NetworkSystem">&nbsp;</span></div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="mx-3">
-                                                    <div class="d-flex"><span>IP:&nbsp;</span><span id="IP"></span></div>
-                                                    <div class="d-flex"><span>Interface:&nbsp;</span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-ethernet text-secondary visually-hidden" id="wired-icon" style="margin-left: 5px;font-size: 21px;margin-right: 5px;">
+                                                    <div class="d-flex"><span id="IPNetwork">&nbsp;</span><span>&nbsp;</span><span id="IP"></span></div>
+                                                    <div class="d-flex"><span id="InterfaceNetwork">&nbsp;</span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-ethernet text-secondary visually-hidden" id="wired-icon" style="margin-left: 5px;font-size: 21px;margin-right: 5px;">
                                                             <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2ZM1 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2Zm13 11.5v-7a.5.5 0 0 0-.5-.5H12V4.5a.5.5 0 0 0-.5-.5h-1v-.5A.5.5 0 0 0 10 3H6a.5.5 0 0 0-.5.5V4h-1a.5.5 0 0 0-.5.5V6H2.5a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5ZM3.75 11a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25h-.5Zm2 0a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25h-.5Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5ZM9.75 11a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25h-.5Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5Z"></path>
                                                         </svg><i class="material-icons text-secondary visually-hidden" id="wireless-icon" style="margin-left: 5px;font-size: 22px;margin-right: 5px;">wifi</i><span id="interface"></span></div>
-                                                    <div id="SpeedArea" class="d-flex visually-hidden"><span>Speed:&nbsp;</span><span id="speed">0</span><span>&nbsp;Mbit/s</span></div>
-                                                    <div id="DuplexArea" class="d-flex visually-hidden"><span>Duplex:&nbsp;</span><span id="duplex"></span></div>
-                                                    <div id="wirelessInfo" class="visually-hidden" style="margin-top: 10px;"><span class="fw-bold text-primary align-items-xl-center">Wireless info</span>
-                                                        <div class="d-flex"><span>SSID:&nbsp;</span><span id="ssid"></span></div>
-                                                        <div class="d-flex"><span>Bit Rate:&nbsp;</span><span id="rate">0</span><span>&nbsp;Mb/s</span></div>
-                                                        <div class="d-flex"><span>Frequency:&nbsp;</span><span id="frequency">0</span><span>&nbsp;GHz</span></div>
-                                                        <div class="d-flex"><span>Tx Power:&nbsp;</span><span id="txPower">0</span><span>&nbsp;dBm</span></div>
-                                                        <div class="d-flex"><span>Quality:&nbsp;</span><span id="quality">0</span><span>&nbsp;(</span><span id="qualityMax">0</span><span>)</span></div>
-                                                        <div class="d-flex"><span>Signal:&nbsp;</span><span id="signalLevel">0</span><span>&nbsp;dBm</span></div>
+                                                    <div id="SpeedArea" class="d-flex visually-hidden"><span id="SpeedNetwork">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="speed">0</span><span>&nbsp;Mbit/s</span></div>
+                                                    <div id="DuplexArea" class="d-flex visually-hidden-"><span id="DuplexNetwork">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="duplex"></span></div>
+                                                    <div id="wirelessInfo" class="visually-hidden" style="margin-top: 10px;"><span class="fw-bold text-primary align-items-xl-center" id="WirelessInfo">&nbsp;</span>
+                                                        <div class="d-flex"><span id="SSIDNetwork">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="ssid"></span></div>
+                                                        <div class="d-flex"><span id="BitRateNetwork">&nbsp;</span><span>&nbsp;</span><span id="rate">0</span><span>&nbsp;Mb/s</span></div>
+                                                        <div class="d-flex"><span id="FrequencyNetwork">&nbsp;</span><span>&nbsp;</span><span id="frequency">0</span><span>&nbsp;GHz</span></div>
+                                                        <div class="d-flex"><span id="TxPowerNetwork">&nbsp;</span><span>&nbsp;</span><span id="txPower">0</span><span>&nbsp;dBm</span></div>
+                                                        <div class="d-flex"><span id="QualityNetwork">&nbsp;</span><span>&nbsp;</span><span id="quality">0</span><span>&nbsp;(</span><span id="qualityMax">0</span><span>)</span></div>
+                                                        <div class="d-flex"><span id="SignalNetwork">&nbsp;</span><span>&nbsp;</span><span id="signalLevel">0</span><span>&nbsp;dBm</span></div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -345,7 +343,6 @@
     </div>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/assets/js/aos.min.js"></script>
     <script src="/assets/js/bs-init.js"></script>
     <script src="/EXT_Fetch.js" crossorigin="anonymous"></script>
     <script src="/EXT_System.js" crossorigin="anonymous"></script>

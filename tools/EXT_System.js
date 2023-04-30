@@ -78,11 +78,6 @@ async function doSystem(cb= null) {
   SystemInterval = null
 
   system = await checkSystem()
-  console.log(translation)
-  $("#ShutdownSystem").text(translation.System_Box_Shutdown)
-  $("#Shutdown").text(translation.System_Shutdown)
-  $("#RestartSystem").text(translation.System_Box_Restart)
-  $("#Restart").text(translation.System_Restart)
 
   progressOrText(system)
   window.addEventListener('resize', function() {
@@ -95,17 +90,8 @@ async function doSystem(cb= null) {
     doSystem()
   }, 15000)
 
-  $('#HOSTNAME').text(system.HOSTNAME)
-  // versions
-  $('#MMVersion').text(system.VERSION.MagicMirror)
-  $('#ElectronVersion').text(system.VERSION.ELECTRON)
-  $('#NODEMM').text(system.VERSION.NODEMM)
-  $('#NODECORE').text(system.VERSION.NODECORE)
-  $('#NPM').text(system.VERSION.NPM)
-  $('#OS').text(system.VERSION.OS)
-  $('#KERNEL').text(system.VERSION.KERNEL)
+
   //CPU
-  $('#CPU').text(system.CPU.type)
   $('#SPEED').text(system.CPU.speed)
   $('#GOVERNOR').text(system.CPU.governor)
 
@@ -391,7 +377,10 @@ async function doSystem(cb= null) {
     $("#pm2NOK").removeClass("visually-hidden")
   }
 
-  if (cb) cb()
+  if (cb) {
+    doStatic()
+    cb()
+  }
 }
 
 function checkPartColor(id, value) {
@@ -583,6 +572,57 @@ function doSpeedTest() {
   socketSystem.on("RESULT", () => {
     $("#ST_Start").removeClass("visually-hidden")
   })
+}
+
+function doStatic() {
+  // Display static values
+  $('#HOSTNAME').text(system.HOSTNAME)
+  $('#CPU').text(system.CPU.type)
+  $('#MMVersion').text(system.VERSION.MagicMirror)
+  $('#ElectronVersion').text(system.VERSION.ELECTRON)
+  $('#NODEMM').text(system.VERSION.NODEMM)
+  $('#NODECORE').text(system.VERSION.NODECORE)
+  $('#NPM').text(system.VERSION.NPM)
+  $('#OS').text(system.VERSION.OS)
+  $('#KERNEL').text(system.VERSION.KERNEL)
+
+  // translate all static
+  $("#ShutdownSystem").text(translation.System_Box_Shutdown)
+  $("#Shutdown").text(translation.System_Shutdown)
+  $("#RestartSystem").text(translation.System_Box_Restart)
+  $("#Restart").text(translation.System_Restart)
+
+  $("#VersionSystem").text(translation.System_Box_Version)
+  $("#NodeVersion").text(translation.System_NodeVersion)
+  $("#NPMVersion").text(translation.System_NPMVersion)
+  $("#OSVersion").text(translation.System_OSVersion)
+  $("#KernelVersion").text(translation.System_KernelVersion)
+
+  $("#CPUSystem").text(translation.System_CPUSystem)
+  $("#TypeCPU").text(translation.System_TypeCPU)
+  $("#SpeedCPU").text(translation.System_SpeedCPU)
+  $("#CurrentLoadCPU").text(translation.System_CurrentLoadCPU)
+  $("#GovernorCPU").text(translation.System_GovernorCPU)
+  $("#TempCPU").text(translation.System_TempCPU)
+
+  $("#MemorySystem").text(translation.System_MemorySystem)
+  $("#TypeMemory").text(translation.System_TypeMemory)
+  $("#SwapMemory").text(translation.System_SwapMemory)
+
+  $("#NetworkSystem").text(translation.System_NetworkSystem)
+  $("#IPNetwork").text(translation.System_IPNetwork)
+  $("#InterfaceNetwork").text(translation.System_InterfaceNetwork)
+  $("#SpeedNetwork").text(translation.System_SpeedNetwork)
+  $("#DuplexNetwork").text(translation.System_DuplexNetwork)
+  $("#WirelessInfo").text(translation.System_WirelessInfo)
+  $("#SSIDNetwork").text(translation.System_SSIDNetwork)
+  $("#BitRateNetwork").text(translation.System_BitRateNetwork)
+  $("#FrequencyNetwork").text(translation.System_FrequencyNetwork)
+  $("#TxPowerNetwork").text(translation.System_TxPowerNetwork)
+  $("#QualityNetwork").text(translation.System_QualityNetwork)
+  $("#SignalNetwork").text(translation.System_SignalNetwork)
+
+  $("#SystemDisplayer").removeClass("visually-hidden")
 }
 
 
