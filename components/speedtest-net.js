@@ -1,11 +1,14 @@
 /*
-
 Speedtest.net client.
 
 The MIT License (MIT)
 
+Original: https://github.com/ddsol/speedtest.net
 Copyright (c) 2014 Han de Boer
-Review by @bugsounet for MagicMirror/Gateway using
+-----
+Review by @bugsounet for MagicMirror²/Gateway using and Rewrite with Class
+Copyright (c) 2023 bugsounet
+-----
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
