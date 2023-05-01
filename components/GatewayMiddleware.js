@@ -1,5 +1,4 @@
 var log = (...args) => { /* do nothing */ }
-/** @to debug: regarder si les check (res.user) sont placés (dans les .post) **/
 
 /** init function **/
 function initialize(that) {
