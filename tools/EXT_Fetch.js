@@ -320,6 +320,7 @@ function doTranslateNavBar() {
   ) path = "/EXT"
   if (path == "/EditMMConfig") path = "/MMConfig"
   if (path == "/Die" || path == "/Restart") path = "/Tools"
+  if (path == "/SystemDie" || path == "/SystemRestart") path = "/System"
   if (path == "/ptyProcess") path = "/Terminal"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 }

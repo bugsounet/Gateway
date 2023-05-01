@@ -97,112 +97,112 @@ async function doSystem(cb= null) {
 
   $("#TempText").text(system.CPU.temp.C +"°c")
   if (system.CPU.temp.C <= 50) {
-    $("#TempDisplay").removeClass("bg-warning")
-    $("#LoadDisplay").removeClass("bg-danger")
-    $("#TempDisplay").addClass("bg-success")
+    $("#TempDisplay").removeClass("bg-google-yellow")
+    $("#LoadDisplay").removeClass("bg-google-red")
+    $("#TempDisplay").addClass("bg-google-green")
 
-    $("#TempText").removeClass("text-warning")
-    $("#TempText").removeClass("text-danger")
-    $("#TempText").addClass("text-success")
+    $("#TempText").removeClass("text-google-yellow")
+    $("#TempText").removeClass("text-google-red")
+    $("#TempText").addClass("text-google-green")
   } else if (system.CPU.temp.C > 50 && system.CPU.temp.C <= 80) {
-    $("#TempDisplay").removeClass("bg-success")
-    $("#TempDisplay").removeClass("bg-danger")
-    $("#TempDisplay").addClass("bg-warning")
+    $("#TempDisplay").removeClass("bg-google-green")
+    $("#TempDisplay").removeClass("bg-google-red")
+    $("#TempDisplay").addClass("bg-google-yellow")
 
-    $("#TempText").removeClass("text-success")
-    $("#TempText").removeClass("text-danger")
-    $("#TempText").addClass("text-warning")
+    $("#TempText").removeClass("text-google-green")
+    $("#TempText").removeClass("text-google-red")
+    $("#TempText").addClass("text-google-yellow")
   } else if (system.CPU.temp.C > 80) {
-    $("#TempDisplay").removeClass("bg-success")
-    $("#TempDisplay").removeClass("bg-warning")
-    $("#TempDisplay").addClass("bg-danger")
+    $("#TempDisplay").removeClass("bg-google-green")
+    $("#TempDisplay").removeClass("bg-google-yellow")
+    $("#TempDisplay").addClass("bg-google-red")
 
-    $("#TempText").removeClass("text-success")
-    $("#TempText").removeClass("text-warning")
-    $("#TempText").addClass("text-danger")
+    $("#TempText").removeClass("text-google-green")
+    $("#TempText").removeClass("text-google-yellow")
+    $("#TempText").addClass("text-google-red")
   }
 
   $("#MemoryText").text(system.MEMORY.used)
   $('#MemoryTotal').text(system.MEMORY.total)
   if (system.MEMORY.percent <= 50) {
-    $("#MemoryDisplay").removeClass("bg-warning")
-    $("#MemoryDisplay").removeClass("bg-danger")
-    $("#MemoryDisplay").addClass("bg-success")
+    $("#MemoryDisplay").removeClass("bg-google-yellow")
+    $("#MemoryDisplay").removeClass("bg-google-red")
+    $("#MemoryDisplay").addClass("bg-google-green")
 
-    $("#MemoryText").removeClass("text-warning")
-    $("#MemoryText").removeClass("text-danger")
-    $("#MemoryText").addClass("text-success")
+    $("#MemoryText").removeClass("text-google-yellow")
+    $("#MemoryText").removeClass("text-google-red")
+    $("#MemoryText").addClass("text-google-green")
   } else if (system.MEMORY.percent > 50 && system.MEMORY.percent <= 80) {
-    $("#MemoryDisplay").removeClass("bg-success")
-    $("#MemoryDisplay").removeClass("bg-danger")
-    $("#MemoryDisplay").addClass("bg-warning")
+    $("#MemoryDisplay").removeClass("bg-google-green")
+    $("#MemoryDisplay").removeClass("bg-google-red")
+    $("#MemoryDisplay").addClass("bg-google-yellow")
 
-    $("#MemoryText").removeClass("text-success")
-    $("#MemoryText").removeClass("text-danger")
-    $("#MemoryText").addClass("text-warning")
+    $("#MemoryText").removeClass("text-google-green")
+    $("#MemoryText").removeClass("text-google-red")
+    $("#MemoryText").addClass("text-google-yellow")
   } else if (system.MEMORY.percent > 80) {
-    $("#MemoryDisplay").removeClass("bg-success")
-    $("#MemoryDisplay").removeClass("bg-warning")
-    $("#MemoryDisplay").addClass("bg-danger")
+    $("#MemoryDisplay").removeClass("bg-google-green")
+    $("#MemoryDisplay").removeClass("bg-google-yellow")
+    $("#MemoryDisplay").addClass("bg-google-red")
 
-    $("#MemoryText").removeClass("text-success")
-    $("#MemoryText").removeClass("text-warning")
-    $("#MemoryText").addClass("text-danger")
+    $("#MemoryText").removeClass("text-google-green")
+    $("#MemoryText").removeClass("text-google-yellow")
+    $("#MemoryText").addClass("text-google-red")
   }
 
   $("#SwapText").text(system.MEMORY.swapUsed)
   $('#SwapTotal').text(system.MEMORY.swapTotal)
   if (system.MEMORY.swapPercent <= 50) {
-    $("#SwapDisplay").removeClass("bg-warning")
-    $("#SwapDisplay").removeClass("bg-danger")
-    $("#SwapDisplay").addClass("bg-success")
+    $("#SwapDisplay").removeClass("bg-google-yellow")
+    $("#SwapDisplay").removeClass("bg-google-red")
+    $("#SwapDisplay").addClass("bg-google-green")
 
-    $("#SwapText").removeClass("text-warning")
-    $("#SwapText").removeClass("text-danger")
-    $("#SwapText").addClass("text-success")
+    $("#SwapText").removeClass("text-google-yellow")
+    $("#SwapText").removeClass("text-google-red")
+    $("#SwapText").addClass("text-google-green")
   } else if (system.MEMORY.swapPercent > 50 && system.MEMORY.swapPercent <= 80) {
-    $("#SwapDisplay").removeClass("bg-success")
-    $("#SwapDisplay").removeClass("bg-danger")
-    $("#SwapDisplay").addClass("bg-warning")
+    $("#SwapDisplay").removeClass("bg-google-green")
+    $("#SwapDisplay").removeClass("bg-google-red")
+    $("#SwapDisplay").addClass("bg-google-yellow")
 
-    $("#SwapText").removeClass("text-success")
-    $("#SwapText").removeClass("text-danger")
-    $("#SwapText").addClass("text-warning")
+    $("#SwapText").removeClass("text-google-green")
+    $("#SwapText").removeClass("text-google-red")
+    $("#SwapText").addClass("text-google-yellow")
   } else if (system.MEMORY.swapPercent > 80) {
-    $("#SwapDisplay").removeClass("bg-success")
-    $("#SwapDisplay").removeClass("bg-warning")
-    $("#SwapDisplay").addClass("bg-danger")
+    $("#SwapDisplay").removeClass("bg-google-green")
+    $("#SwapDisplay").removeClass("bg-google-yellow")
+    $("#SwapDisplay").addClass("bg-google-red")
 
-    $("#SwapText").removeClass("text-success")
-    $("#SwapText").removeClass("text-warning")
-    $("#SwapText").addClass("text-danger")
+    $("#SwapText").removeClass("text-google-green")
+    $("#SwapText").removeClass("text-google-yellow")
+    $("#SwapText").addClass("text-google-red")
   }
 
   $("#LoadText").text(system.CPU.usage +"%")
   if (system.CPU.usage <= 50) {
-    $("#LoadDisplay").removeClass("bg-warning")
-    $("#LoadDisplay").removeClass("bg-danger")
-    $("#LoadDisplay").addClass("bg-success")
+    $("#LoadDisplay").removeClass("bg-google-yellow")
+    $("#LoadDisplay").removeClass("bg-google-red")
+    $("#LoadDisplay").addClass("bg-google-green")
 
-    $("#LoadText").removeClass("text-warning")
-    $("#LoadText").removeClass("text-danger")
-    $("#LoadText").addClass("text-success")
+    $("#LoadText").removeClass("text-google-yellow")
+    $("#LoadText").removeClass("text-google-red")
+    $("#LoadText").addClass("text-google-green")
   } else if (system.CPU.usage > 50 && system.CPU.usage <= 80) {
-    $("#LoadDisplay").removeClass("bg-success")
-    $("#LoadDisplay").removeClass("bg-danger")
-    $("#LoadDisplay").addClass("bg-warning")
+    $("#LoadDisplay").removeClass("bg-google-green")
+    $("#LoadDisplay").removeClass("bg-google-red")
+    $("#LoadDisplay").addClass("bg-google-yellow")
 
-    $("#LoadText").removeClass("text-success")
-    $("#LoadText").removeClass("text-danger")
-    $("#LoadText").addClass("text-warning")
+    $("#LoadText").removeClass("text-google-green")
+    $("#LoadText").removeClass("text-google-red")
+    $("#LoadText").addClass("text-google-yellow")
   } else if (system.CPU.usage > 80) {
-    $("#LoadDisplay").removeClass("bg-success")
-    $("#LoadDisplay").removeClass("bg-warning")
-    $("#LoadDisplay").addClass("bg-danger")
+    $("#LoadDisplay").removeClass("bg-google-green")
+    $("#LoadDisplay").removeClass("bg-google-yellow")
+    $("#LoadDisplay").addClass("bg-google-red")
 
-    $("#LoadText").removeClass("text-success")
-    $("#LoadText").removeClass("text-warning")
-    $("#LoadText").addClass("text-danger")
+    $("#LoadText").removeClass("text-google-green")
+    $("#LoadText").removeClass("text-google-yellow")
+    $("#LoadText").addClass("text-google-red")
   }
 
   // try to create proper storage
@@ -238,7 +238,7 @@ async function doSystem(cb= null) {
       container.style.background = "#212121"
         var progress = document.createElement("div")
         progress.id = "StorageDisplay"+ id
-        progress.className= "progress-bar progress-bar-striped progress-bar-animated bg-success"
+        progress.className= "progress-bar progress-bar-striped progress-bar-animated bg-google-green"
         this.checkPartColor(id, values.use)
       container.appendChild(progress)
           var usedValue = document.createElement("span")
@@ -394,31 +394,31 @@ function checkPartColor(id, value) {
   }
 
   if (value <= 50) {
-    $("#StorageDisplay"+id).removeClass("bg-warning")
-    $("#StorageDisplay"+id).removeClass("bg-danger")
-    $("#StorageDisplay"+id).addClass("bg-success")
+    $("#StorageDisplay"+id).removeClass("bg-google-yellow")
+    $("#StorageDisplay"+id).removeClass("bg-google-red")
+    $("#StorageDisplay"+id).addClass("bg-google-green")
 
-    $("#StorageText"+id).removeClass("text-warning")
-    $("#StorageText"+id).removeClass("text-danger")
-    $("#StorageText"+id).addClass("text-success")
+    $("#StorageText"+id).removeClass("text-google-yellow")
+    $("#StorageText"+id).removeClass("text-google-red")
+    $("#StorageText"+id).addClass("text-google-green")
 
   } else if (value > 50 && value <= 80) {
-    $("#StorageDisplay"+id).removeClass("bg-success")
-    $("#StorageDisplay"+id).removeClass("bg-danger")
-    $("#StorageDisplay"+id).addClass("bg-warning")
+    $("#StorageDisplay"+id).removeClass("bg-google-green")
+    $("#StorageDisplay"+id).removeClass("bg-google-red")
+    $("#StorageDisplay"+id).addClass("bg-google-yellow")
 
-    $("#StorageText"+id).removeClass("text-success")
-    $("#StorageText"+id).removeClass("text-danger")
-    $("#StorageText"+id).addClass("text-warning")
+    $("#StorageText"+id).removeClass("text-google-green")
+    $("#StorageText"+id).removeClass("text-google-red")
+    $("#StorageText"+id).addClass("text-google-yellow")
 
   } else if (value > 80) {
-    $("#StorageDisplay"+id).removeClass("bg-success")
-    $("#StorageDisplay"+id).removeClass("bg-warning")
-    $("#StorageDisplay"+id).addClass("bg-danger")
+    $("#StorageDisplay"+id).removeClass("bg-google-green")
+    $("#StorageDisplay"+id).removeClass("bg-google-yellow")
+    $("#StorageDisplay"+id).addClass("bg-google-red")
 
-    $("#StorageText"+id).removeClass("text-success")
-    $("#StorageText"+id).removeClass("text-warning")
-    $("#StorageText"+id).addClass("text-danger")
+    $("#StorageText"+id).removeClass("text-google-green")
+    $("#StorageText"+id).removeClass("text-google-yellow")
+    $("#StorageText"+id).addClass("text-google-red")
   }
 }
 
@@ -635,7 +635,9 @@ function doStatic() {
   $("#SysRecord").text(translation.System_System)
 
   $("#ST_Start").text(translation.Start)
-  
+
+  $("#STResult").text(translation.System_SpeedTestResult)
+
   $("#ProcessSystem").text(translation.System_ProcessSystem)
   $("#ElectronCPUProcess").text(translation.System_CPU)
   $("#ElectronMemoryProcess").text(translation.System_Memory)

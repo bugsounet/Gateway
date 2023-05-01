@@ -1,5 +1,4 @@
 var log = (...args) => { /* do nothing */ }
-/** @to debug: regarder si les check (res.user) sont placés (dans les .post) **/
 
 /** init function **/
 function initialize(that) {
@@ -113,8 +112,8 @@ function createGW(that) {
         that.lib.fetch(remoteFile)
           .then(response => response.json())
           .then(data => {
-            result.last = data.rev
-            if (that.lib.semver.gt(result.last, result.rev)) result.needUpdate = true
+            result.last = data.version
+            if (that.lib.semver.gt(result.last, result.v)) result.needUpdate = true
             res.send(result)
           })
           .catch(e => {
