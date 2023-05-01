@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/assets/css/alertify.min.css">
     <link rel="stylesheet" href="/assets/css/Animated-Type-Heading.css">
     <link rel="stylesheet" href="/assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="/assets/css/bugsounet.css">
     <link rel="stylesheet" href="/assets/css/Datatable.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css">
     <link rel="stylesheet" href="/assets/css/Navbar.css">
@@ -28,7 +29,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 toggled" style="background: linear-gradient(0deg, #212121, #191919 80%);">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion p-0 toggled bg-gradient-left">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-google float-end invisible"></i><svg viewBox="0 0 24 24" class=""><g class=""><path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"></path><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"></path><path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z"></path><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"></path></g></svg></div>
                     <div class="sidebar-brand-text mx-3"><span>Gateway</span></div>
@@ -48,8 +49,8 @@
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content" style="background-color: #212121;">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="background: linear-gradient(-90deg, #212121, #191919 90%);">
+            <div id="content" class="bg-google-grey-21">
+                <nav class="navbar navbar-light navbar-expand shadow mb-4 topbar static-top bg-gradient-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <div class="container">
                             <div class="alert alert-success text-center invisible" role="alert" id="alert"><span id="messageText">Message Testing !</span></div>
@@ -60,7 +61,7 @@
                     <section class="pricing-table" style="padding: 0px;">
                         <div class="container">
                             <div class="center">
-                                <h2 class="bounce animated" id="HOSTNAME" style="color: #ffffff;">Loading...</h2>
+                                <h2 class="bounce animated text-google-white" id="HOSTNAME">Loading...</h2>
                             </div>
                             <div id="SystemDisplayer" class="pricing-area text-center visually-hidden">
                                 <div class="row">
@@ -110,14 +111,14 @@
                                                     <div class="text-lg-start"><span id="TypeCPU">&nbsp; &nbsp;</span><span>&nbsp;</span><span id="CPU">&nbsp;</span></div>
                                                     <div class="text-lg-start"><span id="SpeedCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="SPEED">&nbsp;</span></div>
                                                     <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="CurrentLoadCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="LoadText"></span>
-                                                        <div class="flex-fill progress" id="Load" style="background: #212121;">
-                                                            <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="LoadValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                        <div class="flex-fill progress bg-google-grey-21" id="Load">
+                                                            <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-google-green" style="min-width: 30px;"><span id="LoadValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
                                                     <div class="text-lg-start"><span id="GovernorCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="GOVERNOR">&nbsp;</span></div>
                                                     <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="TempCPU">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="TempText"></span>
-                                                        <div class="flex-fill progress" id="Temp" style="background: #212121;">
-                                                            <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="TempValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                        <div class="flex-fill progress bg-google-grey-21" id="Temp">
+                                                            <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-google-green" style="min-width: 30px;"><span id="TempValue" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,15 +133,15 @@
                                             <li class="list-group-item text-start">
                                                 <div class="mx-3">
                                                     <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="TypeMemory">&nbsp;</span><span>&nbsp;</span><span id="MemoryText"></span><span id="MemoryText2" class="visually-hidden">&nbsp; /</span>
-                                                        <div class="flex-fill progress" id="Memory" style="background: #212121;">
-                                                            <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="MemoryPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                        <div class="flex-fill progress bg-google-grey-21" id="Memory">
+                                                            <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-google-green" style="min-width: 30px;"><span id="MemoryPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="MemoryTotal">0gb&nbsp;</span>
                                                     </div>
                                                 </div>
                                                 <div class="mx-3">
                                                     <div class="d-flex align-items-center align-items-xl-center text-lg-start"><span id="SwapMemory">&nbsp;</span><span>&nbsp;</span><span id="SwapText"></span><span id="SwapText2" class="visually-hidden">&nbsp; /</span>
-                                                        <div class="flex-fill progress" id="Swap" style="background: #212121;">
-                                                            <div id="SwapDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="min-width: 30px;"><span id="SwapPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
+                                                        <div class="flex-fill progress bg-google-grey-21" id="Swap">
+                                                            <div id="SwapDisplay" class="progress-bar progress-bar-striped progress-bar-animated bg-google-green" style="min-width: 30px;"><span id="SwapPercent" style="color: #000;font-weight: bold;text-align: right;margin-right: 5px;"></span></div>
                                                         </div><span>&nbsp;&nbsp;</span><span id="SwapTotal">0gb&nbsp;</span>
                                                     </div>
                                                 </div>
@@ -208,12 +209,12 @@
                                                 <h2 id="UptimeSystem" style="color: var(--bs-light);">&nbsp;</h2>
                                             </li>
                                             <li class="list-group-item text-start">
-                                                <div class="mx-3"><span class="fw-bold text-primary" id="CurrentUptime">&nbsp;</span></div>
+                                                <div class="mx-3"><span class="fw-bold text-google-blue" id="CurrentUptime">&nbsp;</span></div>
                                                 <div class="mx-5">
                                                     <div class="text-lg-start"><span id="SysCurrent">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="SysUptime">&nbsp;</span></div>
                                                     <div class="text-lg-start"><span>MagicMirror²:&nbsp;</span><span id="MMUptime">&nbsp;</span></div>
                                                 </div>
-                                                <div class="mx-3"><span class="fw-bold text-primary" id="RecordUptime">&nbsp;</span></div>
+                                                <div class="mx-3"><span class="fw-bold text-google-blue" id="RecordUptime">&nbsp;</span></div>
                                                 <div class="mx-5">
                                                     <div class="text-lg-start">
                                                         <div class="text-lg-start"><span id="SysRecord">&nbsp;&nbsp;</span><span>&nbsp;</span><span id="SysUptimeRecord">&nbsp;</span></div>
@@ -264,13 +265,13 @@
                                             </li>
                                             <li class="list-group-item text-start">
                                                 <div id="electron">
-                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="text-success visually-hidden" id="ElectronOK">
+                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" id="ElectronOK" class="visually-hidden text-google-green">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
-                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" class="text-danger" id="ElectronNOK" style="">
+                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" id="ElectronNOK" class="text-google-red" style="">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
-                                                        </svg><span class="fw-bold text-primary">&nbsp;electron</span></div>
+                                                        </svg><span class="fw-bold text-google-blue">&nbsp;electron</span></div>
                                                     <div id="ElectronValues" class="mx-5 visually-hidden">
                                                         <div class="text-lg-start"><span>pid:&nbsp;</span><span id="ElectronPid">&nbsp;</span></div>
                                                         <div class="text-lg-start"><span id="ElectronCPUProcess">&nbsp;</span><span>&nbsp;</span><span id="ElectronCPU">&nbsp;</span><span>%</span></div>
@@ -278,13 +279,13 @@
                                                     </div>
                                                 </div>
                                                 <div id="nginx">
-                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="text-success visually-hidden" id="nginxOK">
+                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" id="nginxOK" class="visually-hidden text-google-green">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
-                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" class="text-danger" id="nginxNOK" style="">
+                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" id="nginxNOK" class="text-google-red" style="">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
-                                                        </svg><span class="fw-bold text-primary">&nbsp;nginx</span></div>
+                                                        </svg><span class="fw-bold text-google-blue">&nbsp;nginx</span></div>
                                                     <div id="nginxValues" class="mx-5 visually-hidden">
                                                         <div class="text-lg-start"><span>pid:&nbsp;</span><span id="nginxPid">&nbsp;</span></div>
                                                         <div class="text-lg-start"><span id="NginxCPUProcess">&nbsp;</span><span>&nbsp;</span><span id="nginxCPU">&nbsp;</span><span>%</span></div>
@@ -292,13 +293,13 @@
                                                     </div>
                                                 </div>
                                                 <div id="librespot">
-                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="text-success visually-hidden" id="LibrespotOK">
+                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" id="LibrespotOK" class="visually-hidden text-google-green">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
-                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" class="text-danger" id="LibrespotNOK" style="">
+                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" id="LibrespotNOK" class="text-google-red" style="">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
-                                                        </svg><span class="fw-bold text-primary">&nbsp;librespot</span></div>
+                                                        </svg><span class="fw-bold text-google-blue">&nbsp;librespot</span></div>
                                                     <div id="LibrespotValues" class="mx-5 visually-hidden">
                                                         <div class="text-lg-start"><span>pid:&nbsp;</span><span id="LibrespotPid">&nbsp;</span></div>
                                                         <div class="text-lg-start"><span id="LibrespotCPUProcess">&nbsp;</span><span>&nbsp;</span><span id="LibrespotCPU">&nbsp;</span><span>%</span></div>
@@ -306,13 +307,13 @@
                                                     </div>
                                                 </div>
                                                 <div id="PM2">
-                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="text-success visually-hidden" id="pm2OK">
+                                                    <div class="d-xl-flex align-items-xl-center mx-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" id="pm2OK" class="visually-hidden text-google-green">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
-                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" class="text-danger" id="pm2NOK" style="">
+                                                        </svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" id="pm2NOK" class="text-google-red" style="">
                                                             <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                                             <path d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path>
-                                                        </svg><span class="fw-bold text-primary">&nbsp;pm2</span></div>
+                                                        </svg><span class="fw-bold text-google-blue">&nbsp;pm2</span></div>
                                                     <div id="pm2Values" class="mx-5 visually-hidden">
                                                         <div class="text-lg-start"><span>pid:&nbsp;</span><span id="pm2Pid">&nbsp;</span></div>
                                                         <div class="text-lg-start"><span id="PM2CPUProcess">&nbsp;</span><span>&nbsp;</span><span id="pm2CPU">&nbsp;</span><span>%</span></div>
@@ -328,7 +329,7 @@
                     </section>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer" style="background-color: #212121 !important;">
+            <footer class="sticky-footer bg-google-grey-21">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>bugsounet is not a Magician !&nbsp;</span></div>
                 </div>

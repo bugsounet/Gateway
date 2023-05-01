@@ -46,7 +46,7 @@ function doLogin() {
           $("#Login-submit").addClass('disabled')
         }
         else {
-          alertify.success($('#username').val() + ", " + translation.Login_Welcome)
+          alertify.success(translation.Login_Welcome)
           setTimeout( () => { $(location).attr('href',"/") } , 2000 )
         }
       })
