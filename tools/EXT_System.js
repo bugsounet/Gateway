@@ -95,7 +95,8 @@ async function doSystem(cb= null) {
   $('#SPEED').text(system.CPU.speed)
   $('#GOVERNOR').text(system.CPU.governor)
 
-  $("#TempText").text(system.CPU.temp.C +"°c")
+  $("#TempText").text((versionGW.imperial ? system.CPU.temp.F : system.CPU.temp.C) + "°")
+
   if (system.CPU.temp.C <= 50) {
     $("#TempDisplay").removeClass("bg-google-yellow")
     $("#LoadDisplay").removeClass("bg-google-red")
@@ -266,12 +267,12 @@ async function doSystem(cb= null) {
   $('#MMUptimeRecord').text(system.UPTIME.recordMMDHM)
 
   if (SystemFirstScan) {
-    this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
+    this.makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", (versionGW.imperial ? system.CPU.temp.F : system.CPU.temp.C) + "°")
     this.makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
     this.makeProgress(system.MEMORY.swapPercent, "#SwapDisplay", "#SwapPercent", system.MEMORY.swapUsed)
     this.makeProgress(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")
   } else {
-    this.makeRefresh(system.CPU.temp.C, "#TempDisplay", "#TempValue", system.CPU.temp.C+"°c")
+    this.makeRefresh(system.CPU.temp.C, "#TempDisplay", "#TempValue", (versionGW.imperial ? system.CPU.temp.F : system.CPU.temp.C) + "°")
     this.makeRefresh(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used)
     this.makeRefresh(system.MEMORY.swapPercent, "#SwapDisplay", "#SwapPercent", system.MEMORY.swapUsed)
     this.makeRefresh(system.CPU.usage, "#LoadDisplay", "#LoadValue", system.CPU.usage+"%")

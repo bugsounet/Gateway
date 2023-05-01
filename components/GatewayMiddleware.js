@@ -107,6 +107,7 @@ function createGW(that) {
           rev: require('../package.json').rev,
           lang: that.Gateway.language,
           last: 0,
+          imperial: (that.Gateway.MMConfig.units == "imperial") ? true : false,
           needUpdate: false
         }
         that.lib.fetch(remoteFile)
