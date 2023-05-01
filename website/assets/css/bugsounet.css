@@ -70,3 +70,8 @@
   color: #ffffff;
 }
 
+.text-overflow-hidden {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

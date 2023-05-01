@@ -182,6 +182,7 @@ class GWTranslations {
       Tr.System_ProcessSystem = that.translate("GW_System_ProcessSystem")
       Tr.System_CPU = that.translate("GW_System_CPU")
       Tr.System_Memory = that.translate("GW_System_Memory")
+      Tr.System_SpeedTestResult = that.translate("GW_System_SpeedTestResult")
 
       Tr.Logout = that.translate("GW_Logout")
 

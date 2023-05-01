@@ -176,6 +176,7 @@
   "GW_System_ProcessSystem": "Process",
   "GW_System_CPU": "cpu:",
   "GW_System_Memory": "memory:",
+  "GW_System_SpeedTestResult": "SpeedTest Result",
 
   "GW_Logout": "Logout",
 

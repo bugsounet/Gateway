@@ -635,7 +635,9 @@ function doStatic() {
   $("#SysRecord").text(translation.System_System)
 
   $("#ST_Start").text(translation.Start)
-  
+
+  $("#STResult").text(translation.System_SpeedTestResult)
+
   $("#ProcessSystem").text(translation.System_ProcessSystem)
   $("#ElectronCPUProcess").text(translation.System_CPU)
   $("#ElectronMemoryProcess").text(translation.System_Memory)
