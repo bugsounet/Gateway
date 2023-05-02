@@ -177,6 +177,11 @@
   "GW_System_CPU": "cpu:",
   "GW_System_Memory": "memory:",
   "GW_System_SpeedTestResult": "SpeedTest Result",
+  "GW_System_GoogleAssistant": "Google Assistant",
+  "GW_System_CurrentlyRunning": "Currently Running",
+  "GW_System_NamePlugin": "Name",
+  "GW_System_VersionPlugin": "Version",
+  "GW_System_RevPlugin": "Revision",
 
   "GW_Logout": "Abmelden",
 

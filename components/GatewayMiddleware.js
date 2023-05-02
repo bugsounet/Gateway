@@ -877,6 +877,11 @@ function createGW(that) {
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
+    .get("/activeVersion", (req,res) => {
+      if (req.user) res.send(that.Gateway.activeVersion)
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
     .get("/download/*", (req,res) => {
       healthDownloader(req, res)
     })

@@ -324,3 +324,15 @@ function doTranslateNavBar() {
   if (path == "/ptyProcess") path = "/Terminal"
   $('a[href="' + path + '"]').closest('a').addClass('active')
 }
+
+function getActiveVersion() {
+  return new Promise(resolve => {
+    $.getJSON("/activeVersion" , (activeVersion) => {
+      resolve(activeVersion)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[getActiveVersion] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
+  })
+}

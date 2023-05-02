@@ -592,6 +592,16 @@ function readAllMMLogs(logs) {
   })
 }
 
+/** set plugin as used and search version/rev **/
+function setActiveVersion(module,that) {
+  console.log("[GATEWAY] [PLUGINS] Activate:", module)
+
+  that.Gateway.activeVersion[module] = {
+    version: (module == "Gateway") ? require("../package.json").version : require("../../" + module + "/package.json").version,
+    rev: (module == "Gateway") ? require("../package.json").rev : require("../../" + module + "/package.json").rev
+  }
+}
+
 // Function() in config ?
 function replacer(key, value) {
   if (typeof value == "function") {
@@ -638,3 +648,4 @@ exports.saveExternalConfig = saveExternalConfig
 exports.deleteDownload = deleteDownload
 exports.SystemRestart = SystemRestart
 exports.SystemDie = SystemDie
+exports.setActiveVersion = setActiveVersion

@@ -14,11 +14,13 @@ var versionGW = {}
 var System = {}
 var SystemInterval = null
 var SystemFirstScan = true
+var activeVersion = []
 
 // Load rules
 window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
+  activeVersion = await getActiveVersion()
 
   $('html').prop("lang", versionGW.lang)
   switch (window.location.pathname) {
@@ -89,7 +91,6 @@ async function doSystem(cb= null) {
   SystemInterval = setInterval(async() => {
     doSystem()
   }, 15000)
-
 
   //CPU
   $('#SPEED').text(system.CPU.speed)
@@ -205,6 +206,29 @@ async function doSystem(cb= null) {
     $("#LoadText").removeClass("text-google-yellow")
     $("#LoadText").addClass("text-google-red")
   }
+
+  Object.entries(activeVersion).forEach(([key, value]) => {
+    if (!$("#Plugins-"+key).html()) {
+      var plugin = document.createElement("tr")
+      plugin.id = "Plugins-"+ key
+
+      var name = document.createElement("td")
+      name.textContent = key
+
+      var version = document.createElement("td")
+      version.textContent = value.version
+      version.className = "text-center"
+
+      var rev = document.createElement("td")
+      rev.textContent = value.rev
+      rev.className = "text-center"
+
+      plugin.appendChild(name)
+      plugin.appendChild(version)
+      plugin.appendChild(rev)
+      $("#PluginsTable").append(plugin)
+    }
+  })
 
   // try to create proper storage
   system.STORAGE.forEach((partition, id) => {
@@ -648,6 +672,12 @@ function doStatic() {
   $("#LibrespotMemoryProcess").text(translation.System_Memory)
   $("#PM2CPUProcess").text(translation.System_CPU)
   $("#PM2MemoryProcess").text(translation.System_Memory)
+
+  $("#GoogleAssistant").text(translation.System_GoogleAssistant)
+  $("#CurrentlyRunning").text(translation.System_CurrentlyRunning)
+  $("#NamePlugin").text(translation.System_NamePlugin)
+  $("#VersionPlugin").text(translation.System_VersionPlugin)
+  $("#RevPlugin").text(translation.System_RevPlugin)
 
   $("#SystemDisplayer").removeClass("visually-hidden")
 }
