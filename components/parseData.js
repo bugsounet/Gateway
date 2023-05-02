@@ -25,7 +25,8 @@ async function init(that) {
     systemInformation: {
       lib: null,
       result: {}
-    }
+    },
+    activeVersion: {}
   }
   that.SmartHome = {
     lang: "en",

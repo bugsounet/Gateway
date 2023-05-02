@@ -75,3 +75,7 @@
   text-overflow: ellipsis;
 }
 
+tbody#PluginsTable tr:nth-child(even) {
+  background-color: #000;
+}
+

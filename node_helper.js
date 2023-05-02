@@ -31,6 +31,7 @@ module.exports = NodeHelper.create({
           if (cb) {
             console.log("[GATEWAY] Gateway Ready!")
             this.sendSocketNotification("INITIALIZED")
+            this.lib.GWTools.setActiveVersion("Gateway", this)
           }
         })
         break
@@ -45,6 +46,8 @@ module.exports = NodeHelper.create({
           }
         }
         break
+      case "HELLO":
+        this.lib.GWTools.setActiveVersion(payload, this)
     }
   }
 })
