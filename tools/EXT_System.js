@@ -92,7 +92,6 @@ async function doSystem(cb= null) {
     doSystem()
   }, 15000)
 
-
   //CPU
   $('#SPEED').text(system.CPU.speed)
   $('#GOVERNOR').text(system.CPU.governor)
