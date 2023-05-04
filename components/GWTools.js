@@ -600,10 +600,15 @@ async function setActiveVersion(module,that) {
     version: (module == "Gateway") ? require("../package.json").version : require("../../" + module + "/package.json").version,
     rev: (module == "Gateway") ? require("../package.json").rev : require("../../" + module + "/package.json").rev
   }
+
   let scanUpdate = await checkUpdate(module, that.Gateway.activeVersion[module].version, that)
   that.Gateway.activeVersion[module].last = scanUpdate.last
   that.Gateway.activeVersion[module].update = scanUpdate.update
   that.Gateway.activeVersion[module].beta = scanUpdate.beta
+
+  // scan every 60secs or every 15secs with gateway app
+  // I'm afraid about lag time...
+  // maybe 60 secs is better
   setInterval(() => {
     checkUpdateInterval(module, that.Gateway.activeVersion[module].version, that)
   }, 1000 * 60)
