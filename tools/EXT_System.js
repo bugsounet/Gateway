@@ -20,7 +20,6 @@ var activeVersion = []
 window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
-  activeVersion = await getActiveVersion()
 
   $('html').prop("lang", versionGW.lang)
   switch (window.location.pathname) {
@@ -80,6 +79,7 @@ async function doSystem(cb= null) {
   SystemInterval = null
 
   system = await checkSystem()
+  activeVersion = await getActiveVersion()
 
   progressOrText(system)
   window.addEventListener('resize', function() {
@@ -210,14 +210,24 @@ async function doSystem(cb= null) {
   Object.entries(activeVersion).forEach(([key, value]) => {
     if (!$("#Plugins-"+key).html()) {
       var plugin = document.createElement("tr")
-      plugin.id = "Plugins-"+ key
+      plugin.id = "Plugins-" + key
 
       var name = document.createElement("td")
       name.textContent = key
+      if (value.beta) name.classList.add("text-google-yellow")
 
       var version = document.createElement("td")
       version.textContent = value.version
       version.className = "text-center"
+      if (value.update) {
+        version.classList.remove("text-google-blue")
+        version.classList.remove("text-google-green")
+        version.classList.add("text-google-yellow")
+      } else {
+        version.classList.remove("text-google-blue")
+        version.classList.remove("text-google-yellow")
+        version.classList.add("text-google-green")
+      }
 
       var rev = document.createElement("td")
       rev.textContent = value.rev
@@ -493,6 +503,9 @@ function progressOrText(system) {
     $("#Uptime-Box").addClass("col-md-12")
     $("#Uptime-Box").removeClass("col-md-6")
     $("#Uptime-Box").css("width", "100%")
+    $("#GoogleAssistant-Box").addClass("col-md-12")
+    $("#GoogleAssistant-Box").removeClass("col-md-6")
+    $("#GoogleAssistant-Box").css("width", "100%")
   } else {
     // display Progress
     $("#Load").removeClass("visually-hidden")
@@ -519,6 +532,9 @@ function progressOrText(system) {
     $("#Uptime-Box").removeClass("col-md-12")
     $("#Uptime-Box").addClass("col-md-6")
     $("#Uptime-Box").css("width", "50%")
+    $("#GoogleAssistant-Box").removeClass("col-md-12")
+    $("#GoogleAssistant-Box").addClass("col-md-6")
+    $("#GoogleAssistant-Box").css("width", "50%")
   }
 }
 
