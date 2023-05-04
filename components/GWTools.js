@@ -593,13 +593,56 @@ function readAllMMLogs(logs) {
 }
 
 /** set plugin as used and search version/rev **/
-function setActiveVersion(module,that) {
-  console.log("[GATEWAY] [PLUGINS] Activate:", module)
+async function setActiveVersion(module,that) {
+  console.log("[GATEWAY] Detected:", module)
 
   that.Gateway.activeVersion[module] = {
     version: (module == "Gateway") ? require("../package.json").version : require("../../" + module + "/package.json").version,
     rev: (module == "Gateway") ? require("../package.json").rev : require("../../" + module + "/package.json").rev
   }
+
+  let scanUpdate = await checkUpdate(module, that.Gateway.activeVersion[module].version, that)
+  that.Gateway.activeVersion[module].last = scanUpdate.last
+  that.Gateway.activeVersion[module].update = scanUpdate.update
+  that.Gateway.activeVersion[module].beta = scanUpdate.beta
+
+  // scan every 60secs or every 15secs with gateway app
+  // I'm afraid about lag time...
+  // maybe 60 secs is better
+  setInterval(() => {
+    checkUpdateInterval(module, that.Gateway.activeVersion[module].version, that)
+  }, 1000 * 60)
+}
+
+async function checkUpdateInterval(module,version, that) {
+  let scanUpdate = await checkUpdate(module,version, that)
+  that.Gateway.activeVersion[module].last = scanUpdate.last
+  that.Gateway.activeVersion[module].update = scanUpdate.update
+  that.Gateway.activeVersion[module].beta = scanUpdate.beta
+}
+
+function checkUpdate(module, version, that, branch = "master", retry = 0) {
+  let remoteFile = "https://raw.githubusercontent.com/bugsounet/"+ module + "/"+ branch + "/package.json"
+  let result = {
+    last: version,
+    update: false,
+    beta: false
+  }
+  return new Promise (resolve => {
+    that.lib.fetch(remoteFile)
+      .then(response => response.json())
+      .then(data => {
+        result.last = data.version
+        if (that.lib.semver.gt(result.last, version)) result.needUpdate = true
+        else if (that.lib.semver.gt(version, result.last)) result.beta = true
+        resolve(result)
+      })
+      .catch(async e => {
+        if (!retry) result = await checkUpdate(module, version, that, branch = "main", retry = 1)
+        else console.error("[GATEWAY] Error on fetch last version of", module, e.message)
+        resolve(result)
+      })
+  })
 }
 
 // Function() in config ?
