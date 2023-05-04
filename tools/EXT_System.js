@@ -220,11 +220,9 @@ async function doSystem(cb= null) {
       version.textContent = value.version
       version.className = "text-center"
       if (value.update) {
-        version.classList.remove("text-google-blue")
         version.classList.remove("text-google-green")
         version.classList.add("text-google-yellow")
       } else {
-        version.classList.remove("text-google-blue")
         version.classList.remove("text-google-yellow")
         version.classList.add("text-google-green")
       }
