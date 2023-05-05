@@ -633,7 +633,7 @@ function checkUpdate(module, version, that, branch = "master", retry = 0) {
       .then(response => response.json())
       .then(data => {
         result.last = data.version
-        if (that.lib.semver.gt(result.last, version)) result.needUpdate = true
+        if (that.lib.semver.gt(result.last, version)) result.update = true
         else if (that.lib.semver.gt(version, result.last)) result.beta = true
         resolve(result)
       })
