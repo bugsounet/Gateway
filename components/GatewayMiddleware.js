@@ -24,7 +24,7 @@ function initialize(that) {
   that.Gateway.EXTInstalled= that.lib.GWTools.searchInstalled(that)
   log("Find", that.Gateway.EXTInstalled.length , "installed plugins in MagicMirror")
   log("Find", that.Gateway.EXTConfigured.length, "configured plugins in config file")
-  if (that.Gateway.GACheck.version && that.lib.semver.gte(that.Gateway.GACheck.version, '5.4.0')) {
+  if (that.Gateway.GACheck.version && that.lib.semver.gte(that.Gateway.GACheck.version, '5.1.0')) {
     that.Gateway.GACheck.find = true
     log("Find MMM-GoogleAssistant v" + that.Gateway.GACheck.version)
   }
