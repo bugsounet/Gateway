@@ -10,7 +10,7 @@ var defaultConfig = {
     alwaysDisplayed: true,
     displayHeader: true,
     username: null,
-    token: null
+    password: null
   }
 }
 
@@ -93,13 +93,13 @@ var schema = {
           "title": "{EXT-YouTube_Username}",
           "default": null
         },
-        "token": {
+        "password": {
           "type": [ "string", "null" ],
-          "title": "{EXT-YouTube_Token}",
+          "title": "{EXT-YouTube_Password}",
           "default": null
         }
       },
-      "required": ["username", "token"]
+      "required": ["username", "password"]
     }
   },
   "required": ["module", "config", "position"]

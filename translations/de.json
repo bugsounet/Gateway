@@ -352,7 +352,7 @@
   "VAL_EXT-YouTube_Display": "Soll das Youtube-Fenster auch angezeigt werden, wenn kein Video wiedergegeben wird?",
   "VAL_EXT-YouTube_Header": "Ein paar Sekunden den Titel des gefundenen Videos anzeigen (benötigt EXT-Alert).",
   "VAL_EXT-YouTube_Username": "Benutzername im @bugsounet's Support Forum",
-  "VAL_EXT-YouTube_Token": "Der token zu Deinem Benutzernamen (erhalten von @bugsounet)",
+  "VAL_EXT-YouTube_Password": "Der password zu Deinem Benutzernamen (erhalten von @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Name des MagicMirror cast Gerätes",
   "VAL_EXT-YouTubeCast_Port": "Port des MagicMirror cast Gerätes"
 }

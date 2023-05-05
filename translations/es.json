@@ -352,7 +352,7 @@
   "VAL_EXT-YouTube_Display": "Debe mostrarse la ventana de Youtube si no se está reproduciendo un video?",
   "VAL_EXT-YouTube_Header": "Mostrar unos segundos en un popup, el título del video encontrado (se necesita EXT-Alert)",
   "VAL_EXT-YouTube_Username": "usuario del foro de soporte @bugsounet",
-  "VAL_EXT-YouTube_Token": "El token asociado a tu usuario (enviado por @bugsounet)",
+  "VAL_EXT-YouTube_Password": "The password associated to your usernane (sended by @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Nombre del dispositivo MagicMirror para hacer cast",
   "VAL_EXT-YouTubeCast_Port": "Puerto del dispositivo MagicMirror para hacer cast"
 }

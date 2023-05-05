@@ -464,7 +464,7 @@ class GWTranslations {
       Tr["EXT-YouTube_Display"] = that.translate("VAL_EXT-YouTube_Display")
       Tr["EXT-YouTube_Header"] = that.translate("VAL_EXT-YouTube_Header")
       Tr["EXT-YouTube_Username"] = that.translate("VAL_EXT-YouTube_Username")
-      Tr["EXT-YouTube_Token"] = that.translate("VAL_EXT-YouTube_Token")
+      Tr["EXT-YouTube_Password"] = that.translate("VAL_EXT-YouTube_Password")
       Tr["EXT-YouTubeCast_Name"] = that.translate("VAL_EXT-YouTubeCast_Name")
       Tr["EXT-YouTubeCast_Port"] = that.translate("VAL_EXT-YouTubeCast_Port")
       resolve(Tr)
