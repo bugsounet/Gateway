@@ -79,3 +79,12 @@ tbody#PluginsTable tr:nth-child(even) {
   background-color: #000;
 }
 
+#pleaserotate-graphic {
+  fill: #4885ed;
+}
+
+#pleaserotate-backdrop {
+  color: #3cba54;
+  background-color: #212121;
+}
+
