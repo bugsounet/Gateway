@@ -89,6 +89,8 @@ function createGW(that) {
     .use('/EXT_Tools.js', that.lib.express.static(Path + '/tools/EXT_Tools.js'))
     .use('/EXT_System.js', that.lib.express.static(Path + '/tools/EXT_System.js'))
     .use('/EXT_Setting.js', that.lib.express.static(Path + '/tools/EXT_Setting.js'))
+    .use('/EXT_Restart.js', that.lib.express.static(Path + '/tools/EXT_Restart.js'))
+    .use('/EXT_Die.js', that.lib.express.static(Path + '/tools/EXT_Die.js'))
     .use('/EXT_Fetch.js', that.lib.express.static(Path + '/tools/EXT_Fetch.js'))
     .use('/assets', that.lib.express.static(Path + '/website/assets', options))
     .use("/jsoneditor" , that.lib.express.static(Path + '/node_modules/jsoneditor'))

@@ -352,7 +352,7 @@
   "VAL_EXT-YouTube_Display": "Moet het YouTube venster steeds getoond worden, ook al word er geen video afgespeeld ?",
   "VAL_EXT-YouTube_Header": "Toon in popup vorm enkele seconden de titel van de video (hiervoor heb je EXT-Alert nodig)",
   "VAL_EXT-YouTube_Username": "gebruikersnaam die je gebruikt op het @bugsounet's support forum",
-  "VAL_EXT-YouTube_Token": "De token die je ontvangen hebt van het forum (verzonden door @bugsounet)",
+  "VAL_EXT-YouTube_Password": "The password associated to your usernane (sended by @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Naam van het MagicMirror cast apparaat",
   "VAL_EXT-YouTubeCast_Port": "Gebruikte poort van het MagicMirror cast apparaat"
 }

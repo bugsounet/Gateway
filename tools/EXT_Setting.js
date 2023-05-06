@@ -20,6 +20,7 @@ window.addEventListener("load", async event => {
 
   actualSetting = await getGatewaySetting()
   $('html').prop("lang", versionGW.lang)
+  forceMobileRotate()
   GatewaySetting()
 
   doTranslateNavBar()

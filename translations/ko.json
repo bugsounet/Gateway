@@ -443,7 +443,7 @@
   "VAL_EXT-YouTube_Display": "Should the YouTube windows have to be always displayed when a video is not playing ?",
   "VAL_EXT-YouTube_Header": "Display a few seconds in popup the title found of the video (needed EXT-Alert)",
   "VAL_EXT-YouTube_Username": "username of the @bugsounet's support forum",
-  "VAL_EXT-YouTube_Token": "The token associated to your usernane (sended by @bugsounet)",
+  "VAL_EXT-YouTube_Password": "The password associated to your usernane (sended by @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Name of the MagicMirror cast device",
   "VAL_EXT-YouTubeCast_Port": "Port of the MagicMirror cast device"
 }

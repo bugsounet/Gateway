@@ -22,6 +22,7 @@ window.addEventListener("load", async event => {
   translation = await loadTranslation()
 
   $('html').prop("lang", versionGW.lang)
+  forceMobileRotate()
   switch (window.location.pathname) {
     case "/EXT":
       createEXTTable()
