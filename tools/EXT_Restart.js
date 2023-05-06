@@ -30,13 +30,11 @@ function doRestart() {
     xhr.onreadystatechange = function () {
       if (xhr.readyState !== XMLHttpRequest.DONE) return
       if (xhr.status === 200) return callback(xhr.status)
-      xhr.open("GET", "/", true)
-      xhr.send()
     }
     xhr.send()
   }
 
-  setTimeout(() => {
+  setInterval(() => {
     checkPage(handle200)
-  }, 5000)
+  }, 2000)
 }
