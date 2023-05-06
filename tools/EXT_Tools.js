@@ -253,6 +253,7 @@ async function doTools() {
     $('#Update-Text2').text(translation.Tools_Update_Text2)
     // only on live
     setInterval(async() => {
+      let needUpdate = 0
       $('#Update-Confirm').text(translation.Confirm)
       var updateModules = EXTStatus["EXT-UpdateNotification"].module
       var updateNpm = EXTStatus["EXT-UpdateNotification"].npm
@@ -262,6 +263,7 @@ async function doTools() {
         $('#Update-Box').css("display", "block")
         for (const [key, value] of Object.entries(updateModules)) {
           if($("#" + key).length == 0) $("#Update-Modules-Box").append("<br><span id='"+key + "'>" + key + "</span>")
+          if (key.startsWith("EXT-") || key == "Gateway" || key == "MMM-GoogleAssistant") ++needUpdate
         }
         $('#Update-Modules-Box').css("display", "block")
       }
@@ -270,9 +272,12 @@ async function doTools() {
         for (const [key, value] of Object.entries(updateNpm)) {
           var library = value.library.replace('@bugsounet/', '')
           if($("#" + value.module + "-" + library).length == 0) $("#Update-NPM-Box").append("<br><span id='"+ value.module + "-" + library + "'>" + key + "</span>")
+          ++needUpdate
         }
         $('#Update-NPM-Box').css("display", "block")
       }
+      if (!needUpdate) $('#Update-Confirm').addClass('disabled')
+      else $('#Update-Confirm').removeClass('disabled')
      }, 1000)
     document.getElementById('Update-Confirm').onclick = function () {
       $('#Update-Confirm').addClass('disabled')
