@@ -23,8 +23,8 @@
     "Gateway"
   ],
   "engines": {
-    "npm": ">=6.14.0",
-    "node": ">=14.0.0"
+    "npm": ">=8.0.0",
+    "node": ">=16.0.0"
   },
   "author": "bugsounet",
   "license": "MIT",
