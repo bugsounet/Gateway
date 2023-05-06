@@ -18,11 +18,11 @@ var ErrEXTStatus = 0
 
 // Load rules
 window.addEventListener("load", async event => {
-  forceMobileRotate()
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
 
   $('html').prop("lang", versionGW.lang)
+  forceMobileRotate()
   doTools()
 
   doTranslateNavBar()

@@ -14,11 +14,11 @@ var versionGW = {}
 
 // Load rules
 window.addEventListener("load", async event => {
-  forceMobileRotate()
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
 
   $('html').prop("lang", versionGW.lang)
+  forceMobileRotate()
   switch (window.location.pathname) {
     case "/MMConfig":
       viewJSEditor()
