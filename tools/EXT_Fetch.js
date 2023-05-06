@@ -291,16 +291,18 @@ function configMerge(result) {
   return result
 }
 
-function doTranslateNavBar() {
+function forceMobileRotate() {
   var Options = {
     forcePortrait: false,
     message: translation.Rotate_Msg,
     subMessage: translation.Rotate_Continue,
-    allowClickBypass: true,
+    allowClickBypass: false,
     onlyMobile: true
   }
   PleaseRotate.start(Options)
+}
 
+function doTranslateNavBar() {
   $('#Home').text(translation.Home)
   $('#Plugins').text(translation.Plugins)
   $('#Terminal').text(translation.Terminal)

@@ -2,12 +2,6 @@
 * @bugsounet
 **/
 
-// rotate rules
-
-PleaseRotateOptions = {
-  startOnPageLoad: false
-}
-
 // define all vars
 var translation= {}
 var versionGW = {}

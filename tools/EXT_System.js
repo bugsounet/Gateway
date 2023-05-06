@@ -18,61 +18,15 @@ var activeVersion = []
 
 // Load rules
 window.addEventListener("load", async event => {
+  forceMobileRotate()
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
 
   $('html').prop("lang", versionGW.lang)
-  switch (window.location.pathname) {
-    case "/SystemRestart":
-      doRestart()
-      break
-    case "/SystemDie":
-      doDie()
-      break
-    case "/System":
-      doSystem(()=> { doSpeedTest() })
-      break
-  }
 
+  doSystem(()=> { doSpeedTest() })
   doTranslateNavBar()
 })
-
-function doRestart() {
-  $(document).prop('title', translation.Tools)
-  $('#text1').text(translation.Tools_Restart_Text1)
-  $('#text2').text(translation.Tools_Restart_Text2)
-
-  function handle200 (response) {
-    window.location.href = "/"
-  }
-
-  function checkPage(callback) {
-    const xhr = new XMLHttpRequest(),
-    method = "GET",
-    url = "/";
-    xhr.open(method, url, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
-      if (xhr.status === 200) {
-        return callback(xhr.status);
-      }
-      xhr.open(method, url, true);
-      xhr.send();
-    }
-    xhr.send();
-  }
-
-  setTimeout(() => {
-    checkPage(handle200)
-  }, 5000)
-}
-
-function doDie() {
-  $(document).prop('title', translation.Tools)
-  $('#text1').text(translation.Tools_Die_Text1)
-  $('#text2').text(translation.Tools_Die_Text2)
-  $('#text3').text(translation.Tools_Die_Text3)
-}
 
 async function doSystem(cb= null) {
   clearInterval(SystemInterval)
@@ -695,5 +649,3 @@ function doStatic() {
 
   $("#SystemDisplayer").removeClass("visually-hidden")
 }
-
-

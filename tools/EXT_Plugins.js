@@ -18,6 +18,7 @@ var versionGW = {}
 
 // Load rules
 window.addEventListener("load", async event => {
+  forceMobileRotate()
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
 
