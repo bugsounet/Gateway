@@ -182,6 +182,7 @@
   "GW_System_NamePlugin": "Nom",
   "GW_System_VersionPlugin": "Version",
   "GW_System_RevPlugin": "Révision",
+
   "GW_Logout": "Déconnexion",
 
   "GW_Delete": "Supprimer",
@@ -318,11 +319,12 @@
   "VAL_EXT-Pages_pages": "Numéro de chaîne d'objets de ce que chaque module doit être sur quelle page. Notez que toutes les entrées doivent prendre leur nom de classe (voir wiki)",
   "VAL_EXT-Pages_fixed": "Modules qui doivent apparaître tout le temps. (voir wiki)",
   "VAL_EXT-Pages_hiddenPages": "Définir des pages masquées spéciales qui ne sont pas disponibles lors de la rotation normale des pages et uniquement accessibles via une notification. (voir wiki)",
-  "VAL_EXT-Pages_animates": "Objet contenant le nom de module et un numéro d'animation spécial (voir wiki)",
+  "VAL_EXT-Pages_animateIn": "Animation speciale lorsqu'un module apparaît (voir wiki)",
+  "VAL_EXT-Pages_animateOut": "Animation speciale lorsqu'un module disparaît (voir wiki)",
   "VAL_EXT-Pages_animationTime": "Temps d'animation en fondu. Réglez sur 0 pour un changement instantané.",
   "VAL_EXT-Pages_rotationTime": "Temps, en millisecondes, entre les changements de page automatiques.",
   "VAL_EXT-Pages_rotationTimes": "Un objet avec le numéro de page et les délais associés avant de changer de page (la valeur rotationTime sera ignoré)",
-  "VAL_EXT-Pages_rotationHomePage": "Temps, en millisecondes, avant de revenir automatiquement à la page d'accueil.",
+  "VAL_EXT-Pages_loading": "Image a afficher lors du chargement",
   "VAL_EXT-Pages_homePage": "Numéro d'index de la page d'accueil",
   "VAL_EXT-Pages_indicator": "Activation l'indicateur de page",
   "VAL_EXT-Pages_Gateway": "Règles Gateway pour afficher automatiquement la page des plugins (voir wiki)",
