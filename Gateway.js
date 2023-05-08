@@ -76,6 +76,7 @@ Module.register("Gateway", {
       case "GA_READY":
         if (sender.name == "MMM-GoogleAssistant") {
           this.GW.GA_Ready = true
+          this.sendSocketNotification("HELLO", "MMM-GoogleAssistant")
           logGW("Hello, MMM-GoogleAssistant")
         }
         else console.error("[GATEWAY]", this.sender.name, "Don't try to enforce my rules!")

@@ -1,5 +1,4 @@
 var log = (...args) => { /* do nothing */ }
-/** @to debug: regarder si les check (res.user) sont placés (dans les .post) **/
 
 /** init function **/
 function initialize(that) {
@@ -82,8 +81,22 @@ function createGW(that) {
   that.Gateway.app
     .use(logRequest)
     .use(that.lib.cors({ origin: '*' }))
+    .use('/EXT_Login.js', that.lib.express.static(Path + '/tools/EXT_Login.js'))
+    .use('/EXT_Home.js', that.lib.express.static(Path + '/tools/EXT_Home.js'))
+    .use('/EXT_Plugins.js', that.lib.express.static(Path + '/tools/EXT_Plugins.js'))
+    .use('/EXT_Terminal.js', that.lib.express.static(Path + '/tools/EXT_Terminal.js'))
+    .use('/EXT_MMConfig.js', that.lib.express.static(Path + '/tools/EXT_MMConfig.js'))
     .use('/EXT_Tools.js', that.lib.express.static(Path + '/tools/EXT_Tools.js'))
+    .use('/EXT_System.js', that.lib.express.static(Path + '/tools/EXT_System.js'))
+    .use('/EXT_Setting.js', that.lib.express.static(Path + '/tools/EXT_Setting.js'))
+    .use('/EXT_Restart.js', that.lib.express.static(Path + '/tools/EXT_Restart.js'))
+    .use('/EXT_Die.js', that.lib.express.static(Path + '/tools/EXT_Die.js'))
+    .use('/EXT_Fetch.js', that.lib.express.static(Path + '/tools/EXT_Fetch.js'))
     .use('/assets', that.lib.express.static(Path + '/website/assets', options))
+    .use("/jsoneditor" , that.lib.express.static(Path + '/node_modules/jsoneditor'))
+    .use("/xterm" , that.lib.express.static(Path + '/node_modules/xterm'))
+    .use("/xterm-addon-fit" , that.lib.express.static(Path + '/node_modules/xterm-addon-fit'))
+
     .get('/', (req, res) => {
       if(req.user) res.sendFile(Path+ "/website/Gateway/index.html")
       else res.redirect('/login')
@@ -96,6 +109,7 @@ function createGW(that) {
           rev: require('../package.json').rev,
           lang: that.Gateway.language,
           last: 0,
+          imperial: (that.Gateway.MMConfig.units == "imperial") ? true : false,
           needUpdate: false
         }
         that.lib.fetch(remoteFile)
@@ -109,11 +123,17 @@ function createGW(that) {
             console.error("[GATEWAY] Error on fetch last version number")
             res.send(result)
           })
+    })
 
+    .get("/systemInformation" , async (req, res) => {
+      if (req.user) {
+        that.Gateway.systemInformation.result = await that.Gateway.systemInformation.lib.Get()
+        res.send(that.Gateway.systemInformation.result)
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .get("/translation" , (req,res) => {
-        res.send(that.Gateway.translation)
+      res.send(that.Gateway.translation)
     })
 
     .get('/EXT', (req, res) => {
@@ -418,36 +438,49 @@ function createGW(that) {
     })
 
     .post("/writeEXT", async (req,res) => {
-      console.log("[Gateway] Receiving EXT data ...")
-      let data = JSON.parse(req.body.data)
-      var NewConfig = await that.lib.GWTools.configAddOrModify(data, that.Gateway.MMConfig)
-      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
-      console.log("[GATEWAY] Write config result:", resultSaveConfig)
-      res.send(resultSaveConfig)
-      if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
-        that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
-        console.log("[GATEWAY] Reload config")
-      }
+      if (req.user) {
+        console.log("[Gateway] Receiving EXT data ...")
+        let data = JSON.parse(req.body.data)
+        var NewConfig = await that.lib.GWTools.configAddOrModify(data, that.Gateway.MMConfig)
+        var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
+          that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
+          console.log("[GATEWAY] Reload config")
+        }
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html") 
     })
 
     .post("/deleteEXT", async (req,res) => {
-      console.log("[Gateway] Receiving EXT data ...", req.body)
-      let EXTName = req.body.data
-      var NewConfig = await that.lib.GWTools.configDelete(EXTName, that.Gateway.MMConfig)
-      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
-      console.log("[GATEWAY] Write config result:", resultSaveConfig)
-      res.send(resultSaveConfig)
-      if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
-        that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
-        console.log("[GATEWAY] Reload config")
-      }
+      if (req.user) {
+        console.log("[Gateway] Receiving EXT data ...", req.body)
+        console.log("user", req.user)
+        let EXTName = req.body.data
+        var NewConfig = await that.lib.GWTools.configDelete(EXTName, that.Gateway.MMConfig)
+        var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
+          that.Gateway.EXTConfigured= that.lib.GWTools.searchConfigured(that.Gateway.MMConfig, that.Gateway.EXT)
+          console.log("[GATEWAY] Reload config")
+        }
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .get("/Tools" , (req,res) => {
       if (req.user) res.sendFile(Path+ "/website/Gateway/tools.html")
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
+    .get("/System" , (req,res) => {
+      if (req.user) {
+        res.sendFile(Path+ "/website/Gateway/system.html")
+        let ST = new that.lib.speedtest(that.lib, io, req, that.Gateway, that.config.debug)
+        ST.init()
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .get("/Setting" , (req,res) => {
@@ -472,6 +505,22 @@ function createGW(that) {
       if (req.user) {
         res.sendFile(Path+ "/website/Gateway/die.html")
         setTimeout(() => that.lib.GWTools.doClose(that), 3000)
+      }
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
+    .get("/SystemRestart" , (req,res) => {
+      if (req.user) {
+        res.sendFile(Path+ "/website/Gateway/restarting.html")
+        setTimeout(() => that.lib.GWTools.SystemRestart(that) , 1000)
+      }
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
+    .get("/SystemDie" , (req,res) => {
+      if (req.user) {
+        res.sendFile(Path+ "/website/Gateway/die.html")
+        setTimeout(() => that.lib.GWTools.SystemDie(that), 3000)
       }
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
@@ -508,41 +557,47 @@ function createGW(that) {
     })
 
     .post("/loadBackup", async (req,res) => {
-      console.log("[Gateway] Receiving backup data ...")
-      let file = req.body.data
-      var loadFile = await that.lib.GWTools.loadBackupFile(that,file)
-      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,loadFile)
-      console.log("[GATEWAY] Write config result:", resultSaveConfig)
-      res.send(resultSaveConfig)
-      if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
-        console.log("[GATEWAY] Reload config")
-      }
+      if (req.user) {
+        console.log("[Gateway] Receiving backup data ...")
+        let file = req.body.data
+        var loadFile = await that.lib.GWTools.loadBackupFile(that,file)
+        var resultSaveConfig = await that.lib.GWTools.saveConfig(that,loadFile)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
+          console.log("[GATEWAY] Reload config")
+        }
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .post("/writeConfig", async (req,res) => {
-      console.log("[Gateway] Receiving config data ...")
-      let data = JSON.parse(req.body.data)
-      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,data)
-      console.log("[GATEWAY] Write config result:", resultSaveConfig)
-      res.send(resultSaveConfig)
-      if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
-        console.log("[GATEWAY] Reload config")
-      }
+      if (req.user) {
+        console.log("[Gateway] Receiving config data ...")
+        let data = JSON.parse(req.body.data)
+        var resultSaveConfig = await that.lib.GWTools.saveConfig(that,data)
+        console.log("[GATEWAY] Write config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
+          console.log("[GATEWAY] Reload config")
+        }
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .post("/saveSetting", urlencodedParser, async (req,res) => {
-      console.log("[Gateway] Receiving new Setting")
-      let data = JSON.parse(req.body.data)
-      var NewConfig = await that.lib.GWTools.configAddOrModify(data, that.Gateway.MMConfig)
-      var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
-      console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
-      res.send(resultSaveConfig)
-      if (resultSaveConfig.done) {
-        that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
-        console.log("[GATEWAY] Reload config")
-      }
+      if (req.user) {
+        console.log("[Gateway] Receiving new Setting")
+        let data = JSON.parse(req.body.data)
+        var NewConfig = await that.lib.GWTools.configAddOrModify(data, that.Gateway.MMConfig)
+        var resultSaveConfig = await that.lib.GWTools.saveConfig(that,NewConfig)
+        console.log("[GATEWAY] Write Gateway config result:", resultSaveConfig)
+        res.send(resultSaveConfig)
+        if (resultSaveConfig.done) {
+          that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
+          console.log("[GATEWAY] Reload config")
+        }
+      } else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
     .get("/getWebviewTag", (req,res) => {
@@ -736,7 +791,7 @@ function createGW(that) {
     })
 
     .post("/EXT-FreeboxTVQuery", (req, res) => {
-      if(req.user || !that.Gateway.freeteuse) {
+      if(that.Gateway.freeteuse && req.user) {
         let data = req.body.data
         if (!data) return res.send("error")
         that.sendSocketNotification("SendNoti", {
@@ -823,6 +878,11 @@ function createGW(that) {
       else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
     })
 
+    .get("/activeVersion", (req,res) => {
+      if (req.user) res.send(that.Gateway.activeVersion)
+      else res.status(403).sendFile(Path+ "/website/Gateway/403.html")
+    })
+
     .get("/download/*", (req,res) => {
       healthDownloader(req, res)
     })
@@ -830,10 +890,6 @@ function createGW(that) {
     .get("/robots.txt", (req,res) => {
       res.sendFile(Path+ "/website/Gateway/robots.txt")
     })
-
-    .use("/jsoneditor" , that.lib.express.static(Path + '/node_modules/jsoneditor'))
-    .use("/xterm" , that.lib.express.static(Path + '/node_modules/xterm'))
-    .use("/xterm-addon-fit" , that.lib.express.static(Path + '/node_modules/xterm-addon-fit'))
 }
 
 /** Start Server **/

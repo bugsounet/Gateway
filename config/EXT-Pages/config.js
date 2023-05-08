@@ -6,14 +6,15 @@ var defaultConfig = {
     pages: {},
     fixed: [],
     hiddenPages: {},
-    animates: {},
+    animateIn: {},
+    animateOut: {},
     animationTime: 1000,
     rotationTime: 0,
     rotationTimes: {},
-    rotationHomePage: 0,
     homePage: 0,
     indicator: true,
-    Gateway: {}
+    Gateway: {},
+    loading: "loading.png"
   }
 }
 
@@ -71,10 +72,15 @@ var schema = {
           "default": {},
           "title": "{EXT-Pages_hiddenPages}"
         },
-        "animates": {
+        "animateIn": {
           "type": "object",
           "default": {},
-          "title": "{EXT-Pages_animates}"
+          "title": "{EXT-Pages_animateIn}"
+        },
+        "animateOut": {
+          "type": "object",
+          "default": {},
+          "title": "{EXT-Pages_animateOut}"
         },
         "animationTime": {
           "type": "number",
@@ -97,14 +103,6 @@ var schema = {
           "default": {},
           "title": "{EXT-Pages_rotationTimes}",
         },
-        "rotationHomePage": {
-          "type": "number",
-          "title": "{EXT-Pages_rotationHomePage}",
-          "default": 0,
-          "enum": [0,5000,10000,15000,20000,25000,30000],
-          "minimum": 0,
-          "maximum": 30000
-        },
         "homePage": {
           "type": "number",
           "title": "{EXT-Pages_homePage}",
@@ -121,6 +119,11 @@ var schema = {
           "title": "{EXT-Pages_Gateway}",
           "type": "object",
           "default": {}
+        },
+        "position": {
+          "type": "string",
+          "title": "{EXT-Pages_loading}",
+          "default": "loading.png"
         }
       }
     }

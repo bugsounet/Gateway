@@ -24,7 +24,6 @@ class GWDatabase {
       "EXT-Photos",
       "EXT-Pir",
       "EXT-RadioPlayer",
-      "EXT-Raspotify",
       "EXT-Screen",
       "EXT-ScreenManager",
       "EXT-ScreenTouch",

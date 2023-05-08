@@ -14,6 +14,9 @@ function libraries(that) {
     { "../components/DeviceManagement.js": "Device" },
     { "../components/SHCallbacks.js": "callback" },
     { "../components/homegraph.js": "homegraph" },
+    { "../components/systemInformation.js": "SystemInformation" },
+    { "../components/speedtest.js": "speedtest" },
+    { "../components/speedtest-net.js": "speedtest-net" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -36,7 +39,18 @@ function libraries(that) {
     { "actions-on-google": "actions" },
     { "googleapis": "googleapis" },
     { "google-auth-library": "GoogleAuthLibrary" },
-    { "lodash": "_" }
+    { "lodash": "_" },
+    { "moment": "moment" },
+    { "mkdirp": "mkdirp" },
+    { "https": "https" },
+    { "decompress" : "decompress" },
+    { "decompress-tar" : "decompressTar" },
+    { "decompress-tarbz2" : "decompressTarbz2" },
+    { "decompress-targz" : "decompressTargz" },
+    { "decompress-unzip": "decompressUnzip" },
+    { "@felipecrs/decompress-tarxz": "decompressTarXz" },
+    { "tree-kill": "kill" },
+    { "sha256-file": "sha256_file" }
   ]
   let errors = 0
   return new Promise(resolve => {
@@ -51,7 +65,7 @@ function libraries(that) {
             log("Loaded:", libraryToLoad, "->", "this.lib."+libraryName)
           }
         } catch (e) {
-          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , e.toString())
+          console.error("[GATEWAY] [LIB]", libraryToLoad, "Loading error!" , that.config.debug ? e : e.toString())
           that.sendSocketNotification("WARNING" , {library: libraryToLoad })
           errors++
           that.lib.error = errors

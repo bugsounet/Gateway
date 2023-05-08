@@ -8,6 +8,7 @@ class OthersRules {
     switch (module) {
       case that.ExtDB.find(name => name === module): //read DB and find module
         that.GW[module].hello= true
+        that.sendSocketNotification("HELLO", module)
         logGW("Hello,", module)
         this.onStartPlugin(that, module)
         break
