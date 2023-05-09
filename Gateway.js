@@ -33,6 +33,7 @@ Module.register("Gateway", {
     this.ExtDB = GWDB.ExtDB()
     this.GW = await GWDB.createGW(this)
     this.awaitGATimer = null
+    this.sendSocketNotification("INIT", this.config)
   },
 
   getTranslations: function() {
@@ -70,9 +71,6 @@ Module.register("Gateway", {
     if (noti.startsWith("ASSISTANT_")) return this.AssistantActions.Actions(this,noti)
     if (noti.startsWith("EXT_")) return this.ActionsOnEXT.Actions(this,noti,payload,sender)
     switch(noti) {
-      case "DOM_OBJECTS_CREATED":
-        this.sendSocketNotification("INIT", this.config)
-        break
       case "GA_READY":
         if (sender.name == "MMM-GoogleAssistant") {
           this.GW.GA_Ready = true
