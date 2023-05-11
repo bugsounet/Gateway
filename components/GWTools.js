@@ -594,8 +594,12 @@ function readAllMMLogs(logs) {
 
 /** set plugin as used and search version/rev **/
 async function setActiveVersion(module,that) {
-  console.log("[GATEWAY] Detected:", module)
-
+  if (that.Gateway.activeVersion[module] != undefined) {
+    that.sendSocketNotification("ERROR", "Already Activated: " + module + ".You can't use Gateway in server mode!")
+    console.error("Already Activated: " + module + ". You can't use Gateway in server mode!")
+    return
+  }
+  else console.log("[GATEWAY] Detected:", module)
   that.Gateway.activeVersion[module] = {
     version: (module == "Gateway") ? require("../package.json").version : require("../../" + module + "/package.json").version,
     rev: (module == "Gateway") ? require("../package.json").rev : require("../../" + module + "/package.json").rev

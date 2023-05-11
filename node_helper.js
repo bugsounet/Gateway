@@ -15,13 +15,19 @@ module.exports = NodeHelper.create({
   socketNotificationReceived: async function (noti, payload) {
     switch (noti) {
       case "INIT":
-        console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
+        if (this.alreadyInitialized) {
+          console.error("[GATEWAY] You can't use Gateway in server mode")
+          this.sendSocketNotification("ERROR", "You can't use Gateway in server mode")
+          return
+        } else console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
         if (this.Gateway.server) return
         this.config = payload
         if (this.config.debug) log = (...args) => { console.log("[GATEWAY]", ...args) }
         this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
+        if (this.alreadyInitialized) return console.error("[GATEWAY] I say no! You can't use Gateway in server mode")
+        this.alreadyInitialized= true
         await parseData.parse(this,payload)
         if (this.lib.error) return
         this.lib.Gateway.initialize(this)
@@ -47,6 +53,7 @@ module.exports = NodeHelper.create({
         }
         break
       case "HELLO":
+        if (!this.lib.GWTools) return console.error("[GATEWAY] internal error: lib GWTools not found!")
         this.lib.GWTools.setActiveVersion(payload, this)
     }
   }
