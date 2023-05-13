@@ -668,6 +668,34 @@ function reviver(value) {
   return result
 }
 
+function getHomeText (lib,lang) {
+  return new Promise (async resolve => {
+    var Home = null
+    let langHome = lib.path.resolve(__dirname, "../translations/"+ lang + ".home")
+    let defaultHome = lib.path.resolve(__dirname, "../translations/default.home")
+    if (lib.fs.existsSync(langHome)) {
+      console.log("[GATEWAY] [TRANSLATION] [HOME] Use:", lang + ".home")
+      Home = await readThisFile(lib, langHome)
+    } else  {
+      console.log("[GATEWAY] [TRANSLATION] [HOME] Use: default.home")
+      Home = await readThisFile(lib, defaultHome)
+    }
+    resolve(Home)
+  })
+}
+
+function readThisFile (lib, file) {
+  return new Promise (resolve => {
+    lib.fs.readFile(file, (err, input) => {
+      if (err) {
+        console.log("[GATEWAY] [TRANSLATION] [HOME] Error", err)
+        resolve()
+      }
+      resolve(input.toString())
+    })
+  })
+}
+
 /** exports functions for pretty using **/
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
@@ -696,3 +724,4 @@ exports.deleteDownload = deleteDownload
 exports.SystemRestart = SystemRestart
 exports.SystemDie = SystemDie
 exports.setActiveVersion = setActiveVersion
+exports.getHomeText = getHomeText

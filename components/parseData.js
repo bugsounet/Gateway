@@ -26,7 +26,8 @@ async function init(that) {
       lib: null,
       result: {}
     },
-    activeVersion: {}
+    activeVersion: {},
+    homeText: null
   }
   that.SmartHome = {
     lang: "en",
@@ -63,6 +64,7 @@ async function parse(that,data) {
   that.Gateway.EXTStatus = data.EXTStatus
   that.Gateway.GACheck.version = that.lib.GWTools.searchGA(that)
   that.Gateway.GAConfig = that.lib.GWTools.getGAConfig(that.Gateway.MMConfig)
+  that.Gateway.homeText = await that.lib.GWTools.getHomeText(that.lib, that.Gateway.language)
   that.Gateway.freeteuse = await that.lib.GWTools.readFreeteuseTV(that)
   that.Gateway.radio= await that.lib.GWTools.readRadioRecipe(that)
   that.Gateway.systemInformation.lib = new that.lib.SystemInformation(that.lib, that.Gateway.translation)
