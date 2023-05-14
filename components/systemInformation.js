@@ -81,18 +81,6 @@ class systemInfo {
         }
       },
       SpeedTest: null
-    },
-
-    // tmp translate
-    this.config = {
-      uptime: {
-        days: "days",
-        day: "day",
-        hours: "hours",
-        hour: "hour",
-        minutes: "minutes",
-        minute: "minute"
-      }
     }
   }
 
@@ -375,7 +363,10 @@ class systemInfo {
   takeMesure(iface){
     return new Promise(resolve => {
       this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
-        if (err) return resolve()
+        if (err) {
+          console.error("[GATEWAY] [SYSTEMINFO] takeMesure error", err)
+          return resolve()
+        }
         var ssid = /ESSID:"(.+)"/.exec(stdout)
         var power = /Bit Rate=(\d+\.?\d+) +Mb\/s +Tx\-Power=([0-9]+) dBm/.exec(stdout)
         var power_management = /Power Management:(.+)\n/.exec(stdout)
