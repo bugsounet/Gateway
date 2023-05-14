@@ -323,11 +323,8 @@ class systemInfo {
             MM: 1
           }
           var recordFile = this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
-            if (error) {
-              console.error("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
-            } else {
-              console.log("[GATEWAY] [SYSTEMINFO] Create Uptimed")
-            }
+            if (error) console.error("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
+            else console.log("[GATEWAY] [SYSTEMINFO] Create Uptimed")
             resolve()
           })
         }
@@ -352,9 +349,7 @@ class systemInfo {
         MM: this.System["UPTIME"].recordMM
       }
       this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
-        if (error) {
-          console.error("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
-        }
+        if (error) console.error("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
         resolve()
       })
     })
@@ -363,10 +358,7 @@ class systemInfo {
   takeMesure(iface){
     return new Promise(resolve => {
       this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
-        if (err) {
-          console.error("[GATEWAY] [SYSTEMINFO] takeMesure error", err)
-          return resolve()
-        }
+        if (err) return resolve()
         var ssid = /ESSID:"(.+)"/.exec(stdout)
         var power = /Bit Rate=(\d+\.?\d+) +Mb\/s +Tx\-Power=([0-9]+) dBm/.exec(stdout)
         var power_management = /Power Management:(.+)\n/.exec(stdout)
