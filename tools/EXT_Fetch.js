@@ -12,6 +12,18 @@ function getGatewaySetting() {
   })
 }
 
+function getHomeText() {
+  return new Promise(resolve => {
+    $.getJSON("/homeText" , (homeText) => {
+      resolve(homeText)
+    })
+    .fail(function(err) {
+      if (!err.status) alertify.error("Connexion Lost!")
+      else alertify.warning("[homeText] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+    })
+  })
+}
+
 function getGatewayVersion() {
   return new Promise(resolve => {
     $.getJSON("/version" , (versionGW) => {

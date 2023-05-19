@@ -11,16 +11,20 @@ PleaseRotateOptions = {
 // define all vars
 var translation= {}
 var versionGW = {}
+var homeText = {}
 
 // Load rules
 window.addEventListener("load", async event => {
   versionGW = await getGatewayVersion()
   translation = await loadTranslation()
+  homeText = await getHomeText()
 
   $('html').prop("lang", versionGW.lang)
   forceMobileRotate()
   doIndex()
   doTranslateNavBar()
+  // @todo Add ID in src
+  $("#HomeText").html(homeText.text)
 })
 
 function doIndex() {
@@ -33,3 +37,4 @@ function doIndex() {
     $('#messageText').text(translation.Update + " v"+versionGW.last)
   }
 }
+

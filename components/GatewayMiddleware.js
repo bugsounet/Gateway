@@ -136,6 +136,10 @@ function createGW(that) {
       res.send(that.Gateway.translation)
     })
 
+    .get("/homeText", (req,res) => {
+      res.send({text: that.Gateway.homeText})
+    })
+
     .get('/EXT', (req, res) => {
       if(req.user) res.sendFile(Path+ "/website/Gateway/EXT.html")
       else res.redirect('/login')

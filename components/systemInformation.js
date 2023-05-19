@@ -81,18 +81,6 @@ class systemInfo {
         }
       },
       SpeedTest: null
-    },
-
-    // tmp translate
-    this.config = {
-      uptime: {
-        days: "days",
-        day: "day",
-        hours: "hours",
-        hour: "hour",
-        minutes: "minutes",
-        minute: "minute"
-      }
     }
   }
 
@@ -335,11 +323,8 @@ class systemInfo {
             MM: 1
           }
           var recordFile = this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
-            if (error) {
-              console.error("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
-            } else {
-              console.log("[GATEWAY] [SYSTEMINFO] Create Uptimed")
-            }
+            if (error) console.error("[GATEWAY] [SYSTEMINFO] recordFile creation error!", error)
+            else console.log("[GATEWAY] [SYSTEMINFO] Create Uptimed")
             resolve()
           })
         }
@@ -364,9 +349,7 @@ class systemInfo {
         MM: this.System["UPTIME"].recordMM
       }
       this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
-        if (error) {
-          console.error("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
-        }
+        if (error) console.error("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
         resolve()
       })
     })

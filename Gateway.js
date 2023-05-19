@@ -46,7 +46,8 @@ Module.register("Gateway", {
       nl: "translations/nl.json",
       pt: "translations/pt.json",
       ko: "translations/ko.json",
-      el: "translations/el.json"
+      el: "translations/el.json",
+      vi: "translation/vi.json"
     }
   },
 
