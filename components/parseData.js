@@ -27,7 +27,8 @@ async function init(that) {
       result: {}
     },
     activeVersion: {},
-    homeText: null
+    homeText: null,
+    errorInit: false
   }
   that.SmartHome = {
     lang: "en",
@@ -54,7 +55,13 @@ async function parse(that,data) {
     return
   }
   that.Gateway.MMConfig = await that.lib.GWTools.readConfig(that)
-  if (!that.Gateway.MMConfig) return console.error("[GATEWAY] Error: MagicMirror config.js file not found!")
+  if (!that.Gateway.MMConfig) {
+    that.Gateway.errorInit = true
+    console.error("[GATEWAY] Error: MagicMirror config.js file not found!")
+    that.sendSocketNotification("ERROR", "MagicMirror config.js file not found!")
+    return
+  }
+  if (await that.lib.GWTools.MMConfigAddress(that)) return
   that.Gateway.language = that.Gateway.MMConfig.language
   that.Gateway.webviewTag = that.lib.GWTools.checkElectronOptions(that.Gateway.MMConfig)
   that.Gateway.EXT = data.DB.sort()

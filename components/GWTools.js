@@ -431,7 +431,6 @@ function configStartMerge(result) {
           } else {
              result[key] = item[key]
           }
-
         }
       }
     }
@@ -696,6 +695,20 @@ function readThisFile (lib, file) {
   })
 }
 
+function MMConfigAddress (that) {
+  return new Promise (resolve => {
+    if (that.Gateway.MMConfig.address == "0.0.0.0") {
+      that.Gateway.errorInit = true
+      console.error("[GATEWAY] Error: You can't use '0.0.0.0' in MagicMirror address config")
+      that.sendSocketNotification("ERROR", "You can't use '0.0.0.0' in MagicMirror address config")
+      resolve(true)
+    } else {
+      console.log("[GATEWAY] MagicMirror address:", that.Gateway.MMConfig.address)
+      resolve(false)
+    }
+  })
+}
+
 /** exports functions for pretty using **/
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
@@ -725,3 +738,4 @@ exports.SystemRestart = SystemRestart
 exports.SystemDie = SystemDie
 exports.setActiveVersion = setActiveVersion
 exports.getHomeText = getHomeText
+exports.MMConfigAddress = MMConfigAddress
