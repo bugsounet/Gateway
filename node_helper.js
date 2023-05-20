@@ -29,7 +29,7 @@ module.exports = NodeHelper.create({
         if (this.alreadyInitialized) return console.error("[GATEWAY] I say no! You can't use Gateway in server mode")
         this.alreadyInitialized= true
         await parseData.parse(this,payload)
-        if (this.lib.error) return
+        if (this.lib.error || this.Gateway.errorInit) return
         this.lib.Gateway.initialize(this)
         if (this.config.CLIENT_ID) this.lib.SmartHome.initialize(this)
         else this.lib.SmartHome.disable(this)
