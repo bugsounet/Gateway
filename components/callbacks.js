@@ -12,6 +12,9 @@ class callbacks {
       case "CB_VOLUME":
         that.sendNotification("EXT_VOLUME-SPEAKER_SET", payload)
         break
+      case "CB_VOLUME-MUTE":
+        that.sendNotification("EXT_VOLUME-SPEAKER_MUTE", payload)
+        break
       case "CB_VOLUME-UP":
         that.sendNotification("EXT_VOLUME-SPEAKER_UP", payload)
         break

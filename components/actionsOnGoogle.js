@@ -126,7 +126,7 @@ function execute(that, command, params) {
       return {"status": "SUCCESS", "states": {"online": true, "currentVolume": params.volumeLevel, "isMuted": data.VolumeIsMuted}}
       break
     case "action.devices.commands.mute":
-      that.lib.callback.send(that, "volume", params.mute == true ? "mute" : "unmute")
+      that.lib.callback.send(that, "volumeMute", params.mute)
       return {"status": "SUCCESS", "states": { "online": true, "isMuted": params.mute, "currentVolume": data.Volume}}
       break
     case "action.devices.commands.SetInput":
