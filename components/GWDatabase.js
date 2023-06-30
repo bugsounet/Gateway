@@ -25,8 +25,6 @@ class GWDatabase {
       "EXT-Pir",
       "EXT-RadioPlayer",
       "EXT-Screen",
-      "EXT-ScreenManager",
-      "EXT-ScreenTouch",
       "EXT-Selfies",
       "EXT-SelfiesFlash",
       "EXT-SelfiesSender",
