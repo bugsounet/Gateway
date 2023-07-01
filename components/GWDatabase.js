@@ -33,7 +33,8 @@ class GWDatabase {
       "EXT-SpotifyCanvasLyrics",
       "EXT-StreamDeck",
       "EXT-TelegramBot",
-      "EXT-UpdateNotification",
+      "EXT-UpdateNotification", // will be deleted
+      "EXT-Updates", // for soon!
       "EXT-Volume",
       "EXT-Welcome",
       "EXT-YouTube",
