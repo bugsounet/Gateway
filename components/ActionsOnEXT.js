@@ -183,11 +183,13 @@ class ActionsOnEXT {
         if (!that.GW["EXT-SmartHome"].hello) return
         if (sender.name == "EXT-SmartHome") that.sendSocketNotification("Restart")
         break
+        /*
       case "EXT_SCREEN-GH_FORCE_WAKEUP":
         // temp patch ... to do better
         if (that.GW["EXT-Screen"].hello && that.OthersRules.hasPluginConnected(that.GW, "connected", true)) {
           setTimeout(() => { that.sendNotification("EXT_SCREEN-LOCK") } , 500)
         }
+        */
       /** Warn if not in db **/
       default:
         logGW("Sorry, i don't understand what is", noti, payload || "")

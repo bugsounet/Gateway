@@ -7,7 +7,10 @@ class callbacks {
     switch(noti) {
       case "CB_SCREEN":
         if (payload == "ON") that.sendNotification("EXT_SCREEN-GH_FORCE_WAKEUP")
-        else if (payload == "OFF") that.sendNotification("EXT_SCREEN-GH_FORCE_END")
+        else if (payload == "OFF") {
+          that.sendNotification("EXT_STOP")
+          that.sendNotification("EXT_SCREEN-GH_FORCE_END")
+        }
         break
       case "CB_VOLUME":
         that.sendNotification("EXT_VOLUME-SPEAKER_SET", payload)
