@@ -39,7 +39,6 @@
     "@colors/colors": "^1.5.0",
     "@felipecrs/decompress-tarxz": "^4.0.0",
     "actions-on-google": "^3.0.0",
-    "check-node-version": "^4.2.1",
     "decompress": "^4.2.1",
     "decompress-tar": "^4.1.1",
     "decompress-tarbz2": "^4.1.1",
