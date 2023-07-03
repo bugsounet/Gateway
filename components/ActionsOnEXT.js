@@ -20,15 +20,13 @@ class ActionsOnEXT {
       case "EXT_GATEWAY":
         this.gatewayEXT(that, payload)
         break
-      case "EXT_SCREEN-OFF":
+      case "EXT_SCREEN-POWER":
         if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
-        that.GW["EXT-Screen"].power = false
-        if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-PAUSE")
-        break
-      case "EXT_SCREEN-ON":
-        if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
-        that.GW["EXT-Screen"].power = true
-        if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-RESUME")
+        that.GW["EXT-Screen"].power = payload
+        if (that.GW["EXT-Pages"].hello) {
+          if (that.GW["EXT-Screen"].power) that.sendNotification("EXT_PAGES-RESUME")
+          else that.sendNotification("EXT_PAGES-PAUSE")
+        }
         break
       case "EXT_STOP":
         if (that.GW["EXT-Alert"].hello && that.OthersRules.hasPluginConnected(that.GW, "connected", true)) {
