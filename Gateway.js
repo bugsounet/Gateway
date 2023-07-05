@@ -47,7 +47,7 @@ Module.register("Gateway", {
       pt: "translations/pt.json",
       ko: "translations/ko.json",
       el: "translations/el.json",
-      vi: "translations/vi.json";
+      vi: "translations/vi.json",
       "zh-cn": "translations/zh-cn.json"
     }
   },
