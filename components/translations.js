@@ -114,8 +114,6 @@ class GWTranslations {
       Tr.Setting_Credentials_clientID_placeholder = that.translate("GW_Setting_Credentials_clientID_placeholder")
       Tr.Setting_Options = that.translate("GW_Setting_Options")
       Tr.Setting_Options_debug = that.translate("GW_Setting_Options_debug")
-      Tr.Setting_Options_usePM2 = that.translate("GW_Setting_Options_usePM2")
-      Tr.Setting_Options_PM2Id = that.translate("GW_Setting_Options_PM2Id")
       Tr.Setting_Info_by = that.translate("GW_Setting_Info_by")
       Tr.Setting_Info_Support = that.translate("GW_Setting_Info_Support")
       Tr.Setting_Info_Donate = that.translate("GW_Setting_Info_Donate")

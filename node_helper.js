@@ -6,9 +6,6 @@ var NodeHelper = require("node_helper")
 
 module.exports = NodeHelper.create({
   start: function () {
-    this.Gateway = {}
-    this.SmartHome = {}
-    this.lib = { error: 0 }
     parseData.init(this)
   },
 

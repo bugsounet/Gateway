@@ -1,25 +1,17 @@
 /**
  ** Module : Gateway
- ** @bugsounet ©03-2023
+ ** @bugsounet ©07-2023
  ** support: https://forum.bugsounet.fr
  **/
-
-/** bug a inspecter:
- * SH desactiver
- * lancer Spotify
- * SH activer
-**/
 
 logGW = (...args) => { /* do nothing */ }
 
 Module.register("Gateway", {
-  requiresVersion: "2.22.0",
+  requiresVersion: "2.24.0",
   defaults: {
     debug: false,
     username: "admin",
     password: "admin",
-    usePM2: false,
-    PM2Id: 0,
     CLIENT_ID: null
   },
 

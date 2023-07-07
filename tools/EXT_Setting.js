@@ -48,8 +48,6 @@ function GatewaySetting() {
 
   $('#options').text(translation.Setting_Options)
   $('#debugHeader').text(translation.Setting_Options_debug)
-  $('#pm2Header').text(translation.Setting_Options_usePM2)
-  $('#pm2idHeader').text(translation.Setting_Options_PM2Id)
   $('#byHeader').text(translation.Setting_Info_by)
   $('#SupportHeader').text(translation.Setting_Info_Support)
   $('#DonateHeader').text(translation.Setting_Info_Donate)
@@ -77,13 +75,6 @@ function GatewaySetting() {
   $("#clientID").val(actualSetting.CLIENT_ID)
 
   $("#debug").prop("checked", actualSetting.debug)
-  $("#pm2").prop("checked", actualSetting.usePM2)
-  $("select.grppm2").prop("disabled", !actualSetting.usePM2)
-  $("#pm2id option[value='" + actualSetting.PM2Id + "']").prop('selected', true)
-
-  document.getElementById('pm2').onclick = function () {
-    $("select.grppm2").prop("disabled", !this.checked)
-  }
 
   $("#GatewaySetting").submit(function(event) {
     var newGatewayConfig= {
@@ -92,8 +83,6 @@ function GatewaySetting() {
         debug: false,
         username: "admin",
         password: "admin",
-        usePM2: false,
-        PM2Id: 0,
         CLIENT_ID: null
       }
     }
@@ -131,11 +120,6 @@ function GatewaySetting() {
 
     var debug = $( "input[type=checkbox][name=debug]:checked" ).val()
     newGatewayConfig.config.debug = debug ? true : false
-
-    var pm2 = $( "input[type=checkbox][name=pm2]:checked" ).val()
-    var pm2id = Number($( "select#pm2id" ).val())
-    newGatewayConfig.config.usePM2 = pm2 ? true : false
-    newGatewayConfig.config.PM2Id = pm2 ? pm2id : 0
 
     $('#alert').removeClass('invisible')
     $('#alert').removeClass('alert-danger')
