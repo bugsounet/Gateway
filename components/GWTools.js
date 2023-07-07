@@ -483,7 +483,6 @@ function setWebviewTag(MMConfig) {
   })
 }
 
-/** Part of EXT-UpdateNotification **/
 // MagicMirror restart and stop
 function restartMM (that) {
   if (that.Gateway.usePM2) {

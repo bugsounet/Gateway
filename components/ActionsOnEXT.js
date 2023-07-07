@@ -126,13 +126,9 @@ class ActionsOnEXT {
         if (that.GW["EXT-Spotify"].hello) that.sendNotification("EXT_SPOTIFY-MAIN_START")
         if (that.GW["EXT-GooglePhotos"].hello) that.sendNotification("EXT_GOOGLEPHOTOS-START")
         break
-      case "EXT_UN-MODULE_UPDATE": /** Need UN review ! send info before init ! **/
-        if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
-        that.GW["EXT-UpdateNotification"].module = payload
-        break
-      case "EXT_UN-NPM_UPDATE":
-        if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
-        that.GW["EXT-UpdateNotification"].npm = payload
+      case "EXT_UPDATES-MODULE_UPDATE":
+        if (!that.GW || !that.GW["EXT-Updates"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+        that.GW["EXT-Updates"].module = payload
         break
       case "EXT_VOLUME_GET":
         if (!that.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")

@@ -769,9 +769,9 @@ function createGW(that) {
       else res.send("error")
     })
 
-    .post("/EXT-UNUpdate", (req, res) => {
+    .post("/EXT-Updates", (req, res) => {
       if(req.user) {
-        that.sendSocketNotification("SendNoti", "EXT_UPDATENOTIFICATION-UPDATE")
+        that.sendSocketNotification("SendNoti", "EXT_UPDATES-UPDATE")
         res.send("ok")
       }
       else res.send("error")

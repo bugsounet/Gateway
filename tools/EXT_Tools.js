@@ -247,7 +247,7 @@ async function doTools() {
   }
 
   // Update Control
-  if (EXTStatus["EXT-UpdateNotification"].hello) {
+  if (EXTStatus["EXT-Updates"].hello) {
     $('#Update-Header').text(translation.Tools_Update_Header)
     $('#Update-Text').text(translation.Tools_Update_Text)
     $('#Update-Text2').text(translation.Tools_Update_Text2)
@@ -255,10 +255,9 @@ async function doTools() {
     setInterval(async() => {
       let needUpdate = 0
       $('#Update-Confirm').text(translation.Confirm)
-      var updateModules = EXTStatus["EXT-UpdateNotification"].module
-      var updateNpm = EXTStatus["EXT-UpdateNotification"].npm
-      if (!updateModules || !updateNpm) return $('#Update-Box').css("display", "none")
-      if (!Object.keys(updateModules).length && !Object.keys(updateNpm).length) return $('#Update-Box').css("display", "none")
+      var updateModules = EXTStatus["EXT-Updates"].module
+      if (!updateModules) return $('#Update-Box').css("display", "none")
+      if (!Object.keys(updateModules).length) return $('#Update-Box').css("display", "none")
       if (Object.keys(updateModules).length) {
         $('#Update-Box').css("display", "block")
         for (const [key, value] of Object.entries(updateModules)) {
@@ -267,21 +266,12 @@ async function doTools() {
         }
         $('#Update-Modules-Box').css("display", "block")
       }
-      if (Object.keys(updateNpm).length) {
-        $('#Update-Box').css("display", "block")
-        for (const [key, value] of Object.entries(updateNpm)) {
-          var library = value.library.replace('@bugsounet/', '')
-          if($("#" + value.module + "-" + library).length == 0) $("#Update-NPM-Box").append("<br><span id='"+ value.module + "-" + library + "'>" + key + "</span>")
-          ++needUpdate
-        }
-        $('#Update-NPM-Box').css("display", "block")
-      }
       if (!needUpdate) $('#Update-Confirm').addClass('disabled')
       else $('#Update-Confirm').removeClass('disabled')
      }, 1000)
     document.getElementById('Update-Confirm').onclick = function () {
       $('#Update-Confirm').addClass('disabled')
-      $.post("/EXT-UNUpdate")
+      $.post("/EXT-Updates")
         .done(function( back ) {
           if (back == "error") {
             alertify.error(translation.Warn_Error)
@@ -290,7 +280,7 @@ async function doTools() {
           }
         })
         .fail(function(err) {
-          alertify.error("[UpdateNotification] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
+          alertify.error("[Updates] Gateway Server return Error " + err.status + " ("+ err.statusText+")")
         })
     }
   }

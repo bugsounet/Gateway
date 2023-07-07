@@ -33,8 +33,7 @@ class GWDatabase {
       "EXT-SpotifyCanvasLyrics",
       "EXT-StreamDeck",
       "EXT-TelegramBot",
-      "EXT-UpdateNotification", // will be deleted
-      "EXT-Updates", // for soon!
+      "EXT-Updates",
       "EXT-Volume",
       "EXT-Welcome",
       "EXT-YouTube",
@@ -60,8 +59,8 @@ class GWDatabase {
     GW["EXT-Motion"].started = false
     GW["EXT-Pir"].started = false
     GW["EXT-Screen"].power = true
-    GW["EXT-UpdateNotification"].update = {}
-    GW["EXT-UpdateNotification"].npm = {}
+    GW["EXT-Updates"].update = {}
+    GW["EXT-Updates"].npm = {}
     GW["EXT-Spotify"].remote = false
     GW["EXT-Spotify"].play = false
     GW["EXT-Volume"].speaker = 0
