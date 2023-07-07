@@ -642,11 +642,11 @@ function createGW(that) {
       if(req.user) {
         let data = req.body.data
         if (data == "OFF") {
-          that.sendSocketNotification("SendNoti", "EXT_SCREEN-GH_FORCE_END")
+          that.sendSocketNotification("SendNoti", "EXT_SCREEN-FORCE_END")
           return res.send("ok")
         }
         if (data == "ON") {
-          that.sendSocketNotification("SendNoti", "EXT_SCREEN-GH_FORCE_WAKEUP")
+          that.sendSocketNotification("SendNoti", "EXT_SCREEN-FORCE_WAKEUP")
           return res.send("ok")
         }
         res.send("error")

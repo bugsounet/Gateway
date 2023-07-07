@@ -6,10 +6,10 @@ class callbacks {
   cb(that,noti,payload) {
     switch(noti) {
       case "CB_SCREEN":
-        if (payload == "ON") that.sendNotification("EXT_SCREEN-GH_FORCE_WAKEUP")
+        if (payload == "ON") that.sendNotification("EXT_SCREEN-FORCE_WAKEUP")
         else if (payload == "OFF") {
           that.sendNotification("EXT_STOP")
-          that.sendNotification("EXT_SCREEN-GH_FORCE_END")
+          that.sendNotification("EXT_SCREEN-FORCE_END")
         }
         break
       case "CB_VOLUME":
