@@ -642,11 +642,11 @@ function createGW(that) {
       if(req.user) {
         let data = req.body.data
         if (data == "OFF") {
-          that.sendSocketNotification("SendNoti", "EXT_SCREEN-END")
+          that.sendSocketNotification("SendNoti", "EXT_SCREEN-FORCE_END")
           return res.send("ok")
         }
         if (data == "ON") {
-          that.sendSocketNotification("SendNoti", "EXT_SCREEN-WAKEUP")
+          that.sendSocketNotification("SendNoti", "EXT_SCREEN-FORCE_WAKEUP")
           return res.send("ok")
         }
         res.send("error")
@@ -769,9 +769,9 @@ function createGW(that) {
       else res.send("error")
     })
 
-    .post("/EXT-UNUpdate", (req, res) => {
+    .post("/EXT-Updates", (req, res) => {
       if(req.user) {
-        that.sendSocketNotification("SendNoti", "EXT_UPDATENOTIFICATION-UPDATE")
+        that.sendSocketNotification("SendNoti", "EXT_UPDATES-UPDATE")
         res.send("ok")
       }
       else res.send("error")

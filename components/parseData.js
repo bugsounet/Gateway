@@ -2,6 +2,8 @@
 var _load = require("../components/loadLibraries.js")
 
 async function init(that) {
+  that.MMVersion = global.version
+  that.root_path = global.root_path
   that.Gateway = {
     MMConfig: null, // real config file (config.js)
     EXT: null, // EXT plugins list
@@ -27,6 +29,8 @@ async function init(that) {
       result: {}
     },
     activeVersion: {},
+    usePM2: false,
+    PM2Process: 0,
     homeText: null,
     errorInit: false
   }
@@ -45,6 +49,7 @@ async function init(that) {
     oldSmartHome: {},
     homegraph: null
   }
+  that.lib = { error: 0 }
 }
 
 async function parse(that,data) {
@@ -74,6 +79,7 @@ async function parse(that,data) {
   that.Gateway.homeText = await that.lib.GWTools.getHomeText(that.lib, that.Gateway.language)
   that.Gateway.freeteuse = await that.lib.GWTools.readFreeteuseTV(that)
   that.Gateway.radio= await that.lib.GWTools.readRadioRecipe(that)
+  that.Gateway.usePM2 = await that.lib.GWTools.check_PM2_Process(that)
   that.Gateway.systemInformation.lib = new that.lib.SystemInformation(that.lib, that.Gateway.translation)
   that.Gateway.systemInformation.result = await that.Gateway.systemInformation.lib.initData()
   if (that.config.CLIENT_ID) {

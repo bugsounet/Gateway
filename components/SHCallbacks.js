@@ -11,6 +11,10 @@ function send(that, name, values) {
       log("Send volume:", values)
       that.sendSocketNotification("CB_VOLUME", values)
       break
+    case "volumeMute":
+      log("Send volume Mute:", values)
+      that.sendSocketNotification("CB_VOLUME-MUTE", values)
+      break
     case "volumeUp":
       log("Send volume Up")
       that.sendSocketNotification("CB_VOLUME-UP")

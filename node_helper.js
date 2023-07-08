@@ -6,9 +6,6 @@ var NodeHelper = require("node_helper")
 
 module.exports = NodeHelper.create({
   start: function () {
-    this.Gateway = {}
-    this.SmartHome = {}
-    this.lib = { error: 0 }
     parseData.init(this)
   },
 
@@ -53,7 +50,11 @@ module.exports = NodeHelper.create({
         }
         break
       case "HELLO":
-        if (!this.lib.GWTools) return console.error("[GATEWAY] internal error: lib GWTools not found!")
+        if (!this.lib.GWTools) {
+          // library is not loaded ... retry
+          setTimeout(() => { this.socketNotificationReceived("HELLO", payload) }, 1000)
+          return
+        }
         this.lib.GWTools.setActiveVersion(payload, this)
     }
   }

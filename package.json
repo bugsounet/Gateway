@@ -1,7 +1,7 @@
 {
   "name": "Gateway",
-  "version": "3.3.5",
-  "rev": "230625",
+  "version": "3.4.0",
+  "rev": "230708",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {
@@ -23,7 +23,6 @@
     "Gateway"
   ],
   "engines": {
-    "npm": ">=8.0.0",
     "node": ">=16.0.0"
   },
   "author": "bugsounet",
@@ -37,25 +36,23 @@
   },
   "homepage": "https://wiki.bugsounet.fr/en/Gateway",
   "dependencies": {
-    "@bugsounet/systemd": "^1.0.1",
     "@colors/colors": "^1.5.0",
     "@felipecrs/decompress-tarxz": "^4.0.0",
     "actions-on-google": "^3.0.0",
-    "check-node-version": "^4.2.1",
     "decompress": "^4.2.1",
     "decompress-tar": "^4.1.1",
     "decompress-tarbz2": "^4.1.1",
     "decompress-targz": "^4.1.1",
     "decompress-unzip": "^4.0.1",
     "express-session": "^1.17.2",
-    "glob": "^9.3.2",
+    "glob": "^10.3.1",
     "is-valid-domain": "^0.1.6",
     "jsoneditor": "^9.7.4",
     "lodash": "^4.17.21",
     "magicmirror-rebuild": "^1.0.7",
     "minify": "^9.2.0",
     "mkdirp": "^3.0.1",
-    "node-pty": "^0.10.1",
+    "node-pty": "^1.0.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pm2": "^5.2.0",
@@ -66,7 +63,7 @@
     "stream": "^0.0.2",
     "systeminformation": "^5.11.9",
     "tree-kill": "^1.2.2",
-    "xterm": "^4.18.0",
-    "xterm-addon-fit": "^0.5.0"
+    "xterm": "^5.2.1",
+    "xterm-addon-fit": "^0.7.0"
   }
 }

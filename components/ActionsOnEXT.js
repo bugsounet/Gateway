@@ -20,15 +20,13 @@ class ActionsOnEXT {
       case "EXT_GATEWAY":
         this.gatewayEXT(that, payload)
         break
-      case "EXT_SCREEN-OFF":
+      case "EXT_SCREEN-POWER":
         if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
-        that.GW["EXT-Screen"].power = false
-        if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-PAUSE")
-        break
-      case "EXT_SCREEN-ON":
-        if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
-        that.GW["EXT-Screen"].power = true
-        if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-RESUME")
+        that.GW["EXT-Screen"].power = payload
+        if (that.GW["EXT-Pages"].hello) {
+          if (that.GW["EXT-Screen"].power) that.sendNotification("EXT_PAGES-RESUME")
+          else that.sendNotification("EXT_PAGES-PAUSE")
+        }
         break
       case "EXT_STOP":
         if (that.GW["EXT-Alert"].hello && that.OthersRules.hasPluginConnected(that.GW, "connected", true)) {
@@ -128,13 +126,9 @@ class ActionsOnEXT {
         if (that.GW["EXT-Spotify"].hello) that.sendNotification("EXT_SPOTIFY-MAIN_START")
         if (that.GW["EXT-GooglePhotos"].hello) that.sendNotification("EXT_GOOGLEPHOTOS-START")
         break
-      case "EXT_UN-MODULE_UPDATE": /** Need UN review ! send info before init ! **/
-        if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
-        that.GW["EXT-UpdateNotification"].module = payload
-        break
-      case "EXT_UN-NPM_UPDATE":
-        if (!that.GW || !that.GW["EXT-UpdateNotification"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
-        that.GW["EXT-UpdateNotification"].npm = payload
+      case "EXT_UPDATES-MODULE_UPDATE":
+        if (!that.GW || !that.GW["EXT-Updates"].hello) return console.error("[GATEWAY] Warn UN don't say to me HELLO!")
+        that.GW["EXT-Updates"].module = payload
         break
       case "EXT_VOLUME_GET":
         if (!that.GW["EXT-Volume"].hello) return console.error("[GATEWAY] Warn Volume don't say to me HELLO!")
@@ -179,22 +173,13 @@ class ActionsOnEXT {
         that.GW["EXT-Pages"].actual = payload.Actual
         that.GW["EXT-Pages"].total = payload.Total
         break
-      case "EXT_GATEWAY-REBOOT": // only available with EXT-SmarHome
-        if (!that.GW["EXT-SmartHome"].hello) return
-        if (sender.name == "EXT-SmartHome") that.sendSocketNotification("Restart")
-        break
-      case "EXT_SCREEN-GH_FORCE_WAKEUP":
-        // temp patch ... to do better
-        if (that.GW["EXT-Screen"].hello && that.OthersRules.hasPluginConnected(that.GW, "connected", true)) {
-          setTimeout(() => { that.sendNotification("EXT_SCREEN-LOCK") } , 500)
-        }
       /** Warn if not in db **/
       default:
         logGW("Sorry, i don't understand what is", noti, payload || "")
         break
     }
     that.sendSocketNotification("EXTStatus", that.GW)
-    //console.log("!!EXTs Status", that.GW)
+    logGW("EXTs Status", that.GW)
   }
 
   /**********************/

@@ -1,27 +1,24 @@
 var defaultConfig = {
-  module: 'EXT-ScreenManager',
+  module: "EXT-Updates",
   disabled: false,
   config: {
-    debug: true,
-    forceLock: true,
-    ON: [
-      "0 8 * * *"
-    ],
-    OFF: [
-      "0 22 * * *"
-    ]
+    debug: false,
+    autoUpdate: true,
+    autoRestart: true,
+    logToConsole: true,
+    timeout: 2*60*1000
   }
 }
 
 var schema = {
-  "title": "EXT-ScreenManager",
+  "title": "EXT-Updates",
   "description": "{PluginDescription}",
   "type": "object",
   "properties": {
     "module": {
       "type": "string",
       "title": "{PluginName}",
-      "default": "EXT-ScreenManager"
+      "default": "EXT-Updates"
     },
     "disabled": {
       "type": "boolean",
@@ -37,31 +34,27 @@ var schema = {
           "title": "{PluginDebug}",
           "default": false
         },
-        "forceLock": {
+        "autoUpdate" : {
           "type": "boolean",
-          "title": "{EXT-ScreenManager_Lock}",
+          "title": "{EXT-Updates_AutoUpdate}",
           "default": true
         },
-        "ON": {
-          "type": "array",
-          "title": "{EXT-ScreenManager_On}",
-          "default": ["0 8 * * *"],
-          "minItems": 1,
-          "item": {
-            "type": "string"
-          }
+        "autoRestart": {
+          "type": "boolean",
+          "title": "{EXT-Updates_AutoRestart}",
+          "default": true
         },
-        "OFF": {
-          "type": "array",
-          "title": "{EXT-ScreenManager_Off}",
-          "default": ["0 22 * * *"],
-          "minItems": 1,
-          "item": {
-            "type": "string"
-          }
+        "logToConsole": {
+          "type": "boolean",
+          "title": "{EXT-Updates_Log}",
+          "default": true
+        },
+        "timeout": {
+          "type": "number",
+          "title": "{EXT-Updates_Timeout}",
+          "default": 120000
         }
-      },
-      "required": ["ON", "OFF"]
+      }
     }
   },
   "required": ["module", "config"]

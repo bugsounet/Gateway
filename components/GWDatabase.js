@@ -25,8 +25,6 @@ class GWDatabase {
       "EXT-Pir",
       "EXT-RadioPlayer",
       "EXT-Screen",
-      "EXT-ScreenManager",
-      "EXT-ScreenTouch",
       "EXT-Selfies",
       "EXT-SelfiesFlash",
       "EXT-SelfiesSender",
@@ -35,7 +33,7 @@ class GWDatabase {
       "EXT-SpotifyCanvasLyrics",
       "EXT-StreamDeck",
       "EXT-TelegramBot",
-      "EXT-UpdateNotification",
+      "EXT-Updates",
       "EXT-Volume",
       "EXT-Welcome",
       "EXT-YouTube",
@@ -61,8 +59,8 @@ class GWDatabase {
     GW["EXT-Motion"].started = false
     GW["EXT-Pir"].started = false
     GW["EXT-Screen"].power = true
-    GW["EXT-UpdateNotification"].update = {}
-    GW["EXT-UpdateNotification"].npm = {}
+    GW["EXT-Updates"].update = {}
+    GW["EXT-Updates"].npm = {}
     GW["EXT-Spotify"].remote = false
     GW["EXT-Spotify"].play = false
     GW["EXT-Volume"].speaker = 0

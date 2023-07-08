@@ -4,7 +4,7 @@ var prompt = require("prompt");
 var colors = require("@colors/colors/safe");
 const isValidDomain = require('is-valid-domain');
 const fs = require("fs");
-const systemd= require("@bugsounet/systemd");
+const systemd= require("../components/systemd.js");
 const Systemd = new systemd("nginx")
 
 var server = `server {

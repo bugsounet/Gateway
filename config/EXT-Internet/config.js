@@ -7,7 +7,6 @@ var defaultConfig = {
     displayPing: true,
     delay: 30 * 1000,
     scan: "google.fr",
-    command: "pm2 restart 0",
     showAlert: true,
     needRestart: false
   }
@@ -71,11 +70,6 @@ var schema = {
           "type": "string",
           "title": "{EXT-Internet_Scan}",
           "default": "google.fr"
-        },
-        "command": {
-          "type": "string",
-          "title": "{EXT-Internet_Command}",
-          "default": "pm2 restart 0"
         },
         "showAlert": {
           "type": "boolean",

@@ -483,12 +483,11 @@ function setWebviewTag(MMConfig) {
   })
 }
 
-/** Part of EXT-UpdateNotification **/
 // MagicMirror restart and stop
 function restartMM (that) {
-  if (that.config.usePM2) {
+  if (that.Gateway.usePM2) {
     console.log("[GATEWAY] PM2 will restarting MagicMirror...")
-    that.lib.pm2.restart(that.config.PM2Id, (err, proc) => {
+    that.lib.pm2.restart(that.Gateway.PM2Process, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }
@@ -499,18 +498,17 @@ function restartMM (that) {
 
 function doRestart (that) {
   console.log("[GATEWAY] Restarting MagicMirror...")
-  var MMdir = that.lib.path.normalize(__dirname + "/../../../")
   const out = process.stdout
   const err = process.stderr
-  const subprocess = that.lib.childProcess.spawn("npm start", {cwd: MMdir, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+  const subprocess = that.lib.childProcess.spawn("npm start", {cwd: that.root_path, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
   subprocess.unref()
   process.exit()
 }
 
 function doClose (that) {
   console.log("[GATEWAY] Closing MagicMirror...")
-  if (that.config.usePM2) {
-    that.lib.pm2.stop(that.config.PM2Id, (err, proc) => {
+  if (that.Gateway.usePM2) {
+    that.lib.pm2.stop(that.Gateway.PM2Process, (err, proc) => {
       if (err) {
         console.log("[GATEWAY] " + err)
       }
@@ -670,8 +668,8 @@ function reviver(value) {
 function getHomeText (lib,lang) {
   return new Promise (async resolve => {
     var Home = null
-    let langHome = lib.path.resolve(__dirname, "../translations/"+ lang + ".home")
-    let defaultHome = lib.path.resolve(__dirname, "../translations/default.home")
+    let langHome = lib.path.resolve(__dirname, "../home/"+ lang + ".home")
+    let defaultHome = lib.path.resolve(__dirname, "../home/default.home")
     if (lib.fs.existsSync(langHome)) {
       console.log("[GATEWAY] [TRANSLATION] [HOME] Use:", lang + ".home")
       Home = await readThisFile(lib, langHome)
@@ -709,6 +707,35 @@ function MMConfigAddress (that) {
   })
 }
 
+function check_PM2_Process(that) {
+  return new Promise(resolve => {
+    that.lib.pm2.connect(function(err) {
+      if (err) {
+        console.error("[GATEWAY] [PM2]", err)
+        resolve(false)
+      }
+      that.lib.pm2.list((err, list) => {
+        if (err) {
+          console.error("[GATEWAY] [PM2]", err)
+          resolve(false)
+        }
+        list.forEach(pm => {
+          if ((pm.pm2_env.version === that.MMVersion) && (pm.pm2_env.status === "online") && (pm.pm2_env.PWD.includes(that.root_path))) {
+            that.Gateway.PM2Process = pm.name
+            console.log("[GATEWAY] [PM2] You are using pm2 with", that.Gateway.PM2Process)
+            resolve(true)
+          }
+        })
+        that.lib.pm2.disconnect()
+        if (!that.Gateway.PM2Process) {
+          console.log("[GATEWAY] [PM2] You don't use PM2")
+          resolve(false)
+        }
+      })
+    })
+  })
+}
+
 /** exports functions for pretty using **/
 exports.purposeIP = purposeIP
 exports.readConfig = readConfig
@@ -739,3 +766,4 @@ exports.SystemDie = SystemDie
 exports.setActiveVersion = setActiveVersion
 exports.getHomeText = getHomeText
 exports.MMConfigAddress = MMConfigAddress
+exports.check_PM2_Process = check_PM2_Process
