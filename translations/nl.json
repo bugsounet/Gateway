@@ -293,7 +293,7 @@
   "VAL_EXT-Internet_Delay": "Stel het interval in om uw internet verbinding te controleren (in ms)",
   "VAL_EXT-Internet_Scan": "Pingen naar volgende naam of adres",
   "VAL_EXT-Internet_Alert": "Toon een melding als de internet verbinding verbroken is (je hebt EXT-Alert nodig)",
-  "VAL_EXT-Internet_Restart": "Herstart uw MagicMirror met uw favoriete opdracht",
+  "VAL_EXT-Internet_Restart": "Herstart uw MagicMirror",
   "VAL_EXT-Keyboard_keyFinder": "Display keycode with EXT-Alert when a key is pressed",
   "VAL_EXT-Keyboard_keys": "Define your keys rules",
   "VAL_EXT-Keyboard_keycode": "KeyCode number",

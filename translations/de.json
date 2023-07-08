@@ -293,7 +293,7 @@
   "VAL_EXT-Internet_Delay": "Interval zum Prüfen der Internetverbindung (in ms).",
   "VAL_EXT-Internet_Scan": "Ping-Ziel Name oder Adresse.",
   "VAL_EXT-Internet_Alert": "Status der Internetverbindung anzeigen (benötigt EXT-Alert).",
-  "VAL_EXT-Internet_Restart": "MagicMirror mit bevorzugtem Befehl neustarten.",
+  "VAL_EXT-Internet_Restart": "Restart your MagicMirror",
   "VAL_EXT-Keyboard_keyFinder": "Beim Drücken einer Taste den Tastencode mit EXT-Alert anzeigen.",
   "VAL_EXT-Keyboard_keys": "Regeln für Tasten anlegen",
   "VAL_EXT-Keyboard_keycode": "Tastencode",

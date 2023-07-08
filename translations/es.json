@@ -293,7 +293,7 @@
   "VAL_EXT-Internet_Delay": "Definir el intervalo para comprobar la conexión a Internet (en ms)",
   "VAL_EXT-Internet_Scan": "Nombre o Ip para hacer ping",
   "VAL_EXT-Internet_Alert": "Mostrar/No mostrar la alerta de perdida de conexión a Internet (se necesita EXT-Alert)",
-  "VAL_EXT-Internet_Restart": "Reiniciar Magicmirror con tu comando favorito",
+  "VAL_EXT-Internet_Restart": "Reiniciar Magicmirror",
   "VAL_EXT-Keyboard_keyFinder": "Display keycode with EXT-Alert when a key is pressed",
   "VAL_EXT-Keyboard_keys": "Define your keys rules",
   "VAL_EXT-Keyboard_keycode": "KeyCode number",
