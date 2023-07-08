@@ -668,8 +668,8 @@ function reviver(value) {
 function getHomeText (lib,lang) {
   return new Promise (async resolve => {
     var Home = null
-    let langHome = lib.path.resolve(__dirname, "../translations/"+ lang + ".home")
-    let defaultHome = lib.path.resolve(__dirname, "../translations/default.home")
+    let langHome = lib.path.resolve(__dirname, "../home/"+ lang + ".home")
+    let defaultHome = lib.path.resolve(__dirname, "../home/default.home")
     if (lib.fs.existsSync(langHome)) {
       console.log("[GATEWAY] [TRANSLATION] [HOME] Use:", lang + ".home")
       Home = await readThisFile(lib, langHome)
