@@ -292,7 +292,6 @@
   "VAL_EXT-Internet_Ping": "Display the ping value on the screen",
   "VAL_EXT-Internet_Delay": "Set the interval for internet checking (in ms)",
   "VAL_EXT-Internet_Scan": "Ping point name or address",
-  "VAL_EXT-Internet_Command": "Command which will be executed after the internet connection is detected as lost",
   "VAL_EXT-Internet_Alert": "Show or not the Alert about internet connection lost (EXT-Alert needed)",
   "VAL_EXT-Internet_Restart": "Restart your MagicMirror app with your prefered command",
   "VAL_EXT-Keyboard_keyFinder": "Display keycode with EXT-Alert when a key is pressed",

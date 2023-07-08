@@ -292,7 +292,6 @@
   "VAL_EXT-Internet_Ping": "Afficher la valeur du ping à l'écran",
   "VAL_EXT-Internet_Delay": "Défini l'intervalle de vérification Internet (en ms",
   "VAL_EXT-Internet_Scan": "Nom ou adresse du point de contrôle Ping",
-  "VAL_EXT-Internet_Command": "Commande qui sera exécutée une fois la connexion Internet perdue",
   "VAL_EXT-Internet_Alert": "Affiche ou non l'alerte de perte de connexion Internet (EXT-Alert nécessaire)",
   "VAL_EXT-Internet_Restart": "Redémarre votre application Magic Mirror avec votre commande préférée",
   "VAL_EXT-Keyboard_keyFinder": "Afficher le code de la touche avec EXT-Alert lorsqu'elle est enfoncée",

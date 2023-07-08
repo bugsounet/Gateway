@@ -311,7 +311,6 @@ class GWTranslations {
       Tr["EXT-Internet_Ping"] = that.translate("VAL_EXT-Internet_Ping")
       Tr["EXT-Internet_Delay"] = that.translate("VAL_EXT-Internet_Delay")
       Tr["EXT-Internet_Scan"] = that.translate("VAL_EXT-Internet_Scan")
-      Tr["EXT-Internet_Command"] = that.translate("VAL_EXT-Internet_Command")
       Tr["EXT-Internet_Alert"] = that.translate("VAL_EXT-Internet_Alert")
       Tr["EXT-Internet_Restart"] = that.translate("VAL_EXT-Internet_Restart")
       Tr["EXT-Keyboard_keyFinder"] =  that.translate("VAL_EXT-Keyboard_keyFinder")

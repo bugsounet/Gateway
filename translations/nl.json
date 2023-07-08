@@ -292,7 +292,6 @@
   "VAL_EXT-Internet_Ping": "Toon de ping waarde op het scherm",
   "VAL_EXT-Internet_Delay": "Stel het interval in om uw internet verbinding te controleren (in ms)",
   "VAL_EXT-Internet_Scan": "Pingen naar volgende naam of adres",
-  "VAL_EXT-Internet_Command": "Opdracht die uitgevoerd word als de internet verbinding verbroken",
   "VAL_EXT-Internet_Alert": "Toon een melding als de internet verbinding verbroken is (je hebt EXT-Alert nodig)",
   "VAL_EXT-Internet_Restart": "Herstart uw MagicMirror met uw favoriete opdracht",
   "VAL_EXT-Keyboard_keyFinder": "Display keycode with EXT-Alert when a key is pressed",
