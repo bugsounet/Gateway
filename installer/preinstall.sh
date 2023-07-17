@@ -71,4 +71,3 @@ Installer_update_dependencies
 Installer_success "All Dependencies needed are installed !"
 
 echo
-
