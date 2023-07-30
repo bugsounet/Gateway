@@ -114,6 +114,14 @@ class ActionsOnEXT {
         if (!that.GW["EXT-Photos"].hello) return console.error("[GATEWAY] Warn Photos don't say to me HELLO!")
         that.OthersRules.disconnectEXT(that,"EXT-Photos")
         break
+      case "EXT_BARD-CONNECTED":
+        if (!that.GW["EXT-Bard"].hello) return console.error("[GATEWAY] Warn Bards don't say to me HELLO!")
+        that.OthersRules.connectEXT(that,"EXT-Bard")
+        break
+      case "EXT_BARD-DISCONNECTED":
+        if (!that.GW["EXT-Bard"].hello) return console.error("[GATEWAY] Warn Bards don't say to me HELLO!")
+        that.OthersRules.disconnectEXT(that,"EXT-Bard")
+        break
       case "EXT_INTERNET-DOWN":
         if (!that.GW["EXT-Internet"].hello) return console.error("[GATEWAY] Warn Internet don't say to me HELLO!")
         if (that.GW["EXT-Detector"].hello) that.sendNotification("EXT_DETECTOR-STOP")
