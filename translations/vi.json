@@ -211,6 +211,7 @@
 
   "EXT-Alert": "Hiển thị cảnh báo, thông tin hoặc lỗi trên màn hình của bạn.",
   "EXT-Background": "Thay đổi hình nền mặc định của Google Assistant thành hình nền của bạn hoặc với các hình ảnh động cho mỗi trạng thái của trợ lý.",
+  "EXT-Bard": "This plugin allows to use Google Bard AI",
   "EXT-Bring": "Hiển thị danh sách mua sắm hiện tại của Bring!",
   "EXT-Browser": "Hiển thị bất kỳ trang web internet nào như một trình duyệt thực sự toàn màn hình",
   "EXT-Detector": "Trình nghe nhiều từ khóa cho MMM-GoogleAssistant v5",

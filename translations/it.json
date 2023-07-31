@@ -211,6 +211,7 @@
 
   "EXT-Alert": "Mostra Informazioni, Errori o warning sullo schermo.",
   "EXT-Background": "Cambia lo sfondo di default del Google Assistant.",
+  "EXT-Bard": "This plugin allows to use Google Bard AI",
   "EXT-Bring": "Mostra la lista della spesa Bring!",
   "EXT-Browser": "Mostra una pagina Internet a schermo pieno.",
   "EXT-Detector": "Modulo ascolto Multi-keyword per MMM-GoogleAssistant v5",
