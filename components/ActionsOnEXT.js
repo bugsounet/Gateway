@@ -20,6 +20,12 @@ class ActionsOnEXT {
       case "EXT_GATEWAY":
         this.gatewayEXT(that, payload)
         break
+      case "EXT_GATEWAY-Restart":
+        that.sendSocketNotification("RESTART")
+        break
+      case "EXT_GATEWAY-Close":
+        that.sendSocketNotification("CLOSE")
+        break
       case "EXT_SCREEN-POWER":
         if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         that.GW["EXT-Screen"].power = payload
@@ -113,6 +119,14 @@ class ActionsOnEXT {
       case "EXT_PHOTOS-DISCONNECTED":
         if (!that.GW["EXT-Photos"].hello) return console.error("[GATEWAY] Warn Photos don't say to me HELLO!")
         that.OthersRules.disconnectEXT(that,"EXT-Photos")
+        break
+      case "EXT_BARD-CONNECTED":
+        if (!that.GW["EXT-Bard"].hello) return console.error("[GATEWAY] Warn Bards don't say to me HELLO!")
+        that.OthersRules.connectEXT(that,"EXT-Bard")
+        break
+      case "EXT_BARD-DISCONNECTED":
+        if (!that.GW["EXT-Bard"].hello) return console.error("[GATEWAY] Warn Bards don't say to me HELLO!")
+        that.OthersRules.disconnectEXT(that,"EXT-Bard")
         break
       case "EXT_INTERNET-DOWN":
         if (!that.GW["EXT-Internet"].hello) return console.error("[GATEWAY] Warn Internet don't say to me HELLO!")

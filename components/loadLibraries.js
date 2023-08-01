@@ -33,7 +33,7 @@ function libraries(that) {
     { "fs": "fs" },
     { "util": "util" },
     { "systeminformation": "si" },
-    { "pm2": "pm2" },
+    { "command-exists": "commandExists" },
     { "readline": "readline" },
     { "stream": "Stream" },
     { "actions-on-google": "actions" },

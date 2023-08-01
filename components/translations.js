@@ -223,6 +223,7 @@ class GWTranslations {
       var desc = {}
       desc["EXT-Alert"] = that.translate("EXT-Alert")
       desc["EXT-Background"] = that.translate("EXT-Background")
+      desc["EXT-Bard"] = that.translate("EXT-Bard")
       desc["EXT-Bring"] = that.translate("EXT-Bring")
       desc["EXT-Browser"] = that.translate("EXT-Browser")
       desc["EXT-Detector"] = that.translate("EXT-Detector")
