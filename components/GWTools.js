@@ -483,40 +483,6 @@ function setWebviewTag(MMConfig) {
   })
 }
 
-// MagicMirror restart and stop
-function restartMM (that) {
-  if (that.Gateway.usePM2) {
-    console.log("[GATEWAY] PM2 will restarting MagicMirror...")
-    that.lib.pm2.restart(that.Gateway.PM2Process, (err, proc) => {
-      if (err) {
-        console.log("[GATEWAY] " + err)
-      }
-    })
-  }
-  else doRestart(that)
-}
-
-function doRestart (that) {
-  console.log("[GATEWAY] Restarting MagicMirror...")
-  const out = process.stdout
-  const err = process.stderr
-  const subprocess = that.lib.childProcess.spawn("npm start", {cwd: that.root_path, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
-  subprocess.unref()
-  process.exit()
-}
-
-function doClose (that) {
-  console.log("[GATEWAY] Closing MagicMirror...")
-  if (that.Gateway.usePM2) {
-    that.lib.pm2.stop(that.Gateway.PM2Process, (err, proc) => {
-      if (err) {
-        console.log("[GATEWAY] " + err)
-      }
-    })
-  }
-  else process.exit()
-}
-
 /** Restart or Die the Pi **/
 function SystemRestart (that) {
   console.log("[GATEWAY] Restarting OS...")
@@ -707,6 +673,7 @@ function MMConfigAddress (that) {
   })
 }
 
+/** Check using pm2 **/
 function check_PM2_Process(that) {
   console.log("[GATEWAY] [PM2] checking PM2 using...")
   return new Promise(resolve => {
@@ -737,6 +704,7 @@ function check_PM2_Process(that) {
   })
 }
 
+/** Get the list of pm2 process **/
 function PM2_GetList(that) {
   return new Promise(resolve => {
     that.lib.childProcess.exec("pm2 jlist", (err,std,sde) => {
@@ -748,6 +716,40 @@ function PM2_GetList(that) {
       resolve(result)
     })
   })
+}
+
+/** MagicMirror restart and stop **/
+function restartMM (that) {
+  if (that.Gateway.usePM2) {
+    console.log("[GATEWAY] PM2 will restarting MagicMirror...")
+    that.lib.childProcess.exec("pm2 restart " + that.Gateway.PM2Process, (err,std,sde) => {
+      if (err) {
+        console.error("[GATEWAY] [PM2] Restart:" + err)
+      }
+    })
+  }
+  else doRestart(that)
+}
+
+function doRestart (that) {
+  console.log("[GATEWAY] Restarting MagicMirror...")
+  const out = process.stdout
+  const err = process.stderr
+  const subprocess = that.lib.childProcess.spawn("npm start", {cwd: that.root_path, shell: true, detached: true , stdio: [ 'ignore', out, err ]})
+  subprocess.unref()
+  process.exit()
+}
+
+function doClose (that) {
+  console.log("[GATEWAY] Closing MagicMirror...")
+  if (that.Gateway.usePM2) {
+    that.lib.childProcess.exec("pm2 stop " + that.Gateway.PM2Process, (err,std,sde) => {
+      if (err) {
+        console.error("[GATEWAY] [PM2] stop: " + err)
+      }
+    })
+  }
+  else process.exit()
 }
 
 /** exports functions for pretty using **/

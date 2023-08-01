@@ -56,6 +56,13 @@ module.exports = NodeHelper.create({
           return
         }
         this.lib.GWTools.setActiveVersion(payload, this)
+        break
+      case "RESTART":
+        this.lib.GWTools.restartMM(this)
+        break
+      case "CLOSE":
+        this.lib.GWTools.doClose(this)
+        break
     }
   }
 })

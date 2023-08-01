@@ -20,6 +20,12 @@ class ActionsOnEXT {
       case "EXT_GATEWAY":
         this.gatewayEXT(that, payload)
         break
+      case "EXT_GATEWAY-Restart":
+        that.sendSocketNotification("RESTART")
+        break
+      case "EXT_GATEWAY-Close":
+        that.sendSocketNotification("CLOSE")
+        break
       case "EXT_SCREEN-POWER":
         if (!that.GW["EXT-Screen"].hello) return console.log("[GATEWAY] Warn Screen don't say to me HELLO!")
         that.GW["EXT-Screen"].power = payload
