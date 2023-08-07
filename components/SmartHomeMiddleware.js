@@ -6,11 +6,26 @@ function initialize(that) {
   let SHWebsiteDir =  that.lib.path.resolve(__dirname + "/../website/SmartHome")
   let tokensDir = that.lib.path.resolve(__dirname + "/../tokens/")
   that.SmartHome.actions = that.lib.actions.smarthome()
+
+  var Path = that.path
+  var options = {
+    dotfiles: 'ignore',
+    etag: false,
+    extensions: ["css", "js"],
+    index: false,
+    maxAge: '1d',
+    redirect: false,
+    setHeaders: function (res, path, stat) {
+      res.set('x-timestamp', Date.now())
+    }
+  }
+
   log("Create SmartHome needed routes...")
 
   that.lib.ActionsOnGoogle.actions(that)
   that.Gateway.app
     /** OAuth2 Server **/
+    .use('/smarthome/assets', that.lib.express.static(that.path + '/website/assets', options))
     .get("/smarthome/login/", (req,res) => {
       if (that.SmartHome.init) res.sendFile(SHWebsiteDir+ "/login.html")
       else res.sendFile(SHWebsiteDir+ "/disabled.html")
