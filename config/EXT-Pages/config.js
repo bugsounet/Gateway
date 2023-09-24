@@ -6,8 +6,6 @@ var defaultConfig = {
     pages: {},
     fixed: [],
     hiddenPages: {},
-    animateIn: {},
-    animateOut: {},
     animationTime: 1000,
     rotationTime: 0,
     rotationTimes: {},
@@ -71,16 +69,6 @@ var schema = {
           "type": "object",
           "default": {},
           "title": "{EXT-Pages_hiddenPages}"
-        },
-        "animateIn": {
-          "type": "object",
-          "default": {},
-          "title": "{EXT-Pages_animateIn}"
-        },
-        "animateOut": {
-          "type": "object",
-          "default": {},
-          "title": "{EXT-Pages_animateOut}"
         },
         "animationTime": {
           "type": "number",
