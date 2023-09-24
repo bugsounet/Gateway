@@ -319,8 +319,6 @@
   "VAL_EXT-Pages_pages": "Một đối tượng chuỗi số xác định mỗi tiện ích nên hiển thị trên trang nào. Lưu ý rằng tất cả các mục nhập phải lấy tên lớp của chúng (xem wiki)",
   "VAL_EXT-Pages_fixed": "Các tiện ích nên hiển thị luôn. (xem wiki)",
   "VAL_EXT-Pages_hiddenPages": "Đối tượng xác định hiddenPages đặc biệt không có sẵn trong quay trang bình thường và chỉ có thể truy cập qua thông báo. (xem wiki)",
-  "VAL_EXT-Pages_animateIn": "Đối tượng với tên tiện ích và số đặc biệt của hiệu ứng khi một tiện ích xuất hiện (xem wiki)",
-  "VAL_EXT-Pages_animateOut": "Đối tượng với tên tiện ích và số đặc biệt của hiệu ứng khi một tiện ích nên ẩn đi (xem wiki)",
   "VAL_EXT-Pages_animationTime": "Thời gian hoàn thiện hiệu ứng mờ. Đặt thành 0 để thay đổi ngay lập tức. Giá trị tính bằng mili giây (1 giây = 1000 mili giây).",
   "VAL_EXT-Pages_rotationTime": "Thời gian, tính bằng mili giây, giữa các thay đổi trang tự động.",
   "VAL_EXT-Pages_rotationTimes": "Đối tượng với số trang và thời gian trễ liên quan trước khi thay đổi trang (sẽ bắt buộc giá trị rotationTime)",

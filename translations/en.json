@@ -319,8 +319,6 @@
   "VAL_EXT-Pages_pages": "An Object String number of what each module should be on which page. Note that all entries must take their class name (see wiki)",
   "VAL_EXT-Pages_fixed": "Which modules should show up all the time. (see wiki)",
   "VAL_EXT-Pages_hiddenPages": "An Object defining special hiddenPages which are not available on the normal page rotation and only accassible via a notification. (see wiki)",
-  "VAL_EXT-Pages_animateIn": "An Object with module name and special animates number when a module appears (see wiki)",
-  "VAL_EXT-Pages_animateOut": "An Object with module name and special animates number when a module should hide (see wiki)",
   "VAL_EXT-Pages_animationTime": "Fading animation time. Set to 0 for instant change. Value is in milliseconds (1 second = 1000 milliseconds).",
   "VAL_EXT-Pages_rotationTime": "Time, in milliseconds, between automatic page changes.",
   "VAL_EXT-Pages_rotationTimes": "An Object with page number and associated delay times before changing page (will enforce rotationTime value)",

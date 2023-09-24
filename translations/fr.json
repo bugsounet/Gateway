@@ -319,8 +319,6 @@
   "VAL_EXT-Pages_pages": "Numéro de chaîne d'objets de ce que chaque module doit être sur quelle page. Notez que toutes les entrées doivent prendre leur nom de classe (voir wiki)",
   "VAL_EXT-Pages_fixed": "Modules qui doivent apparaître tout le temps. (voir wiki)",
   "VAL_EXT-Pages_hiddenPages": "Définir des pages masquées spéciales qui ne sont pas disponibles lors de la rotation normale des pages et uniquement accessibles via une notification. (voir wiki)",
-  "VAL_EXT-Pages_animateIn": "Animation speciale lorsqu'un module apparaît (voir wiki)",
-  "VAL_EXT-Pages_animateOut": "Animation speciale lorsqu'un module disparaît (voir wiki)",
   "VAL_EXT-Pages_animationTime": "Temps d'animation en fondu. Réglez sur 0 pour un changement instantané.",
   "VAL_EXT-Pages_rotationTime": "Temps, en millisecondes, entre les changements de page automatiques.",
   "VAL_EXT-Pages_rotationTimes": "Un objet avec le numéro de page et les délais associés avant de changer de page (la valeur rotationTime sera ignoré)",

@@ -319,8 +319,6 @@
   "VAL_EXT-Pages_pages": "Eine Object-String-Nummer, die angibt, welches Modul auf welcher Seite stehen soll. Alle Einträge müssen ihren Klassennamen annehmen (siehe Wiki).",
   "VAL_EXT-Pages_fixed": "Module die immer angezeigt werden sollen (ausgenommen hiddenPages, siehe Wiki).",
   "VAL_EXT-Pages_hiddenPages": "Ein Objekt, das spezielle hiddenPages definiert, die bei der normalen Seitenrotation nicht zur Verfügung stehen und nur über eine Benachrichtigung (notification) zugänglich sind. (siehe Wiki)",
-  "VAL_EXT-Pages_animateIn": "Eingangsanimation (Modul erscheint) – Ein Objekt mit Modulname und spezieller Animationsnummer. (siehe Wiki)",
-  "VAL_EXT-Pages_animateOut": "Ausgangsanimation (Modul verschwindet) – Ein Objekt mit Modulname und spezieller Animationsnummer. (siehe Wiki)",
   "VAL_EXT-Pages_animationTime": "Zeit der Überblendungsanimation. Für eine sofortige Änderung auf 0 setzen. Der Wert ist in Millisekunden angegeben. (1 Sekunde = 1000 Millisekunden).",
   "VAL_EXT-Pages_rotationTime": "Zeit, in Millisekunden, zwischen automatischen Seitenwechseln.",
   "VAL_EXT-Pages_rotationTimes": "Ein Objekt mit Seitennummern und zugehörigen Verzögerungszeiten vor dem Seitenwechsel (überschreibt den Wert von rotationTime).",

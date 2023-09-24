@@ -319,8 +319,6 @@
   "VAL_EXT-Pages_pages": "Her modülün hangi sayfada olması gerektiğini belirten Nesne Dizesi numarası. Tüm girişlerin sınıf adını alması gerektiğini unutmayın (bkz. wiki)",
   "VAL_EXT-Pages_fixed": "Hangi modüllerin her zaman görünmesi gerektiği. (wiki'ye bakın)",
   "VAL_EXT-Pages_hiddenPages": "Normal sayfa rotasyonunda bulunmayan ve yalnızca bildirim yoluyla erişilebilen özel gizli Sayfaları tanımlayan bir Nesne. (wiki'ye bakın)",
-  "VAL_EXT-Pages_animateIn": "Bir modül göründüğünde, modül adı ve özel animasyon numarasına sahip bir Nesne (bkz. wiki)",
-  "VAL_EXT-Pages_animateOut": "Bir modülün gizlenmesi gerektiğinde modül adını ve özel animasyon numarasını içeren bir Nesne (bkz. wiki)",
   "VAL_EXT-Pages_animationTime": "Solan animasyon süresi. Anında değişiklik için 0'a ayarlayın. Değer milisaniye cinsindendir (1 saniye = 1000 milisaniye).",
   "VAL_EXT-Pages_rotationTime": "Otomatik sayfa değişiklikleri arasındaki süre (milisaniye cinsinden).",
   "VAL_EXT-Pages_rotationTimes": "Sayfa numarasını ve sayfayı değiştirmeden önce ilgili gecikme sürelerini içeren bir Nesne (rotationTime değerini uygulayacaktır)",
