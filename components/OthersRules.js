@@ -129,8 +129,10 @@ class OthersRules {
     clearInterval(that.awaitGATimer)
     that.awaitGATimer = null
     if (that.GW.GA_Ready) {
-      let check = await this.checkModules()
-      if (check) return that.socketNotificationReceived("ERROR", "You Can't start Gateway with MMM-TelegramBot and EXT-TelegramBot!")
+      let checkTB = await this.checkModulesTB()
+      if (checkTB) return that.socketNotificationReceived("ERROR", "You can't start Gateway with MMM-TelegramBot and EXT-TelegramBot!")
+      let checkScreen = await this.checkModulePir()
+      if (checkScreen) return that.socketNotificationReceived("ERROR", "You can't start Gateway with MMM-Pir. Please use EXT-Screen and EXT-Pir")
       logGW("I'm Ready!")
       that.GW.GW_Ready = true
       that.sendNotification("GW_READY")
@@ -140,10 +142,21 @@ class OthersRules {
     }
   }
 
-  checkModules() {
+  checkModulesTB() {
     return new Promise(resolve => {
       var nb=0
       MM.getModules().withClass("EXT-Telegrambot MMM-TelegramBot").enumerate((module)=> {
+        nb++
+        if (nb >= 2) resolve(true)
+      })
+      resolve(false)
+    })
+  }
+
+  checkModulePir() {
+    return new Promise(resolve => {
+      var nb=0
+      MM.getModules().withClass("MMM-Pir").enumerate((module)=> {
         nb++
         if (nb >= 2) resolve(true)
       })
