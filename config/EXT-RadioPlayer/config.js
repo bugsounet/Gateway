@@ -1,6 +1,8 @@
 var defaultConfig = {
   module: 'EXT-RadioPlayer',
   position: 'top_right',
+  animateIn: "flipInX",
+  animateOut: "flipOutX",
   disabled: false,
   config: {
     debug: false,

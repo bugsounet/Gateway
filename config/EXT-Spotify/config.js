@@ -1,6 +1,8 @@
 var defaultConfig = {
   module: 'EXT-Spotify',
   position: 'top_left',
+  animateIn: "flipInX",
+  animateOut: "flipOutX",
   disabled: false,
   config: {
     updateInterval: 1000,

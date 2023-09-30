@@ -1,6 +1,8 @@
 var defaultConfig = {
   module: 'EXT-Screen',
   position: 'top_left',
+  animateIn: "flipInX",
+  animateOut: "flipOutX",
   disabled: false,
   config: {
     debug: false,
