@@ -51,7 +51,7 @@
     "is-valid-domain": "^0.1.6",
     "jsoneditor": "^9.10.3",
     "lodash": "^4.17.21",
-    "magicmirror-rebuild": "^1.0.8",
+    "magicmirror-rebuild": "^1.0.9",
     "mkdirp": "^3.0.1",
     "node-pty": "^1.0.0",
     "passport": "^0.6.0",
