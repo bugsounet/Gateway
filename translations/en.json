@@ -372,6 +372,7 @@
   "VAL_EXT-SelfiesViewer_displayBackground": "Displaying a blurred decoration of the photo",
   "VAL_EXT-SelfiesViewer_sortBy": "Sort received selfies by new, old or random",
   "VAL_EXT-Screen_Body": "Animate MagicMirror on turn on/off the screen",
+  "VAL_EXT-Screen_Dimmer": "screen dimmer when timeout is 1/4 time left and use opacity from 100% to 0%",
   "VAL_EXT-Screen_Delay": "Time before the mirror turns off the display if no user activity is detected. (in ms)",
   "VAL_EXT-Screen_Mode": "mode for turn on/off your screen (see wiki)",
   "VAL_EXT-Screen_Counter": "Should display Count-down in screen ?",

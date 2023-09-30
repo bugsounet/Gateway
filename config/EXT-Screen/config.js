@@ -71,6 +71,11 @@ var schema = {
           "title": "{EXT-Screen_Body}",
           "default": true
         },
+        "autoDimmer": {
+          "type": "boolean",
+          "title": "{EXT-Screen_Dimmer}",
+          "default": false
+        },
         "delay": {
           "type": "number",
           "title": "{EXT-Screen_Delay}",

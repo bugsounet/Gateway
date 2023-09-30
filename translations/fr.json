@@ -372,6 +372,7 @@
   "VAL_EXT-SelfiesViewer_displayBackground": "Affiche un décor flou",
   "VAL_EXT-SelfiesViewer_sortBy": "Trie les selfies reçues (new: nouvelles, old: anciennes, random: aléatoires)",
   "VAL_EXT-Screen_Body": "Anime MagicMirror pour allumer/éteindre l'écran",
+  "VAL_EXT-Screen_Dimmer": "l'écran s'assombrit lorsqu'il reste 1/4 du délai d'attente et utilise l'opacité de 100 % à 0 %",
   "VAL_EXT-Screen_Delay": "Temps avant que le plugin n'éteigne l'affichage si aucune activité de l'utilisateur n'est détectée. (en ms)",
   "VAL_EXT-Screen_Mode": "Mode pour allumer/éteindre votre écran (voir wiki)",
   "VAL_EXT-Screen_Counter": "Le compte à rebours doit-il s'afficher à l'écran ?",
