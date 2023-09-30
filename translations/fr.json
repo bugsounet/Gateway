@@ -246,6 +246,8 @@
 
   "VAL_PluginDescription": "Propriétés de ce plugin",
   "VAL_PluginName": "Nom du plugin",
+  "VAL_PluginAnimateIn": "Nom de l'animation d'enttée",
+  "VAL_PluginAnimateOut": "Nom de l'animation de sortie",
   "VAL_PluginDisable": "Désactiver le plugin",
   "VAL_PluginConfiguration": "Configuration",
   "VAL_PluginDebug": "Activer le mode debug",

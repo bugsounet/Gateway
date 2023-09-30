@@ -265,6 +265,8 @@ class GWTranslations {
       var Tr = {}
       Tr.PluginDescription = that.translate("VAL_PluginDescription")
       Tr.PluginName = that.translate("VAL_PluginName")
+      Tr.PluginAnimateIn = that.translate("VAL_PluginAnimateIn")
+      Tr.PluginAnimateOut = that.translate("VAL_PluginAnimateOut")
       Tr.PluginDisable = that.translate("VAL_PluginDisable")
       Tr.PluginPosition = that.translate("VAL_PluginPosition")
       Tr.PluginConfigDeepMerge = that.translate("VAL_PluginConfigDeepMerge")

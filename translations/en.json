@@ -246,6 +246,8 @@
 
   "VAL_PluginDescription": "Properties for this plugin",
   "VAL_PluginName": "Plugin name",
+  "VAL_PluginAnimateIn": "Animation Name when the module appears",
+  "VAL_PluginAnimateOut": "Name of the animation when the module will hide",
   "VAL_PluginDisable": "Disable the plugin",
   "VAL_PluginConfiguration": "Configuration",
   "VAL_PluginDebug": "Enable debug mode",
