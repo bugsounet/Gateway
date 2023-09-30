@@ -391,7 +391,7 @@ class GWTranslations {
       Tr["EXT-SelfiesViewer_displayBackground"] = that.translate("VAL_EXT-SelfiesViewer_displayBackground")
       Tr["EXT-SelfiesViewer_sortBy"] = that.translate("VAL_EXT-SelfiesViewer_sortBy")
       Tr["EXT-Screen_Body"] = that.translate("VAL_EXT-Screen_Body")
-      TR["EXT-Screen_Dimmer"] = that.translate("VAL_EXT-Screen_Dimmer")
+      Tr["EXT-Screen_Dimmer"] = that.translate("VAL_EXT-Screen_Dimmer")
       Tr["EXT-Screen_Delay"] = that.translate("VAL_EXT-Screen_Delay")
       Tr["EXT-Screen_Mode"] = that.translate("VAL_EXT-Screen_Mode")
       Tr["EXT-Screen_Counter"] = that.translate("VAL_EXT-Screen_Counter")
