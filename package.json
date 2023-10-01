@@ -1,7 +1,7 @@
 {
   "name": "Gateway",
-  "version": "3.5.1",
-  "rev": "230807",
+  "version": "3.6.0",
+  "rev": "231001",
   "description": "An embedded Gateway for MMM-GoogleAssistant for MagicMirror.",
   "main": "Gateway.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "Gateway"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18"
   },
   "author": "bugsounet",
   "license": "MIT",
@@ -45,13 +45,13 @@
     "decompress-tarbz2": "^4.1.1",
     "decompress-targz": "^4.1.1",
     "decompress-unzip": "^4.0.1",
-    "esbuild": "^0.18.16",
+    "esbuild": "^0.19.4",
     "express-session": "^1.17.2",
-    "glob": "^10.3.3",
+    "glob": "^10.3.10",
     "is-valid-domain": "^0.1.6",
-    "jsoneditor": "^9.7.4",
+    "jsoneditor": "^9.10.3",
     "lodash": "^4.17.21",
-    "magicmirror-rebuild": "^1.0.8",
+    "magicmirror-rebuild": "^1.0.9",
     "mkdirp": "^3.0.1",
     "node-pty": "^1.0.0",
     "passport": "^0.6.0",
@@ -61,9 +61,9 @@
     "semver": "^7.5.3",
     "sha256-file": "^1.0.0",
     "stream": "^0.0.2",
-    "systeminformation": "^5.18.7",
+    "systeminformation": "^5.21.9",
     "tree-kill": "^1.2.2",
-    "xterm": "^5.2.1",
-    "xterm-addon-fit": "^0.7.0"
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
   }
 }

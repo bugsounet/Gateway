@@ -36,5 +36,5 @@ function doRestart() {
 
   setInterval(() => {
     checkPage(handle200)
-  }, 2000)
+  }, 5000)
 }

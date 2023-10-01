@@ -7,7 +7,7 @@
 logGW = (...args) => { /* do nothing */ }
 
 Module.register("Gateway", {
-  requiresVersion: "2.24.0",
+  requiresVersion: "2.25.0",
   defaults: {
     debug: false,
     username: "admin",
@@ -40,7 +40,8 @@ Module.register("Gateway", {
       ko: "translations/ko.json",
       el: "translations/el.json",
       vi: "translations/vi.json",
-      "zh-cn": "translations/zh-cn.json"
+      "zh-cn": "translations/zh-cn.json",
+      tr: "translations/tr.json"
     }
   },
 
