@@ -112,7 +112,7 @@ function createGW(that) {
           imperial: (that.Gateway.MMConfig.units == "imperial") ? true : false,
           needUpdate: false
         }
-        that.lib.fetch(remoteFile)
+        fetch(remoteFile)
           .then(response => response.json())
           .then(data => {
             result.last = data.version

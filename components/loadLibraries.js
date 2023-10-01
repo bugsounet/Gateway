@@ -29,7 +29,6 @@ function libraries(that) {
     { "cors": "cors" },
     { "path": "path" },
     { "child_process": "childProcess" },
-    { "node-fetch": "fetch" },
     { "fs": "fs" },
     { "util": "util" },
     { "systeminformation": "si" },

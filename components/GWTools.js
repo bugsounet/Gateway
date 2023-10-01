@@ -596,7 +596,7 @@ function checkUpdate(module, version, that, branch = "master", retry = 0) {
     beta: false
   }
   return new Promise (resolve => {
-    that.lib.fetch(remoteFile)
+    fetch(remoteFile)
       .then(response => response.json())
       .then(data => {
         result.last = data.version
