@@ -246,6 +246,8 @@
 
   "VAL_PluginDescription": "Eigenschaften für dieses Plugin",
   "VAL_PluginName": "Plugin Name",
+  "VAL_PluginAnimateIn": "Animation beim Erscheinen eines Moduls",
+  "VAL_PluginAnimateOut": "Animation beim Verbergen eines Moduls",
   "VAL_PluginDisable": "Plugin deaktivieren",
   "VAL_PluginConfiguration": "Konfiguration",
   "VAL_PluginDebug": "Debug-Modus aktivieren",
@@ -372,6 +374,7 @@
   "VAL_EXT-SelfiesViewer_displayBackground": "Eine verschwommene Version des Selfies anzeigen.",
   "VAL_EXT-SelfiesViewer_sortBy": "Selfies sortieren nach neu, alt oder zufällig",
   "VAL_EXT-Screen_Body": "MagicMirror animieren bei Bildschirm an/aus.",
+  "VAL_EXT-Screen_Dimmer": "Bildschirm verdunkelt sich, wenn noch 1/4 der Wartezeit übrig ist, Deckkraft von 100 % bis 0 %.",
   "VAL_EXT-Screen_Delay": "Zeit bis der Spiegel den Bildschirm ausschaltet, wenn kein Benutzer wahrgenommen wird. (in ms)",
   "VAL_EXT-Screen_Mode": "Bildschirm-Abschaltmodus (siehe Wiki).",
   "VAL_EXT-Screen_Counter": "Countdown auf Bildschirm anzeigen?",
