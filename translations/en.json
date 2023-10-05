@@ -324,6 +324,7 @@
   "VAL_EXT-Pages_animationTime": "Fading animation time. Set to 0 for instant change. Value is in milliseconds (1 second = 1000 milliseconds).",
   "VAL_EXT-Pages_rotationTime": "Time, in milliseconds, between automatic page changes.",
   "VAL_EXT-Pages_rotationTimes": "An Object with page number and associated delay times before changing page (will enforce rotationTime value)",
+  "VAL_EXT-Pages_loading": "loading picture file name",
   "VAL_EXT-Pages_homePage": "Which page index is the home page. If none is set, this returns to the leftmost page instead.",
   "VAL_EXT-Pages_indicator": "Activate page-indicator",
   "VAL_EXT-Pages_hideBeforeRotation": "Hide all modules before rotating except fixed.",
