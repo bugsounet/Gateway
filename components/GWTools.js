@@ -1,5 +1,42 @@
 /** Gateway Tools **/
 
+const mainBranch = {
+  "MMM-GoogleAssistant" : "prod",
+  "Gateway" : "master",
+  "EXT-Alert" : "master",
+  "EXT-Background" : "master",
+  "EXT-Bard" : "main",
+  "EXT-Bring" : "main",
+  "EXT-Browser" : "master",
+  "EXT-Detector" : "main",
+  "EXT-FreeboxTV" : "main",
+  "EXT-GooglePhotos" : "master",
+  "EXT-Governor" : "master",
+  "EXT-Internet" : "master",
+  "EXT-Keyboard" : "main",
+  "EXT-Librespot" : "master",
+  "EXT-MusicPlayer" : "master",
+  "EXT-Motion" : "main",
+  "EXT-Pages" : "master",
+  "EXT-Photos" : "master",
+  "EXT-Pir" : "master",
+  "EXT-RadioPlayer" : "master",
+  "EXT-Screen" : "master",
+  "EXT-Selfies" : "master",
+  "EXT-SelfiesFlash" : "main",
+  "EXT-SelfiesSender" : "main",
+  "EXT-SelfiesViewer" : "main",
+  "EXT-Spotify" : "master",
+  "EXT-SpotifyCanvasLyrics" : "main",
+  "EXT-StreamDeck" : "main",
+  "EXT-TelegramBot" : "master",
+  "EXT-Updates" : "master",
+  "EXT-Volume" : "master",
+  "EXT-Welcome" : "master",
+  "EXT-YouTube" : "master",
+  "EXT-YouTubeCast" : "master"
+}
+
 function readConfig(that) {
   return new Promise(resolve => {
     var MMConfig = undefined
@@ -588,7 +625,8 @@ async function checkUpdateInterval(module,version, that) {
   that.Gateway.activeVersion[module].beta = scanUpdate.beta
 }
 
-function checkUpdate(module, version, that, branch = "master", retry = 0) {
+function checkUpdate(module, version, that) {
+  let branch = mainBranch[module] || "main"
   let remoteFile = "https://raw.githubusercontent.com/bugsounet/"+ module + "/"+ branch + "/package.json"
   let result = {
     last: version,
@@ -605,8 +643,7 @@ function checkUpdate(module, version, that, branch = "master", retry = 0) {
         resolve(result)
       })
       .catch(async e => {
-        if (!retry) result = await checkUpdate(module, version, that, branch = "main", retry = 1)
-        else console.error("[GATEWAY] Error on fetch last version of", module, e.message)
+        console.error(`[GATEWAY] Error on fetch last version of ${module} in ${branch} branch:`, e.message)
         resolve(result)
       })
   })
