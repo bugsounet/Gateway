@@ -327,6 +327,7 @@
   "VAL_EXT-Pages_loading": "Image a afficher lors du chargement",
   "VAL_EXT-Pages_homePage": "Numéro d'index de la page d'accueil",
   "VAL_EXT-Pages_indicator": "Activation l'indicateur de page",
+  "VAL_EXT-Pages_hideBeforeRotation": "Cache tous les modules avant d'effectuer le changement de page (sauf les pages fixed)",
   "VAL_EXT-Pages_Gateway": "Règles Gateway pour afficher automatiquement la page des plugins (voir wiki)",
   "VAL_EXT-Photos_Delay": "Délai avant le changement automatique de photos en ms. (la valeur par défaut est de 20 secondes)",
   "VAL_EXT-Photos_Loop": "Fait une boucle sur toutes les photos",

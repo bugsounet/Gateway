@@ -11,6 +11,7 @@ var defaultConfig = {
     rotationTimes: {},
     homePage: 0,
     indicator: true,
+    hideBeforeRotation: false,
     Gateway: {},
     loading: "loading.png"
   }
@@ -102,6 +103,11 @@ var schema = {
           "type": "boolean",
           "title": "{EXT-Pages_indicator}",
           "default": true
+        },
+        "hideBeforeRotation": {
+          "type": "boolean",
+          "title": "{EXT-Pages_hideBeforeRotation}",
+          "default": false
         },
         "Gateway": {
           "title": "{EXT-Pages_Gateway}",

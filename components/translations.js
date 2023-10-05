@@ -345,6 +345,7 @@ class GWTranslations {
       Tr["EXT-Pages_rotationTimes"] = that.translate("VAL_EXT-Pages_rotationTimes")
       Tr["EXT-Pages_homePage"] = that.translate("VAL_EXT-Pages_homePage")
       Tr["EXT-Pages_indicator"] = that.translate("VAL_EXT-Pages_indicator")
+      Tr["EXT-Pages_hideBeforeRotation"] = that.translate("VAL_EXT-Pages_hideBeforeRotation")
       Tr["EXT-Pages_Gateway"] = that.translate("VAL_EXT-Pages_Gateway")
       Tr["EXT-Pages_loading"] = that.translate("VAL_EXT-Pages_loading")
       Tr["EXT-Photos_Delay"] = that.translate("VAL_EXT-Photos_Delay")
