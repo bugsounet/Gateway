@@ -326,6 +326,7 @@
   "VAL_EXT-Pages_rotationTimes": "An Object with page number and associated delay times before changing page (will enforce rotationTime value)",
   "VAL_EXT-Pages_homePage": "Which page index is the home page. If none is set, this returns to the leftmost page instead.",
   "VAL_EXT-Pages_indicator": "Activate page-indicator",
+  "VAL_EXT-Pages_hideBeforeRotation": "Hide all modules before rotating except fixed.",
   "VAL_EXT-Pages_Gateway": "Gateway rules for displaying plugins page automaticaly (see wiki)",
   "VAL_EXT-Pages_loading": "loading picture to display",
   "VAL_EXT-Photos_Delay": "Delay before change photo automaticaly in ms. (default is 20 secs)",
