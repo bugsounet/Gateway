@@ -63,6 +63,11 @@ module.exports = NodeHelper.create({
       case "CLOSE":
         this.lib.GWTools.doClose(this)
         break
+      case "TB_STATUS":
+        let result = await this.Gateway.systemInformation.lib.Get()
+        result.sessionId = payload
+        this.sendSocketNotification("TB_STATUS-RESULT", result)
+        break
     }
   }
 })

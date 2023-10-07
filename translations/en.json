@@ -438,5 +438,7 @@
   "VAL_EXT-YouTube_Username": "username of the @bugsounet's support forum",
   "VAL_EXT-YouTube_Password": "The password associated to your usernane (sended by @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Name of the MagicMirror cast device",
-  "VAL_EXT-YouTubeCast_Port": "Port of the MagicMirror cast device"
+  "VAL_EXT-YouTubeCast_Port": "Port of the MagicMirror cast device",
+
+  "TB_STATUS_DESCRIPTION" : "Show system information."
 }
