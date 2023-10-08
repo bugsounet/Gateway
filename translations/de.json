@@ -319,13 +319,15 @@
   "VAL_EXT-MusicPlayer_Min": "Lautstärke bei der Sprachausgabe (in %)",
   "VAL_EXT-MusicPlayer_Max": "Lautstärke bei der Musikwiedergabe (in %)",
   "VAL_EXT-Pages_pages": "Eine Object-String-Nummer, die angibt, welches Modul auf welcher Seite stehen soll. Alle Einträge müssen ihren Klassennamen annehmen (siehe Wiki).",
-  "VAL_EXT-Pages_fixed": "Module die immer angezeigt werden sollen (ausgenommen hiddenPages, siehe Wiki).",
+  "VAL_EXT-Pages_fixed": "Module die immer angezeigt werden sollen (versteckte Seiten ausgenommen, siehe Wiki).",
   "VAL_EXT-Pages_hiddenPages": "Ein Objekt, das spezielle hiddenPages definiert, die bei der normalen Seitenrotation nicht zur Verfügung stehen und nur über eine Benachrichtigung (notification) zugänglich sind. (siehe Wiki)",
   "VAL_EXT-Pages_animationTime": "Zeit der Überblendungsanimation. Für eine sofortige Änderung auf 0 setzen. Der Wert ist in Millisekunden angegeben. (1 Sekunde = 1000 Millisekunden).",
   "VAL_EXT-Pages_rotationTime": "Zeit, in Millisekunden, zwischen automatischen Seitenwechseln.",
   "VAL_EXT-Pages_rotationTimes": "Ein Objekt mit Seitennummern und zugehörigen Verzögerungszeiten vor dem Seitenwechsel (überschreibt den Wert von rotationTime).",
+  "VAL_EXT-Pages_loading": "Bild das beim Laden angezeigt wird.",
   "VAL_EXT-Pages_homePage": "Startseite festlegen (über Index). Ist nichts angegeben, wird die Seite mit dem niedrigsten Index angezeigt.",
   "VAL_EXT-Pages_indicator": "Seitenindikator aktivieren",
+  "VAL_EXT-Pages_hideBeforeRotation": "Blendet alle Module vor dem Seitenwechsel aus (fixierte Seiten ausgenommen).",
   "VAL_EXT-Pages_Gateway": "Gateway-Regeln für die automatische Anzeige der Plugin-Seite (siehe Wiki)",
   "VAL_EXT-Pages_loading": "Anzuzeigendes Lade-Bild (beim Start von MagicMirror)",
   "VAL_EXT-Photos_Delay": "Verzögerung bis zum automatischen Foto-Wechsel in ms. (Standard ist 20 Sekunden).",
@@ -433,5 +435,7 @@
   "VAL_EXT-YouTube_Username": "Benutzername im @bugsounet's Support Forum",
   "VAL_EXT-YouTube_Password": "Das Passwort zu Deinem Benutzernamen (erhalten von @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Name des MagicMirror cast Gerätes",
-  "VAL_EXT-YouTubeCast_Port": "Port des MagicMirror cast Gerätes"
+  "VAL_EXT-YouTubeCast_Port": "Port des MagicMirror cast Gerätes",
+
+  "TB_STATUS_DESCRIPTION" : "Zeige Systeminformatioinen."
 }
