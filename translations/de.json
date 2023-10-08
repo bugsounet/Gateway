@@ -437,7 +437,7 @@
   "VAL_EXT-YouTubeCast_Name": "Name des MagicMirror cast Gerätes",
   "VAL_EXT-YouTubeCast_Port": "Port des MagicMirror cast Gerätes",
 
-  "TB_STATUS_DESCRIPTION": "Zeige Systeminformationen.",
-  "TB_ETHERNET": "Ethernet",
-  "TB_WLAN": "WLAN"
+  "TB_SYSINFO_DESCRIPTION": "Zeige Systeminformationen.",
+  "TB_SYSINFO_ETHERNET": "Ethernet",
+  "TB_SYSINFO_WLAN": "WLAN"
 }

@@ -122,8 +122,8 @@ Module.register("Gateway", {
       case "SendStop":
         this.ActionsOnEXT.Actions(this, "EXT_STOP")
         break
-      case "TB_STATUS-RESULT":
-        this.show_status(payload)
+      case "TB_SYSINFO-RESULT":
+        this.show_sysinfo(payload)
         break
     }
   },
@@ -132,22 +132,22 @@ Module.register("Gateway", {
   EXT_TELBOTCommands: function(commander) {
     commander.add({
       command: 'sysinfo',
-      description: this.translate("TB_STATUS_DESCRIPTION"),
-      callback: 'cmd_status'
+      description: this.translate("TB_SYSINFO_DESCRIPTION"),
+      callback: 'cmd_sysinfo'
     })
   },
 
-  cmd_status: function(command,handler) {
+  cmd_sysinfo: function(command,handler) {
     /** try to manage session ... **/
     let chatId = handler.message.chat.id
     let userId = handler.message.from.id
     let messageId = handler.message.message_id
     let sessionId = messageId + ":" + userId + ":" + chatId
     this.session[sessionId] = handler
-    this.sendSocketNotification("TB_STATUS", sessionId)
+    this.sendSocketNotification("TB_SYSINFO", sessionId)
   },
 
-  show_status: function(result) {
+  show_sysinfo: function(result) {
     let session = result.sessionId
     let handler = this.session[session]
     if (!handler || !session) return console.error("[Gateway] TB session not found!", handler, session)
@@ -176,7 +176,7 @@ Module.register("Gateway", {
     // network
     text += "*-- " + this.translate("GW_System_NetworkSystem") + " --*\n"
     text += "*" + this.translate("GW_System_IPNetwork") + "* `" + result['NETWORK']['ip'] + "`\n"
-    text += "*" + this.translate("GW_System_InterfaceNetwork") + "* `" + result['NETWORK']['name'] + " (" + (result['NETWORK']['type'] == "wired" ? this.translate("TB_ETHERNET") : this.translate("TB_WLAN")) + ")`\n"
+    text += "*" + this.translate("GW_System_InterfaceNetwork") + "* `" + result['NETWORK']['name'] + " (" + (result['NETWORK']['type'] == "wired" ? this.translate("TB_SYSINFO_ETHERNET") : this.translate("TB_SYSINFO_WLAN")) + ")`\n"
     if (result['NETWORK']['type'] == "wired") {
       text += "*" + this.translate("GW_System_SpeedNetwork") + "* `" + result['NETWORK']['speed'] + " Mbit/s`\n"
       text += "*" + this.translate("GW_System_DuplexNetwork") + "* `" + result['NETWORK']['duplex'] + "`\n"
