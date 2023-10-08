@@ -176,7 +176,7 @@ Module.register("Gateway", {
     // network
     text += "*-- " + this.translate("GW_System_NetworkSystem") + " --*\n"
     text += "*" + this.translate("GW_System_IPNetwork") + "* `" + result['NETWORK']['ip'] + "`\n"
-    text += "*" + this.translate("GW_System_InterfaceNetwork") + "* `" + result['NETWORK']['type'] + " (" + result['NETWORK']['name'] + ")`\n"
+    text += "*" + this.translate("GW_System_InterfaceNetwork") + "* `" + result['NETWORK']['name'] + " (" + (result['NETWORK']['type'] == "wired" ? this.translate("TB_ETHERNET") : this.translate("TB_WLAN")) + ")`\n"
     if (result['NETWORK']['type'] == "wired") {
       text += "*" + this.translate("GW_System_SpeedNetwork") + "* `" + result['NETWORK']['speed'] + " Mbit/s`\n"
       text += "*" + this.translate("GW_System_DuplexNetwork") + "* `" + result['NETWORK']['duplex'] + "`\n"
