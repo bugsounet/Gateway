@@ -1,0 +1,33 @@
+#GATEWAY_ADMIN {
+  width: 100%;
+  height: 100%;
+  text-shadow: black 5px 5px 5px;
+  font-size: 18px;
+  color: #EEE;
+  font-weight: normal;
+  top: 0;
+  left: 0;
+  position: fixed;
+  padding: 0.5em;
+}
+
+#GATEWAY_ADMIN.hidden {
+   display: none;
+}
+
+#GATEWAY_VERSION {
+    display: flex;
+    flex-direction: column;
+}
+
+#GATEWAY_VERSION-MM-VALUE,
+#GATEWAY_VERSION-ELECTRON,
+#GATEWAY_VERSION-MMNODE,
+#GATEWAY_VERSION-NODE,
+#GATEWAY_VERSION-NPM,
+#GATEWAY_VERSION-OS,
+#GATEWAY_VERSION-KERNEL,
+#GATEWAY_VERSION-MM {
+    display: flex;
+    gap: 5px;
+}
