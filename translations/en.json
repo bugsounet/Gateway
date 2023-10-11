@@ -379,6 +379,7 @@
   "VAL_EXT-Screen_Dimmer": "screen dimmer when timeout is 1/4 time left and use opacity from 100% to 0%",
   "VAL_EXT-Screen_Delay": "Time before the mirror turns off the display if no user activity is detected. (in ms)",
   "VAL_EXT-Screen_Mode": "mode for turn on/off your screen (see wiki)",
+  "VAL_EXT-Screen_xrandrForceRotation": "Forces screen rotation according to the defined value (mode 9 only)",
   "VAL_EXT-Screen_Counter": "Should display Count-down in screen ?",
   "VAL_EXT-Screen_Bar": "Should display Count-up bar in screen ?",
   "VAL_EXT-Screen_Style": "Style of the Counter ?",
