@@ -9,6 +9,7 @@
   left: 0;
   position: fixed;
   padding: 0.5em;
+  display: flex;
 }
 
 #GATEWAY_ADMIN.hidden {
@@ -18,9 +19,10 @@
 #GATEWAY_VERSION {
     display: flex;
     flex-direction: column;
+    text-align-last: center;
+    flex-basis: 20%;
 }
 
-#GATEWAY_VERSION-MM-VALUE,
 #GATEWAY_VERSION-ELECTRON,
 #GATEWAY_VERSION-MMNODE,
 #GATEWAY_VERSION-NODE,
@@ -28,6 +30,35 @@
 #GATEWAY_VERSION-OS,
 #GATEWAY_VERSION-KERNEL,
 #GATEWAY_VERSION-MM {
+    display: flex;
+    gap: 5px;
+}
+
+#GATEWAY_CPU {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 20%;
+    text-align-last: center;
+}
+
+#GATEWAY_CPU-TYPE,
+#GATEWAY_CPU-SPEED,
+#GATEWAY_CPU-USAGE,
+#GATEWAY_CPU-GOVERNOR,
+#GATEWAY_CPU-TEMP {
+    display: flex;
+    gap: 5px;
+}
+
+#GATEWAY_MEMORY {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 20%;
+    text-align-last: center;
+}
+
+#GATEWAY_MEMORY-ACTIVE,
+#GATEWAY_MEMORY-SWAP {
     display: flex;
     gap: 5px;
 }

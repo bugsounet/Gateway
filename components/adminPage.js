@@ -89,7 +89,7 @@ class adminPageGW {
     var SysInfo=document.createElement("div")
     SysInfo.id="GATEWAY_ADMIN"
     //SysInfo.classList.add("hidden")
-
+      /** Version **/
       var Version = document.createElement("div")
       Version.id = "GATEWAY_VERSION"
       Version.textContent = "Versions"
@@ -155,8 +155,81 @@ class adminPageGW {
           Kernel_Value.id = "GATEWAY_VERSION-KERNEL-VALUE"
           Kernel_Value.textContent= this.System.VERSION.KERNEL
           Kernel.appendChild(Kernel_Value)
-
       SysInfo.appendChild(Version)
+
+      /** CPU **/
+      var CPU = document.createElement("div")
+      CPU.id = "GATEWAY_CPU"
+      CPU.textContent = "CPU"
+        var Type = document.createElement("div")
+        Type.id = "GATEWAY_CPU-TYPE"
+        Type.textContent = "Type:"
+        CPU.appendChild(Type)
+          var Type_Value = document.createElement("div")
+          Type_Value.id = "GATEWAY_CPU-TYPE-VALUE"
+          Type_Value.textContent= this.System.CPU.type
+          Type.appendChild(Type_Value)
+
+        var Speed = document.createElement("div")
+        Speed.id = "GATEWAY_CPU-SPEED"
+        Speed.textContent = "Vitesse:"
+        CPU.appendChild(Speed)
+          var Speed_Value = document.createElement("div")
+          Speed_Value.id = "GATEWAY_CPU-SPEED-VALUE"
+          Speed_Value.textContent= this.System.CPU.speed
+          Speed.appendChild(Speed_Value)
+
+        var Usage = document.createElement("div")
+        Usage.id = "GATEWAY_CPU-USAGE"
+        Usage.textContent = "Charge:"
+        CPU.appendChild(Usage)
+          var Usage_Value = document.createElement("div")
+          Usage_Value.id = "GATEWAY_CPU-USAGE-VALUE"
+          Usage_Value.textContent= this.System.CPU.usage
+          Usage.appendChild(Usage_Value)
+
+        var Governor = document.createElement("div")
+        Governor.id = "GATEWAY_CPU-GOVERNOR"
+        Governor.textContent = "Governor:"
+        CPU.appendChild(Governor)
+          var Governor_Value = document.createElement("div")
+          Governor_Value.id = "GATEWAY_CPU-GOVERNOR-VALUE"
+          Governor_Value.textContent= this.System.CPU.governor
+          Governor.appendChild(Governor_Value)
+
+        var Temp = document.createElement("div")
+        Temp.id = "GATEWAY_CPU-TEMP"
+        Temp.textContent = "Température:"
+        CPU.appendChild(Temp)
+          var Temp_Value = document.createElement("div")
+          Temp_Value.id = "GATEWAY_CPU-TEMP-VALUE"
+          Temp_Value.textContent= this.System.CPU.temp.C
+          Temp.appendChild(Temp_Value)
+      SysInfo.appendChild(CPU)
+
+      /** Memory **/
+      var MEMORY = document.createElement("div")
+      MEMORY.id = "GATEWAY_MEMORY"
+      MEMORY.textContent = "Mémoire"
+        var Active = document.createElement("div")
+        Active.id = "GATEWAY_MEMORY-ACTIVE"
+        Active.textContent = "Active:"
+        MEMORY.appendChild(Active)
+          var Active_Value = document.createElement("div")
+          Active_Value.id = "GATEWAY_MEMORY-ACTIVE-VALUE"
+          Active_Value.textContent= this.System.MEMORY.used + " / " + this.System.MEMORY.total + " ("+ this.System.MEMORY.percent + "%)"
+          Active.appendChild(Active_Value)
+
+        var Swap = document.createElement("div")
+        Swap.id = "GATEWAY_MEMORY-SWAP"
+        Swap.textContent = "Swap:"
+        MEMORY.appendChild(Swap)
+          var Swap_Value = document.createElement("div")
+          Swap_Value.id = "GATEWAY_MEMORY-SWAP-VALUE"
+          Swap_Value.textContent= this.System.MEMORY.swapUsed + " / " + this.System.MEMORY.swapTotal + " ("+ this.System.MEMORY.swapPercent + "%)"
+          Swap.appendChild(Swap_Value)
+      SysInfo.appendChild(MEMORY)
+
     document.body.appendChild(SysInfo)
     this.init=true
   }
@@ -185,6 +258,7 @@ class adminPageGW {
   }
 
   refreshData() {
+    /* Version */
     var MM_Value = document.getElementById("GATEWAY_VERSION-MM-VALUE")
     MM_Value.textContent = this.System.VERSION.MagicMirror
     var ELECTRON_Value = document.getElementById("GATEWAY_VERSION-ELECTRON-VALUE")
@@ -199,5 +273,21 @@ class adminPageGW {
     OS_Value.textContent = this.System.VERSION.OS
     var Kernel_Value = document.getElementById("GATEWAY_VERSION-KERNEL-VALUE")
     Kernel_Value.textContent = this.System.VERSION.KERNEL
+    /* CPU */
+    var Type_Value = document.getElementById("GATEWAY_CPU-TYPE-VALUE")
+    Type_Value.textContent = this.System.CPU.type
+    var Speed_Value = document.getElementById("GATEWAY_CPU-SPEED-VALUE")
+    Speed_Value.textContent= this.System.CPU.speed
+    var Usage_Value = document.getElementById("GATEWAY_CPU-USAGE-VALUE")
+    Usage_Value.textContent= this.System.CPU.usage + "%"
+    var Governor_Value = document.getElementById("GATEWAY_CPU-GOVERNOR-VALUE")
+    Governor_Value.textContent= this.System.CPU.governor
+    var Temp_Value = document.getElementById("GATEWAY_CPU-TEMP-VALUE")
+    Temp_Value.textContent = this.System.CPU.temp.C + "°"
+    /* MEMORY */
+    var Active_Value = document.getElementById("GATEWAY_MEMORY-ACTIVE-VALUE")
+    Active_Value.textContent = this.System.MEMORY.used + " / " + this.System.MEMORY.total + " ("+ this.System.MEMORY.percent + "%)"
+    var Swap_Value = document.getElementById("GATEWAY_MEMORY-SWAP-VALUE")
+    Swap_Value.textContent= this.System.MEMORY.swapUsed + " / " + this.System.MEMORY.swapTotal + " ("+ this.System.MEMORY.swapPercent + "%)"
   }
 }
