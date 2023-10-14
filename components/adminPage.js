@@ -85,14 +85,14 @@ class adminPageGW {
     console.log("[Gateway] AdminPage Loaded !")
   }
 
-  prepare() {
+  prepare(translate) {
     var SysInfo=document.createElement("div")
     SysInfo.id="GATEWAY_ADMIN"
     //SysInfo.classList.add("hidden")
       /** Version **/
       var Version = document.createElement("div")
       Version.id = "GATEWAY_VERSION"
-      Version.textContent = "Versions"
+      Version.textContent = translate["System"]
         var MM = document.createElement("div")
         MM.id = "GATEWAY_VERSION-MM"
         MM.textContent = "MagicMirror²:"
@@ -122,7 +122,7 @@ class adminPageGW {
 
         var Node = document.createElement("div")
         Node.id = "GATEWAY_VERSION-NODE"
-        Node.textContent = "Node:"
+        Node.textContent = translate["System_NodeVersion"]
         Version.appendChild(Node)
           var Node_Value = document.createElement("div")
           Node_Value.id = "GATEWAY_VERSION-NODE-VALUE"
@@ -131,7 +131,7 @@ class adminPageGW {
 
         var NPM = document.createElement("div")
         NPM.id = "GATEWAY_VERSION-NPM"
-        NPM.textContent = "NPM:"
+        NPM.textContent = translate["System_NPMVersion"]
         Version.appendChild(NPM)
           var NPM_Value = document.createElement("div")
           NPM_Value.id = "GATEWAY_VERSION-NPM-VALUE"
@@ -140,7 +140,7 @@ class adminPageGW {
 
         var OS = document.createElement("div")
         OS.id = "GATEWAY_VERSION-OS"
-        OS.textContent = "OS:"
+        OS.textContent = translate["System_OSVersion"]
         Version.appendChild(OS)
           var OS_Value = document.createElement("div")
           OS_Value.id = "GATEWAY_VERSION-OS-VALUE"
@@ -149,7 +149,7 @@ class adminPageGW {
 
         var Kernel = document.createElement("div")
         Kernel.id = "GATEWAY_VERSION-KERNEL"
-        Kernel.textContent = "Kernel:"
+        Kernel.textContent = translate["System_KernelVersion"]
         Version.appendChild(Kernel)
           var Kernel_Value = document.createElement("div")
           Kernel_Value.id = "GATEWAY_VERSION-KERNEL-VALUE"
@@ -160,10 +160,10 @@ class adminPageGW {
       /** CPU **/
       var CPU = document.createElement("div")
       CPU.id = "GATEWAY_CPU"
-      CPU.textContent = "CPU"
+      CPU.textContent = translate["System_CPUSystem"]
         var Type = document.createElement("div")
         Type.id = "GATEWAY_CPU-TYPE"
-        Type.textContent = "Type:"
+        Type.textContent = translate["System_TypeCPU"]
         CPU.appendChild(Type)
           var Type_Value = document.createElement("div")
           Type_Value.id = "GATEWAY_CPU-TYPE-VALUE"
@@ -172,7 +172,7 @@ class adminPageGW {
 
         var Speed = document.createElement("div")
         Speed.id = "GATEWAY_CPU-SPEED"
-        Speed.textContent = "Vitesse:"
+        Speed.textContent = translate["System_SpeedCPU"]
         CPU.appendChild(Speed)
           var Speed_Value = document.createElement("div")
           Speed_Value.id = "GATEWAY_CPU-SPEED-VALUE"
@@ -181,7 +181,7 @@ class adminPageGW {
 
         var Usage = document.createElement("div")
         Usage.id = "GATEWAY_CPU-USAGE"
-        Usage.textContent = "Charge:"
+        Usage.textContent = translate["System_CurrentLoadCPU"]
         CPU.appendChild(Usage)
           var Usage_Value = document.createElement("div")
           Usage_Value.id = "GATEWAY_CPU-USAGE-VALUE"
@@ -190,7 +190,7 @@ class adminPageGW {
 
         var Governor = document.createElement("div")
         Governor.id = "GATEWAY_CPU-GOVERNOR"
-        Governor.textContent = "Governor:"
+        Governor.textContent = translate["System_GovernorCPU"]
         CPU.appendChild(Governor)
           var Governor_Value = document.createElement("div")
           Governor_Value.id = "GATEWAY_CPU-GOVERNOR-VALUE"
@@ -199,7 +199,7 @@ class adminPageGW {
 
         var Temp = document.createElement("div")
         Temp.id = "GATEWAY_CPU-TEMP"
-        Temp.textContent = "Température:"
+        Temp.textContent = translate["System_TempCPU"]
         CPU.appendChild(Temp)
           var Temp_Value = document.createElement("div")
           Temp_Value.id = "GATEWAY_CPU-TEMP-VALUE"
@@ -210,10 +210,10 @@ class adminPageGW {
       /** Memory **/
       var MEMORY = document.createElement("div")
       MEMORY.id = "GATEWAY_MEMORY"
-      MEMORY.textContent = "Mémoire"
+      MEMORY.textContent = translate["System_MemorySystem"]
         var Active = document.createElement("div")
         Active.id = "GATEWAY_MEMORY-ACTIVE"
-        Active.textContent = "Active:"
+        Active.textContent = translate["System_TypeMemory"]
         MEMORY.appendChild(Active)
           var Active_Value = document.createElement("div")
           Active_Value.id = "GATEWAY_MEMORY-ACTIVE-VALUE"
@@ -222,7 +222,7 @@ class adminPageGW {
 
         var Swap = document.createElement("div")
         Swap.id = "GATEWAY_MEMORY-SWAP"
-        Swap.textContent = "Swap:"
+        Swap.textContent = translate["System_SwapMemory"]
         MEMORY.appendChild(Swap)
           var Swap_Value = document.createElement("div")
           Swap_Value.id = "GATEWAY_MEMORY-SWAP-VALUE"

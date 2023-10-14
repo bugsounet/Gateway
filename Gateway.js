@@ -108,7 +108,7 @@ Module.register("Gateway", {
         let GWTranslate = await LoadTranslate.LoadGWTranslation(this)
         let EXTDescription = await LoadTranslate.LoadGWDescription(this)
         let VALTranslate = await LoadTranslate.LoadGWTrSchemaValidation(this)
-        this.AdminPage.prepare()
+        this.AdminPage.prepare(GWTranslate)
         this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate, EXTStatus: this.GW } )
         break
       case "WARNING": // EXT-Alert is unlocked for receive all alerts
