@@ -378,6 +378,7 @@
   "VAL_EXT-Screen_Dimmer": "l'écran s'assombrit lorsqu'il reste 1/4 du délai d'attente et utilise l'opacité de 100 % à 0 %",
   "VAL_EXT-Screen_Delay": "Temps avant que le plugin n'éteigne l'affichage si aucune activité de l'utilisateur n'est détectée. (en ms)",
   "VAL_EXT-Screen_Mode": "Mode pour allumer/éteindre votre écran (voir wiki)",
+  "VAL_EXT-Screen_xrandrForceRotation": "Force la Rotation de l'écran selon la valeur defini (mode 9 uniquement)",
   "VAL_EXT-Screen_Counter": "Le compte à rebours doit-il s'afficher à l'écran ?",
   "VAL_EXT-Screen_Bar": "La barre de comptage doit-elle s'afficher à l'écran ?",
   "VAL_EXT-Screen_Style": "Style du compteur",
@@ -434,5 +435,9 @@
   "VAL_EXT-YouTube_Username": "Nom d'utilisateur du forum de support",
   "VAL_EXT-YouTube_Password": "Le mot de passe associé à votre nom d'utilisateur (envoyé par @bugsounet)",
   "VAL_EXT-YouTubeCast_Name": "Nom de l'appareil MagicMirror cast",
-  "VAL_EXT-YouTubeCast_Port": "Port de diffusion sur MagicMirror"
+  "VAL_EXT-YouTubeCast_Port": "Port de diffusion sur MagicMirror",
+
+  "TB_SYSINFO_DESCRIPTION" : "Montre les informations système.",
+  "TB_SYSINFO_ETHERNET": "Cable",
+  "TB_SYSINFO_WLAN": "Wifi"
 }

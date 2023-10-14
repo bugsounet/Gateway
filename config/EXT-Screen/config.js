@@ -10,6 +10,7 @@ var defaultConfig = {
     autoDimmer: false,
     delay: 2 * 60 * 1000,
     mode: 1,
+    xrandrForceRotation: "normal",
     displayCounter: true,
     displayBar: true,
     displayStyle: "Text",
@@ -199,9 +200,15 @@ var schema = {
           "type": "number",
           "title": "{EXT-Screen_Mode}",
           "default": 1,
-          "enum" : [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+          "enum" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
           "minimum": 0,
-          "maximum": 7
+          "maximum": 9
+        },
+        "xrandrForceRotation": {
+          "type": "string",
+          "title": "{EXT-Screen_xrandrForceRotation}",
+          "default": "normal",
+          "enum": [ "normal", "left", "right", "inverted" ]
         },
         "displayCounter": {
           "type": "boolean",
