@@ -26,7 +26,7 @@ Module.register("Gateway", {
     this.GW = await GWDB.createGW(this)
     this.awaitGATimer = null
     this.session= {}
-    this.AdminPage = new adminPageGW(this.config)
+    this.AdminPage = new adminPageGW(this)
     this.sendSocketNotification("INIT", this.config)
   },
 
@@ -126,6 +126,7 @@ Module.register("Gateway", {
         })
         break
       case "INITIALIZED":
+        this.AdminPage.show() // force to show adminPage (for develop)
         this.OthersRules.awaitGATimer(this)
         break
       case "SendNoti":
@@ -137,6 +138,8 @@ Module.register("Gateway", {
         break
       case "TB_SYSINFO-RESULT":
         this.show_sysinfo(payload)
+        break
+      case "SYSINFO-RESULT":
         this.AdminPage.updateSystemData(payload)
         break
     }

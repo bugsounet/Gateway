@@ -1,7 +1,10 @@
 class adminPageGW {
-  constructor(config) {
-    this.config = config
+  constructor(that) {
+    this.config = that.config
+    this.sendSocketNotification = (...arg) => that.sendSocketNotification(...arg)
     this.init = false
+    this.showing = false
+    this.timerRefresh = null
     this.System = {
       VERSION:{
         MagicMirror:"unknow",
@@ -232,29 +235,40 @@ class adminPageGW {
 
     document.body.appendChild(SysInfo)
     this.init=true
+    console.log("[Gateway] AdminPage Ready !")
   }
 
   show() {
-    if (this.init) {
+    if (!this.showing && this.init) {
+      clearInterval(this.timerRefresh)
+      this.updateTimer()
+      MM.getModules().enumerate((module)=> {
+        module.hide(0, () => {}, {lockString: "GATEWAY_LOCK"})
+      })
       logGW("show")
       var SysInfo=document.getElementById("GATEWAY_ADMIN")
       SysInfo.classList.remove("hidden")
-      this.refreshData()
+      this.showing = true
     }
   }
 
   hide() {
-    if (this.init) {
+    if (this.showing && this.init) {
+      clearInterval(this.timerRefresh)
       logGW("hide")
       var SysInfo=document.getElementById("GATEWAY_ADMIN")
       SysInfo.classList.add("hidden")
+      this.showing = false
+      MM.getModules().enumerate((module)=> {
+        module.show(0, () => {}, {lockString: "GATEWAY_LOCK"})
+      })
     }
   }
 
   updateSystemData(data) {
     this.System=Object.assign({},this.System,data)
+    this.refreshData()
     console.log("system Info updated:",this.System)
-    this.show()
   }
 
   refreshData() {
@@ -289,5 +303,12 @@ class adminPageGW {
     Active_Value.textContent = this.System.MEMORY.used + " / " + this.System.MEMORY.total + " ("+ this.System.MEMORY.percent + "%)"
     var Swap_Value = document.getElementById("GATEWAY_MEMORY-SWAP-VALUE")
     Swap_Value.textContent= this.System.MEMORY.swapUsed + " / " + this.System.MEMORY.swapTotal + " ("+ this.System.MEMORY.swapPercent + "%)"
+  }
+
+  updateTimer() {
+    this.sendSocketNotification("GET-SYSINFO")
+    this.timerRefresh = setInterval(() => {
+      this.sendSocketNotification("GET-SYSINFO")
+    }, 5000)
   }
 }
