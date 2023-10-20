@@ -89,9 +89,99 @@ class adminPageGW {
   }
 
   prepare(translate) {
+    var wrapper = document.createElement("div")
+    wrapper.id= "GATEWAY_ADMIN"
+    //wrapper.classList.add("hidden")
+
+      var content_wrapper = document.createElement("div")
+      content_wrapper.id = "GATEWAY_ADMIN-CONTENT_WRAPPER"
+      wrapper.appendChild(content_wrapper)
+
+        var Hostname_container = document.createElement("div")
+        Hostname_container.id = "GATEWAY_ADMIN-HOSTNAME_CONTAINER"
+        content_wrapper.appendChild(Hostname_container)
+        
+          var Hostname_value = document.createElement("div")
+          Hostname_value.id = "GATEWAY_ADMIN-HOSTNAME_VALUE"
+          Hostname_value.textContent = "Loading"
+          Hostname_container.appendChild(Hostname_value)
+
+        var Sysinfo_container = document.createElement("div")
+        Sysinfo_container.id = "GATEWAY_ADMIN-SYSINFO_CONTAINER"
+        content_wrapper.appendChild(Sysinfo_container)
+
+          var Sysinfo_container_row = document.createElement("div")
+          Sysinfo_container_row.id = "GATEWAY_ADMIN-SYSINFO_CONTAINER_ROW"
+          Sysinfo_container.appendChild(Sysinfo_container_row)
+          
+            var Sysinfo_version = document.createElement("div")
+            Sysinfo_version.id = "GATEWAY_ADMIN-SYSINFO_VERSION"
+            Sysinfo_container_row.appendChild(Sysinfo_version)
+
+              var Sysinfo_version_group = document.createElement("div")
+              Sysinfo_version_group.id = "GATEWAY_ADMIN-SYSINFO_VERSION_GROUP"
+              Sysinfo_version.appendChild(Sysinfo_version_group)
+
+                var Sysinfo_version_heading = document.createElement("div")
+                Sysinfo_version_heading.id = "GATEWAY_ADMIN-SYSINFO_VERSION_HEADING"
+                Sysinfo_version_group.appendChild(Sysinfo_version_heading)
+
+                  var Sysinfo_version_heading_value = document.createElement("div")
+                  Sysinfo_version_heading_value.id = "GATEWAY_ADMIN-SYSINFO_VERSION_HEADING_VALUE"
+                  Sysinfo_version_heading_value.textContent = "Versions"
+                  Sysinfo_version_heading.appendChild(Sysinfo_version_heading_value)
+
+                var Sysinfo_version_list = document.createElement("div")
+                Sysinfo_version_list.id = "GATEWAY_ADMIN-SYSINFO_VERSION_LIST"
+                Sysinfo_version_group.appendChild(Sysinfo_version_list)
+
+            var Sysinfo_cpu = document.createElement("div")
+            Sysinfo_cpu.id = "GATEWAY_ADMIN-SYSINFO_CPU"
+            Sysinfo_container_row.appendChild(Sysinfo_cpu)
+
+              var Sysinfo_cpu_group = document.createElement("div")
+              Sysinfo_cpu_group.id = "GATEWAY_ADMIN-SYSINFO_CPU_GROUP"
+              Sysinfo_cpu.appendChild(Sysinfo_cpu_group)
+
+                var Sysinfo_cpu_heading = document.createElement("div")
+                Sysinfo_cpu_heading.id = "GATEWAY_ADMIN-SYSINFO_CPU_HEADING"
+                Sysinfo_cpu_group.appendChild(Sysinfo_cpu_heading)
+
+                  var Sysinfo_cpu_heading_value = document.createElement("div")
+                  Sysinfo_cpu_heading_value.id = "GATEWAY_ADMIN-SYSINFO_CPU_HEADING_VALUE"
+                  Sysinfo_cpu_heading_value.textContent = "CPU"
+                  Sysinfo_cpu_heading.appendChild(Sysinfo_cpu_heading_value)
+
+                var Sysinfo_cpu_list = document.createElement("div")
+                Sysinfo_cpu_list.id = "GATEWAY_ADMIN-SYSINFO_CPU_LIST"
+                Sysinfo_cpu_group.appendChild(Sysinfo_cpu_list)
+
+            var Sysinfo_memory = document.createElement("div")
+            Sysinfo_memory.id = "GATEWAY_ADMIN-SYSINFO_MEMORY"
+            Sysinfo_container_row.appendChild(Sysinfo_memory)
+
+            var Sysinfo_network = document.createElement("div")
+            Sysinfo_network.id = "GATEWAY_ADMIN-SYSINFO_NETWORK"
+            Sysinfo_container_row.appendChild(Sysinfo_network)
+
+            var Sysinfo_storage = document.createElement("div")
+            Sysinfo_storage.id = "GATEWAY_ADMIN-SYSINFO_STORAGE"
+            Sysinfo_container_row.appendChild(Sysinfo_storage)
+
+            var Sysinfo_uptimes = document.createElement("div")
+            Sysinfo_uptimes.id = "GATEWAY_ADMIN-SYSINFO_UPTIMES"
+            Sysinfo_container_row.appendChild(Sysinfo_uptimes)
+
+    document.body.appendChild(wrapper)
+    this.init=true
+    console.log("[Gateway] AdminPage Ready !")
+
+
+    return
+    
     var SysInfo=document.createElement("div")
     SysInfo.id="GATEWAY_ADMIN"
-    //SysInfo.classList.add("hidden")
+
       /** Version **/
       var Version = document.createElement("div")
       Version.id = "GATEWAY_VERSION"
@@ -272,6 +362,9 @@ class adminPageGW {
   }
 
   refreshData() {
+    var Hostname_value = document.getElementById("GATEWAY_ADMIN-HOSTNAME_VALUE")
+    Hostname_value.textContent = this.System.HOSTNAME
+    return
     /* Version */
     var MM_Value = document.getElementById("GATEWAY_VERSION-MM-VALUE")
     MM_Value.textContent = this.System.VERSION.MagicMirror
