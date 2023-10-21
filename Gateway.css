@@ -31,21 +31,30 @@
   width: 100%;
 }
 
+#GATEWAY_ADMIN-SYSINFO_NETWORK,
+#GATEWAY_ADMIN-SYSINFO_STORAGE,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES,
+#GATEWAY_ADMIN-SYSINFO_MEMORY,
 #GATEWAY_ADMIN-SYSINFO_VERSION,
 #GATEWAY_ADMIN-SYSINFO_CPU {
     width: 25%;
     position: relative;
     color: #ffffff;
     flex: 0 0 auto;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
 }
 
 #GATEWAY_ADMIN-SYSINFO_CONTAINER_ROW {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 
+#GATEWAY_ADMIN-SYSINFO_NETWORK_HEADING,
+#GATEWAY_ADMIN-SYSINFO_STORAGE_HEADING,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_HEADING,
+#GATEWAY_ADMIN-SYSINFO_MEMORY_HEADING,
 #GATEWAY_ADMIN-SYSINFO_VERSION_HEADING,
 #GATEWAY_ADMIN-SYSINFO_CPU_HEADING {
     margin-left: 0px;

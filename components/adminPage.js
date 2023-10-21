@@ -160,17 +160,86 @@ class adminPageGW {
             Sysinfo_memory.id = "GATEWAY_ADMIN-SYSINFO_MEMORY"
             Sysinfo_container_row.appendChild(Sysinfo_memory)
 
+              var Sysinfo_memory_group = document.createElement("div")
+              Sysinfo_memory_group.id = "GATEWAY_ADMIN-SYSINFO_MEMORY_GROUP"
+              Sysinfo_memory.appendChild(Sysinfo_memory_group)
+
+                var Sysinfo_memory_heading = document.createElement("div")
+                Sysinfo_memory_heading.id = "GATEWAY_ADMIN-SYSINFO_MEMORY_HEADING"
+                Sysinfo_memory_group.appendChild(Sysinfo_memory_heading)
+
+                  var Sysinfo_memory_heading_value = document.createElement("div")
+                  Sysinfo_memory_heading_value.id = "GATEWAY_ADMIN-SYSINFO_MEMORY_HEADING_VALUE"
+                  Sysinfo_memory_heading_value.textContent = "MEMORY"
+                  Sysinfo_memory_heading.appendChild(Sysinfo_memory_heading_value)
+
+                var Sysinfo_memory_list = document.createElement("div")
+                Sysinfo_memory_list.id = "GATEWAY_ADMIN-SYSINFO_MEMORY_LIST"
+                Sysinfo_memory_group.appendChild(Sysinfo_memory_list)
+
             var Sysinfo_network = document.createElement("div")
             Sysinfo_network.id = "GATEWAY_ADMIN-SYSINFO_NETWORK"
             Sysinfo_container_row.appendChild(Sysinfo_network)
+
+              var Sysinfo_network_group = document.createElement("div")
+              Sysinfo_network_group.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_GROUP"
+              Sysinfo_network.appendChild(Sysinfo_network_group)
+
+                var Sysinfo_network_heading = document.createElement("div")
+                Sysinfo_network_heading.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_HEADING"
+                Sysinfo_network_group.appendChild(Sysinfo_network_heading)
+
+                  var Sysinfo_network_heading_value = document.createElement("div")
+                  Sysinfo_network_heading_value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_HEADING_VALUE"
+                  Sysinfo_network_heading_value.textContent = "NETWORK"
+                  Sysinfo_network_heading.appendChild(Sysinfo_network_heading_value)
+
+                var Sysinfo_network_list = document.createElement("div")
+                Sysinfo_network_list.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_LIST"
+                Sysinfo_network_group.appendChild(Sysinfo_network_list)
 
             var Sysinfo_storage = document.createElement("div")
             Sysinfo_storage.id = "GATEWAY_ADMIN-SYSINFO_STORAGE"
             Sysinfo_container_row.appendChild(Sysinfo_storage)
 
+              var Sysinfo_storage_group = document.createElement("div")
+              Sysinfo_storage_group.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_GROUP"
+              Sysinfo_storage.appendChild(Sysinfo_storage_group)
+
+                var Sysinfo_storage_heading = document.createElement("div")
+                Sysinfo_storage_heading.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_HEADING"
+                Sysinfo_storage_group.appendChild(Sysinfo_storage_heading)
+
+                  var Sysinfo_storage_heading_value = document.createElement("div")
+                  Sysinfo_storage_heading_value.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_VALUE"
+                  Sysinfo_storage_heading_value.textContent = "STORAGE"
+                  Sysinfo_storage_heading.appendChild(Sysinfo_storage_heading_value)
+
+                var Sysinfo_storage_list = document.createElement("div")
+                Sysinfo_storage_list.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_LIST"
+                Sysinfo_storage_group.appendChild(Sysinfo_storage_list)
+
             var Sysinfo_uptimes = document.createElement("div")
             Sysinfo_uptimes.id = "GATEWAY_ADMIN-SYSINFO_UPTIMES"
             Sysinfo_container_row.appendChild(Sysinfo_uptimes)
+
+              var Sysinfo_uptimes_group = document.createElement("div")
+              Sysinfo_uptimes_group.id = "GATEWAY_ADMIN-SYSINFO_UPTIMES_GROUP"
+              Sysinfo_uptimes.appendChild(Sysinfo_uptimes_group)
+
+                var Sysinfo_uptimes_heading = document.createElement("div")
+                Sysinfo_uptimes_heading.id = "GATEWAY_ADMIN-SYSINFO_UPTIMES_HEADING"
+                Sysinfo_uptimes_group.appendChild(Sysinfo_uptimes_heading)
+
+                  var Sysinfo_uptimes_heading_value = document.createElement("div")
+                  Sysinfo_uptimes_heading_value.id = "GATEWAY_ADMIN-SYSINFO_MEMORY_UPTIMES_VALUE"
+                  Sysinfo_uptimes_heading_value.textContent = "UPTIMES"
+                  Sysinfo_uptimes_heading.appendChild(Sysinfo_uptimes_heading_value)
+
+                var Sysinfo_uptimes_list = document.createElement("div")
+                Sysinfo_uptimes_list.id = "GATEWAY_ADMIN-SYSINFO_UPTIMES_LIST"
+                Sysinfo_uptimes_group.appendChild(Sysinfo_uptimes_list)
+
 
     document.body.appendChild(wrapper)
     this.init=true
