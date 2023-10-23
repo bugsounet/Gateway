@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   text-shadow: black 5px 5px 5px;
-  font-size: 18px;
+  font-size: 20px;
   color: #EEE;
   font-weight: normal;
   top: 0;
@@ -45,7 +45,7 @@
   position: relative;
   color: #ffffff;
   flex: 0 0 auto;
-  padding: 5px;
+  padding: 30px;
 }
 
 #GATEWAY_ADMIN-SYSINFO_CONTAINER_ROW {
@@ -69,6 +69,7 @@
   display: block;
 }
 
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_LIST,
 #GATEWAY_ADMIN-SYSINFO_MEMORY_LIST,
 #GATEWAY_ADMIN-SYSINFO_CPU_LIST,
 #GATEWAY_ADMIN-SYSINFO_VERSION_LIST {
@@ -78,6 +79,7 @@
   padding: 10px;
   color: #666666;
   background: #191919;
+  font-size: 18px;
 }
 
 #GATEWAY_ADMIN-SYSINFO_VERSION-ELECTRON,
@@ -97,7 +99,7 @@
 #GATEWAY_ADMIN-SYSINFO_VERSION-OS-VALUE,
 #GATEWAY_ADMIN-SYSINFO_VERSION-KERNEL-VALUE,
 #GATEWAY_ADMIN-SYSINFO_VERSION-MM-VALUE {
-  margin-left: 5px
+  margin-left: 5px;
 }
 
 #GATEWAY_ADMIN-SYSINFO_CPU-TYPE,
@@ -110,10 +112,8 @@
 
 #GATEWAY_ADMIN-SYSINFO_CPU-TYPE-VALUE,
 #GATEWAY_ADMIN-SYSINFO_CPU-SPEED-VALUE,
-#GATEWAY_ADMIN-SYSINFO_CPU-USAGE-VALUE,
-#GATEWAY_ADMIN-SYSINFO_CPU-GOVERNOR-VALUE,
-#GATEWAY_ADMIN-SYSINFO_CPU-TEMP-VALUE {
-  margin-left: 5px
+#GATEWAY_ADMIN-SYSINFO_CPU-GOVERNOR-VALUE {
+  margin-left: 5px;
 }
 
 #GATEWAY_ADMIN-SYSINFO_MEMORY-SWAP,
@@ -121,7 +121,61 @@
   display: inline-flex;
 }
 
-#GATEWAY_ADMIN-SYSINFO_MEMORY-SWAP-VALUE,
-#GATEWAY_ADMIN-SYSINFO_MEMORY-ACTIVE-VALUE {
-  margin-left: 5px
+#GATEWAY_ADMIN-SYSINFO_MEMORY-SWAP-VALUE-TOTAL,
+#GATEWAY_ADMIN-SYSINFO_MEMORY-ACTIVE-VALUE-TOTAL {
+  margin-left: 5px;
+}
+
+#GATEWAY_ADMIN-SYSINFO_MEMORY-SWAP-PROGRESS,
+#GATEWAY_ADMIN-SYSINFO_MEMORY-ACTIVE-PROGRESS,
+#GATEWAY_ADMIN-SYSINFO_CPU-TEMP-PROGRESS,
+#GATEWAY_ADMIN-SYSINFO_CPU-USAGE-PROGRESS {
+  text-align: center;
+  margin-left: 5px;
+  width: -webkit-fill-available;
+}
+
+#GATEWAY_ADMIN-SYSINFO_MEMORY-SWAP-PROGRESSBAR,
+#GATEWAY_ADMIN-SYSINFO_MEMORY-ACTIVE-PROGRESSBAR,
+#GATEWAY_ADMIN-SYSINFO_CPU-TEMP-PROGRESSBAR,
+#GATEWAY_ADMIN-SYSINFO_CPU-USAGE-PROGRESSBAR {
+  font-size: 12px;
+  color: black;
+}
+
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_RECORD,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_CURRENT {
+  color: #4885ed;
+}
+
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_RECORD_SYSTEM,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_RECORD_MM,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_CURRENT_MM,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_CURRENT_SYSTEM {
+    display: inline-flex;
+    margin-left: 10px;
+}
+
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_RECORD_SYSTEM_VALUE,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_RECORD_MM_VALUE,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_CURRENT_MM_VALUE,
+#GATEWAY_ADMIN-SYSINFO_UPTIMES_CURRENT_SYSTEM_VALUE {
+  margin-left: 5px;
+}
+
+/** progress **/
+.SysInfo-progress {
+    padding: 1px;
+    background: #212121;
+    border-radius: 6px;
+    align-self: center;
+}
+
+.SysInfo-progress-bar {
+    height: 16px;
+    border-radius: 4px;
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+    transition: 1s linear;
+    transition-property: width, background-color;
+    text-shadow: none;
 }
