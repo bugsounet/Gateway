@@ -608,7 +608,7 @@ class adminPageGW {
   updateSystemData(data) {
     this.System=Object.assign({},this.System,data)
     this.refreshData()
-    console.log("system Info updated:",this.System)
+    logGW("system Info updated:",this.System)
   }
 
   refreshData() {
@@ -763,7 +763,6 @@ class adminPageGW {
     this.System.STORAGE.forEach((partition, id) => {
       for (let [name, values] of Object.entries(partition)) {
 	    var check_mount = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id)
-	    console.log("check_mount", check_mount)
 	    if (check_mount) {
           // update
           var update_name = check_mount.getElementsByClassName("STORAGE-MOUNT" + id)[0]
@@ -779,6 +778,7 @@ class adminPageGW {
 		  continue
 		}
 
+        // create
 	    var Sysinfo_storage_mountValues = document.createElement("tr")
 	    Sysinfo_storage_mountValues.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id
         Sysinfo_storage_table.appendChild(Sysinfo_storage_mountValues)
