@@ -333,6 +333,56 @@ class adminPageGW {
                 Swap_ValueTotal.textContent= this.System.MEMORY.swapTotal
                 Swap.appendChild(Swap_ValueTotal)
 
+            /** storage **/
+            var Sysinfo_storage = document.createElement("div")
+            Sysinfo_storage.id = "GATEWAY_ADMIN-SYSINFO_STORAGE"
+            Sysinfo_container_row.appendChild(Sysinfo_storage)
+
+              var Sysinfo_storage_group = document.createElement("div")
+              Sysinfo_storage_group.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_GROUP"
+              Sysinfo_storage.appendChild(Sysinfo_storage_group)
+
+                var Sysinfo_storage_heading = document.createElement("div")
+                Sysinfo_storage_heading.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_HEADING"
+                Sysinfo_storage_group.appendChild(Sysinfo_storage_heading)
+
+                  var Sysinfo_storage_heading_value = document.createElement("div")
+                  Sysinfo_storage_heading_value.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_VALUE"
+                  Sysinfo_storage_heading_value.textContent = this.translate("GW_System_StorageSystem")
+                  Sysinfo_storage_heading.appendChild(Sysinfo_storage_heading_value)
+
+                var Sysinfo_storage_list = document.createElement("div")
+                Sysinfo_storage_list.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_LIST"
+                Sysinfo_storage_group.appendChild(Sysinfo_storage_list)
+
+                  var Sysinfo_storage_table = document.createElement("table")
+                  Sysinfo_storage_table.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE"
+                  Sysinfo_storage_list.appendChild(Sysinfo_storage_table)
+
+                    var Sysinfo_storage_table_header = document.createElement("tr")
+                      Sysinfo_storage_table_header.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE_HEADER"
+                      Sysinfo_storage_table.appendChild(Sysinfo_storage_table_header)
+
+                        var Sysinfo_storage_table_mount = document.createElement("th")
+                        Sysinfo_storage_table_mount.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE_MOUNT"
+                        Sysinfo_storage_table_mount.textContent = this.translate("GW_System_MountStorage")
+                        Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_mount)
+
+                        var Sysinfo_storage_table_used = document.createElement("th")
+                        Sysinfo_storage_table_used.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE_USED"
+                        Sysinfo_storage_table_used.textContent = this.translate("GW_System_UsedStorage")
+                        Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_used)
+
+                        var Sysinfo_storage_table_percent = document.createElement("th")
+                        Sysinfo_storage_table_percent.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE_PERCENT"
+                        Sysinfo_storage_table_percent.textContent = this.translate("GW_System_PercentStorage")
+                        Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_percent)
+
+                        var Sysinfo_storage_table_total = document.createElement("th")
+                        Sysinfo_storage_table_total.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE_TOTAL"
+                        Sysinfo_storage_table_total.textContent = this.translate("GW_System_TotalStorage")
+                        Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_total)
+
             /** Network **/
             //todo: add icon wireless bar and wired
             var Sysinfo_network = document.createElement("div")
@@ -450,28 +500,6 @@ class adminPageGW {
                     Signal_Value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-SIGNAL-VALUE"
                     Signal_Value.textContent= this.System.NETWORK.signalLevel
                     Signal.appendChild(Signal_Value)
-
-            /** storage **/
-            var Sysinfo_storage = document.createElement("div")
-            Sysinfo_storage.id = "GATEWAY_ADMIN-SYSINFO_STORAGE"
-            Sysinfo_container_row.appendChild(Sysinfo_storage)
-
-              var Sysinfo_storage_group = document.createElement("div")
-              Sysinfo_storage_group.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_GROUP"
-              Sysinfo_storage.appendChild(Sysinfo_storage_group)
-
-                var Sysinfo_storage_heading = document.createElement("div")
-                Sysinfo_storage_heading.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_HEADING"
-                Sysinfo_storage_group.appendChild(Sysinfo_storage_heading)
-
-                  var Sysinfo_storage_heading_value = document.createElement("div")
-                  Sysinfo_storage_heading_value.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_VALUE"
-                  Sysinfo_storage_heading_value.textContent = this.translate("GW_System_StorageSystem")
-                  Sysinfo_storage_heading.appendChild(Sysinfo_storage_heading_value)
-
-                var Sysinfo_storage_list = document.createElement("div")
-                Sysinfo_storage_list.id = "GATEWAY_ADMIN-SYSINFO_STORAGE_LIST"
-                Sysinfo_storage_group.appendChild(Sysinfo_storage_list)
 
             /** uptimes **/
             var Sysinfo_uptimes = document.createElement("div")
@@ -730,6 +758,68 @@ class adminPageGW {
       Signal_.classList.add("hidden")
       Signal.classList.add("hidden")
     }
+    // storage
+    var Sysinfo_storage_table = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE")
+    this.System.STORAGE.forEach((partition, id) => {
+      for (let [name, values] of Object.entries(partition)) {
+	    var check_mount = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id)
+	    console.log("check_mount", check_mount)
+	    if (check_mount) {
+          // update
+          var update_name = check_mount.getElementsByClassName("STORAGE-MOUNT" + id)[0]
+          update_name.textContent = name
+          var update_used = check_mount.getElementsByClassName("STORAGE-USED" + id)[0]
+          update_used.textContent = values.used
+          var update_size = check_mount.getElementsByClassName("STORAGE-SIZE" + id)[0]
+          update_size.textContent = values.size
+          var update_progress = check_mount.getElementsByClassName("STORAGE-PROGRESSBAR" + id)[0]
+          update_progress.style.width = values.use + "%"
+          update_progress.style.backgroundColor = this.selectColor(values.use)
+          update_progress.textContent = values.use + "%"
+		  continue
+		}
+
+	    var Sysinfo_storage_mountValues = document.createElement("tr")
+	    Sysinfo_storage_mountValues.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id
+        Sysinfo_storage_table.appendChild(Sysinfo_storage_mountValues)
+
+	    var Sysinfo_storage_mount = document.createElement("td")
+	    Sysinfo_storage_mount.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNT"
+	    Sysinfo_storage_mount.classList = "STORAGE-MOUNT" + id
+	    Sysinfo_storage_mount.textContent = name
+	    Sysinfo_storage_mountValues.appendChild(Sysinfo_storage_mount)
+
+        var Sysinfo_storage_mount_used = document.createElement("td")
+        Sysinfo_storage_mount_used.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-USED"
+        Sysinfo_storage_mount_used.classList = "STORAGE-USED" + id
+        Sysinfo_storage_mount_used.textContent = values.used
+        Sysinfo_storage_mountValues.appendChild(Sysinfo_storage_mount_used)
+
+        var Sysinfo_storage_mount_ProgressField = document.createElement("td")
+        Sysinfo_storage_mount_ProgressField.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-PROGRESS-FIELD"
+        Sysinfo_storage_mountValues.appendChild(Sysinfo_storage_mount_ProgressField)
+
+          var Sysinfo_storage_mount_Progress = document.createElement("div")
+          Sysinfo_storage_mount_Progress.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-PROGRESS"
+          Sysinfo_storage_mount_Progress.className = "SysInfo-progress"
+          Sysinfo_storage_mount_ProgressField.appendChild(Sysinfo_storage_mount_Progress)
+
+            var Sysinfo_storage_mount_ProgressBar = document.createElement("div")
+            Sysinfo_storage_mount_ProgressBar.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-PROGRESSBAR"
+            Sysinfo_storage_mount_ProgressBar.className = "SysInfo-progress-bar"
+            Sysinfo_storage_mount_ProgressBar.classList.add("STORAGE-PROGRESSBAR" + id)
+            Sysinfo_storage_mount_ProgressBar.style.width = values.use + "%"
+            Sysinfo_storage_mount_ProgressBar.style.backgroundColor = this.selectColor(values.use)
+            Sysinfo_storage_mount_ProgressBar.textContent = values.use + "%"
+            Sysinfo_storage_mount_Progress.appendChild(Sysinfo_storage_mount_ProgressBar)
+
+        var Sysinfo_storage_mount_size = document.createElement("td")
+        Sysinfo_storage_mount_size.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-SIZE"
+        Sysinfo_storage_mount_size.textContent = values.size
+        Sysinfo_storage_mount_size.classList = "STORAGE-SIZE" + id
+        Sysinfo_storage_mountValues.appendChild(Sysinfo_storage_mount_size)
+      }
+    })
   }
 
   updateTimer() {
@@ -745,6 +835,5 @@ class adminPageGW {
     else if (value >= 50 && value < 80) color = "#f4c20d"
     else if (value >= 80) color = "#db3236"
     return color
-    
   }
 }
