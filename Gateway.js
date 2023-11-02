@@ -126,7 +126,6 @@ Module.register("Gateway", {
         })
         break
       case "INITIALIZED":
-        this.AdminPage.show() // force to show adminPage (for develop)
         this.OthersRules.awaitGATimer(this)
         break
       case "SendNoti":

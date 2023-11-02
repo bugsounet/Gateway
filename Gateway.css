@@ -236,12 +236,15 @@
   width: 100px;
 }
 
-/*
-#GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE_PERCENT {
-  margin-right: 5px;
-  flex: auto;
+#GATEWAY_ADMIN-SYSINFO_NETWORK_BAR {
+  display: flex;
+  position: absolute;
+  margin-left: 10px;
 }
-*/
+
+#GATEWAY_ADMIN-SYSINFO_NETWORK_BAR.hidden {
+  display: none;
+}
 
 /** progress **/
 .SysInfo-progress {
@@ -258,4 +261,66 @@
     transition: 1s linear;
     transition-property: width, background-color;
     text-shadow: none;
+}
+
+/** wireless **/
+:root {
+  --SysInfo-wireless-icon-width: auto;
+  --SysInfo-wireless-icon-height: 20px;
+  --SysInfo-wireless-icon-padding: 4px;
+  --SysInfo-wireless-bar-width: 5px;
+  --SysInfo-wireless-bar-spacing: 2px;
+  --SysInfo-wireless-bar-radius: 2px;
+  --SysInfo-wireless-bar-color: #00cc00;
+  --SysInfo-wireless-bar-start-opacity: 0.2;
+}
+
+.SysInfo-icon__signal-strength {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: var(--SysInfo-wireless-icon-width);
+  height: var(--SysInfo-wireless-icon-height);
+  padding: var(--SysInfo-wireless-icon-padding);
+}
+
+.SysInfo-icon__signal-strength span {
+  display: inline-block;
+  width: var(--SysInfo-wireless-bar-width);
+  margin-left: var(--SysInfo-wireless-bar-spacing);
+  transform-origin: 100% 100%;
+  background-color: var(--SysInfo-wireless-bar-color);
+  border-radius: var(--SysInfo-wireless-bar-radius);
+}
+
+.SysInfo-icon__signal-strength .SYSINFO_BAR-1 {
+  height: 25%;
+}
+
+.SysInfo-icon__signal-strength .SYSINFO_BAR-2 {
+  height: 50%;
+}
+
+.SysInfo-icon__signal-strength .SYSINFO_BAR-3 {
+  height: 75%;
+}
+
+.SysInfo-icon__signal-strength .SYSINFO_BAR-4 {
+  height: 100%;
+}
+
+.SysInfo-signal-0 .SYSINFO_BAR-1, .SysInfo-signal-0 .SYSINFO_BAR-2, .SysInfo-signal-0 .SYSINFO_BAR-3, .SysInfo-signal-0 .SYSINFO_BAR-4 {
+  opacity: var(--SysInfo-wireless-bar-start-opacity);
+}
+
+.SysInfo-signal-1 .SYSINFO_BAR-2, .SysInfo-signal-1 .SYSINFO_BAR-3, .SysInfo-signal-1 .SYSINFO_BAR-4 {
+  opacity: var(--wireless-bar-start-opacity);
+}
+
+.SysInfo-signal-2 .SYSINFO_BAR-3, .SysInfo-signal-2 .SYSINFO_BAR-4 {
+  opacity: var(--wireless-bar-start-opacity);
+}
+
+.SysInfo-signal-3 .SYSINFO_BAR-4 {
+  opacity: var(--wireless-bar-start-opacity);
 }

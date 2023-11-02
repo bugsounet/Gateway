@@ -397,6 +397,27 @@ class adminPageGW {
                 Sysinfo_network_heading.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_HEADING"
                 Sysinfo_network_group.appendChild(Sysinfo_network_heading)
 
+                  var Sysinfo_network_heading_bar = document.createElement("div")
+                  Sysinfo_network_heading_bar.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_BAR"
+                  Sysinfo_network_heading_bar.className = "SysInfo-icon__signal-strength SysInfo-signal-0 hidden"
+                  Sysinfo_network_heading.appendChild(Sysinfo_network_heading_bar)
+
+                    var Sysinfo_network_heading_bar1 = document.createElement("span")
+                    Sysinfo_network_heading_bar1.className = "SYSINFO_BAR-1"
+                    Sysinfo_network_heading_bar.appendChild(Sysinfo_network_heading_bar1)
+
+                    var Sysinfo_network_heading_bar2 = document.createElement("span")
+                    Sysinfo_network_heading_bar2.className = "SYSINFO_BAR-2"
+                    Sysinfo_network_heading_bar.appendChild(Sysinfo_network_heading_bar2)
+
+                    var Sysinfo_network_heading_bar3 = document.createElement("span")
+                    Sysinfo_network_heading_bar3.className = "SYSINFO_BAR-3"
+                    Sysinfo_network_heading_bar.appendChild(Sysinfo_network_heading_bar3)
+
+                    var Sysinfo_network_heading_bar4 = document.createElement("span")
+                    Sysinfo_network_heading_bar4.className = "SYSINFO_BAR-4"
+                    Sysinfo_network_heading_bar.appendChild(Sysinfo_network_heading_bar4)
+
                   var Sysinfo_network_heading_value = document.createElement("div")
                   Sysinfo_network_heading_value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_HEADING_VALUE"
                   Sysinfo_network_heading_value.textContent = this.translate("GW_System_NetworkSystem")
@@ -703,7 +724,9 @@ class adminPageGW {
     var Signal_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SIGNAL")
     var Signal = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SIGNAL-VALUE")
     Signal.textContent= this.System.NETWORK.signalLevel + " dBm"
+    var bar = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK_BAR")
     if (this.System.NETWORK.type == "wired") {
+	  bar.classList.add("hidden")
       information.classList.remove("hidden")
       Speed_.classList.remove("hidden")
       Speed.classList.remove("hidden")
@@ -722,6 +745,7 @@ class adminPageGW {
       Signal_.classList.add("hidden")
       Signal.classList.add("hidden")
     } else if (this.System.NETWORK.type == "wireless") {
+	  bar.classList.remove("hidden")
       information.classList.remove("hidden")
       Speed_.classList.add("hidden")
       Speed.classList.add("hidden")
@@ -739,7 +763,14 @@ class adminPageGW {
       quality.classList.remove("hidden")
       Signal_.classList.remove("hidden")
       Signal.classList.remove("hidden")
+      bar.classList.remove("SysInfo-signal-0")
+      bar.classList.remove("SysInfo-signal-1")
+      bar.classList.remove("SysInfo-signal-2")
+      bar.classList.remove("SysInfo-signal-3")
+      bar.classList.remove("SysInfo-signal-4")
+      bar.classList.add("SysInfo-signal-"+ this.System.NETWORK.barLevel)
     } else {
+      bar.classList.add("hidden")
       information.classList.add("hidden")
       Speed_.classList.add("hidden")
       Speed.classList.add("hidden")
@@ -758,6 +789,7 @@ class adminPageGW {
       Signal_.classList.add("hidden")
       Signal.classList.add("hidden")
     }
+
     // storage
     var Sysinfo_storage_table = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE")
     this.System.STORAGE.forEach((partition, id) => {
