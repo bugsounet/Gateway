@@ -1,4 +1,4 @@
-class adminPageGW {
+class sysInfoPageGW {
   constructor(that) {
     this.config = that.config
     this.sendSocketNotification = (...arg) => that.sendSocketNotification(...arg)
@@ -92,7 +92,7 @@ class adminPageGW {
   prepare(translate) {
     var wrapper = document.createElement("div")
     wrapper.id= "GATEWAY_ADMIN"
-    //wrapper.classList.add("hidden")
+    wrapper.classList.add("hidden")
 
       var content_wrapper = document.createElement("div")
       content_wrapper.id = "GATEWAY_ADMIN-CONTENT_WRAPPER"

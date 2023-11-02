@@ -26,7 +26,7 @@ Module.register("Gateway", {
     this.GW = await GWDB.createGW(this)
     this.awaitGATimer = null
     this.session= {}
-    this.AdminPage = new adminPageGW(this)
+    this.sysInfo = new sysInfoPageGW(this)
     this.sendSocketNotification("INIT", this.config)
   },
 
@@ -55,7 +55,7 @@ Module.register("Gateway", {
       "/modules/Gateway/components/OthersRules.js",
       "/modules/Gateway/components/GWDatabase.js",
       "/modules/Gateway/components/callbacks.js",
-      "/modules/Gateway/components/adminPage.js",
+      "/modules/Gateway/components/sysInfo.js",
     ]
   },
 
@@ -92,10 +92,10 @@ Module.register("Gateway", {
         })
         break
       case "SHOW_SYSINFO":
-        this.AdminPage.show()
+        this.sysInfo.show()
         break
       case "HIDE_SYSINFO":
-        this.AdminPage.hide()
+        this.sysInfo.hide()
         break
     }
   },
@@ -108,7 +108,7 @@ Module.register("Gateway", {
         let GWTranslate = await LoadTranslate.LoadGWTranslation(this)
         let EXTDescription = await LoadTranslate.LoadGWDescription(this)
         let VALTranslate = await LoadTranslate.LoadGWTrSchemaValidation(this)
-        this.AdminPage.prepare(GWTranslate)
+        this.sysInfo.prepare(GWTranslate)
         this.sendSocketNotification("MMConfig", { DB: this.ExtDB, Description: EXTDescription, Translate: GWTranslate, Schema: VALTranslate, EXTStatus: this.GW } )
         break
       case "WARNING": // EXT-Alert is unlocked for receive all alerts
@@ -139,7 +139,7 @@ Module.register("Gateway", {
         this.show_sysinfo(payload)
         break
       case "SYSINFO-RESULT":
-        this.AdminPage.updateSystemData(payload)
+        this.sysInfo.updateSystemData(payload)
         break
     }
   },
