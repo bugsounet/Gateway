@@ -37,11 +37,7 @@ function libraries(that) {
     { "googleapis": "googleapis" },
     { "google-auth-library": "GoogleAuthLibrary" },
     { "lodash": "_" },
-    { "moment": "moment" },
-    { "mkdirp": "mkdirp" },
-    { "https": "https" },
-    { "tree-kill": "kill" },
-    { "sha256-file": "sha256_file" }
+    { "moment": "moment" }
   ]
   let errors = 0
   return new Promise(resolve => {
