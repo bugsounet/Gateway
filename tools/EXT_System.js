@@ -23,7 +23,7 @@ window.addEventListener("load", async event => {
 
   $('html').prop("lang", versionGW.lang)
   forceMobileRotate()
-  doSystem(()=> { doSpeedTest() })
+  doSystem(()=> { doStatic() })
   doTranslateNavBar()
 })
 
@@ -38,8 +38,6 @@ async function doSystem(cb= null) {
   window.addEventListener('resize', function() {
     progressOrText(system)
   })
-
-  //console.log(system)
 
   SystemInterval = setInterval(async() => {
     doSystem()
@@ -303,19 +301,6 @@ async function doSystem(cb= null) {
   }
   $('#IP').text(system.NETWORK.ip)
   $('#interface').text(system.NETWORK.name)
-  if (system.SpeedTest) {
-    $("#SpeedTestResult").removeClass("visually-hidden")
-    $("#ST_Date").text(system.SpeedTest.timeLocale)
-    $("#ST_DownloadResult").text(system.SpeedTest.download.bandwidth)
-    $("#ST_UploadResult").text(system.SpeedTest.upload.bandwidth)
-    $("#ST_PingResult").text(+system.SpeedTest.ping.latency.toFixed(2))
-    $("#ST_JitterResult").text(+system.SpeedTest.ping.jitter.toFixed(1))
-    $("#ST_PacketLostResult").text(+system.SpeedTest.packetLoss.toFixed(1))
-    $("#ST_ISPResult").text(system.SpeedTest.isp)
-    $("#ST_ServerResult").text(system.SpeedTest.server.host)
-    $("#ST_NameResult").text(system.SpeedTest.server.name)
-    $("#ST_LocationResult").text(system.SpeedTest.server.location + " ("+ system.SpeedTest.server.country + ")")
-  }
 
   $("#ElectronOK").removeClass("visually-hidden")
   $("#ElectronNOK").addClass("visually-hidden")
@@ -364,8 +349,8 @@ async function doSystem(cb= null) {
   }
 
   if (cb) {
-    doStatic()
-    cb()
+	$("#SpeedTest").addClass("visually-hidden") // <---- /!\ temp patch need to be deleted from website /!\
+	cb()
   }
 }
 
@@ -489,83 +474,6 @@ function progressOrText(system) {
   }
 }
 
-function doSpeedTest() {
-  var socketSystem = io()
-  socketSystem.on("connect", () => {
-    console.log("Connected!")
-  })
-
-  socketSystem.on("HELLO", () => {
-    $("#ST_Start").removeClass("disabled")
-  })
-
-  socketSystem.on("disconnect", (reason) => {
-    console.log("disconnect:", reason)
-    $("#ST_Start").addClass("disabled")
-  })
-
-  // part of MMM-Speedtest !
-  let opts = {
-    value: 0,
-    min: 0,
-    refreshAnimationType: "linear",
-    gaugeWidthScale: "0.8",
-    valueFontColor: "#fff",
-    valueFontFamily: "Roboto Condensed",
-    titleFontFamily: "Roboto Condensed",
-    titleFontColor: "#aaa",
-  }
-
-  let downOpts = {
-    id: "ST_Download",
-    max: system.NETWORK.speed || system.NETWORK.bitRate,
-    title: "Download",
-    symbol: " Mbps"
-  }
-
-  let upOpts = {
-    id: "ST_Upload",
-    max: system.NETWORK.speed || system.NETWORK.bitRate,
-    title: "Upload",
-    symbol: " Mbps"
-  }
-
-  let pingOpts = {
-    id: "ST_Ping",
-    max: 80,
-    title: "Ping",
-    symbol: " ms"
-  }
-  downOpts = Object.assign({}, opts, downOpts)
-  this.download = new JustGage(downOpts)
-  upOpts = Object.assign({}, opts, upOpts)
-  this.upload = new JustGage(upOpts)
-  pingOpts = Object.assign({}, opts, pingOpts)
-  this.ping = new JustGage(pingOpts)
-
-  document.getElementById('ST_Start').onclick = () => {
-    this.download.refresh("0")
-    this.upload.refresh("0")
-    this.ping.refresh("0")
-    socketSystem.emit("ST_Start")
-    $("#ST_Start").addClass("visually-hidden")
-  }
-
-  socketSystem.on("DOWNLOAD", (arg) => {
-    this.download.refresh(arg)
-  })
-  socketSystem.on("UPLOAD", (arg) => {
-    this.upload.refresh(arg)
-  })
-  socketSystem.on("PING", (arg) => {
-    this.ping.refresh(arg)
-  })
-
-  socketSystem.on("RESULT", () => {
-    $("#ST_Start").removeClass("visually-hidden")
-  })
-}
-
 function doStatic() {
   // Display static values
   $('#HOSTNAME').text(system.HOSTNAME)
@@ -625,10 +533,6 @@ function doStatic() {
   $("#SysCurrent").text(translation.System_System)
   $("#RecordUptime").text(translation.System_RecordUptime)
   $("#SysRecord").text(translation.System_System)
-
-  $("#ST_Start").text(translation.Start)
-
-  $("#STResult").text(translation.System_SpeedTestResult)
 
   $("#ProcessSystem").text(translation.System_ProcessSystem)
   $("#ElectronCPUProcess").text(translation.System_CPU)
