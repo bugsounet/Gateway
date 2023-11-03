@@ -180,7 +180,6 @@ class GWTranslations {
       Tr.System_ProcessSystem = that.translate("GW_System_ProcessSystem")
       Tr.System_CPU = that.translate("GW_System_CPU")
       Tr.System_Memory = that.translate("GW_System_Memory")
-      Tr.System_SpeedTestResult = that.translate("GW_System_SpeedTestResult")
       Tr.System_GoogleAssistant = that.translate("GW_System_GoogleAssistant")
       Tr.System_CurrentlyRunning = that.translate("GW_System_CurrentlyRunning")
       Tr.System_NamePlugin = that.translate("GW_System_NamePlugin")

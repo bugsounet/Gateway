@@ -83,8 +83,7 @@ class sysInfoPageGW {
           cpu:0,
           mem:0
         }
-      },
-      SpeedTest:null
+      }
     }
     console.log("[Gateway] AdminPage Loaded !")
   }

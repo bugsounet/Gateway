@@ -79,8 +79,7 @@ class systemInfo {
           cpu: 0,
           mem: 0
         }
-      },
-      SpeedTest: null
+      }
     }
   }
 
