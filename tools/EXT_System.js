@@ -348,10 +348,7 @@ async function doSystem(cb= null) {
     $("#pm2NOK").removeClass("visually-hidden")
   }
 
-  if (cb) {
-	$("#SpeedTest").addClass("visually-hidden") // <---- /!\ temp patch need to be deleted from website /!\
-	cb()
-  }
+  if (cb) cb()
 }
 
 function checkPartColor(id, value) {
