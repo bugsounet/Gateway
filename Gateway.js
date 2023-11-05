@@ -1,6 +1,6 @@
 /**
  ** Module : Gateway
- ** @bugsounet ©07-2023
+ ** @bugsounet ©11-2023
  ** support: https://forum.bugsounet.fr
  **/
 
@@ -154,6 +154,20 @@ Module.register("Gateway", {
   },
 
   cmd_sysinfo: function(command,handler) {
+    if (handler.args) {
+      var args = handler.args.toLowerCase().split(" ")
+      var params = handler.args.split(" ")
+      if (args[0] == "show") {
+        this.sysInfo.show()
+        handler.reply("TEXT", "ok.")
+        return
+      }
+      if (args[0] == "hide") {
+        this.sysInfo.hide()
+        handler.reply("TEXT", "ok.")
+        return
+      }
+    }
     /** try to manage session ... **/
     let chatId = handler.message.chat.id
     let userId = handler.message.from.id
