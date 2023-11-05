@@ -15,8 +15,6 @@ function libraries(that) {
     { "../components/SHCallbacks.js": "callback" },
     { "../components/homegraph.js": "homegraph" },
     { "../components/systemInformation.js": "SystemInformation" },
-    { "../components/speedtest.js": "speedtest" },
-    { "../components/speedtest-net.js": "speedtest-net" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
@@ -39,17 +37,7 @@ function libraries(that) {
     { "googleapis": "googleapis" },
     { "google-auth-library": "GoogleAuthLibrary" },
     { "lodash": "_" },
-    { "moment": "moment" },
-    { "mkdirp": "mkdirp" },
-    { "https": "https" },
-    { "decompress" : "decompress" },
-    { "decompress-tar" : "decompressTar" },
-    { "decompress-tarbz2" : "decompressTarbz2" },
-    { "decompress-targz" : "decompressTargz" },
-    { "decompress-unzip": "decompressUnzip" },
-    { "@felipecrs/decompress-tarxz": "decompressTarXz" },
-    { "tree-kill": "kill" },
-    { "sha256-file": "sha256_file" }
+    { "moment": "moment" }
   ]
   let errors = 0
   return new Promise(resolve => {
