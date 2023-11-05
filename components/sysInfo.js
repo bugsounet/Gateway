@@ -6,6 +6,7 @@ class sysInfoPageGW {
     this.init = false
     this.showing = false
     this.timerRefresh = null
+    this.timerHide = null
     this.System = {
       VERSION:{
         MagicMirror:"unknow",
@@ -601,13 +602,15 @@ class sysInfoPageGW {
   show() {
     if (!this.showing && this.init) {
       clearInterval(this.timerRefresh)
+      clearTimeout(this.timerHide)
       this.updateTimer()
       MM.getModules().enumerate((module)=> {
-        module.hide(0, () => {}, {lockString: "GATEWAY_LOCK"})
+        module.hide(500, () => {}, {lockString: "GATEWAY_LOCK"})
       })
       logGW("show")
       var SysInfo=document.getElementById("GATEWAY_ADMIN")
       SysInfo.classList.remove("hidden")
+      addAnimateCSS("GATEWAY_ADMIN", "backInLeft", 1)
       this.showing = true
     }
   }
@@ -615,13 +618,17 @@ class sysInfoPageGW {
   hide() {
     if (this.showing && this.init) {
       clearInterval(this.timerRefresh)
+      clearTimeout(this.timerHide)
       logGW("hide")
       var SysInfo=document.getElementById("GATEWAY_ADMIN")
-      SysInfo.classList.add("hidden")
-      this.showing = false
-      MM.getModules().enumerate((module)=> {
-        module.show(0, () => {}, {lockString: "GATEWAY_LOCK"})
-      })
+      addAnimateCSS("GATEWAY_ADMIN", "backOutRight", 1)
+      this.timerHide = setTimeout(()=> {
+        SysInfo.classList.add("hidden")
+        this.showing = false
+        MM.getModules().enumerate((module)=> {
+          module.show(500, () => {}, {lockString: "GATEWAY_LOCK"})
+        })
+      },1000)
     }
   }
 
@@ -725,7 +732,7 @@ class sysInfoPageGW {
     Signal.textContent= this.System.NETWORK.signalLevel + " dBm"
     var bar = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK_BAR")
     if (this.System.NETWORK.type == "wired") {
-	  bar.classList.add("hidden")
+      bar.classList.add("hidden")
       information.classList.remove("hidden")
       Speed_.classList.remove("hidden")
       Speed.classList.remove("hidden")
@@ -744,7 +751,7 @@ class sysInfoPageGW {
       Signal_.classList.add("hidden")
       Signal.classList.add("hidden")
     } else if (this.System.NETWORK.type == "wireless") {
-	  bar.classList.remove("hidden")
+      bar.classList.remove("hidden")
       information.classList.remove("hidden")
       Speed_.classList.add("hidden")
       Speed.classList.add("hidden")
@@ -793,8 +800,8 @@ class sysInfoPageGW {
     var Sysinfo_storage_table = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE_TABLE")
     this.System.STORAGE.forEach((partition, id) => {
       for (let [name, values] of Object.entries(partition)) {
-	    var check_mount = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id)
-	    if (check_mount) {
+        var check_mount = document.getElementById("GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id)
+        if (check_mount) {
           // update
           var update_name = check_mount.getElementsByClassName("STORAGE-MOUNT" + id)[0]
           update_name.textContent = name
@@ -806,19 +813,19 @@ class sysInfoPageGW {
           update_progress.style.width = values.use + "%"
           update_progress.style.backgroundColor = this.selectColor(values.use)
           update_progress.textContent = values.use + "%"
-		  continue
-		}
+          continue
+        }
 
         // create
-	    var Sysinfo_storage_mountValues = document.createElement("tr")
-	    Sysinfo_storage_mountValues.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id
+        var Sysinfo_storage_mountValues = document.createElement("tr")
+        Sysinfo_storage_mountValues.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNTVALUES" + id
         Sysinfo_storage_table.appendChild(Sysinfo_storage_mountValues)
 
-	    var Sysinfo_storage_mount = document.createElement("td")
-	    Sysinfo_storage_mount.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNT"
-	    Sysinfo_storage_mount.classList = "STORAGE-MOUNT" + id
-	    Sysinfo_storage_mount.textContent = name
-	    Sysinfo_storage_mountValues.appendChild(Sysinfo_storage_mount)
+        var Sysinfo_storage_mount = document.createElement("td")
+        Sysinfo_storage_mount.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-MOUNT"
+        Sysinfo_storage_mount.classList = "STORAGE-MOUNT" + id
+        Sysinfo_storage_mount.textContent = name
+        Sysinfo_storage_mountValues.appendChild(Sysinfo_storage_mount)
 
         var Sysinfo_storage_mount_used = document.createElement("td")
         Sysinfo_storage_mount_used.id = "GATEWAY_ADMIN-SYSINFO_STORAGE-USED"
