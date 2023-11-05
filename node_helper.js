@@ -15,6 +15,7 @@ module.exports = NodeHelper.create({
         if (this.alreadyInitialized) {
           console.error("[GATEWAY] You can't use Gateway in server mode")
           this.sendSocketNotification("ERROR", "You can't use Gateway in server mode")
+          setTimeout(() => process.exit(), 5000)
           return
         } else console.log("[GATEWAY] Gateway Version:", require('./package.json').version, "rev:", require('./package.json').rev)
         if (this.Gateway.server) return
@@ -23,7 +24,11 @@ module.exports = NodeHelper.create({
         this.sendSocketNotification("MMConfig")
         break
       case "MMConfig":
-        if (this.alreadyInitialized) return console.error("[GATEWAY] I say no! You can't use Gateway in server mode")
+        if (this.alreadyInitialized) {
+		  console.error("[GATEWAY] You can't use Gateway in server mode")
+		  setTimeout(() => process.exit(), 5000)
+		  return
+		}
         this.alreadyInitialized= true
         await parseData.parse(this,payload)
         if (this.lib.error || this.Gateway.errorInit) return

@@ -595,8 +595,8 @@ function readAllMMLogs(logs) {
 /** set plugin as used and search version/rev **/
 async function setActiveVersion(module,that) {
   if (that.Gateway.activeVersion[module] != undefined) {
-    that.sendSocketNotification("ERROR", "Already Activated: " + module + ".You can't use Gateway in server mode!")
-    console.error("Already Activated: " + module + ". You can't use Gateway in server mode!")
+    that.sendSocketNotification("ERROR", "Already Activated: " + module)
+    console.error("Already Activated: " + module)
     return
   }
   else console.log("[GATEWAY] Detected:", module)
@@ -702,6 +702,7 @@ function MMConfigAddress (that) {
       that.Gateway.errorInit = true
       console.error("[GATEWAY] Error: You can't use '0.0.0.0' in MagicMirror address config")
       that.sendSocketNotification("ERROR", "You can't use '0.0.0.0' in MagicMirror address config")
+      setTimeout(() => process.exit(), 5000)
       resolve(true)
     } else {
       console.log("[GATEWAY] MagicMirror address:", that.Gateway.MMConfig.address)
