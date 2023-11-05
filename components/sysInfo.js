@@ -610,6 +610,7 @@ class sysInfoPageGW {
       logGW("show")
       var SysInfo=document.getElementById("GATEWAY_ADMIN")
       SysInfo.classList.remove("hidden")
+      removeAnimateCSS("GATEWAY_ADMIN", "backOutRight")
       addAnimateCSS("GATEWAY_ADMIN", "backInLeft", 1)
       this.showing = true
     }
@@ -621,6 +622,7 @@ class sysInfoPageGW {
       clearTimeout(this.timerHide)
       logGW("hide")
       var SysInfo=document.getElementById("GATEWAY_ADMIN")
+      removeAnimateCSS("GATEWAY_ADMIN", "backInLeft")
       addAnimateCSS("GATEWAY_ADMIN", "backOutRight", 1)
       this.timerHide = setTimeout(()=> {
         SysInfo.classList.add("hidden")
