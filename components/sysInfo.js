@@ -3,8 +3,8 @@ class sysInfoPageGW {
     this.config = that.config
     this.sendSocketNotification = (...arg) => that.sendSocketNotification(...arg)
     this.translate = (...arg) => that.translate(...arg)
-    this.pagesLock = () => that.OthersRules.forceLockPages(that)
-    this.pagesUnLock = () => that.OthersRules.forceUnLockPages(that)
+    this.lock = () => that.OthersRules.forceLockPagesAndScreen(that)
+    this.unLock = () => that.OthersRules.forceUnLockPagesAndScreen(that)
     this.init = false
     this.showing = false
     this.timerRefresh = null
@@ -596,7 +596,7 @@ class sysInfoPageGW {
 
   show() {
     if (!this.showing && this.init) {
-      this.pagesLock()
+      this.lock()
       clearInterval(this.timerRefresh)
       clearTimeout(this.timerHide)
       this.updateTimer()
@@ -626,7 +626,7 @@ class sysInfoPageGW {
         MM.getModules().enumerate((module)=> {
           module.show(500, () => {}, {lockString: "GATEWAY_LOCK"})
         })
-        this.pagesUnLock()
+        this.unLock()
       },1000)
     }
   }

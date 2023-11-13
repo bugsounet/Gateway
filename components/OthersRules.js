@@ -94,13 +94,18 @@ class OthersRules {
     }
   }
 
-  /** need to force lock Pages ? **/
-  forceLockPages(that) {
+  /** need to force lock/unlock Pages and Screen ? **/
+  forceLockPagesAndScreen(that) {
     if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-LOCK")
+    if (that.GW["EXT-Screen"].hello) {
+      if (!that.GW["EXT-Screen"].power) that.sendNotification("EXT_SCREEN-WAKEUP")
+      that.sendNotification("EXT_SCREEN-LOCK")
+    }
   }
 
-  forceUnLockPages(that) {
+  forceUnLockPagesAndScreen(that) {
     if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-UNLOCK")
+    if (that.GW["EXT-Screen"].hello) that.sendNotification("EXT_SCREEN-UNLOCK")
   }
 
   browserOrPhotoIsConnected(that) {
