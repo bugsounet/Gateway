@@ -19,20 +19,18 @@ class sysInfoPageGW {
       },
       HOSTNAME:"unknow",
       NETWORK:{
-        type:"unknow",
-        ip:"unknow",
-        name:"unknow",
-        speed:"unknow",
-        duplex:"unknow",
-        ssid:"unknow",
-        bitRate:"unknow",
-        frequency:"unknow",
-        txPower:"unknow",
-        powerManagement:"unknow",
-        linkQuality:"unknow",
-        maxLinkQuality:"unknow",
-        signalLevel:"unknow",
-        barLevel:"unknow"
+        type: "unknow",
+        ip: "unknow",
+        name: "unknow",
+        speed: "unknow",
+        duplex: "unknow",
+        ssid: "unknow",
+        frequency: "unknow",
+        signalLevel: "unknow",
+        channel: "unknow",
+        model: "unknow",
+        security: "unknow",
+        barLevel: "unknow"
       },
       MEMORY:{
         total:0,
@@ -445,6 +443,11 @@ class sysInfoPageGW {
                     Interface_Value.textContent= this.System.NETWORK.name
                     Interface.appendChild(Interface_Value)
 
+                  var InterfaceName = document.createElement("div")
+                  InterfaceName.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-INTERFACE-NAME"
+                  InterfaceName.textContent = "* "+this.System.NETWORK.model
+                  Sysinfo_network_list.appendChild(InterfaceName)
+
                   var Information = document.createElement("div")
                   Information.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_INFORMATION"
                   Information.textContent = this.translate("GW_System_WirelessInfo")
@@ -477,14 +480,14 @@ class sysInfoPageGW {
                     SSID_Value.textContent= this.System.NETWORK.ssid
                     SSID.appendChild(SSID_Value)
 
-                  var bitRate = document.createElement("div")
-                  bitRate.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-BITRATE"
-                  bitRate.textContent = this.translate("GW_System_BitRateNetwork")
-                  Sysinfo_network_list.appendChild(bitRate)
-                    var bitRate_Value = document.createElement("div")
-                    bitRate_Value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-BITRATE-VALUE"
-                    bitRate_Value.textContent= this.System.NETWORK.bitRate
-                    bitRate.appendChild(bitRate_Value)
+                  var channel = document.createElement("div")
+                  channel.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-CHANNEL"
+                  channel.textContent = this.translate("GW_System_ChannelNetwork")
+                  Sysinfo_network_list.appendChild(channel)
+                    var channel_Value = document.createElement("div")
+                    channel_Value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-CHANNEL-VALUE"
+                    channel_Value.textContent= this.System.NETWORK.channel
+                    channel.appendChild(channel_Value)
 
                   var frequency = document.createElement("div")
                   frequency.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-FREQUENCY"
@@ -495,23 +498,14 @@ class sysInfoPageGW {
                     frequency_Value.textContent= this.System.NETWORK.frequency
                     frequency.appendChild(frequency_Value)
 
-                  var tx = document.createElement("div")
-                  tx.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-TX"
-                  tx.textContent = this.translate("GW_System_TxPowerNetwork")
-                  Sysinfo_network_list.appendChild(tx)
-                    var tx_Value = document.createElement("div")
-                    tx_Value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-TX-VALUE"
-                    tx_Value.textContent= this.System.NETWORK.txPower
-                    tx.appendChild(tx_Value)
-
-                  var quality = document.createElement("div")
-                  quality.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-QUALITY"
-                  quality.textContent = this.translate("GW_System_QualityNetwork")
-                  Sysinfo_network_list.appendChild(quality)
-                    var quality_Value = document.createElement("div")
-                    quality_Value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-QUALITY-VALUE"
-                    quality_Value.textContent= this.System.NETWORK.linkQuality + " (" + this.System.NETWORK.maxLinkQuality + ")"
-                    quality.appendChild(quality_Value)
+                  var security = document.createElement("div")
+                  security.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-SECURITY"
+                  security.textContent = this.translate("GW_System_SecurityNetwork")
+                  Sysinfo_network_list.appendChild(security)
+                    var security_Value = document.createElement("div")
+                    security_Value.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-SECURITY-VALUE"
+                    security_Value.textContent= this.System.NETWORK.security
+                    security.appendChild(security_Value)
 
                   var Signal = document.createElement("div")
                   Signal.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-SIGNAL"
@@ -714,21 +708,20 @@ class sysInfoPageGW {
     var Duplex = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-DUPLEX-VALUE")
     Duplex.textContent= this.System.NETWORK.duplex
     // wireless
+    var InterfaceName = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-INTERFACE-NAME")
+    InterfaceName.textContent = "* " + this.System.NETWORK.model
     var SSID_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SSID")
     var SSID = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SSID-VALUE")
     SSID.textContent = this.System.NETWORK.ssid
-    var bitRate_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-BITRATE")
-    var bitRate = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-BITRATE-VALUE")
-    bitRate.textContent= this.System.NETWORK.bitRate + " Mb/s"
+    var channel_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-CHANNEL")
+    var channel = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-CHANNEL-VALUE")
+    channel.textContent= this.System.NETWORK.channel
     var frequency_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-FREQUENCY")
     var frequency = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-FREQUENCY-VALUE")
     frequency.textContent= this.System.NETWORK.frequency + " GHz"
-    var tx_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-TX")
-    var tx = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-TX-VALUE")
-    tx.textContent= this.System.NETWORK.txPower + " dBm"
-    var quality_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-QUALITY")
-    var quality = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-QUALITY-VALUE")
-    quality.textContent = this.System.NETWORK.linkQuality + " (" + this.System.NETWORK.maxLinkQuality + ")"
+    var security_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SECURITY")
+    var security = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SECURITY-VALUE")
+    security.textContent= this.System.NETWORK.security
     var Signal_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SIGNAL")
     var Signal = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SIGNAL-VALUE")
     Signal.textContent= this.System.NETWORK.signalLevel + " dBm"
@@ -740,16 +733,15 @@ class sysInfoPageGW {
       Speed.classList.remove("hidden")
       Duplex_.classList.remove("hidden")
       Duplex.classList.remove("hidden")
+      InterfaceName.classList.add("hidden")
       SSID_.classList.add("hidden")
       SSID.classList.add("hidden")
-      bitRate_.classList.add("hidden")
-      bitRate.classList.add("hidden")
+      channel_.classList.add("hidden")
+      channel.classList.add("hidden")
       frequency_.classList.add("hidden")
       frequency.classList.add("hidden")
-      tx_.classList.add("hidden")
-      tx.classList.add("hidden")
-      quality_.classList.add("hidden")
-      quality.classList.add("hidden")
+      security_.classList.add("hidden")
+      security.classList.add("hidden")
       Signal_.classList.add("hidden")
       Signal.classList.add("hidden")
     } else if (this.System.NETWORK.type == "wireless") {
@@ -759,16 +751,15 @@ class sysInfoPageGW {
       Speed.classList.add("hidden")
       Duplex_.classList.add("hidden")
       Duplex.classList.add("hidden")
+      InterfaceName.classList.remove("hidden")
       SSID_.classList.remove("hidden")
       SSID.classList.remove("hidden")
-      bitRate_.classList.remove("hidden")
-      bitRate.classList.remove("hidden")
+      channel_.classList.remove("hidden")
+      channel.classList.remove("hidden")
       frequency_.classList.remove("hidden")
       frequency.classList.remove("hidden")
-      tx_.classList.remove("hidden")
-      tx.classList.remove("hidden")
-      quality_.classList.remove("hidden")
-      quality.classList.remove("hidden")
+      security_.classList.remove("hidden")
+      security.classList.remove("hidden")
       Signal_.classList.remove("hidden")
       Signal.classList.remove("hidden")
       bar.classList.remove("SysInfo-signal-0")
@@ -784,16 +775,15 @@ class sysInfoPageGW {
       Speed.classList.add("hidden")
       Duplex_.classList.add("hidden")
       Duplex.classList.add("hidden")
+      InterfaceName.classList.add("hidden")
       SSID_.classList.add("hidden")
       SSID.classList.add("hidden")
-      bitRate_.classList.add("hidden")
-      bitRate.classList.add("hidden")
+      channel_.classList.add("hidden")
+      channel.classList.add("hidden")
       frequency_.classList.add("hidden")
       frequency.classList.add("hidden")
-      tx_.classList.add("hidden")
-      tx.classList.add("hidden")
-      quality_.classList.add("hidden")
-      quality.classList.add("hidden")
+      security_.classList.add("hidden")
+      security.classList.add("hidden")
       Signal_.classList.add("hidden")
       Signal.classList.add("hidden")
     }
@@ -866,7 +856,7 @@ class sysInfoPageGW {
     this.sendSocketNotification("GET-SYSINFO")
     this.timerRefresh = setInterval(() => {
       this.sendSocketNotification("GET-SYSINFO")
-    }, 5000)
+    }, 10000)
   }
   
   selectColor(value) {
