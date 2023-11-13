@@ -249,7 +249,7 @@ class systemInfo {
 
   getWifiSignalLevel(iface) {
     return new Promise(resolve => {
-      this.lib.childProcess.exec('iwconfig -' + iface, (err, stdout, stderr) => {
+      this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
         if (err) return resolve("error")
         var signal = /Signal level=(\-?[0-9]+) dBm/.exec(stdout)
         let result = signal[1] || "error"
