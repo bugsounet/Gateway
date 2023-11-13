@@ -719,7 +719,7 @@ function check_PM2_Process(that) {
       .then (async () => {
         var PM2_List = await PM2_GetList(that)
         if (!PM2_List) {
-          console.log("[GATEWAY] [PM2] Can't get process List!")
+          console.error("[GATEWAY] [PM2] Can't get process List!")
           resolve(false)
           return
         }
@@ -750,8 +750,14 @@ function PM2_GetList(that) {
         resolve(null)
         return
       }
-      let result = JSON.parse(std)
-      resolve(result)
+      try {
+        let result = JSON.parse(std)
+        resolve(result)
+      } catch (e) {
+        console.error("[GATEWAY] [PM2] Process list is not an JSON Format!")
+        console.error("[GATEWAY] [PM2] Received:", std)
+        resolve(null)
+      }
     })
   })
 }

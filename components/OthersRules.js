@@ -94,6 +94,20 @@ class OthersRules {
     }
   }
 
+  /** need to force lock/unlock Pages and Screen ? **/
+  forceLockPagesAndScreen(that) {
+    if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-LOCK")
+    if (that.GW["EXT-Screen"].hello) {
+      if (!that.GW["EXT-Screen"].power) that.sendNotification("EXT_SCREEN-WAKEUP")
+      that.sendNotification("EXT_SCREEN-LOCK")
+    }
+  }
+
+  forceUnLockPagesAndScreen(that) {
+    if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-UNLOCK")
+    if (that.GW["EXT-Screen"].hello) that.sendNotification("EXT_SCREEN-UNLOCK")
+  }
+
   browserOrPhotoIsConnected(that) {
     if ((that.GW["EXT-Browser"].hello && that.GW["EXT-Browser"].connected) || 
       (that.GW["EXT-Photos"].hello && that.GW["EXT-Photos"].connected)) {

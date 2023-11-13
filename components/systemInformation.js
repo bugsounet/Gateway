@@ -20,13 +20,10 @@ class systemInfo {
         speed: "unknow",
         duplex: "unknow",
         ssid: "unknow",
-        bitRate: "unknow",
         frequency: "unknow",
-        txPower: "unknow",
-        powerManagement: "unknow",
-        linkQuality: "unknow",
-        maxLinkQuality: "unknow",
         signalLevel: "unknow",
+        channel: "unknow",
+        security: "unknow",
         barLevel: "unknow"
       },
       MEMORY: {
@@ -149,6 +146,7 @@ class systemInfo {
       currentLoad: "currentLoad",
       cpuTemperature: "main",
       processLoad: "(nginx, electron, librespot, pm2) proc,pid,cpu,mem",
+      wifiConnections: "id, iface, ssid, channel, frequency, security"
     }
     return new Promise((resolve) => {
       this.lib.si.get(valueObject)
@@ -162,15 +160,14 @@ class systemInfo {
             this.System["NETWORK"].ip = "unknow"
             this.System["NETWORK"].name = "unknow"
             this.System["NETWORK"].ssid = "unknow"
-            this.System["NETWORK"].bitRate = "unknow"
-            this.System["NETWORK"].txPower = "unknow"
-            this.System["NETWORK"].powerManagement = "unknow"
-            this.System["NETWORK"].linkQuality = "unknow"
-            this.System["NETWORK"].maxLinkQuality = "unknow"
             this.System["NETWORK"].signalLevel = "unknow"
             this.System["NETWORK"].barLevel = "unknow"
             this.System["NETWORK"].speed = "unknow"
             this.System["NETWORK"].duplex = "unknow"
+            this.System["NETWORK"].frequency = "unknow"
+            this.System["NETWORK"].channel =  "unknow",
+            this.System["NETWORK"].security = "unknow",
+
             data.networkInterfaces.forEach(Interface => {
               if (Interface.default) {
                 this.System["NETWORK"].type = Interface.type
@@ -221,19 +218,25 @@ class systemInfo {
               }
             })
           }
-          
-          let mesure = await this.takeMesure(this.System["NETWORK"].name)
-          if (mesure) {
-            this.System["NETWORK"].type = "wireless"
-            this.System["NETWORK"].ssid = mesure.ssid
-            this.System["NETWORK"].bitRate = mesure.bitRate
-            this.System["NETWORK"].txPower = mesure.txPower
-            this.System["NETWORK"].powerManagement = mesure.powerManagement
-            this.System["NETWORK"].linkQuality = mesure.linkQuality
-            this.System["NETWORK"].maxLinkQuality = mesure.maxLinkQuality
-            this.System["NETWORK"].signalLevel = mesure.signalLevel
-            this.System["NETWORK"].barLevel = mesure.barLevel
-            this.System["NETWORK"].frequency = mesure.frequency
+
+          if (this.System["NETWORK"].type == "wireless") {
+            data.wifiConnections.forEach(wifi => {
+              if (wifi.iface == this.System["NETWORK"].name) {
+                this.System["NETWORK"].ssid = wifi.ssid
+                this.System["NETWORK"].channel = wifi.channel
+                this.System["NETWORK"].frequency = wifi.frequency / 1000
+                this.System["NETWORK"].security = wifi.security
+              }
+            })
+          }
+
+          if (this.System["NETWORK"].type == "wireless") {
+            this.System["NETWORK"].signalLevel = await this.getWifiSignalLevel(this.System["NETWORK"].name)
+            if (this.System["NETWORK"].signalLevel >= -50) this.System["NETWORK"].barLevel = 4
+            else if (this.System["NETWORK"].signalLevel < -50 && this.System["NETWORK"].signalLevel >= -60) this.System["NETWORK"].barLevel = 3
+            else if (this.System["NETWORK"].signalLevel < -60 && this.System["NETWORK"].signalLevel >= -67) this.System["NETWORK"].barLevel = 2
+            else if (this.System["NETWORK"].signalLevel < -67 && this.System["NETWORK"].signalLevel >= -70) this.System["NETWORK"].barLevel = 1
+            else this.System["NETWORK"].barLevel = 0
           }
           resolve()
         })
@@ -241,6 +244,17 @@ class systemInfo {
           console.error("[GATEWAY] [SYSTEMINFO] Error", e)
           resolve()
         })
+    })
+  }
+
+  getWifiSignalLevel(iface) {
+    return new Promise(resolve => {
+      this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
+        if (err) return resolve("error")
+        var signal = /Signal level=(\-?[0-9]+) dBm/.exec(stdout)
+        let result = signal[1] || "error"
+        resolve(result)
+      })
     })
   }
 
@@ -350,35 +364,6 @@ class systemInfo {
       this.lib.fs.writeFile(uptimeFilePath, JSON.stringify(uptime), error => {
         if (error) console.error("[GATEWAY] [SYSTEMINFO] recordFile writing error!", error)
         resolve()
-      })
-    })
-  }
-
-  takeMesure(iface){
-    return new Promise(resolve => {
-      this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
-        if (err) return resolve()
-        var ssid = /ESSID:"(.+)"/.exec(stdout)
-        var power = /Bit Rate=(\d+\.?\d+) +Mb\/s +Tx\-Power=([0-9]+) dBm/.exec(stdout)
-        var power_management = /Power Management:(.+)\n/.exec(stdout)
-        var quality = /Link Quality=([0-9]+)\/([0-9]+) +Signal level=(\-?[0-9]+) dBm/.exec(stdout)
-        var frequency = /Frequency:(\d+\.?\d+)/.exec(stdout)
-        let result = {
-          ssid: ssid[1],
-          frequency: frequency[1],
-          bitRate: power[1],
-          txPower: power[2],
-          powerManagement: power_management[1],
-          linkQuality: quality[1],
-          maxLinkQuality: quality[2],
-          signalLevel: quality[3],
-          barLevel: 0 
-        }
-        if (result.signalLevel >= -50) result.barLevel = 4
-        else if (result.signalLevel < -50 && result.signalLevel >= -60) result.barLevel = 3
-        else if (result.signalLevel < -60 && result.signalLevel >= -67) result.barLevel = 2
-        else if (result.signalLevel < -67 && result.signalLevel >= -70) result.barLevel = 1
-        resolve(result)
       })
     })
   }
