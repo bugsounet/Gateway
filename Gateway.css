@@ -311,13 +311,13 @@
 }
 
 .SysInfo-signal-1 .SYSINFO_BAR-2, .SysInfo-signal-1 .SYSINFO_BAR-3, .SysInfo-signal-1 .SYSINFO_BAR-4 {
-  opacity: var(--wireless-bar-start-opacity);
+  opacity: var(--SysInfo-wireless-bar-start-opacity);
 }
 
 .SysInfo-signal-2 .SYSINFO_BAR-3, .SysInfo-signal-2 .SYSINFO_BAR-4 {
-  opacity: var(--wireless-bar-start-opacity);
+  opacity: var(--SysInfo-wireless-bar-start-opacity);
 }
 
 .SysInfo-signal-3 .SYSINFO_BAR-4 {
-  opacity: var(--wireless-bar-start-opacity);
+  opacity: var(--SysInfo-wireless-bar-start-opacity);
 }
