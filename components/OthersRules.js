@@ -94,6 +94,15 @@ class OthersRules {
     }
   }
 
+  /** need to force lock Pages ? **/
+  forceLockPages(that) {
+    if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-LOCK")
+  }
+
+  forceUnLockPages(that) {
+    if (that.GW["EXT-Pages"].hello) that.sendNotification("EXT_PAGES-UNLOCK")
+  }
+
   browserOrPhotoIsConnected(that) {
     if ((that.GW["EXT-Browser"].hello && that.GW["EXT-Browser"].connected) || 
       (that.GW["EXT-Photos"].hello && that.GW["EXT-Photos"].connected)) {

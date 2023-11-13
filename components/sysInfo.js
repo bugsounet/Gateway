@@ -3,6 +3,8 @@ class sysInfoPageGW {
     this.config = that.config
     this.sendSocketNotification = (...arg) => that.sendSocketNotification(...arg)
     this.translate = (...arg) => that.translate(...arg)
+    this.pagesLock = () => that.OthersRules.forceLockPages(that)
+    this.pagesUnLock = () => that.OthersRules.forceUnLockPages(that)
     this.init = false
     this.showing = false
     this.timerRefresh = null
@@ -382,7 +384,6 @@ class sysInfoPageGW {
                         Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_total)
 
             /** Network **/
-            //todo: add icon wireless bar and wired
             var Sysinfo_network = document.createElement("div")
             Sysinfo_network.id = "GATEWAY_ADMIN-SYSINFO_NETWORK"
             Sysinfo_container_row.appendChild(Sysinfo_network)
@@ -595,6 +596,7 @@ class sysInfoPageGW {
 
   show() {
     if (!this.showing && this.init) {
+      this.pagesLock()
       clearInterval(this.timerRefresh)
       clearTimeout(this.timerHide)
       this.updateTimer()
@@ -624,6 +626,7 @@ class sysInfoPageGW {
         MM.getModules().enumerate((module)=> {
           module.show(500, () => {}, {lockString: "GATEWAY_LOCK"})
         })
+        this.pagesUnLock()
       },1000)
     }
   }
