@@ -30,7 +30,6 @@ class sysInfoPageGW {
         frequency: "unknow",
         signalLevel: "unknow",
         channel: "unknow",
-        model: "unknow",
         security: "unknow",
         barLevel: "unknow"
       },
@@ -444,11 +443,6 @@ class sysInfoPageGW {
                     Interface_Value.textContent= this.System.NETWORK.name
                     Interface.appendChild(Interface_Value)
 
-                  var InterfaceName = document.createElement("div")
-                  InterfaceName.id = "GATEWAY_ADMIN-SYSINFO_NETWORK-INTERFACE-NAME"
-                  InterfaceName.textContent = "* "+this.System.NETWORK.model
-                  Sysinfo_network_list.appendChild(InterfaceName)
-
                   var Information = document.createElement("div")
                   Information.id = "GATEWAY_ADMIN-SYSINFO_NETWORK_INFORMATION"
                   Information.textContent = this.translate("GW_System_WirelessInfo")
@@ -711,8 +705,6 @@ class sysInfoPageGW {
     var Duplex = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-DUPLEX-VALUE")
     Duplex.textContent= this.System.NETWORK.duplex
     // wireless
-    var InterfaceName = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-INTERFACE-NAME")
-    InterfaceName.textContent = "* " + this.System.NETWORK.model
     var SSID_ = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SSID")
     var SSID = document.getElementById("GATEWAY_ADMIN-SYSINFO_NETWORK-SSID-VALUE")
     SSID.textContent = this.System.NETWORK.ssid
@@ -736,7 +728,6 @@ class sysInfoPageGW {
       Speed.classList.remove("hidden")
       Duplex_.classList.remove("hidden")
       Duplex.classList.remove("hidden")
-      InterfaceName.classList.add("hidden")
       SSID_.classList.add("hidden")
       SSID.classList.add("hidden")
       channel_.classList.add("hidden")
@@ -754,7 +745,6 @@ class sysInfoPageGW {
       Speed.classList.add("hidden")
       Duplex_.classList.add("hidden")
       Duplex.classList.add("hidden")
-      InterfaceName.classList.remove("hidden")
       SSID_.classList.remove("hidden")
       SSID.classList.remove("hidden")
       channel_.classList.remove("hidden")
@@ -778,7 +768,6 @@ class sysInfoPageGW {
       Speed.classList.add("hidden")
       Duplex_.classList.add("hidden")
       Duplex.classList.add("hidden")
-      InterfaceName.classList.add("hidden")
       SSID_.classList.add("hidden")
       SSID.classList.add("hidden")
       channel_.classList.add("hidden")

@@ -276,8 +276,6 @@ async function doSystem(cb= null) {
     $("#wireless").addClass("signal-"+system.NETWORK.barLevel)
     $("#wirelessInfo").removeClass("visually-hidden")
     $('#ssid').text(system.NETWORK.ssid)
-    $('#interfaceName').removeClass("visually-hidden")
-    $('#interfaceName').text("* " + system.NETWORK.model)
     $('#channel').text(system.NETWORK.channel)
     $('#security').text(system.NETWORK.security)
     $('#signalLevel').text(system.NETWORK.signalLevel)
@@ -291,7 +289,6 @@ async function doSystem(cb= null) {
     $("#wirelessInfo").addClass("visually-hidden")
     $('#speed').text(system.NETWORK.speed)
     $('#duplex').text(system.NETWORK.duplex)
-    $('#interfaceName').addClass("visually-hidden")
   } else {
     $("#SpeedArea").addClass("visually-hidden")
     $("#DuplexArea").addClass("visually-hidden")
@@ -299,7 +296,6 @@ async function doSystem(cb= null) {
     $("#wired-icon").addClass("visually-hidden")
     $("#wireless-icon").addClass("visually-hidden")
     $("#wirelessInfo").addClass("visually-hidden")
-    $('#interfaceName').addClass("visually-hidden")
   }
   $('#IP').text(system.NETWORK.ip)
   $('#interface').text(system.NETWORK.name)

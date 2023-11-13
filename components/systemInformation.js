@@ -23,7 +23,6 @@ class systemInfo {
         frequency: "unknow",
         signalLevel: "unknow",
         channel: "unknow",
-        model: "unknow",
         security: "unknow",
         barLevel: "unknow"
       },
@@ -147,7 +146,7 @@ class systemInfo {
       currentLoad: "currentLoad",
       cpuTemperature: "main",
       processLoad: "(nginx, electron, librespot, pm2) proc,pid,cpu,mem",
-      wifiConnections: "id, model, iface, ssid, channel, frequency, security, signalLevel"
+      wifiConnections: "id, iface, ssid, channel, frequency, security"
     }
     return new Promise((resolve) => {
       this.lib.si.get(valueObject)
@@ -167,7 +166,6 @@ class systemInfo {
             this.System["NETWORK"].duplex = "unknow"
             this.System["NETWORK"].frequency = "unknow"
             this.System["NETWORK"].channel =  "unknow",
-            this.System["NETWORK"].model = "unknow",
             this.System["NETWORK"].security = "unknow",
 
             data.networkInterfaces.forEach(Interface => {
@@ -226,16 +224,19 @@ class systemInfo {
               if (wifi.iface == this.System["NETWORK"].name) {
                 this.System["NETWORK"].ssid = wifi.ssid
                 this.System["NETWORK"].channel = wifi.channel
-                this.System["NETWORK"].model = wifi.model
                 this.System["NETWORK"].frequency = wifi.frequency / 1000
                 this.System["NETWORK"].security = wifi.security
-                this.System["NETWORK"].signalLevel = wifi.signalLevel
-                if (wifi.signalLevel >= -50) this.System["NETWORK"].barLevel = 4
-                else if (wifi.signalLevel < -50 && wifi.signalLevel >= -60) this.System["NETWORK"].barLevel = 3
-                else if (wifi.signalLevel < -60 && wifi.signalLevel >= -67) this.System["NETWORK"].barLevel = 2
-                else if (wifi.signalLevel < -67 && wifi.signalLevel >= -70) this.System["NETWORK"].barLevel = 1
               }
             })
+          }
+
+          if (this.System["NETWORK"].type == "wireless") {
+            this.System["NETWORK"].signalLevel = await this.getWifiSignalLevel(this.System["NETWORK"].name)
+            if (this.System["NETWORK"].signalLevel >= -50) this.System["NETWORK"].barLevel = 4
+            else if (this.System["NETWORK"].signalLevel < -50 && this.System["NETWORK"].signalLevel >= -60) this.System["NETWORK"].barLevel = 3
+            else if (this.System["NETWORK"].signalLevel < -60 && this.System["NETWORK"].signalLevel >= -67) this.System["NETWORK"].barLevel = 2
+            else if (this.System["NETWORK"].signalLevel < -67 && this.System["NETWORK"].signalLevel >= -70) this.System["NETWORK"].barLevel = 1
+            else this.System["NETWORK"].barLevel = 0
           }
           resolve()
         })
@@ -243,6 +244,17 @@ class systemInfo {
           console.error("[GATEWAY] [SYSTEMINFO] Error", e)
           resolve()
         })
+    })
+  }
+
+  getWifiSignalLevel(iface) {
+    return new Promise(resolve => {
+      this.lib.childProcess.exec('iwconfig -' + iface, (err, stdout, stderr) => {
+        if (err) return resolve("error")
+        var signal = /Signal level=(\-?[0-9]+) dBm/.exec(stdout)
+        let result = signal[1] || "error"
+        resolve(result)
+      })
     })
   }
 

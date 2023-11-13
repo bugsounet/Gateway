@@ -211,7 +211,6 @@ Module.register("Gateway", {
       text += "*" + this.translate("GW_System_SpeedNetwork") + "* `" + result['NETWORK']['speed'] + " Mbit/s`\n"
       text += "*" + this.translate("GW_System_DuplexNetwork") + "* `" + result['NETWORK']['duplex'] + "`\n"
     } else {
-      text += "` * " + result['NETWORK']['model'] + "`\n"
       text += "*" + this.translate("GW_System_WirelessInfo") + ":*\n"
       text += "*  " + this.translate("GW_System_SSIDNetwork") + "* `" + result['NETWORK']['ssid'] + "`\n"
       text += "*  " + this.translate("GW_System_ChannelNetwork") + "* `" + result['NETWORK']['channel'] + "`\n"
