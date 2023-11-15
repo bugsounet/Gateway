@@ -276,8 +276,8 @@ async function doSystem(cb= null) {
     $("#wireless").addClass("signal-"+system.NETWORK.barLevel)
     $("#wirelessInfo").removeClass("visually-hidden")
     $('#ssid').text(system.NETWORK.ssid)
-    $('#channel').text(system.NETWORK.channel)
-    $('#security').text(system.NETWORK.security)
+    $('#rate').text(system.NETWORK.rate)
+    $('#quality').text(system.NETWORK.quality)
     $('#signalLevel').text(system.NETWORK.signalLevel)
     $('#frequency').text(system.NETWORK.frequency)
   } else if (system.NETWORK.type == "wired") {
@@ -513,8 +513,8 @@ function doStatic() {
   $("#SSIDNetwork").text(translation.System_SSIDNetwork)
   $("#FrequencyNetwork").text(translation.System_FrequencyNetwork)
   $("#SignalNetwork").text(translation.System_SignalNetwork)
-  $("#ChannelNetwork").text(translation.System_ChannelNetwork)
-  $("#SecurityNetwork").text(translation.System_SecurityNetwork)
+  $("#RateNetwork").text(translation.System_RateNetwork)
+  $("#QualityNetwork").text(translation.System_QualityNetwork)
 
   $("#StorageSystem").text(translation.System_StorageSystem)
   $("#MountStorage").text(translation.System_MountStorage)

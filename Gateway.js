@@ -213,9 +213,9 @@ Module.register("Gateway", {
     } else {
       text += "*" + this.translate("GW_System_WirelessInfo") + ":*\n"
       text += "*  " + this.translate("GW_System_SSIDNetwork") + "* `" + result['NETWORK']['ssid'] + "`\n"
-      text += "*  " + this.translate("GW_System_ChannelNetwork") + "* `" + result['NETWORK']['channel'] + "`\n"
       text += "*  " + this.translate("GW_System_FrequencyNetwork") + "* `" + result['NETWORK']['frequency'] + " GHz`\n"
-      text += "*  " + this.translate("GW_System_SecurityNetwork") + "* `" + result['NETWORK']['security'] + "`\n"
+      text += "*  " + this.translate("GW_System_RateNetwork") + "* `" + result['NETWORK']['rate'] + " Mb/s`\n"
+      text += "*  " + this.translate("GW_System_QualityNetwork") + "* `" + result['NETWORK']['quality'] + "`\n"
       text += "*  " + this.translate("GW_System_SignalNetwork") + "* `" + result['NETWORK']['signalLevel'] + " dBm (" + result['NETWORK']['barLevel'] + ")`\n"
     }
     // storage

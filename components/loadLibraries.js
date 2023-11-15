@@ -15,6 +15,7 @@ function libraries(that) {
     { "../components/SHCallbacks.js": "callback" },
     { "../components/homegraph.js": "homegraph" },
     { "../components/systemInformation.js": "SystemInformation" },
+    { "../components/wirelessTools.js": "wirelessTools" },
     { "node-pty": "pty" },
     { "express": "express" },
     { "http": "http" },
