@@ -17,15 +17,17 @@ class systemInfo {
         type: "unknow",
         ip: "unknow",
         name: "unknow",
-        speed: "unknow",
-        duplex: "unknow",
+        speed: null,
+        duplex: '',
         ssid: "unknow",
-        frequency: "unknow",
-        signalLevel: "unknow",
-        channel: "unknow",
-        security: "unknow",
-        barLevel: "unknow"
+        frequency: undefined,
+        signalLevel: -99,
+        barLevel: 0,
+        interface: "unknow",
+        rate: undefined,
+        quality: undefined
       },
+
       MEMORY: {
         total: 0,
         used: 0,
@@ -145,8 +147,7 @@ class systemInfo {
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
       cpuTemperature: "main",
-      processLoad: "(nginx, electron, librespot, pm2) proc,pid,cpu,mem",
-      wifiConnections: "id, iface, ssid, channel, frequency, security"
+      processLoad: "(nginx, electron, librespot, pm2) proc,pid,cpu,mem"
     }
     return new Promise((resolve) => {
       this.lib.si.get(valueObject)
@@ -159,14 +160,14 @@ class systemInfo {
             this.System["NETWORK"].type = "unknow"
             this.System["NETWORK"].ip = "unknow"
             this.System["NETWORK"].name = "unknow"
+            this.System["NETWORK"].speed = null
+            this.System["NETWORK"].duplex = ""
             this.System["NETWORK"].ssid = "unknow"
-            this.System["NETWORK"].signalLevel = "unknow"
-            this.System["NETWORK"].barLevel = "unknow"
-            this.System["NETWORK"].speed = "unknow"
-            this.System["NETWORK"].duplex = "unknow"
-            this.System["NETWORK"].frequency = "unknow"
-            this.System["NETWORK"].channel =  "unknow",
-            this.System["NETWORK"].security = "unknow",
+            this.System["NETWORK"].frequency = undefined
+            this.System["NETWORK"].signalLevel = -99
+            this.System["NETWORK"].barLevel = 0
+            this.System["NETWORK"].rate= undefined
+            this.System["NETWORK"].quality= undefined
 
             data.networkInterfaces.forEach(Interface => {
               if (Interface.default) {
@@ -220,41 +221,23 @@ class systemInfo {
           }
 
           if (this.System["NETWORK"].type == "wireless") {
-            data.wifiConnections.forEach(wifi => {
-              if (wifi.iface == this.System["NETWORK"].name) {
-                this.System["NETWORK"].ssid = wifi.ssid
-                this.System["NETWORK"].channel = wifi.channel
-                this.System["NETWORK"].frequency = wifi.frequency / 1000
-                this.System["NETWORK"].security = wifi.security
+            await this.lib.wirelessTools.status(this.System["NETWORK"].name, (err, status) => {
+              if (err) {
+                console.error("[GATEWAY] [SYSTEMINFO] WirelessTools Error", err.message)
+                resolve()
+                return
               }
+              this.System["NETWORK"] = Object.assign({}, this.System["NETWORK"], status)
+              resolve()
             })
+          } else {
+            resolve()
           }
-
-          if (this.System["NETWORK"].type == "wireless") {
-            this.System["NETWORK"].signalLevel = await this.getWifiSignalLevel(this.System["NETWORK"].name)
-            if (this.System["NETWORK"].signalLevel >= -50) this.System["NETWORK"].barLevel = 4
-            else if (this.System["NETWORK"].signalLevel < -50 && this.System["NETWORK"].signalLevel >= -60) this.System["NETWORK"].barLevel = 3
-            else if (this.System["NETWORK"].signalLevel < -60 && this.System["NETWORK"].signalLevel >= -67) this.System["NETWORK"].barLevel = 2
-            else if (this.System["NETWORK"].signalLevel < -67 && this.System["NETWORK"].signalLevel >= -70) this.System["NETWORK"].barLevel = 1
-            else this.System["NETWORK"].barLevel = 0
-          }
-          resolve()
         })
         .catch (e => {
           console.error("[GATEWAY] [SYSTEMINFO] Error", e)
           resolve()
         })
-    })
-  }
-
-  getWifiSignalLevel(iface) {
-    return new Promise(resolve => {
-      this.lib.childProcess.exec('iwconfig ' + iface, (err, stdout, stderr) => {
-        if (err) return resolve("error")
-        var signal = /Signal level=(\-?[0-9]+) dBm/.exec(stdout)
-        let result = signal[1] || "error"
-        resolve(result)
-      })
     })
   }
 

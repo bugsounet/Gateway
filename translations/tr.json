@@ -154,6 +154,8 @@
   "GW_System_WirelessInfo": "Wifi Bilgisi:",
   "GW_System_SSIDNetwork": "SSID:",
   "GW_System_FrequencyNetwork": "Sıklık:",
+  "GW_System_RateNetwork": "Bit Hızı:",
+  "GW_System_QualityNetwork": "Kalite:",
   "GW_System_SignalNetwork": "Sinyal:",
   "GW_System_StorageSystem": "Depolamak",
   "GW_System_MountStorage": "Montaj",

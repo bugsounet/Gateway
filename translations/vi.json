@@ -154,6 +154,8 @@
   "GW_System_WirelessInfo": "Thông tin mạng không dây",
   "GW_System_SSIDNetwork": "SSID:",
   "GW_System_FrequencyNetwork": "Tần số:",
+  "GW_System_RateNetwork": "Bit Rate:",
+  "GW_System_QualityNetwork": "Chất lượng:",
   "GW_System_SignalNetwork": "Tín hiệu:",
   "GW_System_StorageSystem": "Lưu trữ",
   "GW_System_MountStorage": "Đã gắn kết",

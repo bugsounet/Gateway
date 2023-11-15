@@ -154,6 +154,8 @@
   "GW_System_WirelessInfo": "WLAN",
   "GW_System_SSIDNetwork": "SSID:",
   "GW_System_FrequencyNetwork": "Frequenz:",
+  "GW_System_RateNetwork": "Bit Rate:",
+  "GW_System_QualityNetwork": "Qualität:",
   "GW_System_SignalNetwork": "Signal:",
   "GW_System_StorageSystem": "Datenträger",
   "GW_System_MountStorage": "Mount",
