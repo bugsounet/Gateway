@@ -39,7 +39,7 @@
     "@colors/colors": "^1.6.0",
     "actions-on-google": "^3.0.0",
     "command-exists": "^1.2.9",
-    "esbuild": "^0.19.8",
+    "esbuild": "^0.19.9",
     "express-session": "^1.17.2",
     "glob": "^10.3.10",
     "is-valid-domain": "^0.1.6",
