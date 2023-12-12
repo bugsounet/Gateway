@@ -12,6 +12,19 @@ module.exports = NodeHelper.create({
   socketNotificationReceived: async function (noti, payload) {
     switch (noti) {
       case "INIT":
+        try {
+          let testGA = require('../MMM-GoogleAssistant/package.json').version
+          if (parseData.cmpVersions(testGA, "6.0.0") >= 0) {
+            console.error("Gateway is not needed with MMM-GoogleAssistant v6")
+            this.sendSocketNotification("ERROR", "Gateway is not needed with MMM-GoogleAssistant v6")
+            return
+          }
+        } catch (e) {
+          console.error("MMM-GoogleAssistant not found!")
+          this.sendSocketNotification("ERROR", "MMM-GoogleAssistant not found!")
+          return
+        }
+
         if (this.alreadyInitialized) {
           console.error("[GATEWAY] You can't use Gateway in server mode")
           this.sendSocketNotification("ERROR", "You can't use Gateway in server mode")
